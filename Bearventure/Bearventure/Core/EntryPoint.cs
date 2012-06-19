@@ -10,6 +10,8 @@ namespace Bearventure
             {
                 game.Run();
             }
+
+            MusicManager.Instance.StopMusic();
         }
     }
 #endif
