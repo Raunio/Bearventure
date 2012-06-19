@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="Engine\Audio\MusicManager.cs" />
     <Compile Include="Engine\Audio\SoundEffectManager.cs" />
     <Compile Include="Engine\Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
