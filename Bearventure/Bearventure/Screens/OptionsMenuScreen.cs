@@ -36,12 +36,12 @@ namespace Bearventure
 
         static Ungulate currentUngulate = Ungulate.Dromedary;
 
-        static string[] languages = { "C#", "French", "Deoxyribonucleic acid" };
-        static int currentLanguage = 0;
+        static string[] languages = { "Finnish", "English" };
+        static int currentLanguage = 1;
 
         static bool frobnicate = true;
 
-        static int elf = 23;
+        static int derp = 10;
 
         #endregion
 
@@ -88,7 +88,7 @@ namespace Bearventure
             ungulateMenuEntry.Text = "Preferred ungulate: " + currentUngulate;
             languageMenuEntry.Text = "Language: " + languages[currentLanguage];
             frobnicateMenuEntry.Text = "Frobnicate: " + (frobnicate ? "on" : "off");
-            elfMenuEntry.Text = "elf: " + elf;
+            elfMenuEntry.Text = "Derp: " + derp;
         }
 
 
@@ -138,7 +138,7 @@ namespace Bearventure
         /// </summary>
         void ElfMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            elf++;
+            derp++;
 
             SetMenuEntryText();
         }
