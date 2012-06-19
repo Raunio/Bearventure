@@ -14,6 +14,7 @@ namespace Bearventure
         #endregion
         #region Music
         public const String Level1Music = "Music/CasioZoneFtMiika";
+        public const String MenuMusic = "Music/Holst-Mars";
         #endregion
         #region Fonts
         public const String GameFont = "Fonts/GameFont";

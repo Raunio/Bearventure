@@ -71,6 +71,7 @@ namespace Bearventure
                                                            new MainMenuScreen());
 
             MusicManager.Instance.StopMusic();
+            MusicManager.Instance.PlayMenuMusic();
         }
 
 

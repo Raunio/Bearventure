@@ -41,6 +41,8 @@ namespace Bearventure
             MenuEntries.Add(playGameMenuEntry);
             MenuEntries.Add(optionsMenuEntry);
             MenuEntries.Add(exitMenuEntry);
+
+            MusicManager.Instance.PlayMenuMusic();
         }
 
 
