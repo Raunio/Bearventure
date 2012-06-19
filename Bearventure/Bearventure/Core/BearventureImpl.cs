@@ -51,6 +51,7 @@ namespace Bearventure
             Components.Add(screenManager);
 
             SoundEffectManager.Instance.LoadContent(Content);
+            MusicManager.Instance.LoadContent(Content);
 
 
 #if WINDOWS_PHONE

@@ -1,7 +1,45 @@
-﻿// TODO: Implement
+﻿using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
+
 namespace Bearventure
 {
+    // TODO: RETROSPECT THIS CLASS. MIGHT CONTAIN BRAINFARTS
     class MusicManager
     {
+        private static MusicManager instance;
+
+        private Song level1;
+
+        private MusicManager() { }
+
+        public void Initialize() { }
+
+        public static MusicManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new MusicManager();
+                }
+                return instance;
+            }
+        }
+
+        public void LoadContent(ContentManager content)
+        {
+            level1 = content.Load<Song>(Constants.Level1Music);
+        }
+
+        public void PlayLevel1Music()
+        {
+            if (Globals.SoundsEnabled)
+            {
+                MediaPlayer.Volume = 10f;
+                MediaPlayer.Play(level1);
+                MediaPlayer.IsRepeating = true;
+            }
+        }
+
     }
 }

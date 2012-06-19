@@ -70,7 +70,9 @@ namespace Bearventure
                 if (content == null)
                     content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-                gameFont = content.Load<SpriteFont>("Fonts/GameFont");
+                gameFont = content.Load<SpriteFont>(Constants.GameFont);
+
+                MusicManager.Instance.PlayLevel1Music();
 
                 // A real game would probably have more content than this sample, so
                 // it would take longer to load. We simulate that by delaying for a
