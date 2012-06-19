@@ -69,6 +69,8 @@ namespace Bearventure
         {
             LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(),
                                                            new MainMenuScreen());
+
+            MusicManager.Instance.StopMusic();
         }
 
 

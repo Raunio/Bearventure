@@ -8,7 +8,7 @@ namespace Bearventure
     {
         private static MusicManager instance;
 
-        private Song level1;
+        private Song level1Song;
 
         private MusicManager() { }
 
@@ -28,7 +28,7 @@ namespace Bearventure
 
         public void LoadContent(ContentManager content)
         {
-            level1 = content.Load<Song>(Constants.Level1Music);
+            level1Song = content.Load<Song>(Constants.Level1Music);
         }
 
         public void PlayLevel1Music()
@@ -36,10 +36,14 @@ namespace Bearventure
             if (Globals.SoundsEnabled)
             {
                 MediaPlayer.Volume = 10f;
-                MediaPlayer.Play(level1);
+                MediaPlayer.Play(level1Song);
                 MediaPlayer.IsRepeating = true;
             }
         }
 
+        public void StopMusic()
+        {
+            MediaPlayer.Stop();
+        }
     }
 }
