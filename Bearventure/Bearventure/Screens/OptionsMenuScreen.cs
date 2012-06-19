@@ -24,7 +24,7 @@ namespace Bearventure
 
         MenuEntry ungulateMenuEntry;
         MenuEntry languageMenuEntry;
-        MenuEntry frobnicateMenuEntry;
+        MenuEntry soundsEnabledMenuEntry;
         MenuEntry elfMenuEntry;
 
         enum Ungulate
@@ -39,7 +39,7 @@ namespace Bearventure
         static string[] languages = { "Finnish", "English" };
         static int currentLanguage = 1;
 
-        static bool frobnicate = true;
+        //static bool frobnicate = true;
 
         static int derp = 10;
 
@@ -57,7 +57,7 @@ namespace Bearventure
             // Create our menu entries.
             ungulateMenuEntry = new MenuEntry(string.Empty);
             languageMenuEntry = new MenuEntry(string.Empty);
-            frobnicateMenuEntry = new MenuEntry(string.Empty);
+            soundsEnabledMenuEntry = new MenuEntry(string.Empty);
             elfMenuEntry = new MenuEntry(string.Empty);
 
             SetMenuEntryText();
@@ -67,14 +67,14 @@ namespace Bearventure
             // Hook up menu event handlers.
             ungulateMenuEntry.Selected += UngulateMenuEntrySelected;
             languageMenuEntry.Selected += LanguageMenuEntrySelected;
-            frobnicateMenuEntry.Selected += FrobnicateMenuEntrySelected;
+            soundsEnabledMenuEntry.Selected += FrobnicateMenuEntrySelected;
             elfMenuEntry.Selected += ElfMenuEntrySelected;
             back.Selected += OnCancel;
 
             // Add entries to the menu.
             MenuEntries.Add(ungulateMenuEntry);
             MenuEntries.Add(languageMenuEntry);
-            MenuEntries.Add(frobnicateMenuEntry);
+            MenuEntries.Add(soundsEnabledMenuEntry);
             MenuEntries.Add(elfMenuEntry);
             MenuEntries.Add(back);
         }
@@ -87,7 +87,7 @@ namespace Bearventure
         {
             ungulateMenuEntry.Text = "Preferred ungulate: " + currentUngulate;
             languageMenuEntry.Text = "Language: " + languages[currentLanguage];
-            frobnicateMenuEntry.Text = "Frobnicate: " + (frobnicate ? "on" : "off");
+            soundsEnabledMenuEntry.Text = "Sounds enabled: " + (Globals.SoundsEnabled ? "on" : "off");
             elfMenuEntry.Text = "Derp: " + derp;
         }
 
@@ -127,7 +127,7 @@ namespace Bearventure
         /// </summary>
         void FrobnicateMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            frobnicate = !frobnicate;
+            Globals.SoundsEnabled = !Globals.SoundsEnabled;
 
             SetMenuEntryText();
         }

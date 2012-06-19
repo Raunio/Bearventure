@@ -105,6 +105,7 @@ namespace Bearventure
             // Move to the previous menu entry?
             if (menuUp.Evaluate(input, ControllingPlayer, out playerIndex))
             {
+                SoundEffectManager.Instance.IndexChange();
                 selectedEntry--;
 
                 if (selectedEntry < 0)
@@ -114,6 +115,7 @@ namespace Bearventure
             // Move to the next menu entry?
             if (menuDown.Evaluate(input, ControllingPlayer, out playerIndex))
             {
+                SoundEffectManager.Instance.IndexChange();
                 selectedEntry++;
 
                 if (selectedEntry >= menuEntries.Count)
@@ -122,6 +124,7 @@ namespace Bearventure
 
             if (menuSelect.Evaluate(input, ControllingPlayer, out playerIndex))
             {
+                SoundEffectManager.Instance.IndexSelect();
                 OnSelectEntry(selectedEntry, playerIndex);
             }
             else if (menuCancel.Evaluate(input, ControllingPlayer, out playerIndex))
