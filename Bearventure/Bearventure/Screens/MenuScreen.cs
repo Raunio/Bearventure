@@ -232,7 +232,9 @@ namespace Bearventure
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
 
-            spriteBatch.Begin();
+            //spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None,
+        RasterizerState.CullNone, null, ResolutionManager.GetScaleMatrix());
 
             // Draw each menu entry in turn.
             for (int i = 0; i < menuEntries.Count; i++)

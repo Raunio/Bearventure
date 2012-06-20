@@ -243,7 +243,10 @@ namespace Bearventure
             // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            spriteBatch.Begin();
+            //spriteBatch.Begin();
+
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None,
+                    RasterizerState.CullNone, null, ResolutionManager.GetScaleMatrix());
 
             spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
 

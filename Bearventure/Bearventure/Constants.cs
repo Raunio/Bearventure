@@ -2,7 +2,7 @@
 
 namespace Bearventure
 {
-    static class Constants
+    class Constants
     {
         #region MenuTexts
         public const String MenuExitPromptText = "Are you sure you want to exit?";
@@ -21,6 +21,16 @@ namespace Bearventure
         #endregion
 
         #region Textures
+        #endregion
+        #region Resolution
+        public enum ScreenMode
+        {
+            v1080p,  // 1920x1080
+            v720p,   // 1280x720
+            v480p60, // 720x480
+            v360p,   // 640x360
+            v240p    // 320x240
+        }
         #endregion
     }
 }
