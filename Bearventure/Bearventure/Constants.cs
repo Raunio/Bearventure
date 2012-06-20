@@ -13,8 +13,8 @@ namespace Bearventure
         public const String MenuIndexSelected = "SoundEffects/IndexSelect";
         #endregion
         #region Music
-        public const String Level1Music = "Music/CasioZoneFtMiika";
-        public const String MenuMusic = "Music/Holst-Mars";
+        public const String Level1Music = "Music/Level1";
+        public const String MenuMusic = "Music/Splash";
         #endregion
         #region Fonts
         public const String GameFont = "Fonts/GameFont";
