@@ -201,13 +201,13 @@ namespace Bearventure
                 if (keyboardState.IsKeyDown(Keys.Left) && playerPosition.X > 10)
                     movement.X--;
 
-                if (keyboardState.IsKeyDown(Keys.Right) && playerPosition.X < ResolutionManager.GetVirtualResolution().X - 120) // Approximation of the text width
+                if (keyboardState.IsKeyDown(Keys.Right) && playerPosition.X < ResolutionManager.GetVirtualResolution().X - 680) // Approximation of the text width
                     movement.X++;
 
                 if (keyboardState.IsKeyDown(Keys.Up) && playerPosition.Y > 0)
                     movement.Y--;
 
-                if (keyboardState.IsKeyDown(Keys.Down) && playerPosition.Y < ResolutionManager.GetVirtualResolution().Y - 45) // Approximation of the text height
+                if (keyboardState.IsKeyDown(Keys.Down) && playerPosition.Y < ResolutionManager.GetVirtualResolution().Y - 40) // Approximation of the text height
                     movement.Y++;
 
                 Vector2 thumbstick = gamePadState.ThumbSticks.Left;
@@ -257,9 +257,9 @@ namespace Bearventure
             Color.Chocolate);
 
 
-            spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
+            spriteBatch.DrawString(gameFont, "Ima bear just walking around. Minding my own business.", playerPosition, Color.Green);
 
-            spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
+            spriteBatch.DrawString(gameFont, "// TODO: Insert Gameplay Here",
                                    enemyPosition, Color.DarkRed);
 
             spriteBatch.End();
