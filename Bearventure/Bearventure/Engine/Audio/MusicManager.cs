@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Bearventure
 {
-    // TODO: RETROSPECT THIS CLASS. MIGHT CONTAIN BRAINFARTS
     class MusicManager
     {
         private static MusicManager instance;

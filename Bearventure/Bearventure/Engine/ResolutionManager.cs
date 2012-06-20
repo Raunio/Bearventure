@@ -196,17 +196,16 @@ namespace Bearventure
         /// <summary>
         /// Get virtual Mode Aspect Ratio
         /// </summary>
-        /// <returns>aspect ratio</returns>
+        /// <returns>Aspect ratio</returns>
         static public float GetVirtualAspectRatio()
         {
             return (float)virtualWidth / (float)virtualHeight;
         }
 
-        // FUCK!
         static public void ResetViewport()
         {
             float targetAspectRatio = GetVirtualAspectRatio();
-            // figure out the largest area that fits in this resolution at the desired aspect ratio
+            // Figure out the largest area that fits in this resolution at the desired aspect ratio
             int newWidth = graphicsDevice.PreferredBackBufferWidth;
             int newHeight = (int)(newWidth / targetAspectRatio + .5f);
             bool changed = false;
@@ -219,7 +218,7 @@ namespace Bearventure
                 changed = true;
             }
 
-            // set up the new viewport centered in the backbuffer
+            // Set up the new viewport centered in the backbuffer
             Viewport viewport = new Viewport();
 
             viewport.X = (graphicsDevice.PreferredBackBufferWidth / 2) - (newWidth / 2);

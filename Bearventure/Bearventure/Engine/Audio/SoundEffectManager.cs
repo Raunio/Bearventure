@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Bearventure
 {
-    // TODO: RETROSPECT THIS CLASS. MIGHT CONTAIN BRAINFARTS
     class SoundEffectManager
     {
         private static SoundEffectManager instance;
