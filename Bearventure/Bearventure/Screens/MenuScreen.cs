@@ -254,8 +254,8 @@ namespace Bearventure
             // Draw the menu title centered on the screen
             Vector2 titlePosition = new Vector2(ResolutionManager.GetVirtualResolution().X / 2, 80); // THIS SHOULD GET THE VALUE FROM GLOBALS, WHERE THE RESOLUTION IS SET.
             Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
-            Color titleColor = new Color(192, 192, 192) * TransitionAlpha;
-            float titleScale = 1.25f;
+            Color titleColor = new Color(255, 0, 0) * TransitionAlpha;
+            float titleScale = 1.5f;
 
             titlePosition.Y -= transitionOffset * 100;
 

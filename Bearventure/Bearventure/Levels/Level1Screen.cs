@@ -24,7 +24,7 @@ namespace Bearventure
     /// placeholder to get the idea across: you'll probably want to
     /// put some more interesting gameplay in here!
     /// </summary>
-    class GameplayScreen : GameScreen
+    class Level1Screen : GameScreen
     {
         #region Fields
 
@@ -48,7 +48,7 @@ namespace Bearventure
         /// <summary>
         /// Constructor.
         /// </summary>
-        public GameplayScreen()
+        public Level1Screen()
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);

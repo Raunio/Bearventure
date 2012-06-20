@@ -119,7 +119,7 @@
     <Compile Include="Core\ScreenFactory.cs" />
     <Compile Include="Screens\BackgroundScreen.cs" />
     <Compile Include="Screens\Button.cs" />
-    <Compile Include="Levels\GameplayScreen.cs" />
+    <Compile Include="Levels\Level1Screen.cs" />
     <Compile Include="Screens\LoadingScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\MenuEntry.cs" />
