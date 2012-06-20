@@ -55,7 +55,7 @@ namespace Bearventure
 
             ResolutionManager.Initialize(ref graphics);
             ResolutionManager.SetVirtualResolution(Constants.ScreenMode.v720p);
-            ResolutionManager.SetResolution(Constants.ScreenMode.v720p, true);
+            ResolutionManager.SetResolution(graphics.GraphicsDevice.DisplayMode.Width, graphics.GraphicsDevice.DisplayMode.Height, true); // Gets your system screen size etc...
 
 
 #if WINDOWS_PHONE

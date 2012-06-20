@@ -57,7 +57,7 @@ namespace Bearventure
                 if (content == null)
                     content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-                backgroundTexture = content.Load<Texture2D>("Backgrounds/Menu");
+                backgroundTexture = content.Load<Texture2D>(Constants.MenuBackgroundImage);
             }
         }
 
@@ -95,11 +95,13 @@ namespace Bearventure
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
+            ResolutionManager.BeginDraw();
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-            Rectangle fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
+            //Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
+            Rectangle fullscreen = new Rectangle(0, 0, ResolutionManager.GetVirtualResolution().X, ResolutionManager.GetVirtualResolution().Y);
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None,
+RasterizerState.CullNone, null, ResolutionManager.GetScaleMatrix());
 
             spriteBatch.Draw(backgroundTexture, fullscreen,
                              new Color(TransitionAlpha, TransitionAlpha, TransitionAlpha));

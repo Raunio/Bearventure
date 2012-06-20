@@ -19,8 +19,8 @@ namespace Bearventure
         #region Fonts
         public const String GameFont = "Fonts/GameFont";
         #endregion
-
         #region Textures
+        public const String MenuBackgroundImage = "Backgrounds/Menu";
         #endregion
         #region Resolution
         public enum ScreenMode

@@ -198,16 +198,16 @@ namespace Bearventure
                 // Otherwise move the player position.
                 Vector2 movement = Vector2.Zero;
 
-                if (keyboardState.IsKeyDown(Keys.Left))
+                if (keyboardState.IsKeyDown(Keys.Left) && playerPosition.X > 10)
                     movement.X--;
 
-                if (keyboardState.IsKeyDown(Keys.Right))
+                if (keyboardState.IsKeyDown(Keys.Right) && playerPosition.X < ResolutionManager.GetVirtualResolution().X - 120) // Approximation of the text width
                     movement.X++;
 
-                if (keyboardState.IsKeyDown(Keys.Up))
+                if (keyboardState.IsKeyDown(Keys.Up) && playerPosition.Y > 0)
                     movement.Y--;
 
-                if (keyboardState.IsKeyDown(Keys.Down))
+                if (keyboardState.IsKeyDown(Keys.Down) && playerPosition.Y < ResolutionManager.GetVirtualResolution().Y - 45) // Approximation of the text height
                     movement.Y++;
 
                 Vector2 thumbstick = gamePadState.ThumbSticks.Left;
@@ -236,9 +236,11 @@ namespace Bearventure
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
+            ResolutionManager.BeginDraw();
+
             // This game has a blue background. Why? Because!
-            ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
-                                               Color.CornflowerBlue, 0, 0);
+            /*ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
+                                               Color.CornflowerBlue, 0, 0);*/
 
             // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
@@ -247,6 +249,13 @@ namespace Bearventure
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None,
                     RasterizerState.CullNone, null, ResolutionManager.GetScaleMatrix());
+
+
+            Texture2D whiteRectangle = new Texture2D(ScreenManager.GraphicsDevice, 1, 1);
+            whiteRectangle.SetData(new[] { Color.White });
+            spriteBatch.Draw(whiteRectangle, new Rectangle(0, 0, ResolutionManager.GetVirtualResolution().X, ResolutionManager.GetVirtualResolution().Y),
+            Color.Chocolate);
+
 
             spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
 

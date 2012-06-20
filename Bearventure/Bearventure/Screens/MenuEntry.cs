@@ -152,7 +152,7 @@ namespace Bearventure
 
             float pulsate = (float)Math.Sin(time * 6) + 1;
 
-            float scale = 1 + pulsate * 0.05f * selectionFade;
+            float scale = 1 + pulsate * 0.05f * selectionFade * ResolutionManager.GetVirtualAspectRatio();
 
             // Modify the alpha to fade text out during transitions.
             color *= screen.TransitionAlpha;
@@ -166,6 +166,7 @@ namespace Bearventure
 
             spriteBatch.DrawString(font, text, position, color, 0,
                                    origin, scale, SpriteEffects.None, 0);
+
         }
 
 

@@ -12,6 +12,7 @@
 // HAD TO REFRACTOR THE CODE A LITTLE. WAS UNREADABLE. -Huemac 2012
 // Added also nice enumerated constant values for resolutions
 
+using System;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -92,6 +93,13 @@ namespace Bearventure
             virtualHeight = height;
 
             isDirtyMatrix = true;
+        }
+
+        // Added by Huemac
+        static public Point GetVirtualResolution()
+        {
+            Console.WriteLine(virtualWidth + "X" + virtualHeight);
+            return new Point(virtualWidth, virtualHeight);
         }
 
         static public void SetVirtualResolution(Constants.ScreenMode screenMode)

@@ -186,7 +186,7 @@ namespace Bearventure
                 MenuEntry menuEntry = menuEntries[i];
 
                 // each entry is to be centered horizontally
-                position.X = ScreenManager.GraphicsDevice.Viewport.Width / 2 - menuEntry.GetWidth(this) / 2;
+                position.X = ResolutionManager.GetVirtualResolution().X / 2 - menuEntry.GetWidth(this) / 2;
 
                 if (ScreenState == ScreenState.TransitionOn)
                     position.X -= transitionOffset * 256;
@@ -225,6 +225,7 @@ namespace Bearventure
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
+            //ResolutionManager.BeginDraw();
             // make sure our entries are in the right place before we draw them
             UpdateMenuEntryLocations();
 
@@ -250,9 +251,8 @@ namespace Bearventure
             // power curve to make things look more interesting (this makes
             // the movement slow down as it nears the end).
             float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
-
             // Draw the menu title centered on the screen
-            Vector2 titlePosition = new Vector2(graphics.Viewport.Width / 2, 80);
+            Vector2 titlePosition = new Vector2(ResolutionManager.GetVirtualResolution().X / 2, 80); // THIS SHOULD GET THE VALUE FROM GLOBALS, WHERE THE RESOLUTION IS SET.
             Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
             Color titleColor = new Color(192, 192, 192) * TransitionAlpha;
             float titleScale = 1.25f;
