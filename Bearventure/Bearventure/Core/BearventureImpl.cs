@@ -32,7 +32,6 @@ namespace Bearventure
             Content.RootDirectory = "Content";
 
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = true;
             TargetElapsedTime = TimeSpan.FromTicks(333333);
 
 #if WINDOWS_PHONE
