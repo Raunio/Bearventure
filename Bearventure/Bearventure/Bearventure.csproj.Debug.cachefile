@@ -3,12 +3,12 @@ Content\Fonts\GameFont.xnb
 Content\Bitmaps\Blank.xnb
 Content\Bitmaps\Gradient.xnb
 Content\Bitmaps\SmokeCloud.xnb
+Content\Sprites\Karhu.xnb
 Content\SoundEffects\IndexChange.xnb
 Content\SoundEffects\IndexSelect.xnb
 Content\Music\Intro.xnb
 Content\Music\Level1.xnb
 Content\Music\Splash.xnb
-Content\Backgrounds\Menu.xnb
 Content\Maps\Backround1.xnb
 Content\Maps\Backround2.xnb
 Content\Maps\Backround3.xnb
@@ -17,7 +17,8 @@ Content\Maps\CollisionBackround1.xnb
 Content\Maps\CollisionBackround2.xnb
 Content\Maps\CollisionBackround3.xnb
 Content\Maps\CollisionBackround4.xnb
-Content\Sprites\Karhu.xnb
+Content\Backgrounds\Menu1.xnb
+Content\Backgrounds\Menu.xnb
 Content\Music\Intro.wma
 Content\Music\Level1.wma
 Content\Music\Splash.wma
