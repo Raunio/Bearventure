@@ -67,6 +67,7 @@
       <Name>Menu</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -95,41 +96,49 @@
       <Name>Backround1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="Maps\Backround2.png">
       <Name>Backround2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="Maps\Backround3.png">
       <Name>Backround3</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="Maps\Backround4.png">
       <Name>Backround4</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="Maps\CollisionBackround1.png">
       <Name>CollisionBackround1</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="Maps\CollisionBackround2.png">
       <Name>CollisionBackround2</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="Maps\CollisionBackround3.png">
       <Name>CollisionBackround3</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
     <Compile Include="Maps\CollisionBackround4.png">
       <Name>CollisionBackround4</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
   </ItemGroup>
   <ItemGroup>
