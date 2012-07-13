@@ -25,6 +25,7 @@ namespace Bearventure
         private int frameWidth;
         private int frameHeight;
         private float animTimer;
+        private float frameInterval;
         private float rotation;
         private SpriteEffects spriteEffects;
         private float layerDepth;
@@ -42,7 +43,8 @@ namespace Bearventure
         /// <param name="_frameHeight">The height of a individual frame.</param>
         /// <param name="_startFrame">The first frame of the animation.</param>
         /// <param name="_endFrame">The last frame of the animation.</param>
-        public Animation(Texture2D _spriteSheet, int _spriteSheetRow, int _frameWidth, int _frameHeight, int _startFrame, int _endFrame)
+        /// <param name="_frameInterval">Interval between frames in milliseconds</param>
+        public Animation(Texture2D _spriteSheet, int _spriteSheetRow, int _frameWidth, int _frameHeight, int _startFrame, int _endFrame, float _frameInterval)
         {
             SpriteSheet = _spriteSheet;
             spriteSheetRow = _spriteSheetRow;
@@ -56,6 +58,7 @@ namespace Bearventure
             currentFrame = _startFrame;
             origin = new Vector2(frameWidth / 2, frameHeight / 2);
             rotation = 0;
+            frameInterval = _frameInterval;
         }
         /// <summary>
         /// 
@@ -66,10 +69,11 @@ namespace Bearventure
         /// <param name="_frameHeight">The height of a individual frame.</param>
         /// <param name="_startFrame">The first frame of the animation.</param>
         /// <param name="_endFrame">The last frame of the animation.</param>
+        /// <param name="_frameInterval">Interval between frames in milliseconds</param>
         /// <param name="_spriteEffects">Sprite effects used for the animation</param>
         /// <param name="_layerDepth">Layer depth for the animation</param>
         /// <param name="_rotation">Spritesheet rotation</param>
-        public Animation(Texture2D _spriteSheet, int _spriteSheetRow, int _frameWidth, int _frameHeight, int _startFrame, int _endFrame, SpriteEffects _spriteEffects, float _layerDepth, float _rotation)
+        public Animation(Texture2D _spriteSheet, int _spriteSheetRow, int _frameWidth, int _frameHeight, int _startFrame, int _endFrame, float _frameInterval, SpriteEffects _spriteEffects, float _layerDepth, float _rotation)
         {
             SpriteSheet = _spriteSheet;
             spriteSheetRow = _spriteSheetRow;
@@ -83,6 +87,7 @@ namespace Bearventure
             currentFrame = _startFrame;
             origin = new Vector2(frameWidth / 2, frameHeight / 2);
             rotation = _rotation;
+            frameInterval = _frameInterval;
         }
         #endregion
 
@@ -193,15 +198,14 @@ namespace Bearventure
         /// <summary>
         /// Used to animate the animation from left to right.
         /// </summary>
-        /// <param name="interval">The rate at which frames are changed in milliseconds</param>
         /// <param name="gameTime">GameTime should be passed for the timer</param>
-        public void AnimateForward(float interval, GameTime gameTime)
+        public void AnimateForward(GameTime gameTime)
         {
             Update();
 
             animTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (animTimer >= interval)
+            if (animTimer >= frameInterval)
             {
                 animTimer = 0;
                 NextFrame();
@@ -211,15 +215,14 @@ namespace Bearventure
         /// <summary>
         /// Used to animate the animation from right to left.
         /// </summary>
-        /// <param name="interval">The rate at which frames are changed in milliseconds</param>
         /// <param name="gameTime">GameTime should be passed for the timer</param>
-        public void AnimateBackward(float interval, GameTime gameTime)
+        public void AnimateBackward(GameTime gameTime)
         {
             Update();
 
             animTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (animTimer >= interval)
+            if (animTimer >= frameInterval)
             {
                 animTimer = 0;
                 PreviousFrame();
@@ -262,7 +265,14 @@ namespace Bearventure
         {
             frameRectangle = new Rectangle(currentFrame * frameWidth, spriteSheetRow * frameHeight, frameWidth, frameHeight);
         }
-
+        /// <summary>
+        /// Change the framerate of the animation.
+        /// </summary>
+        /// <param name="newInterval">New framerate value.</param>
+        public void ChangeSpeed(float newInterval)
+        {
+            frameInterval = newInterval;
+        }
         #endregion
     }
 }
