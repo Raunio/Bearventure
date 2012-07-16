@@ -37,57 +37,57 @@ namespace Bearventure
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="_spriteSheet">Spritesheet used by the animation.</param>
-        /// <param name="_spriteSheetRow">The row in which the frames are placed in the sheet. 0 means the first, uppermost row.</param>
-        /// <param name="_frameWidth">The width of a individual frame.</param>
-        /// <param name="_frameHeight">The height of a individual frame.</param>
-        /// <param name="_startFrame">The first frame of the animation.</param>
-        /// <param name="_endFrame">The last frame of the animation.</param>
-        /// <param name="_frameInterval">Interval between frames in milliseconds</param>
-        public Animation(Texture2D _spriteSheet, int _spriteSheetRow, int _frameWidth, int _frameHeight, int _startFrame, int _endFrame, float _frameInterval)
+        /// <param name="spriteSheet">Spritesheet used by the animation.</param>
+        /// <param name="spriteSheetRow">The row in which the frames are placed in the sheet. 0 means the first, uppermost row.</param>
+        /// <param name="frameWidth">The width of a individual frame.</param>
+        /// <param name="frameHeight">The height of a individual frame.</param>
+        /// <param name="startFrame">The first frame of the animation.</param>
+        /// <param name="endFrame">The last frame of the animation.</param>
+        /// <param name="frameInterval">Interval between frames in milliseconds</param>
+        public Animation(Texture2D spriteSheet, int spriteSheetRow, int frameWidth, int frameHeight, int startFrame, int endFrame, float frameInterval)
         {
-            SpriteSheet = _spriteSheet;
-            spriteSheetRow = _spriteSheetRow;
-            frameWidth = _frameWidth;
-            frameHeight = _frameHeight;
+            SpriteSheet = spriteSheet;
+            this.spriteSheetRow = spriteSheetRow;
+            this.frameWidth = frameWidth;
+            this.frameHeight = frameHeight;
             spriteEffects = SpriteEffects.None;
             layerDepth = 0f;
-            startFrame = _startFrame;
-            endFrame = _endFrame;
+            this.startFrame = startFrame;
+            this.endFrame = endFrame;
             animTimer = 0f;
-            currentFrame = _startFrame;
+            currentFrame = startFrame;
             origin = new Vector2(frameWidth / 2, frameHeight / 2);
             rotation = 0;
-            frameInterval = _frameInterval;
+            this.frameInterval = frameInterval;
         }
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="_spriteSheet">Spritesheet used by the animation.</param>
-        /// <param name="_spriteSheetRow">The row in which the frames are placed in the sheet. 0 means the first, uppermost row.</param>
-        /// <param name="_frameWidth">The width of a individual frame.</param>
-        /// <param name="_frameHeight">The height of a individual frame.</param>
-        /// <param name="_startFrame">The first frame of the animation.</param>
-        /// <param name="_endFrame">The last frame of the animation.</param>
-        /// <param name="_frameInterval">Interval between frames in milliseconds</param>
-        /// <param name="_spriteEffects">Sprite effects used for the animation</param>
-        /// <param name="_layerDepth">Layer depth for the animation</param>
-        /// <param name="_rotation">Spritesheet rotation</param>
-        public Animation(Texture2D _spriteSheet, int _spriteSheetRow, int _frameWidth, int _frameHeight, int _startFrame, int _endFrame, float _frameInterval, SpriteEffects _spriteEffects, float _layerDepth, float _rotation)
+        /// <param name="spriteSheet">Spritesheet used by the animation.</param>
+        /// <param name="spriteSheetRow">The row in which the frames are placed in the sheet. 0 means the first, uppermost row.</param>
+        /// <param name="frameWidth">The width of a individual frame.</param>
+        /// <param name="frameHeight">The height of a individual frame.</param>
+        /// <param name="startFrame">The first frame of the animation.</param>
+        /// <param name="endFrame">The last frame of the animation.</param>
+        /// <param name="frameInterval">Interval between frames in milliseconds</param>
+        /// <param name="spriteEffects">Sprite effects used for the animation</param>
+        /// <param name="layerDepth">Layer depth for the animation</param>
+        /// <param name="rotation">Spritesheet rotation</param>
+        public Animation(Texture2D spriteSheet, int spriteSheetRow, int frameWidth, int frameHeight, int startFrame, int endFrame, float frameInterval, SpriteEffects spriteEffects, float layerDepth, float rotation)
         {
-            SpriteSheet = _spriteSheet;
-            spriteSheetRow = _spriteSheetRow;
-            frameWidth = _frameWidth;
-            frameHeight = _frameHeight;
-            spriteEffects = _spriteEffects;
-            layerDepth = _layerDepth;
-            startFrame = _startFrame;
-            endFrame = _endFrame;
+            SpriteSheet = spriteSheet;
+            this.spriteSheetRow = spriteSheetRow;
+            this.frameWidth = frameWidth;
+            this.frameHeight = frameHeight;
+            this.spriteEffects = spriteEffects;
+            this.layerDepth = layerDepth;
+            this.startFrame = startFrame;
+            this.endFrame = endFrame;
             animTimer = 0f;
-            currentFrame = _startFrame;
+            currentFrame = startFrame;
             origin = new Vector2(frameWidth / 2, frameHeight / 2);
-            rotation = _rotation;
-            frameInterval = _frameInterval;
+            this.rotation = rotation;
+            this.frameInterval = frameInterval;
         }
         #endregion
 
