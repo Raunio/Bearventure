@@ -23,6 +23,7 @@ namespace Bearventure
             Jumping,
             Falling,
             Disabled,
+            Flying
         };
 
         public enum Direction
@@ -31,7 +32,6 @@ namespace Bearventure
             Right
         };
         #endregion
-
         #region Members
         protected Texture2D SpriteSheet;
         /// <summary>
@@ -42,7 +42,7 @@ namespace Bearventure
         /// Character velocity.
         /// </summary>
         public Vector2 velocity;
-        protected Animation currentAnimation;
+        public Animation currentAnimation;
         protected float scale = 1f;
         /// <summary>
         /// Character walking speed.
@@ -57,6 +57,14 @@ namespace Bearventure
         /// </summary>
         public float acceleration;
         /// <summary>
+        /// Character brake strenght.
+        /// </summary>
+        public float deacceleration;
+        /// <summary>
+        /// Attacks per second.
+        /// </summary>
+        public float attackSpeed;
+        /// <summary>
         /// Character mass.
         /// </summary>
         public int mass;
@@ -68,6 +76,14 @@ namespace Bearventure
         /// Left or right.
         /// </summary>
         public Direction direction;
+        /// <summary>
+        /// Range of vision.
+        /// </summary>
+        public int vision;
+        /// <summary>
+        /// Character attack range.
+        /// </summary>
+        public int attackRange;
         #endregion
 
         #region Methods
@@ -100,6 +116,8 @@ namespace Bearventure
             velocity.Y += amount;
             position.Y += velocity.Y;
         }
+
+        public abstract void Update(GameTime gameTime);
         #endregion
     }
 }
