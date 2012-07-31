@@ -97,12 +97,8 @@ namespace Bearventure
                 ScreenManager.RemoveScreen(this);
 
                 foreach (GameScreen screen in screensToLoad)
-                {
                     if (screen != null)
-                    {
                         ScreenManager.AddScreen(screen, ControllingPlayer);
-                    }
-                }
 
                 // Once the load has finished, we use ResetElapsedTime to tell
                 // the  game timing mechanism that we have just finished a very

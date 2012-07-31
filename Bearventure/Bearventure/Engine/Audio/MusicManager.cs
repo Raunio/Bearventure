@@ -16,14 +16,7 @@ namespace Bearventure
 
         public static MusicManager Instance
         {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new MusicManager();
-                }
-                return instance;
-            }
+            get { return instance == null ? new MusicManager() : instance; }
         }
 
         public void LoadContent(ContentManager content)

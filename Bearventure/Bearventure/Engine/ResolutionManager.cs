@@ -44,10 +44,7 @@ namespace Bearventure
 
         static public bool FullScreen
         {
-            get
-            {
-                return isFullScreen;
-            }
+            get { return isFullScreen; }
         }
 
         static public void Initialize(ref GraphicsDeviceManager graphicsDeviceManager)
@@ -229,9 +226,7 @@ namespace Bearventure
             viewport.MaxDepth = 1;
 
             if (changed)
-            {
                 isDirtyMatrix = true;
-            }
 
             graphicsDevice.GraphicsDevice.Viewport = viewport;
         }
