@@ -11,19 +11,9 @@ namespace Bearventure
 
         private Texture2D spriteSheet;
 
-        //private Vector2 origin;
-
-        //private Rectangle frameRectangle;
         private int spriteSheetRow;
-        //private int startFrame;
-        //private int endFrame;
         private int currentFrame;
-        // private int frameWidth;
-        // private int frameHeight;
         private float animTimer;
-        // private float rotation;
-        //private SpriteEffects spriteEffects;
-        //private float layerDepth;
         private float interval;
         private bool backwards;
 
