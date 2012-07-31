@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Bearventure
 {
@@ -38,26 +35,13 @@ namespace Bearventure
 
         public ActionType Type
         {
-            get
-            {
-                return type;
-            }
-            set
-            {
-                type = value;
-            }
+            get { return type; }
+            set { type = value; }
         }
         public bool Primary
         {
-            get
-            {
-                return primary;
-            }
-
-            set
-            {
-                primary = value;
-            }
+            get { return primary; }
+            set { primary = value; }
         }
 
         public void AddCondition(Condition condition)
@@ -70,19 +54,10 @@ namespace Bearventure
             int conditionsMet = 0;
 
             foreach (Condition cnd in conditions)
-            {
-                if (cnd.Fulfilled(subject, player) == true)
-                {
+                if (cnd.Fulfilled(subject, player))
                     conditionsMet++;
-                }
-            }
 
-            if (conditionsMet == conditions.Count)
-            {
-                return true;
-            }
-            else
-                return false;
+            return conditionsMet == conditions.Count ? true : false;
         }
     }
 }

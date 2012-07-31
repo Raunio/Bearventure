@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace Bearventure
 {
     /// <summary>
     /// Conditions are used by the Action- & StrategyPlanner -classes.
     /// </summary>
     public class Condition
-    {       
+    {
         public enum ConditionType
         {
             HealthLowerThan,
@@ -38,28 +34,14 @@ namespace Bearventure
 
         public ConditionType Type
         {
-            get
-            {
-                return type;
-            }
-
-            set
-            {
-                type = value;
-            }
+            get { return type; }
+            set { type = value; }
         }
 
         public object Value
         {
-            get
-            {
-                return mValue;
-            }
-
-            set
-            {
-                mValue = value;
-            }
+            get { return mValue; }
+            set { mValue = value; }
         }
         /// <summary>
         /// This method checks if the condition has been fulfilled.
@@ -119,14 +101,7 @@ namespace Bearventure
 
         private int DistanceBetween(int a, int b)
         {
-            int distance = a - b;
-
-            if (distance < 0)
-            {
-                distance *= -1;
-            }
-
-            return distance;
+            return a - b > 0 ? a - b : b - a;
         }
     }
 }

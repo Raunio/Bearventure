@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace Bearventure
 {
@@ -11,6 +7,7 @@ namespace Bearventure
         #region Making things easier until I come up with a better way to do this.
         private Character.State Stopped;
         private Character.State Walking;
+        // What the balls are these? :D -Huemac
         private const Character.State Attacking = Character.State.Attacking;
         private const Character.State Disabled = Character.State.Disabled;
         private const Character.State Falling = Character.State.Falling;
@@ -36,15 +33,15 @@ namespace Bearventure
         private Character target;
         private BehaviourType behaviourType;
         public StrategyPlanner strategyPlanner;
-        private float wait_timer = 0f;
+        private float waitTimer = 0f;
         private float waitTime;
 
         #region Patrolling members
 
-        private int point_A = 0;
-        private int point_B = 0;
-        private int previous_point = 0;
-        private int next_point = 0;
+        private int pointA = 0;
+        private int pointB = 0;
+        private int previousPoint = 0;
+        private int nextPoint = 0;
 
         #endregion
 
@@ -98,10 +95,10 @@ namespace Bearventure
         public void InitFixedPatrol(int point_A, int point_B)
         {
             behaviourType = BehaviourType.FixedPatrol;
-            this.point_A = point_A;
-            this.point_B = point_B;
+            this.pointA = point_A;
+            this.pointB = point_B;
 
-            next_point = NearestPoint;
+            nextPoint = NearestPoint;
         }
         #endregion
 
@@ -133,21 +130,15 @@ namespace Bearventure
                     else if (strategyPlanner.CurrentAction() == Action.ActionType.Stop)
                         SetState(Stopped);
                     break;
-            }         
+            }
         }
         /// <summary>
         /// Set wait time for character in milliseconds. The use of wait time depends on the type of the subjects behaviour. FixedPatrol: Subject stops for a time equal to Wait_time at each patrol point.
         /// </summary>
-        public float Wait_time
+        public float WaitTime
         {
-            set
-            {
-                waitTime = value;
-            }
-            get
-            {
-                return waitTime;
-            }
+            set { waitTime = value; }
+            get { return waitTime; }
         }
 
         #endregion
@@ -161,69 +152,58 @@ namespace Bearventure
 
         private void UpdateFixedPatrol(GameTime gameTime)
         {
-            wait_timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            waitTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             float brakepoint = (subject.walkSpeed / subject.deacceleration) * 2;
 
-            if (DistanceToPoint(point_A) <= brakepoint)
+            if (DistanceToPoint(pointA) <= brakepoint)
             {
-                if (previous_point != point_A)
+                if (previousPoint != pointA)
                 {
-                    previous_point = point_A;
-                    wait_timer = 0;
+                    previousPoint = pointA;
+                    waitTimer = 0;
                 }
 
-                next_point = point_B;
+                nextPoint = pointB;
                 SetState(Stopped);
             }
 
-            else if (DistanceToPoint(point_B) <= brakepoint)
+            else if (DistanceToPoint(pointB) <= brakepoint)
             {
-                if (previous_point != point_B)
+                if (previousPoint != pointB)
                 {
-                    previous_point = point_B;
-                    wait_timer = 0;
+                    previousPoint = pointB;
+                    waitTimer = 0;
                 }
 
-                next_point = point_A;
+                nextPoint = pointA;
                 SetState(Stopped);
             }
 
-            if (wait_timer >= waitTime)
+            if (waitTimer >= waitTime)
             {
-                GoTo(next_point);
+                GoTo(nextPoint);
             }
-      
+
         }
 
         private int NearestPoint
         {
             get
             {
-                if(DistanceToPoint(point_A) < DistanceToPoint(point_B))
-                {
-                    return point_A;
-                }
-                else
-                    return point_B;
+                return DistanceToPoint(pointA) < DistanceToPoint(pointB) ? pointA : pointB;
             }
         }
 
         private int DistanceToPoint(int point)
         {
             int distance = (int)subject.position.X - point;
-
-            if (distance < 0)
-            {
-                distance *= -1;
-            }
-
-            return distance;
+            return (distance < 0) ? distance * -1 : distance;
         }
 
         private void GoTo(int point)
         {
             int position = (int)subject.position.X;
-
+            //TODO: What if point and position are equal? -Huemac
             if (position < point)
             {
                 ChangeDirection(Character.Direction.Right);

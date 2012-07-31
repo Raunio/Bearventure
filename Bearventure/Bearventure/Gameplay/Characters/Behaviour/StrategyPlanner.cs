@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace Bearventure
 {
@@ -66,7 +62,7 @@ namespace Bearventure
         }
 
         public void Plan()
-        {          
+        {
             #region testing
 
             foreach (Action a in preDetermined_actions)
@@ -86,15 +82,8 @@ namespace Bearventure
         /// </summary>
         private void AddActionToQueue(Action action)
         {
-            foreach (Action ac in actionQueue)
-            {
-                if (ac == action)
-                {
-                    return;
-                }
-            }
-
-            actionQueue.Add(action);
+            if (!actionQueue.Contains(action))
+                actionQueue.Add(action);
         }
         /// <summary>
         /// Goes through actionQueue and checks for actions that are marked primary.
@@ -103,33 +92,18 @@ namespace Bearventure
         public Action.ActionType CurrentAction()
         {
             foreach (Action ac in actionQueue)
-            {
                 if (ac.Primary == true)
-                {
                     return ac.Type;
-                }
-            }
 
-            if (actionQueue.Count > 0)
-            {
-                return actionQueue[0].Type;
-            }
-
-            else return Action.ActionType.Stop;
+            return actionQueue.Any() ? actionQueue.First().Type : Action.ActionType.Stop;
         }
         /// <summary>
         /// private method used to clean actions with fulfilled conditions from the actionQueue.
         /// </summary>
         private void CleanActions()
         {
-            if (actionQueue.Count >= 1)
-            {
-                if (!actionQueue[0].ConditionsFulfilled(subject, player))
-                {
-                    actionQueue.RemoveAt(0);
-                }
-            }
-
+            if (actionQueue.Any() && !actionQueue.First().ConditionsFulfilled(subject, player))
+                actionQueue.RemoveAt(0);
         }
     }
 }

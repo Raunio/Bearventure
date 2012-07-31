@@ -1,13 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
 namespace Bearventure
 {
@@ -111,8 +103,8 @@ namespace Bearventure
         {
             get
             {
+                // TODO: Chop this monster. -Huemac
                 return new Rectangle((int)position.X - (int)currentAnimation.Origin.X * (int)scale, (int)position.Y - (int)currentAnimation.Origin.Y * (int)scale, currentAnimation.FrameWidth * (int)scale, currentAnimation.FrameHeight * (int)scale);
-         
             }
         }
         /// <summary>
@@ -121,8 +113,8 @@ namespace Bearventure
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+            // TODO: Chop this too -Huemac
             spriteBatch.Draw(spriteSheet, position, currentAnimation.FrameRectangle, Color.White, currentAnimation.Rotation, currentAnimation.Origin, scale, currentAnimation.Sprite_Effects, currentAnimation.LayerDepth);
-            
         }
 
         public abstract void Update(GameTime gameTime);

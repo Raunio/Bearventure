@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Bearventure
 {
     public class Enemy : Character
     {
-        #region enumerations
+
+        // TODO: Fix warnings! -Huemac
+
+        #region Enumerations
 
         public enum EnemyType
         {
@@ -61,7 +60,7 @@ namespace Bearventure
             InitStats();
             InitBehavirour(player);
 
-            
+
         }
 
         public override void Update(GameTime gameTime)
@@ -102,7 +101,7 @@ namespace Bearventure
                 case State.Jumping:
                     currentAnimation = jumping;
                     break;
-                    
+
                 case State.Attacking:
                     //currentAnimation = attacking;
                     break;
@@ -133,7 +132,7 @@ namespace Bearventure
                 case EnemyType.BlackMetalBadger:
                     behaviour = new Behaviour(this, player);
                     behaviour.InitFixedPatrol(200, 600);
-                    behaviour.Wait_time = 2000;
+                    behaviour.WaitTime = 2000;
                     break;
             }
         }
@@ -156,17 +155,11 @@ namespace Bearventure
 
         public int Vision
         {
-            get
-            {
-                return vision;
-            }
+            get { return vision; }
         }
         public int AttackRange
         {
-            get
-            {
-                return attackRange;
-            }
+            get { return attackRange; }
         }
         #endregion
     }
