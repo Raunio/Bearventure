@@ -23,7 +23,8 @@ namespace Bearventure
             Jumping,
             Falling,
             Disabled,
-            Flying
+            Flying,
+            Hovering,
         };
 
         public enum Direction
@@ -31,9 +32,16 @@ namespace Bearventure
             Left,
             Right
         };
+
+        public enum Orientation
+        {
+            Ground,
+            Air,
+        };
+
         #endregion
         #region Members
-        protected Texture2D SpriteSheet;
+        protected Texture2D spriteSheet;
         /// <summary>
         /// Character position.
         /// </summary>
@@ -42,6 +50,9 @@ namespace Bearventure
         /// Character velocity.
         /// </summary>
         public Vector2 velocity;
+        /// <summary>
+        /// Current animation of character
+        /// </summary>
         public Animation currentAnimation;
         protected float scale = 1f;
         /// <summary>
@@ -77,13 +88,19 @@ namespace Bearventure
         /// </summary>
         public Direction direction;
         /// <summary>
-        /// Range of vision.
+        /// Character current health.
         /// </summary>
-        public int vision;
+        public int health;
         /// <summary>
-        /// Character attack range.
+        /// Character maximun health.
         /// </summary>
-        public int attackRange;
+        public int max_health;
+        /// <summary>
+        /// Character jump strenght.
+        /// </summary>
+        public int jumpStrenght;
+        public bool hasJumped = false;
+
         #endregion
 
         #region Methods
@@ -99,25 +116,17 @@ namespace Bearventure
             }
         }
         /// <summary>
-        /// piirrä hommofgd
+        /// Draw
         /// </summary>
         /// <param name="spriteBatch"></param>
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(SpriteSheet, position, currentAnimation.FrameRectangle, Color.White, currentAnimation.Rotation, currentAnimation.Origin, scale, currentAnimation.Sprite_Effects, currentAnimation.LayerDepth);
+            spriteBatch.Draw(spriteSheet, position, currentAnimation.FrameRectangle, Color.White, currentAnimation.Rotation, currentAnimation.Origin, scale, currentAnimation.Sprite_Effects, currentAnimation.LayerDepth);
             
-        }
-        /// <summary>
-        /// Method which should be called in the Update of the game to apply gravity to the character.
-        /// </summary>
-        /// <param name="amount">Amount of gravity</param>
-        public virtual void ApplyGravity(float amount)
-        {
-            velocity.Y += amount;
-            position.Y += velocity.Y;
         }
 
         public abstract void Update(GameTime gameTime);
+
         #endregion
     }
 }

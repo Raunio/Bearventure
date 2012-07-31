@@ -114,9 +114,14 @@
     <Compile Include="Engine\Globals.cs" />
     <Compile Include="Engine\ResolutionManager.cs" />
     <Compile Include="Gameplay\Animation.cs" />
+    <Compile Include="Gameplay\Characters\Behaviour\Action.cs" />
     <Compile Include="Gameplay\Characters\Behaviour\Behaviour.cs" />
-    <Compile Include="Gameplay\Characters\Character.cs" />
     <Compile Include="Gameplay\Characters\CharacterPhysics.cs" />
+    <Compile Include="Gameplay\Characters\Behaviour\Condition.cs" />
+    <Compile Include="Gameplay\Characters\Behaviour\StrategyPlanner.cs" />
+    <Compile Include="Gameplay\Characters\Character.cs" />
+    <Compile Include="Gameplay\Characters\Enemy.cs" />
+    <Compile Include="Gameplay\Characters\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\EntryPoint.cs" />
     <Compile Include="Core\BearventureImpl.cs" />

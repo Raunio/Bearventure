@@ -9,14 +9,14 @@ namespace Bearventure
     public class Behaviour
     {
         #region Making things easier until I come up with a better way to do this.
-        private const Character.State Stopped = Character.State.Stopped;
-        private const Character.State Walking = Character.State.Walking;
+        private Character.State Stopped;
+        private Character.State Walking;
         private const Character.State Attacking = Character.State.Attacking;
         private const Character.State Disabled = Character.State.Disabled;
         private const Character.State Falling = Character.State.Falling;
         private const Character.State Flying = Character.State.Flying;
         private const Character.State Jumping = Character.State.Jumping;
-        private const Character.State Running = Character.State.Running;
+        private Character.State Running;
         #endregion
 
         #region Enumerations
@@ -33,7 +33,9 @@ namespace Bearventure
         #region Members
 
         private Character subject;
+        private Character target;
         private BehaviourType behaviourType;
+        public StrategyPlanner strategyPlanner;
         private float wait_timer = 0f;
         private float waitTime;
 
@@ -42,7 +44,7 @@ namespace Bearventure
         private int point_A = 0;
         private int point_B = 0;
         private int previous_point = 0;
-        public int next_point = 0;
+        private int next_point = 0;
 
         #endregion
 
@@ -52,13 +54,27 @@ namespace Bearventure
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="subject">Character -type object to which the behaviour is applied to. One of the "Init..." -methods should be called after this.</param>
+        /// <param name="subject">Enemy -type object to which the behaviour is applied to. One of the "Init..." -methods should be called after this.</param>
         /// <param name="startDirection">The starting direction of the subject.</param>
-        public Behaviour(Character subject, Character.Direction startDirection)
+        public Behaviour(Enemy subject, Player player)
         {
             this.subject = subject;
             subject.state = Stopped;
-            subject.direction = startDirection;
+            target = player;
+            strategyPlanner = new StrategyPlanner(subject, target);
+
+            if (subject.orientation == Character.Orientation.Air)
+            {
+                Walking = Character.State.Flying;
+                Running = Character.State.Flying;
+                Stopped = Character.State.Hovering;
+            }
+            else
+            {
+                Walking = Character.State.Walking;
+                Running = Character.State.Running;
+                Stopped = Character.State.Stopped;
+            }
         }
         /// <summary>
         /// Set up passive behaviour. A passive subject stands still until the player reaches its line of sight. This method can be called upon at any time to switch from a previously initialized behaviour type.
@@ -100,17 +116,24 @@ namespace Bearventure
         /// <summary>
         /// Should be called in the Update method of the subject. Applies the chosen behaviour type to it.
         /// </summary>
-        /// <param name="gameTime"></param>
+        /// <param name="gameTime">GameTime should be passed for timers</param>
         public void Apply(GameTime gameTime)
         {
+            strategyPlanner.Plan();
+
             switch (behaviourType)
             {
                 case BehaviourType.FixedPatrol:
-                    UpdateFixedPatrol(gameTime);
+                    if (strategyPlanner.CurrentAction() == Action.ActionType.Default)
+                        UpdateFixedPatrol(gameTime);
+                    else if (strategyPlanner.CurrentAction() == Action.ActionType.Chase)
+                        GoTo((int)target.position.X);
+                    else if (strategyPlanner.CurrentAction() == Action.ActionType.Attack)
+                        SetState(Attacking);
+                    else if (strategyPlanner.CurrentAction() == Action.ActionType.Stop)
+                        SetState(Stopped);
                     break;
-            }
-
-            CharacterPhysics.Apply(subject, gameTime);
+            }         
         }
         /// <summary>
         /// Set wait time for character in milliseconds. The use of wait time depends on the type of the subjects behaviour. FixedPatrol: Subject stops for a time equal to Wait_time at each patrol point.
@@ -139,8 +162,9 @@ namespace Bearventure
         private void UpdateFixedPatrol(GameTime gameTime)
         {
             wait_timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            float brakepoint = (subject.walkSpeed / subject.deacceleration) * 2;
 
-            if (DistanceToPoint(point_A) < subject.walkSpeed)
+            if (DistanceToPoint(point_A) <= brakepoint)
             {
                 if (previous_point != point_A)
                 {
@@ -152,7 +176,7 @@ namespace Bearventure
                 SetState(Stopped);
             }
 
-            else if (DistanceToPoint(point_B) < subject.walkSpeed)
+            else if (DistanceToPoint(point_B) <= brakepoint)
             {
                 if (previous_point != point_B)
                 {
@@ -171,7 +195,7 @@ namespace Bearventure
       
         }
 
-        public int NearestPoint
+        private int NearestPoint
         {
             get
             {
@@ -184,7 +208,7 @@ namespace Bearventure
             }
         }
 
-        public int DistanceToPoint(int point)
+        private int DistanceToPoint(int point)
         {
             int distance = (int)subject.position.X - point;
 
@@ -203,12 +227,12 @@ namespace Bearventure
             if (position < point)
             {
                 ChangeDirection(Character.Direction.Right);
-                subject.state = Walking;
+                SetState(Walking);
             }
             else if (position > point)
             {
                 ChangeDirection(Character.Direction.Left);
-                subject.state = Walking;
+                SetState(Walking);
             }
         }
 

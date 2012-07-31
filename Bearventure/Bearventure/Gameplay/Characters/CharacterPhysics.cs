@@ -9,10 +9,20 @@ namespace Bearventure
     /// <summary>
     /// Used for applying basic physics to characters.
     /// </summary>
-    static class CharacterPhysics
+    public static class CharacterPhysics
     {
-        #region Methods
+        #region Members
 
+        private static float gravity;
+
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Apply basic physics to character.
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <param name="gameTime"></param>
         public static void Apply(Character subject, GameTime gameTime)
         {
             switch (subject.state)
@@ -26,8 +36,39 @@ namespace Bearventure
                 case Character.State.Running:
                     Run(subject);
                     break;
+                case Character.State.Jumping:
+                    Jump(subject);
+                    break;
+                case Character.State.Flying:
+                    
+                    break;
+                case Character.State.Attacking:
+                    Stop(subject);
+                    break;
+            }
+
+            ApplyGravity(subject);
+            subject.position += subject.velocity;
+        }
+
+        public static float Gravity
+        {
+            get
+            {
+                return gravity;
+            }
+
+            set
+            {
+                gravity = value;
             }
         }
+
+        private static void ApplyGravity(Character subject)
+        {
+            subject.velocity.Y += gravity;
+        }
+
         private static void Stop(Character subject)
         {
             if (subject.velocity.X > subject.deacceleration)
@@ -38,10 +79,10 @@ namespace Bearventure
             {
                 subject.velocity.X += subject.deacceleration;
             }
-            /*else
+            else
             {
                 subject.velocity.X = 0;
-            }*/
+            }
         }
         private static void Walk(Character subject)
         {
@@ -92,6 +133,18 @@ namespace Bearventure
                     subject.velocity.X = -subject.runSpeed;
                 }
             }
+        }
+        private static void Jump(Character subject)
+        {
+            if (subject.hasJumped == false)
+            {
+                subject.velocity.Y += subject.jumpStrenght;
+                subject.hasJumped = true;
+            }
+        }
+        private static void Fly(Character subject)
+        {
+
         }
 
         #endregion
