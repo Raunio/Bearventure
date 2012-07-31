@@ -17,14 +17,7 @@ namespace Bearventure
 
         public static SoundEffectManager Instance
         {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new SoundEffectManager();
-                }
-                return instance;
-            }
+            get { return instance == null ? new SoundEffectManager() : instance; }
         }
 
         public void LoadContent(ContentManager content)
