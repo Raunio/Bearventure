@@ -42,10 +42,10 @@ namespace Bearventure
         static private bool isFullScreen = false;
         static private bool isDirtyMatrix = true;
 
-        static public bool FullScreen
-        {
-            get { return isFullScreen; }
-        }
+        //static public bool FullScreen
+        //{
+        //    get { return isFullScreen; }
+        //}
 
         static public void Initialize(ref GraphicsDeviceManager graphicsDeviceManager)
         {

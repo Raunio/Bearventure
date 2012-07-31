@@ -3,23 +3,20 @@ namespace Bearventure
 {
     public class Globals
     {
-        private static bool soundsEnabled = true;
-        private double difficultyFactor = 1.0;
-
         public static bool SoundsEnabled
         {
-            get { return soundsEnabled; }
+            get;
             set
             {
-                soundsEnabled = value;
-                if (soundsEnabled) SoundEffectManager.Instance.IndexSelect();
+                SoundsEnabled = value;
+                if (SoundsEnabled) SoundEffectManager.Instance.IndexSelect();
             }
         }
 
-        public double DifficultyFactor
+        public static double DifficultyFactor
         {
-            get { return difficultyFactor; }
-            set { difficultyFactor = value; }
+            get;
+            set;
         }
     }
 }

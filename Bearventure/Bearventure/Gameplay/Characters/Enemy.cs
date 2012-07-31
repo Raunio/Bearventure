@@ -19,14 +19,8 @@ namespace Bearventure
 
         #endregion
         #region Members
-        /// <summary>
-        /// Range of vision.
-        /// </summary>
-        private int vision;
-        /// <summary>
-        /// Enemy attack range.
-        /// </summary>
-        private int attackRange;
+
+
         /// <summary>
         /// Enemy behaviour
         /// </summary>
@@ -145,21 +139,30 @@ namespace Bearventure
                     acceleration = 1f;
                     deacceleration = 0.2f;
                     orientation = Orientation.Ground;
-                    vision = 300;
-                    attackRange = 120;
+                    Vision = 300;
+                    AttackRange = 120;
                     health = 50;
                     max_health = 50;
                     break;
             }
         }
 
+        /// <summary>
+        /// Range of vision.
+        /// </summary>
         public int Vision
         {
-            get { return vision; }
+            get;
+            set;
         }
+
+        /// <summary>
+        /// Enemy attack range.
+        /// </summary>
         public int AttackRange
         {
-            get { return attackRange; }
+            get;
+            set;
         }
         #endregion
     }

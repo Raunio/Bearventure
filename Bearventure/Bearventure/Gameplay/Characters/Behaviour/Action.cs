@@ -16,32 +16,30 @@ namespace Bearventure
             Stop,
         };
 
-        private ActionType type;
         private List<Condition> conditions;
-        private bool primary;
 
         public Action(ActionType type)
         {
-            this.type = type;
-            primary = false;
+            this.Type = type;
+            this.Primary = false;
 
             conditions = new List<Condition>();
         }
         public Action(ActionType type, bool primary)
         {
-            this.type = type;
-            this.primary = primary;
+            this.Type = type;
+            this.Primary = primary;
         }
 
         public ActionType Type
         {
-            get { return type; }
-            set { type = value; }
+            get;
+            set;
         }
         public bool Primary
         {
-            get { return primary; }
-            set { primary = value; }
+            get;
+            set;
         }
 
         public void AddCondition(Condition condition)

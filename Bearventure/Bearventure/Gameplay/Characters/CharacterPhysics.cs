@@ -9,8 +9,6 @@ namespace Bearventure
     {
         #region Members
 
-        private static float gravity;
-
         #endregion
 
         #region Methods
@@ -49,13 +47,13 @@ namespace Bearventure
 
         public static float Gravity
         {
-            get { return gravity; }
-            set { gravity = value; }
+            get;
+            set;
         }
 
         private static void ApplyGravity(Character subject)
         {
-            subject.velocity.Y += gravity;
+            subject.velocity.Y += Gravity;
         }
 
         private static void Stop(Character subject)

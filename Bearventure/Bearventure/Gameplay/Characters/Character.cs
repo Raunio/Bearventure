@@ -114,7 +114,7 @@ namespace Bearventure
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             // TODO: Chop this too -Huemac
-            spriteBatch.Draw(spriteSheet, position, currentAnimation.FrameRectangle, Color.White, currentAnimation.Rotation, currentAnimation.Origin, scale, currentAnimation.Sprite_Effects, currentAnimation.LayerDepth);
+            spriteBatch.Draw(spriteSheet, position, currentAnimation.FrameRectangle, Color.White, currentAnimation.Rotation, currentAnimation.Origin, scale, currentAnimation.Effects, currentAnimation.LayerDepth);
         }
 
         public abstract void Update(GameTime gameTime);

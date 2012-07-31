@@ -11,19 +11,19 @@ namespace Bearventure
 
         private Texture2D spriteSheet;
 
-        private Vector2 origin;
+        //private Vector2 origin;
 
-        private Rectangle frameRectangle;
+        //private Rectangle frameRectangle;
         private int spriteSheetRow;
-        private int startFrame;
-        private int endFrame;
+        //private int startFrame;
+        //private int endFrame;
         private int currentFrame;
-        private int frameWidth;
-        private int frameHeight;
+        // private int frameWidth;
+        // private int frameHeight;
         private float animTimer;
-        private float rotation;
-        private SpriteEffects spriteEffects;
-        private float layerDepth;
+        // private float rotation;
+        //private SpriteEffects spriteEffects;
+        //private float layerDepth;
         private float interval;
         private bool backwards;
 
@@ -46,16 +46,16 @@ namespace Bearventure
         {
             this.spriteSheet = spriteSheet;
             this.spriteSheetRow = spriteSheetRow;
-            this.frameWidth = frameWidth;
-            this.frameHeight = frameHeight;
-            spriteEffects = SpriteEffects.None;
-            layerDepth = 0f;
-            this.startFrame = startFrame;
-            this.endFrame = endFrame;
+            this.FrameWidth = frameWidth;
+            this.FrameHeight = frameHeight;
+            this.Effects = SpriteEffects.None;
+            this.LayerDepth = 0f;
+            this.StartFrame = startFrame;
+            this.EndFrame = endFrame;
             animTimer = 0f;
             currentFrame = startFrame;
-            origin = new Vector2(frameWidth / 2, frameHeight / 2);
-            rotation = 0;
+            this.Origin = new Vector2(frameWidth / 2, frameHeight / 2);
+            this.Rotation = 0;
             interval = speed;
             this.backwards = backwards;
         }
@@ -77,16 +77,16 @@ namespace Bearventure
         {
             this.spriteSheet = spriteSheet;
             this.spriteSheetRow = spriteSheetRow;
-            this.frameWidth = frameWidth;
-            this.frameHeight = frameHeight;
-            this.spriteEffects = spriteEffects;
-            this.layerDepth = layerDepth;
-            this.startFrame = startFrame;
-            this.endFrame = endFrame;
+            this.FrameWidth = frameWidth;
+            this.FrameHeight = frameHeight;
+            this.Effects = spriteEffects;
+            this.LayerDepth = layerDepth;
+            this.StartFrame = startFrame;
+            this.EndFrame = endFrame;
             animTimer = 0f;
             currentFrame = startFrame;
-            origin = new Vector2(frameWidth / 2, frameHeight / 2);
-            this.rotation = rotation;
+            this.Origin = new Vector2(frameWidth / 2, frameHeight / 2);
+            this.Rotation = rotation;
             interval = speed;
             this.backwards = backwards;
         }
@@ -99,10 +99,8 @@ namespace Bearventure
         /// </summary>
         public Vector2 Origin
         {
-            get
-            {
-                return origin;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -110,10 +108,8 @@ namespace Bearventure
         /// </summary>
         public Rectangle FrameRectangle
         {
-            get
-            {
-                return frameRectangle;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -121,10 +117,8 @@ namespace Bearventure
         /// </summary>
         public int StartFrame
         {
-            get
-            {
-                return startFrame;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -132,10 +126,8 @@ namespace Bearventure
         /// </summary>
         public int EndFrame
         {
-            get
-            {
-                return endFrame;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -143,10 +135,8 @@ namespace Bearventure
         /// </summary>
         public int FrameWidth
         {
-            get
-            {
-                return frameWidth;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -154,10 +144,8 @@ namespace Bearventure
         /// </summary>
         public int FrameHeight
         {
-            get
-            {
-                return frameHeight;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -165,21 +153,17 @@ namespace Bearventure
         /// </summary>
         public float Rotation
         {
-            get
-            {
-                return rotation;
-            }
+            get;
+            set;
         }
 
         /// <summary>
         /// SpriteEffects used for the animation.
         /// </summary>
-        public SpriteEffects Sprite_Effects
+        public SpriteEffects Effects
         {
-            get
-            {
-                return spriteEffects;
-            }
+            get;
+            set;
         }
 
         /// <summary>
@@ -187,11 +171,10 @@ namespace Bearventure
         /// </summary>
         public float LayerDepth
         {
-            get
-            {
-                return layerDepth;
-            }
+            get;
+            set;
         }
+
         #endregion
         #region Methods
         public void Animate(GameTime gameTime)
@@ -234,18 +217,18 @@ namespace Bearventure
 
         private void NextFrame()
         {
-            if (currentFrame < endFrame)
+            if (currentFrame < EndFrame)
                 currentFrame++;
             else
-                currentFrame = startFrame;
+                currentFrame = StartFrame;
         }
 
         private void PreviousFrame()
         {
-            if (currentFrame > startFrame)
+            if (currentFrame > StartFrame)
                 currentFrame--;
             else
-                currentFrame = endFrame;
+                currentFrame = EndFrame;
         }
         /// <summary>
         /// Jump to frame
@@ -258,7 +241,7 @@ namespace Bearventure
 
         private void Update()
         {
-            frameRectangle = new Rectangle(currentFrame * frameWidth, spriteSheetRow * frameHeight, frameWidth, frameHeight);
+            FrameRectangle = new Rectangle(currentFrame * FrameWidth, spriteSheetRow * FrameHeight, FrameWidth, FrameHeight);
         }
 
         #endregion

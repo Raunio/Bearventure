@@ -34,7 +34,6 @@ namespace Bearventure
         private BehaviourType behaviourType;
         public StrategyPlanner strategyPlanner;
         private float waitTimer = 0f;
-        private float waitTime;
 
         #region Patrolling members
 
@@ -137,8 +136,8 @@ namespace Bearventure
         /// </summary>
         public float WaitTime
         {
-            set { waitTime = value; }
-            get { return waitTime; }
+            get;
+            set;
         }
 
         #endregion
@@ -179,7 +178,7 @@ namespace Bearventure
                 SetState(Stopped);
             }
 
-            if (waitTimer >= waitTime)
+            if (waitTimer >= WaitTime)
             {
                 GoTo(nextPoint);
             }
