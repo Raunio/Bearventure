@@ -9,13 +9,11 @@ namespace Bearventure
     {
         #region Members
 
-        private Texture2D spriteSheet;
-
         private int spriteSheetRow;
-        private int currentFrame;
         private float animTimer;
         private float interval;
         private bool backwards;
+        private bool looping;
 
         #endregion
 
@@ -32,7 +30,8 @@ namespace Bearventure
         /// <param name="endFrame">The last frame of the animation.</param>
         /// <param name="speed">Animation speed. Lower value = faster animation</param>
         /// <param name="backwards">True to animate from right to left.</param>
-        public Animation(Texture2D spriteSheet, int spriteSheetRow, int frameWidth, int frameHeight, int startFrame, int endFrame, float speed, bool backwards = false)
+        /// <param name="looping">True to loop animation</param>
+        public Animation(Texture2D spriteSheet, int spriteSheetRow, int frameWidth, int frameHeight, int startFrame, int endFrame, float speed, bool backwards = false, bool looping = true)
         {
             this.spriteSheet = spriteSheet;
             this.spriteSheetRow = spriteSheetRow;
@@ -43,11 +42,13 @@ namespace Bearventure
             this.StartFrame = startFrame;
             this.EndFrame = endFrame;
             animTimer = 0f;
-            currentFrame = startFrame;
+            CurrentFrame = startFrame;
             this.Origin = new Vector2(frameWidth / 2, frameHeight / 2);
             this.Rotation = 0;
             interval = speed;
             this.backwards = backwards;
+            this.looping = looping;
+            HasFinished = false;
         }
         /// <summary>
         /// 
@@ -63,7 +64,8 @@ namespace Bearventure
         /// <param name="rotation">Spritesheet rotation</param>
         /// <param name="speed">Animation speed. Lower value = faster animation.</param>
         /// <param name="backwards">True to animate from right to left.</param>
-        public Animation(Texture2D spriteSheet, int spriteSheetRow, int frameWidth, int frameHeight, int startFrame, int endFrame, float speed, SpriteEffects spriteEffects, float layerDepth, float rotation, bool backwards = false)
+        /// <param name="looping">True to loop animation</param>
+        public Animation(Texture2D spriteSheet, int spriteSheetRow, int frameWidth, int frameHeight, int startFrame, int endFrame, float speed, SpriteEffects spriteEffects, float layerDepth, float rotation, bool backwards = false, bool looping = true)
         {
             this.spriteSheet = spriteSheet;
             this.spriteSheetRow = spriteSheetRow;
@@ -74,23 +76,29 @@ namespace Bearventure
             this.StartFrame = startFrame;
             this.EndFrame = endFrame;
             animTimer = 0f;
-            currentFrame = startFrame;
+            CurrentFrame = startFrame;
             this.Origin = new Vector2(frameWidth / 2, frameHeight / 2);
             this.Rotation = rotation;
             interval = speed;
             this.backwards = backwards;
+            this.looping = looping;
+            HasFinished = false;
         }
         #endregion
 
         #region Gets
-
+        public Texture2D spriteSheet
+        {
+            get;
+            private set;
+        }
         /// <summary>
         /// Frame Origin.
         /// </summary>
         public Vector2 Origin
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -99,7 +107,7 @@ namespace Bearventure
         public Rectangle FrameRectangle
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -108,7 +116,7 @@ namespace Bearventure
         public int StartFrame
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -117,7 +125,7 @@ namespace Bearventure
         public int EndFrame
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -126,7 +134,7 @@ namespace Bearventure
         public int FrameWidth
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -135,7 +143,7 @@ namespace Bearventure
         public int FrameHeight
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -144,7 +152,7 @@ namespace Bearventure
         public float Rotation
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -153,7 +161,7 @@ namespace Bearventure
         public SpriteEffects Effects
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -162,9 +170,47 @@ namespace Bearventure
         public float LayerDepth
         {
             get;
-            set;
+            private set;
         }
 
+        public int CurrentFrame
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// True if animation has reached its end.
+        /// </summary>
+        public bool HasFinished
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Returns Texture2D object of current frame
+        /// </summary>
+        public Texture2D FrameTexture
+        {
+            get
+            {
+                GraphicsDevice graph = spriteSheet.GraphicsDevice;
+                RenderTarget2D render = new RenderTarget2D(graph, FrameWidth, FrameHeight);
+                SpriteBatch spriteBatch = new SpriteBatch(graph);
+
+                graph.SetRenderTarget(render);
+                graph.Clear(new Color(0, 0, 0, 0));
+
+                spriteBatch.Begin();
+
+                spriteBatch.Draw(spriteSheet, Vector2.Zero, FrameRectangle, Color.White);
+
+                spriteBatch.End();
+
+                graph.SetRenderTarget(null);
+
+                return (Texture2D)render;
+            }
+        }
         #endregion
         #region Methods
         public void Animate(GameTime gameTime)
@@ -179,6 +225,16 @@ namespace Bearventure
                     break;
             }
         }
+
+        public void Reset()
+        {
+            HasFinished = false;
+            if (backwards == true)
+                CurrentFrame = EndFrame;
+            else
+                CurrentFrame = StartFrame;
+        }
+
         private void AnimateForward(GameTime gameTime)
         {
             Update();
@@ -207,32 +263,49 @@ namespace Bearventure
 
         private void NextFrame()
         {
-            if (currentFrame < EndFrame)
-                currentFrame++;
+            if (CurrentFrame < EndFrame)
+                CurrentFrame++;
             else
-                currentFrame = StartFrame;
+            {
+                if (looping == true)
+                    CurrentFrame = StartFrame;
+
+                else if (HasFinished == false)
+                {
+                    HasFinished = true;
+                }
+            }
         }
 
         private void PreviousFrame()
         {
-            if (currentFrame > StartFrame)
-                currentFrame--;
+            if (CurrentFrame > StartFrame)
+                CurrentFrame--;
             else
-                currentFrame = EndFrame;
+            {
+                if (looping == true)
+                    CurrentFrame = EndFrame;
+
+                else if (HasFinished == false)
+                {
+                    HasFinished = true;
+                }
+            }
         }
         /// <summary>
         /// Jump to frame
         /// </summary>
         public void GoToFrame(int frame)
         {
-            currentFrame = frame;
+            CurrentFrame = frame;
             Update();
         }
 
         private void Update()
         {
-            FrameRectangle = new Rectangle(currentFrame * FrameWidth, spriteSheetRow * FrameHeight, FrameWidth, FrameHeight);
+            FrameRectangle = new Rectangle(CurrentFrame * FrameWidth, spriteSheetRow * FrameHeight, FrameWidth, FrameHeight);
         }
+
 
         #endregion
     }

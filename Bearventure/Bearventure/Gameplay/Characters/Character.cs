@@ -15,8 +15,7 @@ namespace Bearventure
             Jumping,
             Falling,
             Disabled,
-            Flying,
-            Hovering,
+            UsingSkill,
         };
 
         public enum Direction
@@ -91,7 +90,36 @@ namespace Bearventure
         /// Character jump strenght.
         /// </summary>
         public int jumpStrenght;
-        public bool hasJumped = false;
+        /// <summary>
+        /// Character health regeneration per five seconds.
+        /// </summary>
+        public int health_regen;
+        private float regen_timer;
+        /// <summary>
+        /// Character orientation. Air or Ground.
+        /// </summary>
+        public Orientation orientation
+        {
+            protected set;
+            get;
+        }
+        /// <summary>
+        /// Color data used for collision
+        /// </summary>
+        public Color[] textureData
+        {
+            get
+            {
+                Color[] td =  new Color[currentAnimation.FrameWidth * currentAnimation.FrameHeight];
+                currentAnimation.FrameTexture.GetData(td);
+
+                return td;
+            }
+        }
+        /// <summary>
+        /// Object that calculates collisions
+        /// </summary>
+        public CollisionHandler collisionHandler;
 
         #endregion
 
@@ -103,8 +131,12 @@ namespace Bearventure
         {
             get
             {
-                // TODO: Chop this monster. -Huemac
-                return new Rectangle((int)position.X - (int)currentAnimation.Origin.X * (int)scale, (int)position.Y - (int)currentAnimation.Origin.Y * (int)scale, currentAnimation.FrameWidth * (int)scale, currentAnimation.FrameHeight * (int)scale);
+                int x = (int)position.X - (int)currentAnimation.Origin.X * (int)scale;
+                int y = (int)position.Y - (int)currentAnimation.Origin.Y * (int)scale;
+                int width = currentAnimation.FrameWidth * (int)scale;
+                int height = currentAnimation.FrameHeight * (int)scale;
+
+                return new Rectangle(x, y, width, height);
             }
         }
         /// <summary>
@@ -118,6 +150,20 @@ namespace Bearventure
         }
 
         public abstract void Update(GameTime gameTime);
+
+        public void RegenerateHealth(GameTime gameTime)
+        {
+            regen_timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (regen_timer >= 5f && health < max_health)
+            {
+                health += health_regen;
+                regen_timer = 0;
+
+                if (health > max_health)
+                    health = max_health;
+            }
+        }
 
         #endregion
     }

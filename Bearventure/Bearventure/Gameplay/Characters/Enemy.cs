@@ -16,30 +16,76 @@ namespace Bearventure
             DelayOwl,
             WahCat,
         };
+        public enum CombatBehaviour
+        {
+            Default,
+            AttackAndFlee,
+
+        };
 
         #endregion
         #region Members
 
+        private EnemyType type;
+        private float attackTimer = 0;
 
+        #region Animations
+        public Animation WalkLeft
+        {
+            private set;
+            get;
+        }
+        public Animation WalkRight
+        {
+            private set;
+            get;
+        }
+        public Animation Stopped
+        {
+            private set;
+            get;
+        }
+        public Animation Attacking
+        {
+            private set;
+            get;
+        }
+        public Animation Jumping
+        {
+            private set;
+            get;
+        }
+        public Animation RunLeft
+        {
+            private set;
+            get;
+        }
+        public Animation RunRight
+        {
+            private set;
+            get;
+        }
+        #endregion
+
+        #endregion
+
+        #region Gets and Sets
+        /// <summary>
+        /// Enemy combat behaviour
+        /// </summary>
+        public CombatBehaviour combatBehaviour
+        {
+            private set;
+            get;
+        }
         /// <summary>
         /// Enemy behaviour
         /// </summary>
-        public Behaviour behaviour;
-        /// <summary>
-        /// Enemy orientation. Air or Ground.
-        /// </summary>
-        public Orientation orientation;
-        private EnemyType type;
-
-        #region Animations
-        private Animation walkLeft;
-        private Animation walkRight;
-        private Animation stopped;
-        private Animation attacking;
-        private Animation jumping;
-        private Animation runLeft;
-        private Animation runRight;
-        #endregion
+        public Behaviour behaviour
+        {
+            private set;
+            get;
+        }
 
         #endregion
 
@@ -54,7 +100,12 @@ namespace Bearventure
             InitStats();
             InitBehavirour(player);
 
+            attackTimer = attackSpeed;
+        }
 
+        public void TakeDamage(int damage)
+        {
+            health -= damage;
         }
 
         public override void Update(GameTime gameTime)
@@ -65,12 +116,7 @@ namespace Bearventure
 
             HandleAnimations(gameTime);
 
-            //TEMPORARY!!! :
-
-            if (position.Y > 430)
-            {
-                position.Y = 430;
-            }
+            HandleAttacking(gameTime);
 
         }
 
@@ -79,29 +125,38 @@ namespace Bearventure
             switch (state)
             {
                 case State.Walking:
-                    if (direction == Direction.Left) { currentAnimation = walkLeft; }
-                    else { currentAnimation = walkRight; }
+                    if (direction == Direction.Left) { ChangeAnimation(WalkLeft); }
+                    else { ChangeAnimation(WalkRight); }
                     break;
 
                 case State.Running:
-                    if (direction == Direction.Left) { currentAnimation = runLeft; }
-                    else { currentAnimation = runRight; }
+                    if (direction == Direction.Left) { ChangeAnimation(RunLeft); }
+                    else { ChangeAnimation(RunRight); }
                     break;
 
                 case State.Stopped:
-                    currentAnimation = stopped;
+                    ChangeAnimation(Stopped);
                     break;
 
                 case State.Jumping:
-                    currentAnimation = jumping;
+                    ChangeAnimation(Jumping);
                     break;
 
                 case State.Attacking:
-                    //currentAnimation = attacking;
+                    ChangeAnimation(Attacking);
                     break;
             }
 
             currentAnimation.Animate(gameTime);
+        }
+
+        private void ChangeAnimation(Animation animation)
+        {
+            if (currentAnimation != animation)
+            {
+                currentAnimation.Reset();
+                currentAnimation = animation;
+            }
         }
 
         private void InitAnimations()
@@ -109,42 +164,93 @@ namespace Bearventure
             switch (type)
             {
                 case EnemyType.BlackMetalBadger:
-                    walkRight = new Animation(spriteSheet, 0, 93, 103, 9, 15, 60);
-                    walkLeft = new Animation(spriteSheet, 0, 93, 103, 0, 6, 60);
-                    runRight = new Animation(spriteSheet, 0, 93, 103, 9, 15, 40);
-                    runLeft = new Animation(spriteSheet, 0, 93, 103, 0, 6, 40);
-                    stopped = new Animation(spriteSheet, 0, 93, 103, 7, 7, 60);
+                    WalkRight = new Animation(spriteSheet, 0, 93, 103, 9, 15, 60);
+                    WalkLeft = new Animation(spriteSheet, 0, 93, 103, 0, 6, 60);
+                    RunRight = new Animation(spriteSheet, 0, 93, 103, 9, 15, 40);
+                    RunLeft = new Animation(spriteSheet, 0, 93, 103, 0, 6, 40);
+                    Stopped = new Animation(spriteSheet, 0, 93, 103, 7, 7, 60);
+                    Attacking = new Animation(spriteSheet, 1, 93, 103, 0, 4, 100, false, false);
+                    Jumping = new Animation(spriteSheet, 0, 93, 103, 5, 6, 100);
+                    break;
+                case EnemyType.DelayOwl:
+                    WalkRight = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
+                    WalkLeft = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
+                    RunRight = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
+                    RunLeft = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
+                    Stopped = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
+                    Attacking = new Animation(spriteSheet, 1, 91, 59, 0, 2, 100, false, false);
+                    Jumping = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
                     break;
             }
 
-            //currentAnimation = stopped;
+            currentAnimation = Stopped;
         }
+
         private void InitBehavirour(Player player)
         {
             switch (type)
             {
                 case EnemyType.BlackMetalBadger:
+                    combatBehaviour = CombatBehaviour.Default;
                     behaviour = new Behaviour(this, player);
                     behaviour.InitFixedPatrol(200, 600);
                     behaviour.WaitTime = 2000;
                     break;
+
+                case EnemyType.DelayOwl:
+                    combatBehaviour = CombatBehaviour.AttackAndFlee;
+                    behaviour = new Behaviour(this, player);
+                    behaviour.InitPassive();
+                    break;
             }
         }
+
         private void InitStats()
         {
             switch (type)
             {
                 case EnemyType.BlackMetalBadger:
-                    walkSpeed = 4f;
+                    walkSpeed = 2f;
+                    runSpeed = 4.5f;
                     acceleration = 1f;
                     deacceleration = 0.2f;
+                    jumpStrenght = 5;
                     orientation = Orientation.Ground;
                     Vision = 300;
                     AttackRange = 120;
                     health = 50;
                     max_health = 50;
+                    health_regen = 10;
+                    attackSpeed = 1000;
+                    break;
+
+                case EnemyType.DelayOwl:
+                    walkSpeed = 3f;
+                    runSpeed = 5f;
+                    acceleration = 1f;
+                    deacceleration = 0.1f;
+                    jumpStrenght = 1;
+                    orientation = Orientation.Air;
+                    Vision = 400;
+                    AttackRange = 80;
+                    health = 1;
+                    max_health = 1;
+                    health_regen = 1;
+                    attackSpeed = 7000;
                     break;
             }
+        }
+
+        private void HandleAttacking(GameTime gameTime)
+        {
+            attackTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (currentAnimation == Attacking)
+            {
+                if (currentAnimation.HasFinished)
+                    attackTimer = 0;
+            }
+            
         }
 
         /// <summary>
@@ -153,7 +259,7 @@ namespace Bearventure
         public int Vision
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -162,7 +268,15 @@ namespace Bearventure
         public int AttackRange
         {
             get;
-            set;
+            private set;
+        }
+
+        public bool AttackReady
+        {
+            get
+            {
+                return attackTimer >= attackSpeed ? true : false;
+            }
         }
         #endregion
     }

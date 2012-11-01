@@ -8,7 +8,6 @@ namespace Bearventure
     public static class CharacterPhysics
     {
         #region Members
-
         #endregion
 
         #region Methods
@@ -19,6 +18,8 @@ namespace Bearventure
         /// <param name="gameTime"></param>
         public static void Apply(Character subject, GameTime gameTime)
         {
+            ApplyGravity(subject);
+            
             switch (subject.state)
             {
                 case Character.State.Stopped:
@@ -33,15 +34,12 @@ namespace Bearventure
                 case Character.State.Jumping:
                     Jump(subject);
                     break;
-                case Character.State.Flying:
-
-                    break;
                 case Character.State.Attacking:
                     Stop(subject);
                     break;
             }
 
-            ApplyGravity(subject);
+            HandleCollisions(subject);
             subject.position += subject.velocity;
         }
 
@@ -51,7 +49,7 @@ namespace Bearventure
             set;
         }
 
-        private static void ApplyGravity(Character subject)
+        public static void ApplyGravity(Character subject)
         {
             subject.velocity.Y += Gravity;
         }
@@ -66,6 +64,17 @@ namespace Bearventure
 
             else
                 subject.velocity.X = 0;
+
+            if (subject.orientation == Character.Orientation.Air)
+            {
+                if (subject.velocity.Y > subject.deacceleration)
+                    subject.velocity.Y -= Gravity;
+
+                else if (subject.velocity.Y < -subject.deacceleration)
+                    subject.velocity.Y += Gravity;
+                else
+                    subject.velocity.Y = 0;
+            }
         }
         private static void Walk(Character subject)
         {
@@ -102,21 +111,45 @@ namespace Bearventure
                 if (subject.velocity.X > -subject.runSpeed)
                     subject.velocity.X -= subject.acceleration;
 
-                else if (subject.velocity.X > subject.runSpeed)
+                else if (subject.velocity.X < -subject.runSpeed)
                     subject.velocity.X = -subject.runSpeed;
             }
         }
         private static void Jump(Character subject)
         {
-            if (subject.hasJumped == false)
-            {
-                subject.velocity.Y += subject.jumpStrenght;
-                subject.hasJumped = true;
-            }
+            subject.velocity.Y -= subject.jumpStrenght;
         }
-        private static void Fly(Character subject)
-        {
 
+        private static void HandleCollisions(Character subject)
+        {
+            int collision = CollisionHandler.CollisionOccursWithMap(subject, subject.velocity);
+
+            int Top = subject.BoundingBox.Top;
+            int Bottom = subject.BoundingBox.Bottom;
+            int Left = subject.BoundingBox.Left;
+            int Right = subject.BoundingBox.Right;
+
+            if (collision == Bottom)
+                subject.velocity.Y = 0;
+            else if (collision == Top)
+                subject.velocity.Y = -(subject.velocity.Y * 0.5f);
+            else if (collision == Left || collision == Right)
+                subject.velocity.X = -(subject.velocity.X * 0.5f);
+            else if (collision == Bottom + Left || collision == Bottom + Right)
+            {               
+                subject.velocity.Y = 0;
+
+                if (CollisionHandler.HeightDifference < 5)
+                    subject.position.Y -= CollisionHandler.HeightDifference;
+                else
+                    subject.velocity.X = -2 * (subject.velocity.X * 0.5f);
+            }
+
+            else if (collision == Top + Left || collision == Top + Right)
+            {
+                subject.velocity.X = -(subject.velocity.X * 0.5f);
+                subject.velocity.Y = -(subject.velocity.Y * 0.5f);
+            }
         }
 
         #endregion
