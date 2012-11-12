@@ -213,10 +213,10 @@ namespace Bearventure
                     Vision = 300;
                     AttackRange = 120;
                     health = 50;
-                    max_health = 50;
-                    health_regen = 10;
+                    maxHealth = 50;
+                    healthRegen = 10;
                     attackSpeed = 1000;
-                    BoundingBox_Offset = 5;
+                    BoundingBoxOffset = 5;
                     break;
 
                 case Constants.EnemyType.DelayOwl:
@@ -229,8 +229,8 @@ namespace Bearventure
                     Vision = 400;
                     AttackRange = 80;
                     health = 1;
-                    max_health = 1;
-                    health_regen = 1;
+                    maxHealth = 1;
+                    healthRegen = 1;
                     attackSpeed = 7000;
                     break;
             }
