@@ -25,25 +25,25 @@ namespace Bearventure
         /// </summary>
         private void InitActions()
         {
-            chase = new Action(Action.ActionType.Chase);
-            chase.AddCondition(new Condition(Condition.ConditionType.DistanceToPlayerLowerThan, subject.Vision));
-            chase.AddCondition(new Condition(Condition.ConditionType.DistanceToPlayerGreaterThan, subject.AttackRange));
+            chase = new Action(Constants.ActionType.Chase);
+            chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.Vision));
+            chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, subject.AttackRange));
 
             preDetermined_actions.Add(chase);
 
-            stop = new Action(Action.ActionType.Stop);
-            stop.AddCondition(new Condition(Condition.ConditionType.DistanceToPlayerLowerThan, subject.AttackRange));
-            stop.AddCondition(new Condition(Condition.ConditionType.VelocityOtherThan, 0f));
+            stop = new Action(Constants.ActionType.Stop);
+            stop.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.AttackRange));
+            stop.AddCondition(new Condition(Constants.ConditionType.VelocityOtherThan, 0f));
 
             preDetermined_actions.Add(stop);
 
-            defaultAction = new Action(Action.ActionType.Default);
-            defaultAction.AddCondition(new Condition(Condition.ConditionType.DistanceToPlayerGreaterThan, subject.Vision));
+            defaultAction = new Action(Constants.ActionType.Default);
+            defaultAction.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, subject.Vision));
 
             preDetermined_actions.Add(defaultAction);
 
-            attack = new Action(Action.ActionType.Attack);
-            attack.AddCondition(new Condition(Condition.ConditionType.DistanceToPlayerLowerThan, subject.AttackRange));
+            attack = new Action(Constants.ActionType.Attack);
+            attack.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.AttackRange));
 
             preDetermined_actions.Add(attack);
         }
@@ -89,13 +89,13 @@ namespace Bearventure
         /// Goes through actionQueue and checks for actions that are marked primary.
         /// </summary>
         /// <returns>First in queue or primary action</returns>
-        public Action.ActionType CurrentAction()
+        public Constants.ActionType CurrentAction()
         {
             foreach (Action ac in actionQueue)
                 if (ac.Primary == true)
                     return ac.Type;
 
-            return actionQueue.Any() ? actionQueue.First().Type : Action.ActionType.Stop;
+            return actionQueue.Any() ? actionQueue.First().Type : Constants.ActionType.Stop;
         }
         /// <summary>
         /// private method used to clean actions with fulfilled conditions from the actionQueue.

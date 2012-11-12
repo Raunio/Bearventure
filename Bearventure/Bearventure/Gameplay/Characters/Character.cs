@@ -5,32 +5,6 @@ namespace Bearventure
 {
     public abstract class Character
     {
-        #region Enumerations
-        public enum State
-        {
-            Walking,
-            Running,
-            Attacking,
-            Stopped,
-            Jumping,
-            Falling,
-            Disabled,
-            UsingSkill,
-        };
-
-        public enum Direction
-        {
-            Left,
-            Right
-        };
-
-        public enum Orientation
-        {
-            Ground,
-            Air,
-        };
-
-        #endregion
         #region Members
         protected Texture2D spriteSheet;
         /// <summary>
@@ -73,11 +47,11 @@ namespace Bearventure
         /// <summary>
         /// Represents the state of the character
         /// </summary>
-        public State state;
+        public Constants.CharacterState state;
         /// <summary>
         /// Left or right.
         /// </summary>
-        public Direction direction;
+        public Constants.Direction direction;
         /// <summary>
         /// Character current health.
         /// </summary>
@@ -95,10 +69,11 @@ namespace Bearventure
         /// </summary>
         public int health_regen;
         private float regen_timer;
+        protected int BoundingBox_Offset;
         /// <summary>
         /// Character orientation. Air or Ground.
         /// </summary>
-        public Orientation orientation
+        public Constants.CharacterOrientation orientation
         {
             protected set;
             get;
@@ -131,10 +106,10 @@ namespace Bearventure
         {
             get
             {
-                int x = (int)position.X - (int)currentAnimation.Origin.X * (int)scale;
-                int y = (int)position.Y - (int)currentAnimation.Origin.Y * (int)scale;
-                int width = currentAnimation.FrameWidth * (int)scale;
-                int height = currentAnimation.FrameHeight * (int)scale;
+                int x = (int)(position.X - (currentAnimation.Origin.X * scale)) + BoundingBox_Offset;
+                int y = (int)(position.Y - (currentAnimation.Origin.Y * scale)) + BoundingBox_Offset;
+                int width = (int)(currentAnimation.FrameWidth * scale) - BoundingBox_Offset * 2;
+                int height = (int)(currentAnimation.FrameHeight * scale) - BoundingBox_Offset;
 
                 return new Rectangle(x, y, width, height);
             }

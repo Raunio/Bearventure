@@ -32,7 +32,11 @@ namespace Bearventure
         });
 
 
-        static private GraphicsDeviceManager graphicsDevice = null;
+        static public GraphicsDeviceManager graphicsDevice
+        {
+            get;
+            private set;
+        }
 
         static private int width = 800;
         static private int height = 600;

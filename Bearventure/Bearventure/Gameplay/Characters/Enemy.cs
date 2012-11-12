@@ -5,28 +5,9 @@ namespace Bearventure
 {
     public class Enemy : Character
     {
-
-        // TODO: Fix warnings! -Huemac
-
-        #region Enumerations
-
-        public enum EnemyType
-        {
-            BlackMetalBadger,
-            DelayOwl,
-            WahCat,
-        };
-        public enum CombatBehaviour
-        {
-            Default,
-            AttackAndFlee,
-
-        };
-
-        #endregion
         #region Members
 
-        private EnemyType type;
+        private Constants.EnemyType type;
         private float attackTimer = 0;
 
         #region Animations
@@ -73,7 +54,7 @@ namespace Bearventure
         /// <summary>
         /// Enemy combat behaviour
         /// </summary>
-        public CombatBehaviour combatBehaviour
+        public Constants.CombatBehaviour combatBehaviour
         {
             private set;
             get;
@@ -90,7 +71,7 @@ namespace Bearventure
         #endregion
 
         #region Methods
-        public Enemy(EnemyType type, Vector2 position, Texture2D spriteSheet, Player player)
+        public Enemy(Constants.EnemyType type, Vector2 position, Texture2D spriteSheet, Player player)
         {
             this.type = type;
             this.position = position;
@@ -98,7 +79,20 @@ namespace Bearventure
 
             InitAnimations();
             InitStats();
-            InitBehavirour(player);
+            InitBehavirour(player, 0, 0);
+
+            attackTimer = attackSpeed;
+        }
+
+        public Enemy(Constants.EnemyType type, int x, int y, Texture2D spriteSheet, Player player, int patrol_A, int patrol_B)
+        {
+            this.type = type;
+            this.position = new Vector2(x, y);
+            this.spriteSheet = spriteSheet;
+
+            InitAnimations();
+            InitStats();
+            InitBehavirour(player, patrol_A, patrol_B);
 
             attackTimer = attackSpeed;
         }
@@ -124,25 +118,25 @@ namespace Bearventure
         {
             switch (state)
             {
-                case State.Walking:
-                    if (direction == Direction.Left) { ChangeAnimation(WalkLeft); }
+                case Constants.CharacterState.Walking:
+                    if (direction == Constants.Direction.Left) { ChangeAnimation(WalkLeft); }
                     else { ChangeAnimation(WalkRight); }
                     break;
 
-                case State.Running:
-                    if (direction == Direction.Left) { ChangeAnimation(RunLeft); }
+                case Constants.CharacterState.Running:
+                    if (direction == Constants.Direction.Left) { ChangeAnimation(RunLeft); }
                     else { ChangeAnimation(RunRight); }
                     break;
 
-                case State.Stopped:
+                case Constants.CharacterState.Stopped:
                     ChangeAnimation(Stopped);
                     break;
 
-                case State.Jumping:
+                case Constants.CharacterState.Jumping:
                     ChangeAnimation(Jumping);
                     break;
 
-                case State.Attacking:
+                case Constants.CharacterState.Attacking:
                     ChangeAnimation(Attacking);
                     break;
             }
@@ -163,16 +157,16 @@ namespace Bearventure
         {
             switch (type)
             {
-                case EnemyType.BlackMetalBadger:
+                case Constants.EnemyType.BlackMetalBadger:
                     WalkRight = new Animation(spriteSheet, 0, 93, 103, 9, 15, 60);
                     WalkLeft = new Animation(spriteSheet, 0, 93, 103, 0, 6, 60);
                     RunRight = new Animation(spriteSheet, 0, 93, 103, 9, 15, 40);
                     RunLeft = new Animation(spriteSheet, 0, 93, 103, 0, 6, 40);
                     Stopped = new Animation(spriteSheet, 0, 93, 103, 7, 7, 60);
-                    Attacking = new Animation(spriteSheet, 1, 93, 103, 0, 4, 100, false, false);
+                    Attacking = new Animation(spriteSheet, 0, 93, 103, 7, 7, 100, false, false);
                     Jumping = new Animation(spriteSheet, 0, 93, 103, 5, 6, 100);
                     break;
-                case EnemyType.DelayOwl:
+                case Constants.EnemyType.DelayOwl:
                     WalkRight = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
                     WalkLeft = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
                     RunRight = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
@@ -186,19 +180,19 @@ namespace Bearventure
             currentAnimation = Stopped;
         }
 
-        private void InitBehavirour(Player player)
+        private void InitBehavirour(Player player, int pointA, int pointB)
         {
             switch (type)
             {
-                case EnemyType.BlackMetalBadger:
-                    combatBehaviour = CombatBehaviour.Default;
+                case Constants.EnemyType.BlackMetalBadger:
+                    combatBehaviour = Constants.CombatBehaviour.Default;
                     behaviour = new Behaviour(this, player);
-                    behaviour.InitFixedPatrol(200, 600);
+                    behaviour.InitFixedPatrol(pointA, pointB);
                     behaviour.WaitTime = 2000;
                     break;
 
-                case EnemyType.DelayOwl:
-                    combatBehaviour = CombatBehaviour.AttackAndFlee;
+                case Constants.EnemyType.DelayOwl:
+                    combatBehaviour = Constants.CombatBehaviour.AttackAndFlee;
                     behaviour = new Behaviour(this, player);
                     behaviour.InitPassive();
                     break;
@@ -209,28 +203,29 @@ namespace Bearventure
         {
             switch (type)
             {
-                case EnemyType.BlackMetalBadger:
-                    walkSpeed = 2f;
-                    runSpeed = 4.5f;
+                case Constants.EnemyType.BlackMetalBadger:
+                    walkSpeed = 6f;
+                    runSpeed = 9f;
                     acceleration = 1f;
-                    deacceleration = 0.2f;
+                    deacceleration = 0.5f;
                     jumpStrenght = 5;
-                    orientation = Orientation.Ground;
+                    orientation = Constants.CharacterOrientation.Ground;
                     Vision = 300;
                     AttackRange = 120;
                     health = 50;
                     max_health = 50;
                     health_regen = 10;
                     attackSpeed = 1000;
+                    BoundingBox_Offset = 5;
                     break;
 
-                case EnemyType.DelayOwl:
+                case Constants.EnemyType.DelayOwl:
                     walkSpeed = 3f;
                     runSpeed = 5f;
                     acceleration = 1f;
                     deacceleration = 0.1f;
                     jumpStrenght = 1;
-                    orientation = Orientation.Air;
+                    orientation = Constants.CharacterOrientation.Air;
                     Vision = 400;
                     AttackRange = 80;
                     health = 1;

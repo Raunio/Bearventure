@@ -54,8 +54,8 @@ namespace Bearventure
             MusicManager.Instance.LoadContent(Content);
 
             ResolutionManager.Initialize(ref graphics);
-            ResolutionManager.SetVirtualResolution(Constants.ScreenMode.v720p);
-            ResolutionManager.SetResolution(graphics.GraphicsDevice.DisplayMode.Width, graphics.GraphicsDevice.DisplayMode.Height, true); // Gets your system screen size etc...
+            ResolutionManager.SetVirtualResolution(Constants.ScreenMode.v1080p);
+            ResolutionManager.SetResolution(graphics.GraphicsDevice.DisplayMode.Width, graphics.GraphicsDevice.DisplayMode.Height, false); // Gets your system screen size etc...
 
 
 #if WINDOWS_PHONE

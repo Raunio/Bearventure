@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent>
+  <Asset Type="XmlItems.LevelInfo">
+    <BackgroundFractions>8</BackgroundFractions>
+    <BackgroundAssetName>Testilevel</BackgroundAssetName>
+    <Name>Testilevel</Name>
+  </Asset>
+</XnaContent>

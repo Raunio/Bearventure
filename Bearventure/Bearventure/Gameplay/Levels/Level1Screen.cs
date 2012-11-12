@@ -14,6 +14,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
+using Bearventure.Gameplay.Levels;
+using XmlItems;
+using Bearventure.Gameplay;
 
 #endregion
 
@@ -31,10 +35,12 @@ namespace Bearventure
         ContentManager content;
         SpriteFont gameFont;
 
-        Vector2 playerPosition = new Vector2(100, 100);
-        Vector2 enemyPosition = new Vector2(100, 100);
+        LevelBackground background;
+        Camera camera;
+        CameraController cameraController;
 
-        Random random = new Random();
+        List<Enemy> enemies;
+        Player player;
 
         float pauseAlpha;
 
@@ -70,14 +76,30 @@ namespace Bearventure
                 if (content == null)
                     content = new ContentManager(ScreenManager.Game.Services, "Content");
 
+                player = new Player(content.Load<Texture2D>("Sprites/Karhu"));
+                XmlReader.Initialize(content, player);
+                player.position = XmlReader.StartPoint("Levels/Testilevel/Items/Testilevel_StartPoint");
                 gameFont = content.Load<SpriteFont>(Constants.GameFont);
+                background = new LevelBackground(XmlReader.LevelInformation("Levels/Testilevel/TestilevelLevelInfo"), content);
+                enemies = XmlReader.EnemyList("Levels/Testilevel/Items/Testilevel_Enemies");
+                cameraController = new CameraController();
+                cameraController.AssingTo(player);
 
+                Texture2D[] collisionMap = new Texture2D[8];
+
+                for (int i = 0; i < 8; i++)
+                {
+                    collisionMap[i] = content.Load<Texture2D>("Levels/Testilevel/CollisionMap/Testilevel_" + i);
+                }
+
+                CollisionHandler.Initialize(collisionMap);
+
+                CharacterPhysics.Gravity = 0.75f;
+
+                MusicManager.Instance.LoadContent(content);
+                camera = new Camera(ScreenManager.GraphicsDevice.Viewport, new Vector2(background.Width, background.Height));
+                
                 MusicManager.Instance.PlayLevel1Music();
-
-                // A real game would probably have more content than this sample, so
-                // it would take longer to load. We simulate that by delaying for a
-                // while, giving you a chance to admire the beautiful loading screen.
-                Thread.Sleep(1000);
 
                 // once the load has finished, we use ResetElapsedTime to tell the game's
                 // timing mechanism that we have just finished a very long frame, and that
@@ -143,22 +165,15 @@ namespace Bearventure
 
             if (IsActive)
             {
-                // Apply some random jitter to make the enemy move around.
-                const float randomization = 10;
+                foreach (Enemy enemy in enemies)
+                    enemy.Update(gameTime);
 
-                enemyPosition.X += (float)(random.NextDouble() - 0.5) * randomization;
-                enemyPosition.Y += (float)(random.NextDouble() - 0.5) * randomization;
-
-                // Apply a stabilizing force to stop the enemy moving off the screen.
-                Vector2 targetPosition = new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width / 2 - gameFont.MeasureString("Insert Gameplay Here").X / 2,
-                    200);
-
-                enemyPosition = Vector2.Lerp(enemyPosition, targetPosition, 0.05f);
-
-                // TODO: this game isn't very fun! You could probably improve
-                // it by inserting something more interesting in this space :-)
+                player.Update(gameTime);
+                cameraController.Update(gameTime);
+                camera.LookAt(cameraController.Position);
             }
+
+            
         }
 
 
@@ -195,38 +210,7 @@ namespace Bearventure
             }
             else
             {
-                // Otherwise move the player position.
-                Vector2 movement = Vector2.Zero;
 
-                if (keyboardState.IsKeyDown(Keys.Left) && playerPosition.X > 10)
-                    movement.X--;
-
-                if (keyboardState.IsKeyDown(Keys.Right) && playerPosition.X < ResolutionManager.GetVirtualResolution().X - 680) // Approximation of the text width
-                    movement.X++;
-
-                if (keyboardState.IsKeyDown(Keys.Up) && playerPosition.Y > 0)
-                    movement.Y--;
-
-                if (keyboardState.IsKeyDown(Keys.Down) && playerPosition.Y < ResolutionManager.GetVirtualResolution().Y - 40) // Approximation of the text height
-                    movement.Y++;
-
-                Vector2 thumbstick = gamePadState.ThumbSticks.Left;
-
-                movement.X += thumbstick.X;
-                movement.Y -= thumbstick.Y;
-
-                //if (input.TouchState.Count > 0)
-                //{
-                //    Vector2 touchPosition = input.TouchState[0].Position;
-                //    Vector2 direction = touchPosition - playerPosition;
-                //    direction.Normalize();
-                //    movement += direction;
-                //}
-
-                if (movement.Length() > 1)
-                    movement.Normalize();
-
-                playerPosition += movement * 8f;
             }
         }
 
@@ -238,29 +222,38 @@ namespace Bearventure
         {
             ResolutionManager.BeginDraw();
 
-            // This game has a blue background. Why? Because!
-            /*ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
-                                               Color.CornflowerBlue, 0, 0);*/
 
-            // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            //spriteBatch.Begin();
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None,
-                    RasterizerState.CullNone, null, ResolutionManager.GetScaleMatrix());
+                    RasterizerState.CullNone, null, camera.GetTransformation(ResolutionManager.graphicsDevice.GraphicsDevice));
 
+            background.Draw(spriteBatch);
 
-            Texture2D whiteRectangle = new Texture2D(ScreenManager.GraphicsDevice, 1, 1);
-            whiteRectangle.SetData(new[] { Color.White });
-            spriteBatch.Draw(whiteRectangle, new Rectangle(0, 0, ResolutionManager.GetVirtualResolution().X, ResolutionManager.GetVirtualResolution().Y),
-            Color.Chocolate);
+            #region temporary testing
 
+            /*Texture2D[] tx = CollisionHandler.mapText;
+            int width = tx[0].Width;
+            int height = tx[0].Height;
 
-            spriteBatch.DrawString(gameFont, "Ima bear just walking around. Minding my own business.", playerPosition, Color.Green);
+            spriteBatch.Draw(tx[0], new Rectangle(0, 0, width, height), Color.White);
+            spriteBatch.Draw(tx[1], new Rectangle(0, height, width, height), Color.White);
+            spriteBatch.Draw(tx[2], new Rectangle(width, 0, width, height), Color.White);
+            spriteBatch.Draw(tx[3], new Rectangle(width, height, width, height), Color.White);
+            spriteBatch.Draw(tx[4], new Rectangle(width * 2, 0, width, height), Color.White);
+            spriteBatch.Draw(tx[5], new Rectangle(width * 2, height, width, height), Color.White);
+            spriteBatch.Draw(tx[6], new Rectangle(width * 3, 0, width, height), Color.White);
+            spriteBatch.Draw(tx[7], new Rectangle(width * 3, height, width, height), Color.White);
 
-            spriteBatch.DrawString(gameFont, "// TODO: Insert Gameplay Here",
-                                   enemyPosition, Color.DarkRed);
+            */
+
+            #endregion
+
+            foreach (Enemy enemy in enemies)
+                enemy.Draw(spriteBatch);
+
+            player.Draw(spriteBatch);
 
             spriteBatch.End();
 

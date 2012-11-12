@@ -5,14 +5,18 @@ namespace Bearventure
     {
         public static bool SoundsEnabled
         {
-            get;
+            get
+            {
+                return soundsEnabled;
+            }
+
             set
             {
-                SoundsEnabled = value;
-                if (SoundsEnabled) SoundEffectManager.Instance.IndexSelect();
+                soundsEnabled = value;
+                if (soundsEnabled) SoundEffectManager.Instance.IndexSelect();
             }
         }
-
+        private static bool soundsEnabled;
         public static double DifficultyFactor
         {
             get;

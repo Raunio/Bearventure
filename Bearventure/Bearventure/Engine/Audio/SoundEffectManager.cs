@@ -6,7 +6,7 @@ namespace Bearventure
 {
     class SoundEffectManager
     {
-        private static SoundEffectManager instance;
+        private static SoundEffectManager instance = null;
 
         private SoundEffect menuSelect;
         private SoundEffect menuIndexChange;

@@ -5,7 +5,7 @@ namespace Bearventure
 {
     class MusicManager
     {
-        private static MusicManager instance;
+        private static MusicManager instance = null;
 
         private Song menuMusic;
         private Song level1Song;

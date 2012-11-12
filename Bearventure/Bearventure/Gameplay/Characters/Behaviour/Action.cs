@@ -7,31 +7,22 @@ namespace Bearventure
         /// <summary>
         /// Actions are defined by their ActionType. Actions can have multiple conditions under which they are executed. 
         /// </summary>
-        public enum ActionType
-        {
-            Default,
-            Chase,
-            Attack,
-            Flee,
-            Stop,
-        };
-
         private List<Condition> conditions;
 
-        public Action(ActionType type)
+        public Action(Constants.ActionType type)
         {
             this.Type = type;
             this.Primary = false;
 
             conditions = new List<Condition>();
         }
-        public Action(ActionType type, bool primary)
+        public Action(Constants.ActionType type, bool primary)
         {
             this.Type = type;
             this.Primary = primary;
         }
 
-        public ActionType Type
+        public Constants.ActionType Type
         {
             get;
             set;

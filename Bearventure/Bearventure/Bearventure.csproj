@@ -113,18 +113,22 @@
     <Compile Include="Engine\Audio\SoundEffectManager.cs" />
     <Compile Include="Engine\Globals.cs" />
     <Compile Include="Engine\ResolutionManager.cs" />
-    <Compile Include="Gameplay\Animation.cs" />
+    <Compile Include="Engine\XmlReader.cs" />
+    <Compile Include="Gameplay\Camera.cs" />
+    <Compile Include="Gameplay\CameraController.cs" />
+    <Compile Include="Gameplay\Characters\Animation.cs" />
     <Compile Include="Gameplay\Characters\Behaviour\Action.cs" />
     <Compile Include="Gameplay\Characters\Behaviour\Behaviour.cs" />
-    <Compile Include="Gameplay\Characters\CharacterPhysics.cs" />
+    <Compile Include="Gameplay\CharacterPhysics.cs" />
     <Compile Include="Gameplay\Characters\Behaviour\Condition.cs" />
     <Compile Include="Gameplay\Characters\Behaviour\StrategyPlanner.cs" />
     <Compile Include="Gameplay\Characters\Character.cs" />
     <Compile Include="Gameplay\Characters\CharacterSkill.cs" />
-    <Compile Include="Gameplay\Characters\CollisionHandler.cs" />
+    <Compile Include="Gameplay\CollisionHandler.cs" />
     <Compile Include="Gameplay\Characters\Enemy.cs" />
     <Compile Include="Gameplay\Characters\FlightHelper.cs" />
     <Compile Include="Gameplay\Characters\Player.cs" />
+    <Compile Include="Gameplay\Levels\LevelBackground.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\EntryPoint.cs" />
     <Compile Include="Core\BearventureImpl.cs" />
@@ -153,6 +157,10 @@
     <ProjectReference Include="..\BearventureContent\BearventureContent.contentproj">
       <Name>BearventureContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+    </ProjectReference>
+    <ProjectReference Include="E:\PROJECT_BEAR\XmlItems\XmlItems\XmlItems.csproj">
+      <Project>{DFD44B80-18DC-4131-86F3-24C8DD82C52D}</Project>
+      <Name>XmlItems</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

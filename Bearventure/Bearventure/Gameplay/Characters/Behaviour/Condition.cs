@@ -6,30 +6,13 @@ namespace Bearventure
     /// </summary>
     public class Condition
     {
-        public enum ConditionType
-        {
-            HealthLowerThan,
-            HealthEqualTo,
-            HealthHigherThan,
-            HealthOtherThan,
-            PlayerState,
-            VelocityLowerThan,
-            VelocityEqualTo,
-            VelocityHigherThan,
-            VelocityOtherThan,
-            DistanceToPlayerLowerThan,
-            DistanceToPlayerEqualTo,
-            DistanceToPlayerGreaterThan,
-            DistanceToPlayerOtherThan,
-        };
-
-        public Condition(ConditionType type, object value)
+        public Condition(Constants.ConditionType type, object value)
         {
             this.Type = type;
             this.Value = value;
         }
 
-        public ConditionType Type
+        public Constants.ConditionType Type
         {
             get;
             set;
@@ -50,43 +33,43 @@ namespace Bearventure
         {
             switch (Type)
             {
-                case ConditionType.DistanceToPlayerEqualTo:
+                case Constants.ConditionType.DistanceToPlayerEqualTo:
                     if (DistanceBetween((int)subject.position.X, (int)player.position.X) == (int)Value) { return true; }
                     break;
-                case ConditionType.DistanceToPlayerLowerThan:
+                case Constants.ConditionType.DistanceToPlayerLowerThan:
                     if (DistanceBetween((int)subject.position.X, (int)player.position.X) < (int)Value) { return true; }
                     break;
-                case ConditionType.DistanceToPlayerGreaterThan:
+                case Constants.ConditionType.DistanceToPlayerGreaterThan:
                     if (DistanceBetween((int)subject.position.X, (int)player.position.X) > (int)Value) { return true; }
                     break;
-                case ConditionType.DistanceToPlayerOtherThan:
+                case Constants.ConditionType.DistanceToPlayerOtherThan:
                     if (DistanceBetween((int)subject.position.X, (int)player.position.X) != (int)Value) { return true; }
                     break;
-                case ConditionType.HealthEqualTo:
+                case Constants.ConditionType.HealthEqualTo:
                     if (subject.health == (int)Value) { return true; }
                     break;
-                case ConditionType.HealthHigherThan:
+                case Constants.ConditionType.HealthHigherThan:
                     if (subject.health > (int)Value) { return true; }
                     break;
-                case ConditionType.HealthLowerThan:
+                case Constants.ConditionType.HealthLowerThan:
                     if (subject.health < (int)Value) { return true; }
                     break;
-                case ConditionType.HealthOtherThan:
+                case Constants.ConditionType.HealthOtherThan:
                     if (subject.health != (int)Value) { return true; }
                     break;
-                case ConditionType.PlayerState:
-                    if (player.state == (Character.State)Value) { return true; }
+                case Constants.ConditionType.PlayerState:
+                    if (player.state == (Constants.CharacterState)Value) { return true; }
                     break;
-                case ConditionType.VelocityEqualTo:
+                case Constants.ConditionType.VelocityEqualTo:
                     if (subject.velocity.X == (float)Value) { return true; }
                     break;
-                case ConditionType.VelocityHigherThan:
+                case Constants.ConditionType.VelocityHigherThan:
                     if (subject.velocity.X > (float)Value) { return true; }
                     break;
-                case ConditionType.VelocityLowerThan:
+                case Constants.ConditionType.VelocityLowerThan:
                     if (subject.velocity.X < (float)Value) { return true; }
                     break;
-                case ConditionType.VelocityOtherThan:
+                case Constants.ConditionType.VelocityOtherThan:
                     if (subject.velocity.X != (float)Value) { return true; }
                     break;
                 default:
