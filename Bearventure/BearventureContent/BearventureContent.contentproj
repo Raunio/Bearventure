@@ -170,12 +170,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="E:\PROJECT_BEAR\XmlItems\XmlItems\XmlItems.csproj">
-      <Project>{DFD44B80-18DC-4131-86F3-24C8DD82C52D}</Project>
-      <Name>XmlItems</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Sprites\bmbadger.png">
       <Name>bmbadger</Name>
       <Importer>TextureImporter</Importer>
@@ -293,6 +287,12 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="E:\PROJECT_BEAR\XmlItems\XmlItems\XmlItems.csproj">
+      <Project>{DFD44B80-18DC-4131-86F3-24C8DD82C52D}</Project>
+      <Name>XmlItems</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
