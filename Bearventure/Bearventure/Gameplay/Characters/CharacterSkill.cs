@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-
+﻿
 namespace Characters
 {
     public class CharacterSkill
     {
+        // TODO: Invent a more descriptive name
         private float cd_timer;
 
         public float Cooldown
