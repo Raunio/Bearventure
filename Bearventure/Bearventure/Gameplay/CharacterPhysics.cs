@@ -157,9 +157,9 @@ namespace Bearventure
             }
 
             else if (collision == Top && CollisionHandler.TerrainType == Constants.Solid)
-                subject.velocity.Y = -(subject.velocity.Y * 0.25f);
+                subject.velocity.Y = 0;
             else if ((collision == Left || collision == Right) && CollisionHandler.TerrainType == Constants.Solid)
-                subject.velocity.X = -(subject.velocity.X * 0.25f);
+                subject.velocity.X = 0;
             else if ((collision == Bottom + Left || collision == Bottom + Right) && CollisionHandler.TerrainType == Constants.Solid)
             {
                 subject.velocity.Y = 0;
@@ -167,13 +167,13 @@ namespace Bearventure
                 if (CollisionHandler.HeightDifference < 5)
                     subject.position.Y -= CollisionHandler.HeightDifference;
 
-                subject.velocity.X = -(subject.velocity.X * 0.25f);
+                subject.velocity.X = 0;
             }
 
             else if ((collision == Top + Left || collision == Top + Right) && CollisionHandler.TerrainType == Constants.Solid)
             {
-                subject.velocity.X = -(subject.velocity.X * 0.25f);
-                subject.velocity.Y = -(subject.velocity.Y * 0.25f);
+                subject.velocity.X = 0;
+                subject.velocity.Y = 0;
             }
         }
 

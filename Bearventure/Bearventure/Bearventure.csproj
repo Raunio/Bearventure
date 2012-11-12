@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
+    <Content Include="XmlItems.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BearventureContent\BearventureContent.contentproj">
