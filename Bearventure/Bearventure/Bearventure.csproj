@@ -106,6 +106,10 @@
     <Reference Include="System.Net">
       <Private>False</Private>
     </Reference>
+    <Reference Include="XmlItems, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\XmlItems.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
@@ -152,15 +156,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
+    <Content Include="XmlItems.dll" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BearventureContent\BearventureContent.contentproj">
       <Name>BearventureContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
-    </ProjectReference>
-    <ProjectReference Include="E:\PROJECT_BEAR\XmlItems\XmlItems\XmlItems.csproj">
-      <Project>{DFD44B80-18DC-4131-86F3-24C8DD82C52D}</Project>
-      <Name>XmlItems</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

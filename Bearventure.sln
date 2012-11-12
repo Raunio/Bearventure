@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bearventure", "Bearventure\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BearventureContent", "Bearventure\BearventureContent\BearventureContent.contentproj", "{BD88D060-4FFA-4D75-8AAC-5815FF5C4191}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XmlItems", "E:\PROJECT_BEAR\XmlItems\XmlItems\XmlItems.csproj", "{DFD44B80-18DC-4131-86F3-24C8DD82C52D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -19,10 +17,6 @@ Global
 		{CD6E78A0-BBDB-49C4-A2D1-E816B1D22F69}.Release|x86.Build.0 = Release|x86
 		{BD88D060-4FFA-4D75-8AAC-5815FF5C4191}.Debug|x86.ActiveCfg = Debug|x86
 		{BD88D060-4FFA-4D75-8AAC-5815FF5C4191}.Release|x86.ActiveCfg = Release|x86
-		{DFD44B80-18DC-4131-86F3-24C8DD82C52D}.Debug|x86.ActiveCfg = Debug|x86
-		{DFD44B80-18DC-4131-86F3-24C8DD82C52D}.Debug|x86.Build.0 = Debug|x86
-		{DFD44B80-18DC-4131-86F3-24C8DD82C52D}.Release|x86.ActiveCfg = Release|x86
-		{DFD44B80-18DC-4131-86F3-24C8DD82C52D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
