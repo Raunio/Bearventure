@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+using Microsoft.Xna.Framework;
 
 namespace Bearventure
 {
@@ -77,14 +78,25 @@ namespace Bearventure
             switch (behaviourType)
             {
                 case Constants.BehaviourType.FixedPatrol:
-                    if (strategyPlanner.CurrentAction() == Constants.ActionType.Default)
-                        UpdateFixedPatrol(gameTime);
-                    else if (strategyPlanner.CurrentAction() == Constants.ActionType.Chase)
-                        GoTo((int)target.position.X);
-                    else if (strategyPlanner.CurrentAction() == Constants.ActionType.Attack)
-                        SetState(Constants.CharacterState.Attacking);
-                    else if (strategyPlanner.CurrentAction() == Constants.ActionType.Stop)
-                        SetState(Constants.CharacterState.Stopped);
+
+                    switch (strategyPlanner.CurrentAction())
+                    {
+                        case Constants.ActionType.Default:
+                            UpdateFixedPatrol(gameTime);
+                            break;
+                        case Constants.ActionType.Chase:
+                            GoTo((int)target.position.X);
+                            break;
+                        case Constants.ActionType.Attack:
+                            SetState(Constants.CharacterState.Attacking);
+                            break;
+                        case Constants.ActionType.Stop:
+                            SetState(Constants.CharacterState.Stopped);
+                            break;
+                    }
+                    break;
+                default:
+                    Debug.Assert(true, "Behaviour class Apply method switch case behaviour type default");
                     break;
             }
         }
