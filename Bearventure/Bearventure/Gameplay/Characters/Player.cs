@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Bearventure
@@ -34,13 +30,15 @@ namespace Bearventure
             walkSpeed = 10f;
             jumpStrenght = 18;
 
-            BoundingBox_Offset = 15;
+            BoundingBoxOffset = 15;
         }
 
         public override void Update(GameTime gameTime)
-        { 
+        {
             currentAnimation.Animate(gameTime);
             CharacterPhysics.Apply(this, gameTime);
+
+            // TODO: This can be done more smartly. See MenuScreen.cs
 
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
@@ -63,7 +61,7 @@ namespace Bearventure
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
                 state = Constants.CharacterState.Jumping;
 
-            
+
 
             HandleAnimations();
         }
