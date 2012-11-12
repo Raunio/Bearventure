@@ -12,7 +12,7 @@ namespace Bearventure
         public List<Action> actionQueue;
         private Enemy subject;
         private Character player;
-        private List<Action> preDetermined_actions;
+        private List<Action> preDeterminedActions;
 
         #region testing
         Action chase;
@@ -29,23 +29,23 @@ namespace Bearventure
             chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.Vision));
             chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, subject.AttackRange));
 
-            preDetermined_actions.Add(chase);
+            preDeterminedActions.Add(chase);
 
             stop = new Action(Constants.ActionType.Stop);
             stop.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.AttackRange));
             stop.AddCondition(new Condition(Constants.ConditionType.VelocityOtherThan, 0f));
 
-            preDetermined_actions.Add(stop);
+            preDeterminedActions.Add(stop);
 
             defaultAction = new Action(Constants.ActionType.Default);
             defaultAction.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, subject.Vision));
 
-            preDetermined_actions.Add(defaultAction);
+            preDeterminedActions.Add(defaultAction);
 
             attack = new Action(Constants.ActionType.Attack);
             attack.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.AttackRange));
 
-            preDetermined_actions.Add(attack);
+            preDeterminedActions.Add(attack);
         }
 
         public StrategyPlanner(Enemy subject, Character player)
@@ -54,7 +54,7 @@ namespace Bearventure
             this.player = player;
 
             actionQueue = new List<Action>();
-            preDetermined_actions = new List<Action>();
+            preDeterminedActions = new List<Action>();
 
             #region testing
             InitActions();
@@ -65,7 +65,7 @@ namespace Bearventure
         {
             #region testing
 
-            foreach (Action a in preDetermined_actions)
+            foreach (Action a in preDeterminedActions)
             {
                 if (a.ConditionsFulfilled(subject, player))
                 {
