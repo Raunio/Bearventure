@@ -59,7 +59,7 @@ namespace Bearventure
         /// <summary>
         /// Character maximun health.
         /// </summary>
-        public int max_health;
+        public int maxHealth;
         /// <summary>
         /// Character jump strenght.
         /// </summary>
@@ -67,9 +67,9 @@ namespace Bearventure
         /// <summary>
         /// Character health regeneration per five seconds.
         /// </summary>
-        public int health_regen;
-        private float regen_timer;
-        protected int BoundingBox_Offset;
+        public int healthRegen;
+        private float regenTimer;
+        protected int BoundingBoxOffset;
         /// <summary>
         /// Character orientation. Air or Ground.
         /// </summary>
@@ -106,10 +106,10 @@ namespace Bearventure
         {
             get
             {
-                int x = (int)(position.X - (currentAnimation.Origin.X * scale)) + BoundingBox_Offset;
-                int y = (int)(position.Y - (currentAnimation.Origin.Y * scale)) + BoundingBox_Offset;
-                int width = (int)(currentAnimation.FrameWidth * scale) - BoundingBox_Offset * 2;
-                int height = (int)(currentAnimation.FrameHeight * scale) - BoundingBox_Offset;
+                int x = (int)(position.X - (currentAnimation.Origin.X * scale)) + BoundingBoxOffset;
+                int y = (int)(position.Y - (currentAnimation.Origin.Y * scale)) + BoundingBoxOffset;
+                int width = (int)(currentAnimation.FrameWidth * scale) - BoundingBoxOffset * 2;
+                int height = (int)(currentAnimation.FrameHeight * scale) - BoundingBoxOffset;
 
                 return new Rectangle(x, y, width, height);
             }
@@ -128,15 +128,15 @@ namespace Bearventure
 
         public void RegenerateHealth(GameTime gameTime)
         {
-            regen_timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            regenTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (regen_timer >= 5f && health < max_health)
+            if (regenTimer >= 5f && health < maxHealth)
             {
-                health += health_regen;
-                regen_timer = 0;
+                health += healthRegen;
+                regenTimer = 0;
 
-                if (health > max_health)
-                    health = max_health;
+                if (health > maxHealth)
+                    health = maxHealth;
             }
         }
 
