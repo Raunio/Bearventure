@@ -12,6 +12,7 @@ namespace Bearventure
         #region SoundEffects
         public const String MenuSelectedIndexChange = "SoundEffects/IndexChange";
         public const String MenuIndexSelected = "SoundEffects/IndexSelect";
+        public const String Attack = "SoundEffects/testiOh";
         #endregion
         #region Music
         public const String Level1Music = "Music/Level1";
@@ -95,6 +96,7 @@ namespace Bearventure
             Attack,
             Flee,
             Stop,
+            UseSkill,
         };
         public enum ConditionType
         {

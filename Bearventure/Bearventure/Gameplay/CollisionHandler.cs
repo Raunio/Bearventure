@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Characters;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 
@@ -10,14 +9,16 @@ namespace Bearventure
 {
     public class CollisionHandler
     {
+        #region Members
         public static Texture2D[] mapText;
         private static Color[] mapData1D;
         private static List<Color[,]> mapData2D = new List<Color[,]>();
         private static int zone_width;
         private static int zone_height;
-
+        #endregion
+        #region Initialization
         /// <summary>
-        /// Initialize CollisionHandler by passing it the collision map.
+        /// Initialize CollisionHandler by passing it the collision map. An individual image fraction is then refered to as a zone.
         /// </summary>
         /// <param name="mapCollisionTextures"></param>
         public static void Initialize(Texture2D[] mapCollisionTextures)
@@ -41,6 +42,12 @@ namespace Bearventure
             zone_width /= mapText.Length;
             
         }
+        #endregion
+        /// <summary>
+        /// Calculates the zones in which the passed rectangle is currently on.
+        /// </summary>
+        /// <param name="rectangle"></param>
+        /// <returns>The list of zones.</returns>
         private static List<int> OnZones(Rectangle rectangle)
         {
             List<int> on_zones = new List<int>();
@@ -91,13 +98,11 @@ namespace Bearventure
 
             return on_zones;
         }
-
-        public static int Zone
-        {
-            get;
-            private set;
-        }
-
+        /// <summary>
+        /// Adjusts a rectangles bounds so that they do not exceed the bounds of an individual zone.
+        /// </summary>
+        /// <param name="rectangle"></param>
+        /// <returns></returns>
         private static Rectangle Adjust(Rectangle rectangle)
         {
             int X = rectangle.X;
@@ -131,10 +136,12 @@ namespace Bearventure
         }
 
         /// <summary>
-        /// Returns Left, Right, Top, Bottom of the subjects BoundingBox if a collision happens.
+        /// Returns Left, Right, Top, Bottom of the subjects BoundingBox if a collision happens. The method creates 2 rectangles 
+        /// (CollisionRectangleY, CollisionRectangleX) which are positioned in relation to the characters BoundingBox and velocity.
+        /// The rectangles are then scanned for colors other than Transparent. The color then is passed to TerrainType.
         /// </summary>
-        /// <param name="subject"></param>
-        /// <param name="movement"></param>
+        /// <param name="subject">The character we are checking for collisions</param>
+        /// <param name="movement">The velocity of the character.</param>
         /// <returns></returns>
         public static int CollisionOccursWithMap(Character subject, Vector2 movement)
         {
@@ -246,7 +253,12 @@ namespace Bearventure
 
             return collision_x + collision_y;
         }
-
+        /// <summary>
+        /// A rectangle which is positioned in relation to the characters BoundingBox and velocity.Y
+        /// </summary>
+        /// <param name="subject">The character</param>
+        /// <param name="movement">Characters y-scale movement</param>
+        /// <returns></returns>
         private static Rectangle CollisionAreaRectangleY(Character subject, float movement)
         {
             
@@ -255,7 +267,12 @@ namespace Bearventure
             else
                 return new Rectangle(subject.BoundingBox.X, subject.BoundingBox.Bottom + (int)movement, subject.BoundingBox.Width, 1);
         }
-
+        /// <summary>
+        /// A rectangle which is positioned in relation to the characters BoundingBox and velocity.X
+        /// </summary>
+        /// <param name="subject">The character</param>
+        /// <param name="movement">Characters x-scale movement</param>
+        /// <returns></returns>
         private static Rectangle CollisionAreaRectangleX(Character subject, float movement)
         {
             if (movement < 0)
@@ -273,20 +290,18 @@ namespace Bearventure
 
             return colors2D;
         }
-
+        /// <summary>
+        /// Returns the color of the terrain on which the last calculated subject is on.
+        /// </summary>
         public static Color TerrainType
         {
             get;
             private set;
         }
-
+        /// <summary>
+        /// Returns the "angle" of the slope the last calculated subject is on.
+        /// </summary>
         public static int HeightDifference
-        {
-            get;
-            private set;
-        }
-
-        public static int DistanceToObstacle
         {
             get;
             private set;

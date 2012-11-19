@@ -91,6 +91,10 @@
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
+    <Reference Include="ProjectMercury, Version=3.1.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\ProjectMercury.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
@@ -115,6 +119,9 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Engine\Audio\MusicManager.cs" />
     <Compile Include="Engine\Audio\SoundEffectManager.cs" />
+    <Compile Include="Engine\Effects\VisualEffect.cs" />
+    <Compile Include="Engine\Effects\VisualEffectManager.cs" />
+    <Compile Include="Engine\Effects\VisualEffects.cs" />
     <Compile Include="Engine\Globals.cs" />
     <Compile Include="Engine\ResolutionManager.cs" />
     <Compile Include="Engine\XmlReader.cs" />
@@ -128,6 +135,7 @@
     <Compile Include="Gameplay\Characters\Behaviour\StrategyPlanner.cs" />
     <Compile Include="Gameplay\Characters\Character.cs" />
     <Compile Include="Gameplay\Characters\CharacterSkill.cs" />
+    <Compile Include="Gameplay\Characters\EnemySkill.cs" />
     <Compile Include="Gameplay\CollisionHandler.cs" />
     <Compile Include="Gameplay\Characters\Enemy.cs" />
     <Compile Include="Gameplay\Characters\FlightHelper.cs" />
@@ -156,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
+    <Content Include="ProjectMercury.dll" />
     <Content Include="XmlItems.dll" />
   </ItemGroup>
   <ItemGroup>
@@ -192,7 +201,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Engine\Effects\" />
     <Folder Include="Gameplay\Characters\Behaviour\Bosses\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -1,15 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Bearventure.Engine.Effects;
+using Bearventure.Gameplay.Characters;
+using System.Collections.Generic;
 
 namespace Bearventure
 {
     public class Enemy : Character
     {
         #region Members
-
+        private Character player;
         private Constants.EnemyType type;
         private float attackTimer = 0;
-
+        #region TESTING
+        public List<EnemySkill> Skills;
+        #endregion
         #region Animations
         public Animation WalkLeft
         {
@@ -80,7 +85,7 @@ namespace Bearventure
             InitAnimations();
             InitStats();
             InitBehavirour(player, 0, 0);
-
+            this.player = player;
             attackTimer = attackSpeed;
         }
 
@@ -89,10 +94,11 @@ namespace Bearventure
             this.type = type;
             this.position = new Vector2(x, y);
             this.spriteSheet = spriteSheet;
-
+            this.player = player;
             InitAnimations();
             InitStats();
             InitBehavirour(player, patrol_A, patrol_B);
+            InitSkills();
 
             attackTimer = attackSpeed;
         }
@@ -236,16 +242,44 @@ namespace Bearventure
             }
         }
 
+        private void InitSkills()
+        {
+            switch (type)
+            {
+                case Constants.EnemyType.BlackMetalBadger:
+                    #region TESTING
+                    EnemySkill testSkill = new EnemySkill(this, new Animation(spriteSheet, 0, 93, 103, 0, 15, 20, false, false), 8000, 2);
+                    testSkill.Acceleration = 0.25f;
+                    testSkill.StartVelocity = new Vector2(15, -15);
+                    testSkill.UltimateVelocityX = 0;
+                    testSkill.AddEffect(VisualEffects.Test, Vector2.Zero);
+                    testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
+
+                    EnemySkill testAttack = new EnemySkill(this, new Animation(spriteSheet, 0, 93, 103, 1, 4, 80, false, false), 900, 2);
+                    testAttack.StartVelocity = new Vector2(0, -8);
+                    testAttack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
+
+                    Skills = new List<EnemySkill>();
+                    Skills.Add(testSkill);
+                    Skills.Add(testAttack);
+                    #endregion
+                    break;
+            }
+        }
+
         private void HandleAttacking(GameTime gameTime)
         {
-            attackTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-
-            if (currentAnimation == Attacking)
+            foreach (EnemySkill s in Skills)
             {
-                if (currentAnimation.HasFinished)
-                    attackTimer = 0;
+                foreach (Condition c in s.Conditions)
+                    if (c.Fulfilled(this, player) && s.IsReady)
+                    {
+                        UseSkill(s);
+                        SoundEffectManager.Instance.BadgerAttack();
+                        return;
+                    }
+                s.Update(gameTime);
             }
-            
         }
 
         /// <summary>

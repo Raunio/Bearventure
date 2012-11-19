@@ -81,6 +81,12 @@ namespace Bearventure
         }
         private static void Walk(Character subject)
         {
+            if (subject.velocity.Y > Gravity)
+            {
+                subject.state = Constants.CharacterState.Falling;
+                return;
+            }
+
             if (subject.direction == Constants.Direction.Right)
             {
                 if (subject.velocity.X < subject.walkSpeed)
@@ -101,6 +107,12 @@ namespace Bearventure
         }
         private static void Run(Character subject)
         {
+            if (subject.velocity.Y > Gravity)
+            {
+                subject.state = Constants.CharacterState.Falling;
+                return;
+            }
+
             if (subject.direction == Constants.Direction.Right)
             {
                 if (subject.velocity.X < subject.runSpeed)
@@ -136,10 +148,32 @@ namespace Bearventure
                     subject.state = Constants.CharacterState.Falling;
                 }
             }
+
+            if (subject.direction == Constants.Direction.Right)
+            {
+                if (subject.velocity.X < subject.walkSpeed / 2)
+                    subject.velocity.X += subject.acceleration;
+
+            }
+            else if (subject.direction == Constants.Direction.Left)
+            {
+                if (subject.velocity.X > -subject.walkSpeed / 2)
+                    subject.velocity.X -= subject.acceleration;
+            }
         }
         private static void Fall(Character subject)
         {
+            if (subject.direction == Constants.Direction.Right)
+            {
+                if (subject.velocity.X < subject.walkSpeed / 2)
+                    subject.velocity.X += subject.acceleration;
 
+            }
+            else if (subject.direction == Constants.Direction.Left)
+            {
+                if (subject.velocity.X > -subject.walkSpeed / 2)
+                    subject.velocity.X -= subject.acceleration;
+            }
         }
 
         private static void HandleCollisions(Character subject)
@@ -175,6 +209,28 @@ namespace Bearventure
                 subject.velocity.X = 0;
                 subject.velocity.Y = 0;
             }
+        }
+
+        public static Color OnTerrain(Character subject)
+        {
+            int collision = CollisionHandler.CollisionOccursWithMap(subject, subject.velocity);
+
+            return CollisionHandler.TerrainType;
+
+        }
+
+        public static bool OnGround(Character subject)
+        {
+            int collision = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(subject.velocity.X, subject.velocity.Y + 1));
+
+            if (collision == subject.BoundingBox.Bottom ||
+                collision == subject.BoundingBox.Bottom + subject.BoundingBox.Right ||
+                collision == subject.BoundingBox.Bottom + subject.BoundingBox.Left)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         #endregion

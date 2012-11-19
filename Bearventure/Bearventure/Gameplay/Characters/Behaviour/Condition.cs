@@ -34,16 +34,16 @@ namespace Bearventure
             switch (Type)
             {
                 case Constants.ConditionType.DistanceToPlayerEqualTo:
-                    if (DistanceBetween((int)subject.position.X, (int)player.position.X) == (int)Value) { return true; }
+                    if (DistanceBetween((int)subject.position.X, (int)player.position.X) == (int)Value && DistanceBetween((int)subject.position.Y, (int)player.position.Y) < subject.BoundingBox.Height) { return true; }
                     break;
                 case Constants.ConditionType.DistanceToPlayerLowerThan:
-                    if (DistanceBetween((int)subject.position.X, (int)player.position.X) < (int)Value) { return true; }
+                    if (DistanceBetween((int)subject.position.X, (int)player.position.X) < (int)Value && DistanceBetween((int)subject.position.Y, (int)player.position.Y) < subject.BoundingBox.Height) { return true; }
                     break;
                 case Constants.ConditionType.DistanceToPlayerGreaterThan:
-                    if (DistanceBetween((int)subject.position.X, (int)player.position.X) > (int)Value) { return true; }
+                    if (DistanceBetween((int)subject.position.X, (int)player.position.X) > (int)Value && DistanceBetween((int)subject.position.Y, (int)player.position.Y) < subject.BoundingBox.Height) { return true; }
                     break;
                 case Constants.ConditionType.DistanceToPlayerOtherThan:
-                    if (DistanceBetween((int)subject.position.X, (int)player.position.X) != (int)Value) { return true; }
+                    if (DistanceBetween((int)subject.position.X, (int)player.position.X) != (int)Value && DistanceBetween((int)subject.position.Y, (int)player.position.Y) < subject.BoundingBox.Height) { return true; }
                     break;
                 case Constants.ConditionType.HealthEqualTo:
                     if (subject.health == (int)Value) { return true; }

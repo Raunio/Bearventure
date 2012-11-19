@@ -18,6 +18,8 @@ using System.Collections.Generic;
 using Bearventure.Gameplay.Levels;
 using XmlItems;
 using Bearventure.Gameplay;
+using Bearventure.Engine;
+using Bearventure.Engine.Effects;
 
 #endregion
 
@@ -100,7 +102,8 @@ namespace Bearventure
                 camera = new Camera(ScreenManager.GraphicsDevice.Viewport, new Vector2(background.Width, background.Height));
                 
                 MusicManager.Instance.PlayLevel1Music();
-
+                VisualEffects.Load(content, ResolutionManager.graphicsDevice);
+                VisualEffectManager.Instance.InitializeTerrainEffects(player, enemies);
                 // once the load has finished, we use ResetElapsedTime to tell the game's
                 // timing mechanism that we have just finished a very long frame, and that
                 // it should not try to catch up.
@@ -171,6 +174,7 @@ namespace Bearventure
                 player.Update(gameTime);
                 cameraController.Update(gameTime);
                 camera.LookAt(cameraController.Position);
+                VisualEffectManager.Instance.UpdateEffects(gameTime);
             }
 
             
@@ -231,27 +235,10 @@ namespace Bearventure
 
             background.Draw(spriteBatch);
 
-            #region temporary testing
-
-            /*Texture2D[] tx = CollisionHandler.mapText;
-            int width = tx[0].Width;
-            int height = tx[0].Height;
-
-            spriteBatch.Draw(tx[0], new Rectangle(0, 0, width, height), Color.White);
-            spriteBatch.Draw(tx[1], new Rectangle(0, height, width, height), Color.White);
-            spriteBatch.Draw(tx[2], new Rectangle(width, 0, width, height), Color.White);
-            spriteBatch.Draw(tx[3], new Rectangle(width, height, width, height), Color.White);
-            spriteBatch.Draw(tx[4], new Rectangle(width * 2, 0, width, height), Color.White);
-            spriteBatch.Draw(tx[5], new Rectangle(width * 2, height, width, height), Color.White);
-            spriteBatch.Draw(tx[6], new Rectangle(width * 3, 0, width, height), Color.White);
-            spriteBatch.Draw(tx[7], new Rectangle(width * 3, height, width, height), Color.White);
-
-            */
-
-            #endregion
-
             foreach (Enemy enemy in enemies)
                 enemy.Draw(spriteBatch);
+
+            VisualEffectManager.Instance.DrawEffects(spriteBatch);
 
             player.Draw(spriteBatch);
 

@@ -10,6 +10,7 @@ namespace Bearventure
 
         private SoundEffect menuSelect;
         private SoundEffect menuIndexChange;
+        private SoundEffect badgerAttack;
 
         private SoundEffectManager() { }
 
@@ -17,13 +18,20 @@ namespace Bearventure
 
         public static SoundEffectManager Instance
         {
-            get { return instance == null ? new SoundEffectManager() : instance; }
+            get
+            {
+                if (instance == null)
+                    instance = new SoundEffectManager();
+
+                return instance;
+            }
         }
 
         public void LoadContent(ContentManager content)
         {
             menuIndexChange = content.Load<SoundEffect>(Constants.MenuSelectedIndexChange);
             menuSelect = content.Load<SoundEffect>(Constants.MenuIndexSelected);
+            badgerAttack = content.Load<SoundEffect>(Constants.Attack);
             Console.WriteLine("SoundEffects loaded.");
         }
 
@@ -35,6 +43,11 @@ namespace Bearventure
         public void IndexSelect()
         {
             if (Globals.SoundsEnabled) menuSelect.Play();
+        }
+
+        public void BadgerAttack()
+        {
+            if (Globals.SoundsEnabled) badgerAttack.Play();
         }
 
     }

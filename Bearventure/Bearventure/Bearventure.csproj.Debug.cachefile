@@ -39,6 +39,11 @@ Content\Music\Splash.xnb
 Content\Levels\Testilevel\TestilevelLevelInfo.xnb
 Content\Levels\Testilevel\Items\Testilevel_StartPoint.xnb
 Content\Levels\Testilevel\Items\Testilevel_Enemies.xnb
+Content\VisualEffects\Cloud001.xnb
+Content\VisualEffects\Dust.xnb
+Content\VisualEffects\testi123.xnb
+Content\VisualEffects\FlowerBurst.xnb
+Content\SoundEffects\testiOh.xnb
 Content\Music\Intro.wma
 Content\Music\Level1.wma
 Content\Music\Splash.wma

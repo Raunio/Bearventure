@@ -192,7 +192,8 @@ namespace Bearventure
 
         private void SetState(Constants.CharacterState newState)
         {
-            subject.state = newState;
+            if(subject.state != Constants.CharacterState.UsingSkill && subject.state != Constants.CharacterState.Disabled)
+                subject.state = newState;
         }
 
         #endregion

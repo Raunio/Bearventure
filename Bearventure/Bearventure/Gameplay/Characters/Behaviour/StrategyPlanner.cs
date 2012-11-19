@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Bearventure.Gameplay.Characters;
 
 namespace Bearventure
 {
@@ -46,6 +47,7 @@ namespace Bearventure
             attack.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.AttackRange));
 
             preDeterminedActions.Add(attack);
+
         }
 
         public StrategyPlanner(Enemy subject, Character player)
@@ -56,15 +58,11 @@ namespace Bearventure
             actionQueue = new List<Action>();
             preDeterminedActions = new List<Action>();
 
-            #region testing
             InitActions();
-            #endregion
         }
 
         public void Plan()
         {
-            #region testing
-
             foreach (Action a in preDeterminedActions)
             {
                 if (a.ConditionsFulfilled(subject, player))
@@ -74,8 +72,6 @@ namespace Bearventure
             }
 
             CleanActions();
-
-            #endregion
         }
         /// <summary>
         /// Used to add actions to queue. The method checks for duplicate actions and prevents them from being put to queue.

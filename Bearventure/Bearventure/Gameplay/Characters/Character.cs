@@ -91,10 +91,7 @@ namespace Bearventure
                 return td;
             }
         }
-        /// <summary>
-        /// Object that calculates collisions
-        /// </summary>
-        public CollisionHandler collisionHandler;
+        protected CharacterSkill activeSkill;
 
         #endregion
 
@@ -137,6 +134,16 @@ namespace Bearventure
 
                 if (health > maxHealth)
                     health = maxHealth;
+            }
+        }
+
+        public void UseSkill(CharacterSkill skill)
+        {
+            if (skill.IsReady)
+            {
+                state = Constants.CharacterState.UsingSkill;
+                skill.Activate();
+                activeSkill = skill;
             }
         }
 
