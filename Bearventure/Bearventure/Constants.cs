@@ -12,7 +12,11 @@ namespace Bearventure
         #region SoundEffects
         public const String MenuSelectedIndexChange = "SoundEffects/IndexChange";
         public const String MenuIndexSelected = "SoundEffects/IndexSelect";
-        public const String Attack = "SoundEffects/testiOh";
+        public const String BadgerAttack = "SoundEffects/testiOh";
+        public const String BadgerSkill = "SoundEffects/bmbadger";
+        public const String KarhuHit1 = "SoundEffects/hit1";
+        public const String KarhuHit2 = "SoundEffects/hit2";
+        public const String KarhuHit3 = "SoundEffects/hit3";
         #endregion
         #region Music
         public const String Level1Music = "Music/Level1";

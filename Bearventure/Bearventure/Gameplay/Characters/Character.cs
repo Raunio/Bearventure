@@ -1,7 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Bearventure.Gameplay.Characters.Skills;
 
-namespace Bearventure
+namespace Bearventure.Gameplay.Characters
 {
     public abstract class Character
     {
@@ -91,8 +92,14 @@ namespace Bearventure
                 return td;
             }
         }
-        protected CharacterSkill activeSkill;
-
+        /// <summary>
+        /// Gets the currently active skill of the character.
+        /// </summary>
+        public CharacterSkill ActiveSkill
+        {
+            get;
+            protected set;
+        }
         #endregion
 
         #region Methods
@@ -123,7 +130,7 @@ namespace Bearventure
 
         public abstract void Update(GameTime gameTime);
 
-        public void RegenerateHealth(GameTime gameTime)
+        protected void RegenerateHealth(GameTime gameTime)
         {
             regenTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -137,14 +144,26 @@ namespace Bearventure
             }
         }
 
+        public void TakeDamage(int damage)
+        {
+            health -= damage;
+        }
+
         public void UseSkill(CharacterSkill skill)
         {
-            if (skill.IsReady)
+            if (skill.IsReady && !skill.IsActive)
             {
                 state = Constants.CharacterState.UsingSkill;
                 skill.Activate();
-                activeSkill = skill;
+                ActiveSkill = skill;
             }
+        }
+
+        protected void CleanActiveSkill()
+        {
+            if(ActiveSkill != null)
+                if (!ActiveSkill.IsActive)
+                    ActiveSkill = null;
         }
 
         #endregion

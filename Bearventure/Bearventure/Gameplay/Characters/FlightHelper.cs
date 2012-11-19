@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace Bearventure
+namespace Bearventure.Gameplay.Characters
 {
     public static class FlightHelper
     {

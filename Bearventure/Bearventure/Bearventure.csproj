@@ -134,8 +134,10 @@
     <Compile Include="Gameplay\Characters\Behaviour\Condition.cs" />
     <Compile Include="Gameplay\Characters\Behaviour\StrategyPlanner.cs" />
     <Compile Include="Gameplay\Characters\Character.cs" />
-    <Compile Include="Gameplay\Characters\CharacterSkill.cs" />
-    <Compile Include="Gameplay\Characters\EnemySkill.cs" />
+    <Compile Include="Gameplay\Characters\Skills\CharacterSkill.cs" />
+    <Compile Include="Gameplay\Characters\Skills\CharacterSkillCombo.cs" />
+    <Compile Include="Gameplay\Characters\Skills\CombatManager.cs" />
+    <Compile Include="Gameplay\Characters\Skills\EnemySkill.cs" />
     <Compile Include="Gameplay\CollisionHandler.cs" />
     <Compile Include="Gameplay\Characters\Enemy.cs" />
     <Compile Include="Gameplay\Characters\FlightHelper.cs" />

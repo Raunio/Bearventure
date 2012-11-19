@@ -1,4 +1,5 @@
 ﻿
+using Bearventure.Gameplay.Characters;
 namespace Bearventure
 {
     /// <summary>

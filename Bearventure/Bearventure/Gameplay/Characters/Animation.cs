@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
-namespace Bearventure
+namespace Bearventure.Gameplay.Characters
 {
     public class Animation
     {

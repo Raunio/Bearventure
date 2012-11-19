@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Bearventure.Gameplay.Characters;
 
 namespace Bearventure
 {

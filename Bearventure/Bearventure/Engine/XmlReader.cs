@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using XmlItems;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Bearventure.Gameplay.Characters;
 
 namespace Bearventure
 {

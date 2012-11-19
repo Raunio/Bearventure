@@ -20,6 +20,7 @@ using XmlItems;
 using Bearventure.Gameplay;
 using Bearventure.Engine;
 using Bearventure.Engine.Effects;
+using Bearventure.Gameplay.Characters;
 
 #endregion
 
@@ -241,7 +242,8 @@ namespace Bearventure
             VisualEffectManager.Instance.DrawEffects(spriteBatch);
 
             player.Draw(spriteBatch);
-
+            //if(player.ActiveSkill != null)
+                //player.ActiveSkill.DrawHitBox(spriteBatch, content.Load<Texture2D>("Sprites/player"));
             spriteBatch.End();
 
             // If the game is transitioning on or off, fade it out to black.

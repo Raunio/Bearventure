@@ -2,8 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Bearventure.Engine.Effects;
+using Bearventure.Gameplay.Characters.Skills;
+using System.Collections.Generic;
 
-namespace Bearventure
+namespace Bearventure.Gameplay.Characters
 {
     public class Player : Character
     {
@@ -12,7 +14,7 @@ namespace Bearventure
         Animation walkRight;
         Animation walkLeft;
 
-        CharacterSkill testSkill;
+        CharacterSkillCombo combo1 = new CharacterSkillCombo();
 
         public Player(Texture2D spriteSheet)
         {
@@ -33,11 +35,59 @@ namespace Bearventure
 
             BoundingBoxOffset = 15;
 
-            testSkill = new CharacterSkill(this, new Animation(spriteSheet, 0, 88, 121, 0, 21, 20, false, false), 4000, 2);
-            testSkill.Acceleration = 0.25f;
-            testSkill.StartVelocity = new Vector2(15, -15);
-            testSkill.UltimateVelocityX = 0;
-            testSkill.AddEffect(VisualEffects.Test, Vector2.Zero);
+            CharacterSkill skill1 = new CharacterSkill(this, new Animation(spriteSheet, 0, 88, 121, 10, 12, 70, false, false), 200, 2);
+            skill1.SoundEffectAsset = Constants.KarhuHit1;
+            skill1.Acceleration = 0.25f;
+            skill1.StartVelocity = new Vector2(-9, -5);
+            skill1.UltimateVelocityX = 0;
+            skill1.DamagingFrames = new List<int>
+            {
+                11,
+                12,
+            };
+            skill1.HitBoxPositions[0] = new Vector2(50, 50);
+            skill1.HitBoxPositions[1] = new Vector2(50, 50);
+            skill1.HitBoxHeight = 100;
+            skill1.HitBoxWidth = 200;
+
+            CharacterSkill skill2 = new CharacterSkill(this, new Animation(spriteSheet, 0, 88, 121, 6, 8, 70, false, false), 200, 2);
+            skill2.SoundEffectAsset = Constants.KarhuHit2;
+            skill2.Acceleration = 0.25f;
+            skill2.StartVelocity = new Vector2(9, -1);
+            skill2.UltimateVelocityX = 0;
+            skill2.DamagingFrames = new List<int>
+            {
+                11,
+                12,
+            };
+            skill2.HitBoxPositions[0] = new Vector2(50, 50);
+            skill2.HitBoxPositions[1] = new Vector2(50, 50);
+            skill2.HitBoxHeight = 100;
+            skill2.HitBoxWidth = 200;
+
+            CharacterSkill skill3 = new CharacterSkill(this, new Animation(spriteSheet, 0, 88, 121, 12, 14, 70, false, false), 200, 2);
+            skill3.SoundEffectAsset = Constants.KarhuHit3;
+            skill3.Acceleration = 0.25f;
+            skill3.StartVelocity = new Vector2(0, -12);
+            skill3.UltimateVelocityX = 0;
+            skill3.DamagingFrames = new List<int>
+            {
+                11,
+                12,
+            };
+            skill3.HitBoxPositions[0] = new Vector2(50, 50);
+            skill3.HitBoxPositions[1] = new Vector2(50, 50);
+            skill3.HitBoxHeight = 100;
+            skill3.HitBoxWidth = 200;
+
+            combo1.SkillArray = new List<CharacterSkill>
+            {
+                skill1,
+                skill2,
+                skill3,
+            };
+
+            combo1.ResetTime = 500;
         }
 
         public override void Update(GameTime gameTime)
@@ -68,14 +118,19 @@ namespace Bearventure
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
                 SetState(Constants.CharacterState.Jumping);
 
-            if (Keyboard.GetState().IsKeyDown(Keys.LeftControl))
-                UseSkill(testSkill);
+            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            {
+                combo1.SetNextSkill();
+                UseSkill(combo1.ActiveSkill);
+            }
 
-            if(activeSkill != null)
-                activeSkill.Update(gameTime);
-
+            combo1.Update(gameTime);
 
             HandleAnimations();
+
+            RegenerateHealth(gameTime);
+
+            CleanActiveSkill();
         }
 
         private void HandleAnimations()
@@ -112,6 +167,9 @@ namespace Bearventure
                             return;
                         break;
                     case Constants.CharacterState.Jumping:
+                        state = newState;
+                        break;
+                    case Constants.CharacterState.UsingSkill:
                         state = newState;
                         break;
                 }

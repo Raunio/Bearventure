@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Bearventure.Gameplay.Characters;
 
 namespace Bearventure
 {

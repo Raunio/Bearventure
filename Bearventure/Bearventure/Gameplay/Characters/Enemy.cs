@@ -1,10 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Bearventure.Engine.Effects;
-using Bearventure.Gameplay.Characters;
 using System.Collections.Generic;
+using Bearventure.Gameplay.Characters.Skills;
 
-namespace Bearventure
+namespace Bearventure.Gameplay.Characters
 {
     public class Enemy : Character
     {
@@ -27,11 +27,6 @@ namespace Bearventure
             get;
         }
         public Animation Stopped
-        {
-            private set;
-            get;
-        }
-        public Animation Attacking
         {
             private set;
             get;
@@ -103,11 +98,6 @@ namespace Bearventure
             attackTimer = attackSpeed;
         }
 
-        public void TakeDamage(int damage)
-        {
-            health -= damage;
-        }
-
         public override void Update(GameTime gameTime)
         {
             CharacterPhysics.Apply(this, gameTime);
@@ -116,7 +106,13 @@ namespace Bearventure
 
             HandleAnimations(gameTime);
 
+            UpdateSkills(gameTime);
+
             HandleAttacking(gameTime);
+
+            RegenerateHealth(gameTime);
+
+            CleanActiveSkill();
 
         }
 
@@ -140,10 +136,6 @@ namespace Bearventure
 
                 case Constants.CharacterState.Jumping:
                     ChangeAnimation(Jumping);
-                    break;
-
-                case Constants.CharacterState.Attacking:
-                    ChangeAnimation(Attacking);
                     break;
             }
 
@@ -169,7 +161,6 @@ namespace Bearventure
                     RunRight = new Animation(spriteSheet, 0, 93, 103, 9, 15, 40);
                     RunLeft = new Animation(spriteSheet, 0, 93, 103, 0, 6, 40);
                     Stopped = new Animation(spriteSheet, 0, 93, 103, 7, 7, 60);
-                    Attacking = new Animation(spriteSheet, 0, 93, 103, 7, 7, 100, false, false);
                     Jumping = new Animation(spriteSheet, 0, 93, 103, 5, 6, 100);
                     break;
                 case Constants.EnemyType.DelayOwl:
@@ -178,7 +169,6 @@ namespace Bearventure
                     RunRight = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
                     RunLeft = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
                     Stopped = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
-                    Attacking = new Animation(spriteSheet, 1, 91, 59, 0, 2, 100, false, false);
                     Jumping = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
                     break;
             }
@@ -253,11 +243,33 @@ namespace Bearventure
                     testSkill.StartVelocity = new Vector2(15, -15);
                     testSkill.UltimateVelocityX = 0;
                     testSkill.AddEffect(VisualEffects.Test, Vector2.Zero);
+                    testSkill.SoundEffectAsset = Constants.BadgerSkill;
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
+                    testSkill.DamagingFrames = new List<int>
+                    {
+                        15,
+                        16,
+                    };
+
+                    testSkill.HitBoxPositions[0] = position;
+                    testSkill.HitBoxPositions[1] = position;
+                    testSkill.HitBoxHeight = 100;
+                    testSkill.HitBoxWidth = 200;
 
                     EnemySkill testAttack = new EnemySkill(this, new Animation(spriteSheet, 0, 93, 103, 1, 4, 80, false, false), 900, 2);
                     testAttack.StartVelocity = new Vector2(0, -8);
                     testAttack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
+                    testAttack.SoundEffectAsset = Constants.BadgerAttack;
+                    testAttack.DamagingFrames = new List<int>
+                    {
+                        1,
+                        2,
+                    };
+
+                    testAttack.HitBoxPositions[0] = position;
+                    testAttack.HitBoxPositions[1] = position;
+                    testAttack.HitBoxHeight = 100;
+                    testAttack.HitBoxWidth = 200;
 
                     Skills = new List<EnemySkill>();
                     Skills.Add(testSkill);
@@ -269,17 +281,25 @@ namespace Bearventure
 
         private void HandleAttacking(GameTime gameTime)
         {
+
             foreach (EnemySkill s in Skills)
             {
                 foreach (Condition c in s.Conditions)
-                    if (c.Fulfilled(this, player) && s.IsReady)
+                    if (c.Fulfilled(this, player))
                     {
-                        UseSkill(s);
-                        SoundEffectManager.Instance.BadgerAttack();
-                        return;
+                        if (s.IsReady && !s.IsActive)
+                        {
+                            UseSkill(s);
+                            return;
+                        }
                     }
-                s.Update(gameTime);
             }
+        }
+
+        private void UpdateSkills(GameTime gameTime)
+        {
+            foreach (EnemySkill s in Skills)
+                s.Update(gameTime);
         }
 
         /// <summary>
