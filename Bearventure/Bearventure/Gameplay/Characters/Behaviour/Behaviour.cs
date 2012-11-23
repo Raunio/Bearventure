@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Bearventure.Gameplay.Characters;
+using Bearventure.Gameplay.Characters.Skills;
 
 namespace Bearventure
 {
@@ -8,11 +9,29 @@ namespace Bearventure
     {
         #region Members
 
-        private Character subject;
+        private Enemy subject;
         private Character target;
         private Constants.BehaviourType behaviourType;
         public StrategyPlanner strategyPlanner;
         private float waitTimer = 0f;
+
+        private float blockCheckFrequency = 100f;
+        private float blockCheckTimer = 0f;
+        private bool TimeOut
+        {
+            get
+            {
+                return timeOut;
+            }
+            set
+            {
+                if(value == true)
+                    SetState(Constants.CharacterState.Stopped);
+
+                timeOut = value;
+            }
+        }
+        private bool timeOut;
 
         #region Patrolling members
 
@@ -74,12 +93,13 @@ namespace Bearventure
         /// <param name="gameTime">GameTime should be passed for timers</param>
         public void Apply(GameTime gameTime)
         {
-            strategyPlanner.Plan();
+            blockCheckTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            strategyPlanner.Plan(gameTime);
 
             switch (behaviourType)
             {
                 case Constants.BehaviourType.FixedPatrol:
-
                     switch (strategyPlanner.CurrentAction())
                     {
                         case Constants.ActionType.Default:
@@ -89,12 +109,25 @@ namespace Bearventure
                             GoTo((int)target.position.X);
                             break;
                         case Constants.ActionType.Attack:
-                            SetState(Constants.CharacterState.Attacking);
+                            if(subject.ActiveSkill == null || !subject.ActiveSkill.IsActive)
+                                foreach (EnemySkill s in subject.Skills)
+                                {
+                                    foreach (Condition c in s.Conditions)
+                                        if (c.Fulfilled(subject, target))
+                                        {
+                                            if (s.IsReady && !s.IsActive)
+                                            {
+                                                subject.UseSkill(s);
+                                                return;
+                                            }
+                                        }
+                                }
                             break;
                         case Constants.ActionType.Stop:
                             SetState(Constants.CharacterState.Stopped);
                             break;
                     }
+
                     break;
                 default:
                     Debug.Assert(true, "Behaviour class Apply method switch case behaviour type default");
@@ -123,6 +156,7 @@ namespace Bearventure
         private void UpdateFixedPatrol(GameTime gameTime)
         {
             waitTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
             float brakepoint = (subject.walkSpeed / subject.deacceleration) * 2;
 
             if (DistanceToPoint(pointA) <= brakepoint)
@@ -152,6 +186,16 @@ namespace Bearventure
             if (waitTimer >= WaitTime)
             {
                 GoTo(nextPoint);
+
+                if (blockCheckTimer >= blockCheckFrequency)
+                {
+                    blockCheckTimer = 0;
+
+                    if (CharacterPhysics.Blocked(subject))
+                    {
+                        nextPoint = previousPoint;
+                    }
+                }
             }
 
         }

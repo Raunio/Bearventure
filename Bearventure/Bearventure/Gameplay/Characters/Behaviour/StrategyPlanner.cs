@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Bearventure.Gameplay.Characters;
+using Microsoft.Xna.Framework;
 
 namespace Bearventure
 {
@@ -14,6 +15,7 @@ namespace Bearventure
         private Enemy subject;
         private Character player;
         private List<Action> preDeterminedActions;
+        private float reactTimer;
 
         #region testing
         Action chase;
@@ -61,17 +63,24 @@ namespace Bearventure
             InitActions();
         }
 
-        public void Plan()
+        public void Plan(GameTime gameTime)
         {
-            foreach (Action a in preDeterminedActions)
-            {
-                if (a.ConditionsFulfilled(subject, player))
-                {
-                    AddActionToQueue(a);
-                }
-            }
+            reactTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            CleanActions();
+            if (reactTimer >= subject.ReactSpeed)
+            {
+                foreach (Action a in preDeterminedActions)
+                {
+                    if (a.ConditionsFulfilled(subject, player))
+                    {
+                        AddActionToQueue(a);
+                    }
+                }
+
+                reactTimer = 0;
+
+                CleanActions();
+            }
         }
         /// <summary>
         /// Used to add actions to queue. The method checks for duplicate actions and prevents them from being put to queue.

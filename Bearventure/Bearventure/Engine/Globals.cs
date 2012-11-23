@@ -17,7 +17,14 @@ namespace Bearventure
             }
         }
         private static bool soundsEnabled;
+
         public static double DifficultyFactor
+        {
+            get;
+            set;
+        }
+
+        public static bool DisplayHealthBars
         {
             get;
             set;

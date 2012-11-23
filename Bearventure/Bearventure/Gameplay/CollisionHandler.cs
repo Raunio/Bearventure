@@ -16,15 +16,23 @@ namespace Bearventure
         private static List<Color[,]> mapData2D = new List<Color[,]>();
         private static int zone_width;
         private static int zone_height;
+
+        private static List<Enemy> enemies = new List<Enemy>();
+        private static Player _player;
+
         #endregion
         #region Initialization
         /// <summary>
         /// Initialize CollisionHandler by passing it the collision map. An individual image fraction is then refered to as a zone.
         /// </summary>
         /// <param name="mapCollisionTextures"></param>
-        public static void Initialize(Texture2D[] mapCollisionTextures)
+        public static void Initialize(Texture2D[] mapCollisionTextures, List<Enemy> enem, Player player)
         {
             mapText = mapCollisionTextures;
+
+            _player = player;
+
+            enemies = enem;
 
             zone_height = 0;
             zone_width = 0;
@@ -255,6 +263,118 @@ namespace Bearventure
             return collision_x + collision_y;
         }
         /// <summary>
+        /// Returns Left, Right, Top, Bottom of the subjects BoundingBox if a collision happens. The method creates 2 rectangles 
+        /// (CollisionRectangleY, CollisionRectangleX) which are positioned in relation to the characters BoundingBox and velocity.
+        /// The method then chekcs if the rectangles intercect any existing characters BoundingBox.
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <param name="movement"></param>
+        /// <returns></returns>
+        public static int CollisionOccursWithObject(Character subject, Vector2 movement)
+        {
+            int collision = 0;
+
+            Rectangle Y = CollisionAreaRectangleY(subject, subject.velocity.Y);
+            Rectangle X = CollisionAreaRectangleX(subject, subject.velocity.X);
+
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                if (enemies[i].state != Constants.CharacterState.Dead)
+                {
+                    if (Y.Intersects(enemies[i].BoundingBox) && subject.BoundingBox != enemies[i].BoundingBox)
+                    {
+                        if (Y.Y < enemies[i].BoundingBox.Y + enemies[i].BoundingBox.Height / 2)
+                        {
+                            collision = subject.BoundingBox.Bottom;
+                        }
+                        else
+                        {
+                            collision = subject.BoundingBox.Top;
+                            ObjectVelocity = enemies[i].velocity;
+                        }
+                    }
+                    if (X.Intersects(enemies[i].BoundingBox) && subject.BoundingBox != enemies[i].BoundingBox)
+                    {
+                        if (X.X < enemies[i].BoundingBox.X + enemies[i].BoundingBox.Width / 2)
+                        {
+                            collision += subject.BoundingBox.Left;
+                        }
+                        else
+                        {
+                            collision += subject.BoundingBox.Right;
+                        }
+
+                        PushVelocity = PushForce(subject, enemies[i]);
+                    }
+                }
+            }
+
+            if (Y.Intersects(_player.BoundingBox) && _player.BoundingBox != subject.BoundingBox)
+            {
+                if (Y.Y < _player.BoundingBox.Y + _player.BoundingBox.Height / 2)
+                {
+                    collision = subject.BoundingBox.Bottom;
+                }
+                else
+                {
+                    collision = subject.BoundingBox.Top;
+                    ObjectVelocity = _player.velocity;
+                }
+            }
+            if (X.Intersects(_player.BoundingBox) && _player.BoundingBox != subject.BoundingBox)
+            {
+                if (X.X < _player.BoundingBox.X + _player.BoundingBox.Width / 2)
+                {
+                    collision += subject.BoundingBox.Left;
+                }
+                else
+                {
+                    collision += subject.BoundingBox.Right;
+                }
+
+                PushVelocity = PushForce(subject, _player);
+            }
+
+            return collision;
+        }
+        /// <summary>
+        /// Returns a point which indicates the amount the subject overlaps another character.
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <returns></returns>
+        public static int OverlapsCharacter(Character subject)
+        {
+            int overlap = 0;
+
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                if (enemies[i] != subject)
+                {
+                    if (enemies[i].BoundingBox.Intersects(subject.BoundingBox) && enemies[i].state != Constants.CharacterState.Dead)
+                    {
+                        Rectangle a = subject.BoundingBox;
+                        Rectangle b = enemies[i].BoundingBox;
+
+                        if (a.Right > b.Left)
+                        {
+                            if (a.Right < b.Right)
+                            {
+                                return -a.Right + b.Left;
+                            }
+                            else
+                            {
+                                return b.Right - a.Left;
+                            }
+                        }
+                    }
+
+                    //if(subject != player && 
+                }
+            }
+
+            return overlap;
+        }
+        /// <summary>
         /// A rectangle which is positioned in relation to the characters BoundingBox and velocity.Y
         /// </summary>
         /// <param name="subject">The character</param>
@@ -282,6 +402,13 @@ namespace Bearventure
                 return new Rectangle(subject.BoundingBox.Right + (int)movement, subject.BoundingBox.Y, 1, subject.BoundingBox.Height);
         }
 
+        private static float PushForce(Character a, Character b)
+        {
+            if (b.mass > a.mass && a.state != Constants.CharacterState.Dead && b.state != Constants.CharacterState.Dead)
+                return (b.mass - a.mass) / 5;
+
+           return 0;
+        }
         private static Color[,] TextureData2D(Texture2D texture, Color[] data)
         {
             Color[,] colors2D = new Color[texture.Width, texture.Height];
@@ -300,9 +427,25 @@ namespace Bearventure
             private set;
         }
         /// <summary>
+        /// Returns the velocity of the object that the last calculated subject is on.
+        /// </summary>
+        public static Vector2 ObjectVelocity
+        {
+            get;
+            private set;
+        }
+        /// <summary>
         /// Returns the "angle" of the slope the last calculated subject is on.
         /// </summary>
         public static int HeightDifference
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Gets the push velocity of the last calculated subject.
+        /// </summary>
+        public static float PushVelocity
         {
             get;
             private set;

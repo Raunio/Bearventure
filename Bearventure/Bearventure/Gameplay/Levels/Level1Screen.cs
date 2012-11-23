@@ -21,6 +21,8 @@ using Bearventure.Gameplay;
 using Bearventure.Engine;
 using Bearventure.Engine.Effects;
 using Bearventure.Gameplay.Characters;
+using Bearventure.Gameplay.Characters.Skills;
+using Bearventure.Gameplay.HUD;
 
 #endregion
 
@@ -41,6 +43,7 @@ namespace Bearventure
         LevelBackground background;
         Camera camera;
         CameraController cameraController;
+        HeadsUpDisplay hud;
 
         List<Enemy> enemies;
         Player player;
@@ -81,21 +84,24 @@ namespace Bearventure
 
                 player = new Player(content.Load<Texture2D>("Sprites/Karhu"));
                 XmlReader.Initialize(content, player);
-                player.position = XmlReader.StartPoint("Levels/Testilevel/Items/Testilevel_StartPoint");
+                player.position = XmlReader.StartPoint("Levels/Testilevel2/Items/Testilevel2_StartPoint");
                 gameFont = content.Load<SpriteFont>(Constants.GameFont);
-                background = new LevelBackground(XmlReader.LevelInformation("Levels/Testilevel/TestilevelLevelInfo"), content);
-                enemies = XmlReader.EnemyList("Levels/Testilevel/Items/Testilevel_Enemies");
+                background = new LevelBackground(XmlReader.LevelInformation("Levels/Testilevel2/Testilevel2LevelInfo"), content);
+                enemies = XmlReader.EnemyList("Levels/Testilevel2/Items/Testilevel2_Enemies");
+                CombatManager.Instance.Initialize(player, enemies);
+                hud = new HeadsUpDisplay();
+                hud.Initialize(content, ResolutionManager.graphicsDevice, enemies, player);
                 cameraController = new CameraController();
                 cameraController.AssingTo(player);
 
-                Texture2D[] collisionMap = new Texture2D[8];
+                Texture2D[] collisionMap = new Texture2D[background.Fractions];
 
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < background.Fractions; i++)
                 {
-                    collisionMap[i] = content.Load<Texture2D>("Levels/Testilevel/CollisionMap/Testilevel_" + i);
+                    collisionMap[i] = content.Load<Texture2D>("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_" + i);
                 }
 
-                CollisionHandler.Initialize(collisionMap);
+                CollisionHandler.Initialize(collisionMap, enemies, player);
 
                 CharacterPhysics.Gravity = 0.75f;
 
@@ -103,7 +109,7 @@ namespace Bearventure
                 camera = new Camera(ScreenManager.GraphicsDevice.Viewport, new Vector2(background.Width, background.Height));
                 
                 MusicManager.Instance.PlayLevel1Music();
-                VisualEffects.Load(content, ResolutionManager.graphicsDevice);
+                VisualEffectManager.Instance.Initialize(content, ResolutionManager.graphicsDevice);
                 VisualEffectManager.Instance.InitializeTerrainEffects(player, enemies);
                 // once the load has finished, we use ResetElapsedTime to tell the game's
                 // timing mechanism that we have just finished a very long frame, and that
@@ -176,6 +182,7 @@ namespace Bearventure
                 cameraController.Update(gameTime);
                 camera.LookAt(cameraController.Position);
                 VisualEffectManager.Instance.UpdateEffects(gameTime);
+                hud.Update(gameTime, camera.Position);
             }
 
             
@@ -236,14 +243,21 @@ namespace Bearventure
 
             background.Draw(spriteBatch);
 
+            for (int x = 0; x < CollisionHandler.mapText.Length / 2; x++)
+                for (int y = 0; y < 2; y++)
+                    spriteBatch.Draw(CollisionHandler.mapText[x * 2 + y], new Vector2(x * CollisionHandler.mapText[0].Width, y * CollisionHandler.mapText[0].Height), Color.White);
+
             foreach (Enemy enemy in enemies)
                 enemy.Draw(spriteBatch);
 
             VisualEffectManager.Instance.DrawEffects(spriteBatch);
 
             player.Draw(spriteBatch);
+
             //if(player.ActiveSkill != null)
                 //player.ActiveSkill.DrawHitBox(spriteBatch, content.Load<Texture2D>("Sprites/player"));
+
+            hud.Draw(spriteBatch);
             spriteBatch.End();
 
             // If the game is transitioning on or off, fade it out to black.

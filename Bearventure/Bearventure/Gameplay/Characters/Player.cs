@@ -18,6 +18,7 @@ namespace Bearventure.Gameplay.Characters
 
         public Player(Texture2D spriteSheet)
         {
+            Name = "You";
             scale = 1f;
             this.spriteSheet = spriteSheet;
             stoppedRight = new Animation(spriteSheet, 0, 88, 121, 12, 12, 70);
@@ -33,52 +34,57 @@ namespace Bearventure.Gameplay.Characters
             walkSpeed = 10f;
             jumpStrenght = 18;
 
+            maxHealth = 50;
+            health = 50;
+
+            mass = 150;
+
             BoundingBoxOffset = 15;
 
-            CharacterSkill skill1 = new CharacterSkill(this, new Animation(spriteSheet, 0, 88, 121, 10, 12, 70, false, false), 200, 2);
+            CharacterSkill skill1 = new CharacterSkill(this, new Animation(spriteSheet, 0, 88, 121, 19, 21, 70, false, false), 180, 20);
             skill1.SoundEffectAsset = Constants.KarhuHit1;
-            skill1.Acceleration = 0.25f;
+            /*skill1.Acceleration = 0.25f;
             skill1.StartVelocity = new Vector2(-9, -5);
-            skill1.UltimateVelocityX = 0;
+            skill1.UltimateVelocityX = 0;*/
             skill1.DamagingFrames = new List<int>
             {
-                11,
-                12,
+                20,
+                21,
             };
-            skill1.HitBoxPositions[0] = new Vector2(50, 50);
-            skill1.HitBoxPositions[1] = new Vector2(50, 50);
-            skill1.HitBoxHeight = 100;
-            skill1.HitBoxWidth = 200;
+            skill1.HitBoxPositions[0] = new Vector2(30, -25);
+            skill1.HitBoxPositions[1] = new Vector2(30, -25);
+            skill1.HitBoxHeight = 75;
+            skill1.HitBoxWidth = 25;
 
-            CharacterSkill skill2 = new CharacterSkill(this, new Animation(spriteSheet, 0, 88, 121, 6, 8, 70, false, false), 200, 2);
+            CharacterSkill skill2 = new CharacterSkill(this, new Animation(spriteSheet, 0, 88, 121, 6, 8, 70, false, false), 200, 20);
             skill2.SoundEffectAsset = Constants.KarhuHit2;
-            skill2.Acceleration = 0.25f;
+            /*skill2.Acceleration = 0.25f;
             skill2.StartVelocity = new Vector2(9, -1);
-            skill2.UltimateVelocityX = 0;
+            skill2.UltimateVelocityX = 0;*/
             skill2.DamagingFrames = new List<int>
             {
-                11,
-                12,
+                6,
+                8,
             };
-            skill2.HitBoxPositions[0] = new Vector2(50, 50);
-            skill2.HitBoxPositions[1] = new Vector2(50, 50);
-            skill2.HitBoxHeight = 100;
-            skill2.HitBoxWidth = 200;
+            skill2.HitBoxPositions[0] = new Vector2(40, -25);
+            skill2.HitBoxPositions[1] = new Vector2(40, -25);
+            skill2.HitBoxHeight = 75;
+            skill2.HitBoxWidth = 25;
 
-            CharacterSkill skill3 = new CharacterSkill(this, new Animation(spriteSheet, 0, 88, 121, 12, 14, 70, false, false), 200, 2);
+            CharacterSkill skill3 = new CharacterSkill(this, new Animation(spriteSheet, 0, 88, 121, 12, 14, 70, false, false), 200, 20);
             skill3.SoundEffectAsset = Constants.KarhuHit3;
-            skill3.Acceleration = 0.25f;
+            /*skill3.Acceleration = 0.25f;
             skill3.StartVelocity = new Vector2(0, -12);
-            skill3.UltimateVelocityX = 0;
+            skill3.UltimateVelocityX = 0;*/
             skill3.DamagingFrames = new List<int>
             {
                 11,
                 12,
             };
-            skill3.HitBoxPositions[0] = new Vector2(50, 50);
-            skill3.HitBoxPositions[1] = new Vector2(50, 50);
-            skill3.HitBoxHeight = 100;
-            skill3.HitBoxWidth = 200;
+            skill3.HitBoxPositions[0] = new Vector2(50, -25);
+            skill3.HitBoxPositions[1] = new Vector2(50, -25);
+            skill3.HitBoxHeight = 75;
+            skill3.HitBoxWidth = 25;
 
             combo1.SkillArray = new List<CharacterSkill>
             {

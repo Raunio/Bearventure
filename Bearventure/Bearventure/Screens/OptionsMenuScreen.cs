@@ -11,6 +11,7 @@
 
 #endregion
 
+using Microsoft.Xna.Framework;
 namespace Bearventure
 {
     /// <summary>
@@ -26,6 +27,11 @@ namespace Bearventure
         MenuEntry languageMenuEntry;
         MenuEntry soundsEnabledMenuEntry;
         MenuEntry elfMenuEntry;
+        MenuEntry barsMenuEntry;
+        MenuEntry resolutionMenuEntry;
+
+        Point resolution;
+        Constants.ScreenMode screenMode;
 
         enum Ungulate
         {
@@ -54,11 +60,15 @@ namespace Bearventure
         public OptionsMenuScreen()
             : base("Options")
         {
+            screenMode = ResolutionManager.CurrentScreenMode;
+
             // Create our menu entries.
             ungulateMenuEntry = new MenuEntry(string.Empty);
             languageMenuEntry = new MenuEntry(string.Empty);
             soundsEnabledMenuEntry = new MenuEntry(string.Empty);
             elfMenuEntry = new MenuEntry(string.Empty);
+            barsMenuEntry = new MenuEntry(string.Empty);
+            resolutionMenuEntry = new MenuEntry(string.Empty);
 
             SetMenuEntryText();
 
@@ -69,13 +79,18 @@ namespace Bearventure
             languageMenuEntry.Selected += LanguageMenuEntrySelected;
             soundsEnabledMenuEntry.Selected += FrobnicateMenuEntrySelected;
             elfMenuEntry.Selected += ElfMenuEntrySelected;
+            barsMenuEntry.Selected += BarsMenuEntrySelected;
+            resolutionMenuEntry.Selected += ResolutionMenuEntrySelected;
             back.Selected += OnCancel;
+            back.Selected += ResolutionChanged;
 
             // Add entries to the menu.
             MenuEntries.Add(ungulateMenuEntry);
             MenuEntries.Add(languageMenuEntry);
             MenuEntries.Add(soundsEnabledMenuEntry);
+            MenuEntries.Add(barsMenuEntry);
             MenuEntries.Add(elfMenuEntry);
+            MenuEntries.Add(resolutionMenuEntry);
             MenuEntries.Add(back);
         }
 
@@ -89,6 +104,8 @@ namespace Bearventure
             languageMenuEntry.Text = "Language: " + languages[currentLanguage];
             soundsEnabledMenuEntry.Text = "Sounds enabled: " + (Globals.SoundsEnabled ? "on" : "off");
             elfMenuEntry.Text = "Derp: " + derp;
+            barsMenuEntry.Text = "Display enemy health bars: " + (Globals.DisplayHealthBars ? "on" : "off");
+            resolutionMenuEntry.Text = "Display resolution: " + screenMode.ToString();
         }
 
 
@@ -130,6 +147,32 @@ namespace Bearventure
             Globals.SoundsEnabled = !Globals.SoundsEnabled;
 
             SetMenuEntryText();
+        }
+
+        void BarsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            Globals.DisplayHealthBars = !Globals.DisplayHealthBars;
+
+            SetMenuEntryText();
+        }
+
+        void ResolutionMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            if (screenMode != Constants.ScreenMode.v1080p)
+                screenMode--;
+            else
+                screenMode = Constants.ScreenMode.v240p;
+
+            SetMenuEntryText();
+        }
+
+        void ResolutionChanged(object sender, PlayerIndexEventArgs e)
+        {
+            if (screenMode != ResolutionManager.CurrentScreenMode)
+            {
+                ResolutionManager.SetVirtualResolution(screenMode);
+                ResolutionManager.SetResolution(ScreenManager.GraphicsDevice.DisplayMode.Width, ScreenManager.GraphicsDevice.DisplayMode.Height, true);
+            }
         }
 
 

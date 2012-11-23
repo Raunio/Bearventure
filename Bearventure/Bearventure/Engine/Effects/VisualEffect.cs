@@ -18,6 +18,8 @@ namespace Bearventure.Engine.Effects
         private Renderer renderer;
         private float timer;
 
+        #region Gets and Sets
+
         public Vector2 Position
         {
             get
@@ -303,18 +305,28 @@ namespace Bearventure.Engine.Effects
             }
         }
         private Vector2 positionOffset;
-        public VisualEffect()
+        public string TextureAsset
         {
+            get;
+            set;
+        }
+        #endregion
+
+        public VisualEffect(String asset)
+        {
+            TextureAsset = asset;
         }
 
-        public void Initialize(string asset, ContentManager content, GraphicsDeviceManager graphics)
+        public void Initialize(ContentManager content, GraphicsDeviceManager graphics)
         {
             renderer = new SpriteBatchRenderer
             {
                 GraphicsDeviceService = graphics,
             };
 
-            this.particleEffect = content.Load<ParticleEffect>(asset);
+            ParticleEffect effect = content.Load<ParticleEffect>(TextureAsset);
+
+            this.particleEffect = effect.DeepCopy();
 
             particleEffect.Initialise();
             renderer.LoadContent(content);

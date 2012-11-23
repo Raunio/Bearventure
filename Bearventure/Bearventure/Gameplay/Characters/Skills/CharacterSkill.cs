@@ -15,8 +15,9 @@ namespace Bearventure.Gameplay.Characters.Skills
         private Character target;
         private bool mobile;
 
-        private List<VisualEffect> effects = new List<VisualEffect>();
+        private List<string> effects = new List<string>();
         private List<Vector2> effectPositions = new List<Vector2>();
+        private List<Vector2> effectPositionOffsets = new List<Vector2>();
         /// <summary>
         /// Gets the cooldown time of the skill in seconds.
         /// </summary>
@@ -153,6 +154,14 @@ namespace Bearventure.Gameplay.Characters.Skills
             get;
             private set;
         }
+        /// <summary>
+        /// Gets wether the skill has already damaged someone.
+        /// </summary>
+        public bool HasDamaged
+        {
+            get;
+            private set;
+        }
 
         public CharacterSkill(Character subject, Animation animation, int cooldown, int damage)
         {
@@ -162,8 +171,18 @@ namespace Bearventure.Gameplay.Characters.Skills
             this.Damage = damage;
             this.IsReady = true;
         }
+        /// <summary>
+        /// Returns true if the skills hitbox hits the characters BoundingBox.
+        /// </summary>
+        /// <param name="character"></param>
+        /// <returns></returns>
+        public bool HitsCharacter(Character character)
+        {
+            if (HitBox.Intersects(character.BoundingBox))
+                HasDamaged = true;
 
-        
+            return HitBox.Intersects(character.BoundingBox);
+        }
 
         public void Update(GameTime gameTime)
         {
@@ -174,6 +193,19 @@ namespace Bearventure.Gameplay.Characters.Skills
 
             if (IsActive)
             {
+                for (int i = 0; i < HitBoxPositions.Length; i++)
+                    if (HitBoxPositions[i].X > 0)
+                    {
+                        if (subject.direction == Constants.Direction.Left)
+                            HitBoxPositions[i].X *= -1;
+                    }
+                    else
+                    {
+                        if (subject.direction == Constants.Direction.Right)
+                            HitBoxPositions[i].X *= -1;
+                    }
+
+
                 if (subject.velocity.X < UltimateVelocityX + Acceleration)
                     subject.velocity.X += Acceleration;
                 else if (subject.velocity.X > UltimateVelocityX - Acceleration)
@@ -196,9 +228,13 @@ namespace Bearventure.Gameplay.Characters.Skills
                     IsActive = false;
                     subject.state = Constants.CharacterState.Stopped;
                 }
+
+                CombatManager.Instance.Update();
             }
         }
-
+        /// <summary>
+        /// Activates the skill.
+        /// </summary>
         public void Activate()
         {
             cdTimer = 0;
@@ -207,17 +243,21 @@ namespace Bearventure.Gameplay.Characters.Skills
             animation.Reset();
             subject.currentAnimation = animation;
             subject.velocity = StartVelocity;
-            foreach (VisualEffect e in effects)
-                VisualEffectManager.Instance.CreateEffect(e, subject.position);
+            HasDamaged = false;
+
+            for (int i = 0; i < effects.Count; i++)
+            {
+                VisualEffectManager.Instance.CreateEffect(effects[i], subject.position + effectPositionOffsets[i], 500);
+            }
 
             if(SoundEffectAsset != null)
                 SoundEffectManager.Instance.PlaySound(SoundEffectAsset);
         }
 
-        public void AddEffect(VisualEffect effect, Vector2 positionOffset)
+        public void AddEffect(string asset, Vector2 positionOffset)
         {
-            effect.PositionOffset = positionOffset;
-            effects.Add(effect);          
+            effectPositionOffsets.Add(positionOffset);
+            effects.Add(asset);          
         }
         /// <summary>
         /// Draw hitbox. Used for testing.

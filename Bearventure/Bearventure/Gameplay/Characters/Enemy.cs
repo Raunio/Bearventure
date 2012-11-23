@@ -9,13 +9,66 @@ namespace Bearventure.Gameplay.Characters
     public class Enemy : Character
     {
         #region Members
+
         private Character player;
         private Constants.EnemyType type;
-        private float attackTimer = 0;
-        #region TESTING
-        public List<EnemySkill> Skills;
+
         #endregion
+
+        #region Gets and Sets
+        /// <summary>
+        /// Gets the Reaction time of the enemy in milliseconds.
+        /// </summary>
+        public float ReactSpeed
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Gets the list of skills the enemy has.
+        /// </summary>
+        public List<EnemySkill> Skills
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Enemy combat behaviour
+        /// </summary>
+        public Constants.CombatBehaviour combatBehaviour
+        {
+            private set;
+            get;
+        }
+        /// <summary>
+        /// Enemy behaviour
+        /// </summary>
+        public Behaviour behaviour
+        {
+            private set;
+            get;
+        }
+
+        /// <summary>
+        /// Range of vision.
+        /// </summary>
+        public int Vision
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Enemy attack range.
+        /// </summary>
+        public int AttackRange
+        {
+            get;
+            private set;
+        }
+
         #region Animations
+
         public Animation WalkLeft
         {
             private set;
@@ -46,31 +99,20 @@ namespace Bearventure.Gameplay.Characters
             private set;
             get;
         }
-        #endregion
-
-        #endregion
-
-        #region Gets and Sets
         /// <summary>
-        /// Enemy combat behaviour
+        /// Must not be a looping animation.
         /// </summary>
-        public Constants.CombatBehaviour combatBehaviour
+        public Animation Dying
         {
-            private set;
             get;
-        }
-        /// <summary>
-        /// Enemy behaviour
-        /// </summary>
-        public Behaviour behaviour
-        {
             private set;
-            get;
         }
+        #endregion
 
         #endregion
 
-        #region Methods
+        #region Initialization
+
         public Enemy(Constants.EnemyType type, Vector2 position, Texture2D spriteSheet, Player player)
         {
             this.type = type;
@@ -81,7 +123,6 @@ namespace Bearventure.Gameplay.Characters
             InitStats();
             InitBehavirour(player, 0, 0);
             this.player = player;
-            attackTimer = attackSpeed;
         }
 
         public Enemy(Constants.EnemyType type, int x, int y, Texture2D spriteSheet, Player player, int patrol_A, int patrol_B)
@@ -94,61 +135,6 @@ namespace Bearventure.Gameplay.Characters
             InitStats();
             InitBehavirour(player, patrol_A, patrol_B);
             InitSkills();
-
-            attackTimer = attackSpeed;
-        }
-
-        public override void Update(GameTime gameTime)
-        {
-            CharacterPhysics.Apply(this, gameTime);
-
-            behaviour.Apply(gameTime);
-
-            HandleAnimations(gameTime);
-
-            UpdateSkills(gameTime);
-
-            HandleAttacking(gameTime);
-
-            RegenerateHealth(gameTime);
-
-            CleanActiveSkill();
-
-        }
-
-        private void HandleAnimations(GameTime gameTime)
-        {
-            switch (state)
-            {
-                case Constants.CharacterState.Walking:
-                    if (direction == Constants.Direction.Left) { ChangeAnimation(WalkLeft); }
-                    else { ChangeAnimation(WalkRight); }
-                    break;
-
-                case Constants.CharacterState.Running:
-                    if (direction == Constants.Direction.Left) { ChangeAnimation(RunLeft); }
-                    else { ChangeAnimation(RunRight); }
-                    break;
-
-                case Constants.CharacterState.Stopped:
-                    ChangeAnimation(Stopped);
-                    break;
-
-                case Constants.CharacterState.Jumping:
-                    ChangeAnimation(Jumping);
-                    break;
-            }
-
-            currentAnimation.Animate(gameTime);
-        }
-
-        private void ChangeAnimation(Animation animation)
-        {
-            if (currentAnimation != animation)
-            {
-                currentAnimation.Reset();
-                currentAnimation = animation;
-            }
         }
 
         private void InitAnimations()
@@ -162,6 +148,7 @@ namespace Bearventure.Gameplay.Characters
                     RunLeft = new Animation(spriteSheet, 0, 93, 103, 0, 6, 40);
                     Stopped = new Animation(spriteSheet, 0, 93, 103, 7, 7, 60);
                     Jumping = new Animation(spriteSheet, 0, 93, 103, 5, 6, 100);
+                    Dying = new Animation(spriteSheet, 0, 93, 103, 1, 8, 80, false, false);
                     break;
                 case Constants.EnemyType.DelayOwl:
                     WalkRight = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
@@ -210,9 +197,10 @@ namespace Bearventure.Gameplay.Characters
                     AttackRange = 120;
                     health = 50;
                     maxHealth = 50;
-                    healthRegen = 10;
-                    attackSpeed = 1000;
-                    BoundingBoxOffset = 5;
+                    healthRegen = 2;
+                    BoundingBoxOffset = 10;
+                    ReactSpeed = 250f;
+                    mass = 100;
                     break;
 
                 case Constants.EnemyType.DelayOwl:
@@ -227,7 +215,6 @@ namespace Bearventure.Gameplay.Characters
                     health = 1;
                     maxHealth = 1;
                     healthRegen = 1;
-                    attackSpeed = 7000;
                     break;
             }
         }
@@ -242,7 +229,7 @@ namespace Bearventure.Gameplay.Characters
                     testSkill.Acceleration = 0.25f;
                     testSkill.StartVelocity = new Vector2(15, -15);
                     testSkill.UltimateVelocityX = 0;
-                    testSkill.AddEffect(VisualEffects.Test, Vector2.Zero);
+                    testSkill.AddEffect(Constants.TestEffect, Vector2.Zero);
                     testSkill.SoundEffectAsset = Constants.BadgerSkill;
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
                     testSkill.DamagingFrames = new List<int>
@@ -279,22 +266,9 @@ namespace Bearventure.Gameplay.Characters
             }
         }
 
-        private void HandleAttacking(GameTime gameTime)
-        {
+        #endregion
 
-            foreach (EnemySkill s in Skills)
-            {
-                foreach (Condition c in s.Conditions)
-                    if (c.Fulfilled(this, player))
-                    {
-                        if (s.IsReady && !s.IsActive)
-                        {
-                            UseSkill(s);
-                            return;
-                        }
-                    }
-            }
-        }
+        #region Updates
 
         private void UpdateSkills(GameTime gameTime)
         {
@@ -302,31 +276,81 @@ namespace Bearventure.Gameplay.Characters
                 s.Update(gameTime);
         }
 
-        /// <summary>
-        /// Range of vision.
-        /// </summary>
-        public int Vision
+        public override void Update(GameTime gameTime)
         {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Enemy attack range.
-        /// </summary>
-        public int AttackRange
-        {
-            get;
-            private set;
-        }
-
-        public bool AttackReady
-        {
-            get
+            if (state != Constants.CharacterState.Dead)
             {
-                return attackTimer >= attackSpeed ? true : false;
+                behaviour.Apply(gameTime);
+
+                HandleAnimations(gameTime);
+
+                UpdateSkills(gameTime);
+
+                RegenerateHealth(gameTime);
+
+                CleanActiveSkill();
+
+                if (health <= 0)
+                    Kill();
+            }
+
+            if (state == Constants.CharacterState.Disabled)
+            {
+                if (currentAnimation == Dying)
+                {
+                    if (currentAnimation.HasFinished)
+                    {
+                        velocity.X = 0;
+                        state = Constants.CharacterState.Dead;
+                    }
+                }
+            }
+
+            CharacterPhysics.Apply(this, gameTime);
+        }
+
+        private void HandleAnimations(GameTime gameTime)
+        {
+            switch (state)
+            {
+                case Constants.CharacterState.Walking:
+                    if (direction == Constants.Direction.Left) { ChangeAnimation(WalkLeft); }
+                    else { ChangeAnimation(WalkRight); }
+                    break;
+
+                case Constants.CharacterState.Running:
+                    if (direction == Constants.Direction.Left) { ChangeAnimation(RunLeft); }
+                    else { ChangeAnimation(RunRight); }
+                    break;
+
+                case Constants.CharacterState.Stopped:
+                    ChangeAnimation(Stopped);
+                    break;
+
+                case Constants.CharacterState.Jumping:
+                    ChangeAnimation(Jumping);
+                    break;
+            }
+
+            currentAnimation.Animate(gameTime);
+        }
+
+        #endregion
+
+        private void ChangeAnimation(Animation animation)
+        {
+            if (currentAnimation != animation)
+            {
+                currentAnimation.Reset();
+                currentAnimation = animation;
             }
         }
-        #endregion
+
+        public void Kill()
+        {
+            state = Constants.CharacterState.Disabled;
+            ChangeAnimation(Dying);
+        }
+
     }
 }

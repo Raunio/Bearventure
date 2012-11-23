@@ -121,7 +121,6 @@
     <Compile Include="Engine\Audio\SoundEffectManager.cs" />
     <Compile Include="Engine\Effects\VisualEffect.cs" />
     <Compile Include="Engine\Effects\VisualEffectManager.cs" />
-    <Compile Include="Engine\Effects\VisualEffects.cs" />
     <Compile Include="Engine\Globals.cs" />
     <Compile Include="Engine\ResolutionManager.cs" />
     <Compile Include="Engine\XmlReader.cs" />
@@ -142,6 +141,8 @@
     <Compile Include="Gameplay\Characters\Enemy.cs" />
     <Compile Include="Gameplay\Characters\FlightHelper.cs" />
     <Compile Include="Gameplay\Characters\Player.cs" />
+    <Compile Include="Gameplay\HUD\HeadsUpDisplay.cs" />
+    <Compile Include="Gameplay\HUD\HealthBar.cs" />
     <Compile Include="Gameplay\Levels\LevelBackground.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\EntryPoint.cs" />

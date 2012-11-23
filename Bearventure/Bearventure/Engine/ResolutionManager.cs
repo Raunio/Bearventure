@@ -12,6 +12,8 @@
 // HAD TO REFRACTOR THE CODE A LITTLE. WAS UNREADABLE. -Huemac 2012
 // Added also nice enumerated constant values for resolutions
 
+// Added getter for current screen mode. - Raunio
+
 using System;
 using System.Collections.ObjectModel;
 using Microsoft.Xna.Framework;
@@ -33,6 +35,12 @@ namespace Bearventure
 
 
         static public GraphicsDeviceManager graphicsDevice
+        {
+            get;
+            private set;
+        }
+
+        public static Constants.ScreenMode CurrentScreenMode
         {
             get;
             private set;
@@ -80,6 +88,8 @@ namespace Bearventure
 
         static public void SetResolution(Constants.ScreenMode screenMode, bool fullScreen)
         {
+            CurrentScreenMode = screenMode;
+
             width = resolutions[(int)screenMode].X;
             height = resolutions[(int)screenMode].Y;
 
@@ -105,6 +115,8 @@ namespace Bearventure
 
         static public void SetVirtualResolution(Constants.ScreenMode screenMode)
         {
+            CurrentScreenMode = screenMode;
+
             virtualWidth = resolutions[(int)screenMode].X;
             virtualHeight = resolutions[(int)screenMode].Y;
 

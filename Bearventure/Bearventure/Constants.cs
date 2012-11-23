@@ -17,6 +17,7 @@ namespace Bearventure
         public const String KarhuHit1 = "SoundEffects/hit1";
         public const String KarhuHit2 = "SoundEffects/hit2";
         public const String KarhuHit3 = "SoundEffects/hit3";
+        public const String Splat = "SoundEffects/splat";
         #endregion
         #region Music
         public const String Level1Music = "Music/Level1";
@@ -24,6 +25,12 @@ namespace Bearventure
         #endregion
         #region Fonts
         public const String GameFont = "Fonts/GameFont";
+        public const String HudFont = "Fonts/HudFont";
+        #endregion
+        #region VisualEffects
+        public const String DustEffect = "VisualEffects/Dust";
+        public const String BloodSplat1 = "VisualEffects/blood";
+        public const String TestEffect = "VisualEffects/testi123";
         #endregion
 
         #region Terrain Colors
@@ -56,6 +63,7 @@ namespace Bearventure
             Falling,
             Disabled,
             UsingSkill,
+            Dead,
         };
         public enum Direction
         {

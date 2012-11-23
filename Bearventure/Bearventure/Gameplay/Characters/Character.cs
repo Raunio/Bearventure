@@ -38,10 +38,6 @@ namespace Bearventure.Gameplay.Characters
         /// </summary>
         public float deacceleration;
         /// <summary>
-        /// Attacks per second.
-        /// </summary>
-        public float attackSpeed;
-        /// <summary>
         /// Character mass.
         /// </summary>
         public int mass;
@@ -70,7 +66,26 @@ namespace Bearventure.Gameplay.Characters
         /// </summary>
         public int healthRegen;
         private float regenTimer;
+        private float damageTimer;
         protected int BoundingBoxOffset;
+        /// <summary>
+        /// Gets or sets the name of the character.
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                if (name == null)
+                    return "Character";
+
+                return name;
+            }
+            set
+            {
+                name = value;
+            }
+        }
+        private string name;
         /// <summary>
         /// Character orientation. Air or Ground.
         /// </summary>
@@ -133,6 +148,7 @@ namespace Bearventure.Gameplay.Characters
         protected void RegenerateHealth(GameTime gameTime)
         {
             regenTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            damageTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (regenTimer >= 5f && health < maxHealth)
             {
@@ -146,7 +162,13 @@ namespace Bearventure.Gameplay.Characters
 
         public void TakeDamage(int damage)
         {
-            health -= damage;
+            if (damageTimer > 300)
+            {
+                health -= damage;
+                damageTimer = 0;
+
+                CombatManager.Instance.CombatLog.Add(this.Name + " took " + damage + " damage.");
+            }
         }
 
         public void UseSkill(CharacterSkill skill)
@@ -155,7 +177,7 @@ namespace Bearventure.Gameplay.Characters
             {
                 state = Constants.CharacterState.UsingSkill;
                 skill.Activate();
-                ActiveSkill = skill;
+                ActiveSkill = skill; 
             }
         }
 

@@ -13,12 +13,16 @@ namespace Bearventure.Engine.Effects
 {
     class VisualEffectManager
     {
+        private ContentManager content;
+        private GraphicsDeviceManager graphics;
+
         private List<VisualEffect> Effects = new List<VisualEffect>();
         private VisualEffect[] terrainEffects;
 
         private static VisualEffectManager instance;
         private List<Enemy> enemies;
         private Player player;
+
         public static VisualEffectManager Instance
         {
             get
@@ -30,6 +34,12 @@ namespace Bearventure.Engine.Effects
             }
         }
 
+        public void Initialize(ContentManager content, GraphicsDeviceManager graphics)
+        {
+            this.content = content;
+            this.graphics = graphics;
+        }
+
         public void InitializeTerrainEffects(Player player, List<Enemy> enemies)
         {
             this.player = player;
@@ -38,7 +48,10 @@ namespace Bearventure.Engine.Effects
             terrainEffects = new VisualEffect[enemies.Count + 1];
 
             for (int i = 0; i < enemies.Count + 1; i++)
-                terrainEffects[i] = (VisualEffect)VisualEffects.Dust.Clone();
+            {
+                terrainEffects[i] = new VisualEffect(Constants.DustEffect);
+                terrainEffects[i].Initialize(content, graphics);
+            }
         }
 
         public void UpdateEffects(GameTime gameTime)
@@ -47,6 +60,11 @@ namespace Bearventure.Engine.Effects
             {
                 e.Trigger(gameTime);
                 e.Update(gameTime);
+            }
+
+            if (Effects.Count >= 3)
+            {
+                int i = 0;
             }
 
             UpdateTerrainEffects(gameTime);
@@ -88,10 +106,12 @@ namespace Bearventure.Engine.Effects
                     Effects.RemoveAt(i);
         }
 
-        public void CreateEffect(VisualEffect effect, Vector2 position)
+        public void CreateEffect(string asset, Vector2 position, int Lifetime)
         {
-            VisualEffect e = (VisualEffect)effect.Clone();
+            VisualEffect e = new VisualEffect(asset);
+            e.Initialize(content, graphics);
             e.Position = position;
+            e.Lifetime = Lifetime;
             Effects.Add(e);
         }
         

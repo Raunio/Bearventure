@@ -46,7 +46,9 @@ namespace Bearventure
                         break;
                 }
 
-                enemies.Add(new Enemy(type, xEnemy.X, xEnemy.Y, spriteSheet, player, xEnemy.PatrolPoint_A, xEnemy.PatrolPoint_B));
+                Enemy e = new Enemy(type, xEnemy.X, xEnemy.Y, spriteSheet, player, xEnemy.PatrolPoint_A, xEnemy.PatrolPoint_B);
+                e.Name = xEnemy.Name;
+                enemies.Add(e);
             }
 
             return enemies;
