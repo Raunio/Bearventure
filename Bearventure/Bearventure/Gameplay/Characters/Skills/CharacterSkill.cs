@@ -10,10 +10,9 @@ namespace Bearventure.Gameplay.Characters.Skills
     {
         // TODO: Invent a more descriptive name
         private float cdTimer;
-        private Animation animation;
+        private Animation rightAnimation;
+        private Animation leftAnimation;
         private Character subject;
-        private Character target;
-        private bool mobile;
 
         private List<string> effects = new List<string>();
         private List<Vector2> effectPositions = new List<Vector2>();
@@ -91,6 +90,22 @@ namespace Bearventure.Gameplay.Characters.Skills
             set;
         }
         /// <summary>
+        /// Gets or sets the name of the skill.
+        /// </summary>
+        public string Name
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the description of the skill.
+        /// </summary>
+        public string Description
+        {
+            get;
+            set;
+        }
+        /// <summary>
         /// Gets or sets the frames of this skills animation that CombatManager use;
         /// </summary>
         public List<int> DamagingFrames
@@ -106,6 +121,14 @@ namespace Bearventure.Gameplay.Characters.Skills
             }
         }
         private List<int> damagingFrames;
+        /// <summary>
+        /// Gets or sets the force inflicted to the target of this skill upon hit.
+        /// </summary>
+        public Vector2 InflictForce
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// Gets or sets the width of the skills hitbox.
         /// </summary>
@@ -163,13 +186,45 @@ namespace Bearventure.Gameplay.Characters.Skills
             private set;
         }
 
-        public CharacterSkill(Character subject, Animation animation, int cooldown, int damage)
+        public Constants.DamageType DamageType
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Setups the skill with 1 animation.
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <param name="animation"></param>
+        /// <param name="cooldown"></param>
+        /// <param name="damage"></param>
+        /// <param name="DamageType"></param>
+        public CharacterSkill(Character subject, Animation animation, int cooldown, int damage, Constants.DamageType DamageType)
         {
             this.subject = subject;
-            this.animation = animation;
+            this.rightAnimation = animation;
             this.Cooldown = cooldown;
             this.Damage = damage;
             this.IsReady = true;
+            this.DamageType = DamageType;
+        }
+        /// <summary>
+        /// Setups the skill with different animations for different directions.
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <param name="animation"></param>
+        /// <param name="cooldown"></param>
+        /// <param name="damage"></param>
+        /// <param name="DamageType"></param>
+        public CharacterSkill(Character subject, Animation right, Animation left, int cooldown, int damage, Constants.DamageType DamageType)
+        {
+            this.subject = subject;
+            this.rightAnimation = right;
+            this.leftAnimation = left;
+            this.Cooldown = cooldown;
+            this.Damage = damage;
+            this.IsReady = true;
+            this.DamageType = DamageType;
         }
         /// <summary>
         /// Returns true if the skills hitbox hits the characters BoundingBox.
@@ -193,19 +248,6 @@ namespace Bearventure.Gameplay.Characters.Skills
 
             if (IsActive)
             {
-                for (int i = 0; i < HitBoxPositions.Length; i++)
-                    if (HitBoxPositions[i].X > 0)
-                    {
-                        if (subject.direction == Constants.Direction.Left)
-                            HitBoxPositions[i].X *= -1;
-                    }
-                    else
-                    {
-                        if (subject.direction == Constants.Direction.Right)
-                            HitBoxPositions[i].X *= -1;
-                    }
-
-
                 if (subject.velocity.X < UltimateVelocityX + Acceleration)
                     subject.velocity.X += Acceleration;
                 else if (subject.velocity.X > UltimateVelocityX - Acceleration)
@@ -215,15 +257,32 @@ namespace Bearventure.Gameplay.Characters.Skills
 
                 for (int i = 0; i < DamagingFrames.Count; i++)
                 {
-                    if (animation.CurrentFrame == DamagingFrames[i])
+                    if (rightAnimation.CurrentFrame == DamagingFrames[i] || (leftAnimation != null && leftAnimation.CurrentFrame == DamagingFrames[i]))
                     {
-                        HitBox = new Rectangle((int)subject.position.X + (int)HitBoxPositions[i].X, (int)subject.position.Y + (int)HitBoxPositions[i].Y, HitBoxWidth, HitBoxHeight);
+                        if (subject.directionX == Constants.DirectionX.Left)
+                        {
+                            HitBox = new Rectangle((int)subject.position.X - ((int)HitBoxPositions[i].X + HitBoxWidth),
+                                (int)subject.position.Y + (int)HitBoxPositions[i].Y, HitBoxWidth, HitBoxHeight);
+                        }
+                        else
+                        {
+                            HitBox = new Rectangle((int)subject.position.X + (int)HitBoxPositions[i].X,
+                                (int)subject.position.Y + (int)HitBoxPositions[i].Y, HitBoxWidth, HitBoxHeight);
+                        }
+
+                        break;
                     }
+
                     else
                         HitBox = new Rectangle(-1, -1, 1, 1);
                 }
 
-                if (animation.HasFinished)
+                if (rightAnimation.HasFinished)
+                {
+                    IsActive = false;
+                    subject.state = Constants.CharacterState.Stopped;
+                }
+                if (leftAnimation != null && leftAnimation.HasFinished)
                 {
                     IsActive = false;
                     subject.state = Constants.CharacterState.Stopped;
@@ -240,10 +299,27 @@ namespace Bearventure.Gameplay.Characters.Skills
             cdTimer = 0;
             IsReady = false;
             IsActive = true;
-            animation.Reset();
-            subject.currentAnimation = animation;
-            subject.velocity = StartVelocity;
+            rightAnimation.Reset();
+
+            if(leftAnimation != null)
+                leftAnimation.Reset();
+
+            
+            subject.velocity += new Vector2(subject.directionX == Constants.DirectionX.Left ? -StartVelocity.X : StartVelocity.X, StartVelocity.Y);
             HasDamaged = false;
+
+            if (subject.directionX == Constants.DirectionX.Left)
+            {
+                if (leftAnimation != null)
+                {
+                    subject.currentAnimation = leftAnimation;
+                }
+                else
+                    subject.currentAnimation = rightAnimation;
+            }
+            else
+                subject.currentAnimation = rightAnimation;
+
 
             for (int i = 0; i < effects.Count; i++)
             {
@@ -267,6 +343,11 @@ namespace Bearventure.Gameplay.Characters.Skills
         public void DrawHitBox(SpriteBatch spriteBatch, Texture2D texture)
         {
                 spriteBatch.Draw(texture, HitBox, Color.White);
+        }
+
+        public void Cancel()
+        {
+            IsActive = false;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Bearventure
             {
                 soundsEnabled = value;
                 if (soundsEnabled) SoundEffectManager.Instance.IndexSelect();
+                else MusicManager.Instance.StopMusic(); 
             }
         }
         private static bool soundsEnabled;
@@ -25,6 +26,12 @@ namespace Bearventure
         }
 
         public static bool DisplayHealthBars
+        {
+            get;
+            set;
+        }
+
+        public static bool GoreEnabled
         {
             get;
             set;

@@ -123,6 +123,8 @@
     <Compile Include="Engine\Effects\VisualEffectManager.cs" />
     <Compile Include="Engine\Globals.cs" />
     <Compile Include="Engine\ResolutionManager.cs" />
+    <Compile Include="Engine\CollisionDetection\CollisionMap.cs" />
+    <Compile Include="Engine\CollisionDetection\CollisionMapTextureFraction.cs" />
     <Compile Include="Engine\XmlReader.cs" />
     <Compile Include="Gameplay\Camera.cs" />
     <Compile Include="Gameplay\CameraController.cs" />
@@ -135,11 +137,10 @@
     <Compile Include="Gameplay\Characters\Character.cs" />
     <Compile Include="Gameplay\Characters\Skills\CharacterSkill.cs" />
     <Compile Include="Gameplay\Characters\Skills\CharacterSkillCombo.cs" />
-    <Compile Include="Gameplay\Characters\Skills\CombatManager.cs" />
+    <Compile Include="Gameplay\CombatManager.cs" />
     <Compile Include="Gameplay\Characters\Skills\EnemySkill.cs" />
-    <Compile Include="Gameplay\CollisionHandler.cs" />
+    <Compile Include="Engine\CollisionDetection\CollisionHandler.cs" />
     <Compile Include="Gameplay\Characters\Enemy.cs" />
-    <Compile Include="Gameplay\Characters\FlightHelper.cs" />
     <Compile Include="Gameplay\Characters\Player.cs" />
     <Compile Include="Gameplay\HUD\HeadsUpDisplay.cs" />
     <Compile Include="Gameplay\HUD\HealthBar.cs" />

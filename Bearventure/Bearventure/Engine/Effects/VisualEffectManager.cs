@@ -62,11 +62,6 @@ namespace Bearventure.Engine.Effects
                 e.Update(gameTime);
             }
 
-            if (Effects.Count >= 3)
-            {
-                int i = 0;
-            }
-
             UpdateTerrainEffects(gameTime);
             CleanEffects();
         }

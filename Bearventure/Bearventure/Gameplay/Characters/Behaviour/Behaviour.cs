@@ -12,10 +12,10 @@ namespace Bearventure
         private Enemy subject;
         private Character target;
         private Constants.BehaviourType behaviourType;
-        public StrategyPlanner strategyPlanner;
+        private StrategyPlanner strategyPlanner;
         private float waitTimer = 0f;
 
-        private float blockCheckFrequency = 100f;
+        private float blockCheckFrequency = 50f;
         private float blockCheckTimer = 0f;
         private bool TimeOut
         {
@@ -26,7 +26,7 @@ namespace Bearventure
             set
             {
                 if(value == true)
-                    SetState(Constants.CharacterState.Stopped);
+                    subject.SetState(Constants.CharacterState.Stopped);
 
                 timeOut = value;
             }
@@ -56,6 +56,7 @@ namespace Bearventure
             subject.state = Constants.CharacterState.Stopped;
             target = player;
             strategyPlanner = new StrategyPlanner(subject, target);
+            PointY = subject.Orientation == Constants.CharacterOrientation.Air ? (int)subject.position.Y : 0;
         }
         /// <summary>
         /// Set up passive behaviour. A passive subject stands still until the player reaches its line of sight. This method can be called upon at any time to switch from a previously initialized behaviour type.
@@ -86,6 +87,27 @@ namespace Bearventure
         }
         #endregion
 
+        #region Gets & Sets
+        /// <summary>
+        /// Set wait time for character in milliseconds. The use of wait time depends on the type of the subjects behaviour. 
+        /// FixedPatrol: Subject stops for a time equal to Wait_time at each patrol point.
+        /// </summary>
+        public float WaitTime
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets and sets the Y-scale patrolling point. This is needed for Air-oriented characters.
+        /// </summary>
+        public int PointY
+        {
+            get;
+            set;
+        }
+        
+        #endregion
+
         #region Public methods
         /// <summary>
         /// Should be called in the Update method of the subject. Applies the chosen behaviour type to it.
@@ -97,69 +119,80 @@ namespace Bearventure
 
             strategyPlanner.Plan(gameTime);
 
-            switch (behaviourType)
+            switch (strategyPlanner.CurrentAction())
             {
-                case Constants.BehaviourType.FixedPatrol:
-                    switch (strategyPlanner.CurrentAction())
-                    {
-                        case Constants.ActionType.Default:
+                case Constants.ActionType.Default:
+                    if (behaviourType == Constants.BehaviourType.FixedPatrol)
+                        if (CharacterPhysics.OnGround(subject) || subject.Orientation == Constants.CharacterOrientation.Air)
                             UpdateFixedPatrol(gameTime);
-                            break;
-                        case Constants.ActionType.Chase:
-                            GoTo((int)target.position.X);
-                            break;
-                        case Constants.ActionType.Attack:
-                            if(subject.ActiveSkill == null || !subject.ActiveSkill.IsActive)
-                                foreach (EnemySkill s in subject.Skills)
-                                {
-                                    foreach (Condition c in s.Conditions)
-                                        if (c.Fulfilled(subject, target))
-                                        {
-                                            if (s.IsReady && !s.IsActive)
-                                            {
-                                                subject.UseSkill(s);
-                                                return;
-                                            }
-                                        }
-                                }
-                            break;
-                        case Constants.ActionType.Stop:
-                            SetState(Constants.CharacterState.Stopped);
-                            break;
-                    }
-
+                    if (PointY > 0)
+                        UpdateAltitude(PointY);
                     break;
-                default:
-                    Debug.Assert(true, "Behaviour class Apply method switch case behaviour type default");
+                case Constants.ActionType.Chase:
+                    if (CharacterPhysics.OnGround(subject) || subject.Orientation == Constants.CharacterOrientation.Air)
+                        GoTo((int)target.position.X);
+                    if (PointY > 0)
+                        UpdateAltitude((int)target.BoundingBox.Y);
+                    break;
+                case Constants.ActionType.Attack:
+                    if(CharacterPhysics.OnGround(subject) || subject.Orientation == Constants.CharacterOrientation.Air)
+                        subject.SetState(Constants.CharacterState.Stopped);
+                    break;
+                case Constants.ActionType.Stop:
+                    if (CharacterPhysics.OnGround(subject) || subject.Orientation == Constants.CharacterOrientation.Air)
+                        subject.SetState(Constants.CharacterState.Stopped);
+                    if (PointY > 0)
+                        UpdateAltitude(PointY);
                     break;
             }
-        }
-        /// <summary>
-        /// Set wait time for character in milliseconds. The use of wait time depends on the type of the subjects behaviour. 
-        /// FixedPatrol: Subject stops for a time equal to Wait_time at each patrol point.
-        /// </summary>
-        public float WaitTime
-        {
-            get;
-            set;
+
+            ManageSkills();
+            
         }
 
         #endregion
 
         #region Private methods
 
+        private void ManageSkills()
+        {
+            if (subject.ActiveSkill == null || !subject.ActiveSkill.IsActive)
+            {
+                foreach (EnemySkill s in subject.Skills)
+                {
+                    int fulfilledConditions = 0;
+
+                    foreach (Condition c in s.Conditions)
+                    {
+                        if (c.Fulfilled(subject, target))
+                        {
+                            fulfilledConditions++;
+                        }
+                    }
+
+                    if (fulfilledConditions == s.Conditions.Count)
+                    {
+                        if (s.IsReady && !s.IsActive)
+                        {
+                            subject.UseSkill(s);
+                            return;
+                        }
+                    }
+                }
+
+            }
+        }
         private void UpdateFreePatrol()
         {
 
         }
-
         private void UpdateFixedPatrol(GameTime gameTime)
         {
             waitTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            float brakepoint = (subject.walkSpeed / subject.deacceleration) * 2;
+            float brakepoint = (subject.walkSpeed / subject.decceleration) * 2;
 
-            if (DistanceToPoint(pointA) <= brakepoint)
+            if (DistanceBetween((int)subject.position.X, pointA) <= brakepoint)
             {
                 if (previousPoint != pointA)
                 {
@@ -168,10 +201,10 @@ namespace Bearventure
                 }
 
                 nextPoint = pointB;
-                SetState(Constants.CharacterState.Stopped);
+                subject.SetState(Constants.CharacterState.Stopped);
             }
 
-            else if (DistanceToPoint(pointB) <= brakepoint)
+            else if (DistanceBetween((int)subject.position.X, pointB) <= brakepoint)
             {
                 if (previousPoint != pointB)
                 {
@@ -180,65 +213,81 @@ namespace Bearventure
                 }
 
                 nextPoint = pointA;
-                SetState(Constants.CharacterState.Stopped);
+                subject.SetState(Constants.CharacterState.Stopped);
+            }
+
+            if (blockCheckTimer >= blockCheckFrequency)
+            {
+                blockCheckTimer = 0;
+
+                if (CharacterPhysics.Blocked(subject))
+                {
+                    if (nextPoint == pointA)
+                    {
+                        previousPoint = pointA;
+                        nextPoint = pointB;
+                    }
+                    else if(nextPoint == pointB)
+                    {
+                        previousPoint = pointB;
+                        nextPoint = pointA;
+                    }
+                }
             }
 
             if (waitTimer >= WaitTime)
             {
                 GoTo(nextPoint);
-
-                if (blockCheckTimer >= blockCheckFrequency)
-                {
-                    blockCheckTimer = 0;
-
-                    if (CharacterPhysics.Blocked(subject))
-                    {
-                        nextPoint = previousPoint;
-                    }
-                }
             }
 
         }
+        private void UpdateAltitude(int point)
+        {
+            float brakepoint = (subject.walkSpeed / subject.decceleration) * 2;
 
+            int position = (int)subject.position.Y;
+
+            if (DistanceBetween(position, point) > brakepoint)
+            {
+                if (position > point)
+                    subject.directionY = Constants.DirectionY.Up;
+                else
+                    subject.directionY = Constants.DirectionY.Down;
+            }
+            else
+                subject.directionY = Constants.DirectionY.Hold;
+
+        }
         private int NearestPoint
         {
             get
             {
-                return DistanceToPoint(pointA) < DistanceToPoint(pointB) ? pointA : pointB;
+                return DistanceBetween((int)subject.position.X, pointA) < DistanceBetween((int)subject.position.X, pointB) ? pointA : pointB;
             }
         }
-
-        private int DistanceToPoint(int point)
+        private int DistanceBetween(int a, int b)
         {
-            int distance = (int)subject.position.X - point;
+            int distance = a - b;
             return (distance < 0) ? distance * -1 : distance;
         }
-
         private void GoTo(int point)
         {
             int position = (int)subject.position.X;
 
             if (position < point)
             {
-                ChangeDirection(Constants.Direction.Right);
-                SetState(Constants.CharacterState.Walking);
+                ChangeDirection(Constants.DirectionX.Right);
+                subject.SetState(Constants.CharacterState.Walking);
             }
             else if (position > point)
             {
-                ChangeDirection(Constants.Direction.Left);
-                SetState(Constants.CharacterState.Walking);
+                ChangeDirection(Constants.DirectionX.Left);
+                subject.SetState(Constants.CharacterState.Walking);
             }
         }
-
-        private void ChangeDirection(Constants.Direction newDirection)
+        private void ChangeDirection(Constants.DirectionX newDirection)
         {
-            subject.direction = newDirection;
-        }
-
-        private void SetState(Constants.CharacterState newState)
-        {
-            if(subject.state != Constants.CharacterState.UsingSkill && subject.state != Constants.CharacterState.Disabled)
-                subject.state = newState;
+            subject.directionX = newDirection;
         }
 
         #endregion

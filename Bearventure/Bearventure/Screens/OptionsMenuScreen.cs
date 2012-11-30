@@ -30,7 +30,6 @@ namespace Bearventure
         MenuEntry barsMenuEntry;
         MenuEntry resolutionMenuEntry;
 
-        Point resolution;
         Constants.ScreenMode screenMode;
 
         enum Ungulate

@@ -1,5 +1,6 @@
 ﻿
 using Bearventure.Gameplay.Characters;
+using Microsoft.Xna.Framework;
 namespace Bearventure
 {
     /// <summary>
@@ -35,16 +36,16 @@ namespace Bearventure
             switch (Type)
             {
                 case Constants.ConditionType.DistanceToPlayerEqualTo:
-                    if (DistanceBetween((int)subject.position.X, (int)player.position.X) == (int)Value && DistanceBetween((int)subject.position.Y, (int)player.position.Y) < subject.BoundingBox.Height) { return true; }
+                    if (Vector2.Distance(subject.position, player.position) == (int)Value) { return true; }
                     break;
                 case Constants.ConditionType.DistanceToPlayerLowerThan:
-                    if (DistanceBetween((int)subject.position.X, (int)player.position.X) < (int)Value && DistanceBetween((int)subject.position.Y, (int)player.position.Y) < subject.BoundingBox.Height) { return true; }
+                    if (Vector2.Distance(subject.position, player.position) < (int)Value) { return true; }
                     break;
                 case Constants.ConditionType.DistanceToPlayerGreaterThan:
-                    if (DistanceBetween((int)subject.position.X, (int)player.position.X) > (int)Value && DistanceBetween((int)subject.position.Y, (int)player.position.Y) < subject.BoundingBox.Height) { return true; }
+                    if (Vector2.Distance(subject.position, player.position) > (int)Value) { return true; }
                     break;
                 case Constants.ConditionType.DistanceToPlayerOtherThan:
-                    if (DistanceBetween((int)subject.position.X, (int)player.position.X) != (int)Value && DistanceBetween((int)subject.position.Y, (int)player.position.Y) < subject.BoundingBox.Height) { return true; }
+                    if (Vector2.Distance(subject.position, player.position) != (int)Value) { return true; }
                     break;
                 case Constants.ConditionType.HealthEqualTo:
                     if (subject.health == (int)Value) { return true; }
@@ -61,6 +62,9 @@ namespace Bearventure
                 case Constants.ConditionType.PlayerState:
                     if (player.state == (Constants.CharacterState)Value) { return true; }
                     break;
+                case Constants.ConditionType.SubjectState:
+                    if (subject.state == (Constants.CharacterState)Value) { return true; }
+                    break;
                 case Constants.ConditionType.VelocityEqualTo:
                     if (subject.velocity.X == (float)Value) { return true; }
                     break;
@@ -73,16 +77,27 @@ namespace Bearventure
                 case Constants.ConditionType.VelocityOtherThan:
                     if (subject.velocity.X != (float)Value) { return true; }
                     break;
+                case Constants.ConditionType.AttackReady:
+                    if (subject.Attack.IsReady == (bool)Value) { return true; }
+                    break;
+                case Constants.ConditionType.Blocked:
+                    if(CharacterPhysics.Blocked(subject) == (bool)Value) { return true; }
+                    break;
+                case Constants.ConditionType.FacingPlayer:
+                    if (player.position.X < subject.position.X)
+                    {
+                        return subject.directionX == Constants.DirectionX.Left ? true : false;
+                    }
+                    else if (player.position.X > subject.position.X)
+                    {
+                        return subject.directionX == Constants.DirectionX.Right ? true : false;
+                    }
+                    break;
                 default:
                     return false;
             }
 
             return false;
-        }
-
-        private int DistanceBetween(int a, int b)
-        {
-            return a - b > 0 ? a - b : b - a;
         }
     }
 }

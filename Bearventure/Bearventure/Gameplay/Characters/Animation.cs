@@ -1,6 +1,7 @@
 ﻿#region Using-statements
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 #endregion
 
 namespace Bearventure.Gameplay.Characters
@@ -14,6 +15,7 @@ namespace Bearventure.Gameplay.Characters
         private float interval;
         private bool backwards;
         private bool looping;
+        private float freezeTimer;
 
         #endregion
 
@@ -86,7 +88,7 @@ namespace Bearventure.Gameplay.Characters
         }
         #endregion
 
-        #region Gets
+        #region Gets & Sets
         public Texture2D spriteSheet
         {
             get;
@@ -211,8 +213,38 @@ namespace Bearventure.Gameplay.Characters
                 return (Texture2D)render;
             }
         }
+        
+        public struct FrameFreezer
+        {
+            public List<int> Frames;
+            public float Amount;
+        };
+
+        private bool IsCurrentFrameFreezable
+        {
+            get
+            {
+                foreach (int i in FreezeFrames.Frames)
+                {
+                    if (CurrentFrame == i)
+                        return true;
+                }
+
+                return false;
+            }
+        }
+        /// <summary>
+        /// Gets and sets the frames that the animation will freeze to for a time euqal to Amount in milliseconds.
+        /// </summary>
+        public FrameFreezer FreezeFrames
+        {
+            get;
+            set;
+        }
+
         #endregion
         #region Methods
+
         public void Animate(GameTime gameTime)
         {
             switch (backwards)
@@ -243,8 +275,22 @@ namespace Bearventure.Gameplay.Characters
 
             if (animTimer >= interval)
             {
-                animTimer = 0;
-                NextFrame();
+                if (FreezeFrames.Frames != null && IsCurrentFrameFreezable)
+                {
+                    freezeTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    if (freezeTimer >= FreezeFrames.Amount + interval)
+                    {
+                        freezeTimer = 0;
+                        animTimer = 0;
+                        NextFrame();
+                    }
+                }
+                else
+                {
+                    animTimer = 0;
+                    NextFrame();
+                }
             }
         }
 
@@ -256,8 +302,21 @@ namespace Bearventure.Gameplay.Characters
 
             if (animTimer >= interval)
             {
-                animTimer = 0;
-                PreviousFrame();
+                if (FreezeFrames.Frames != null && IsCurrentFrameFreezable)
+                {
+                    freezeTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    if (freezeTimer >= FreezeFrames.Amount)
+                    {
+                        animTimer = 0;
+                        PreviousFrame();
+                    }
+                }
+                else
+                {
+                    animTimer = 0;
+                    PreviousFrame();
+                }
             }
         }
 

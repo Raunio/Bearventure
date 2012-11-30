@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Bearventure.Engine.Effects;
 using Bearventure.Gameplay.Characters.Skills;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Content;
 
 namespace Bearventure.Gameplay.Characters
 {
@@ -14,25 +15,31 @@ namespace Bearventure.Gameplay.Characters
         Animation walkRight;
         Animation walkLeft;
 
+        Texture2D comboSheet;
+
         CharacterSkillCombo combo1 = new CharacterSkillCombo();
 
-        public Player(Texture2D spriteSheet)
+        public Player(ContentManager content)
         {
             Name = "You";
             scale = 1f;
-            this.spriteSheet = spriteSheet;
-            stoppedRight = new Animation(spriteSheet, 0, 88, 121, 12, 12, 70);
-            stoppedLeft = new Animation(spriteSheet, 0, 88, 121, 9, 9, 70);
-            walkRight = new Animation(spriteSheet, 0, 88, 121, 13, 21, 70);
-            walkLeft = new Animation(spriteSheet, 0, 88, 121, 0, 8, 70, true);
-            this.position = position;
-            direction = Constants.Direction.Right;
-            currentAnimation = stoppedRight;
+            this.spriteSheet = content.Load<Texture2D>("Sprites/Karhu");
+            comboSheet = content.Load<Texture2D>("Sprites/karhukombo1");
 
+            this.position = position;
+            directionX = Constants.DirectionX.Right;
+
+            InitStats();
+            InitAnimations();
+            InitSkills();
+        }
+
+        private void InitStats()
+        {
             acceleration = 1f;
-            deacceleration = 1f;
-            walkSpeed = 10f;
-            jumpStrenght = 18;
+            decceleration = 1f;
+            walkSpeed = 12f;
+            jumpStrenght = 24;
 
             maxHealth = 50;
             health = 50;
@@ -41,50 +48,141 @@ namespace Bearventure.Gameplay.Characters
 
             BoundingBoxOffset = 15;
 
-            CharacterSkill skill1 = new CharacterSkill(this, new Animation(spriteSheet, 0, 88, 121, 19, 21, 70, false, false), 180, 20);
+            ArmorType = Constants.ArmorType.Fur;
+        }
+
+        private void InitAnimations()
+        {
+            stoppedRight = new Animation(spriteSheet, 0, 88, 121, 12, 12, 70);
+            stoppedLeft = new Animation(spriteSheet, 0, 88, 121, 9, 9, 70);
+            walkRight = new Animation(spriteSheet, 0, 88, 121, 13, 21, 70);
+            walkLeft = new Animation(spriteSheet, 0, 88, 121, 0, 8, 70, true);
+
+            currentAnimation = stoppedRight;
+        }
+
+        private void InitSkills()
+        {
+            #region Combo1 Initialization
+            #region ComboSkill 1 Initialization
+
+            Animation StraightPunch_R = new Animation(comboSheet, 0, 118, 120, 0, 3, 30, false, false);
+            StraightPunch_R.FreezeFrames = new Animation.FrameFreezer
+            {
+                Frames = new List<int>
+                {
+                    2,
+                },
+
+                Amount = 150,
+            };
+
+            Animation StraightPunch_L = new Animation(comboSheet, 0, 118, 120, 0, 3, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+            StraightPunch_L.FreezeFrames = new Animation.FrameFreezer
+            {
+                Frames = new List<int>
+                {
+                    2,
+                },
+
+                Amount = 150,
+            };
+
+            CharacterSkill skill1 = new CharacterSkill(this, StraightPunch_R, StraightPunch_L, 300, 3, Constants.DamageType.Crushing);
+
             skill1.SoundEffectAsset = Constants.KarhuHit1;
-            /*skill1.Acceleration = 0.25f;
-            skill1.StartVelocity = new Vector2(-9, -5);
-            skill1.UltimateVelocityX = 0;*/
+            skill1.Acceleration = 0.25f;
+            skill1.StartVelocity = new Vector2(5, 0);
+            skill1.UltimateVelocityX = 0;
             skill1.DamagingFrames = new List<int>
             {
-                20,
-                21,
+                2,
             };
-            skill1.HitBoxPositions[0] = new Vector2(30, -25);
-            skill1.HitBoxPositions[1] = new Vector2(30, -25);
-            skill1.HitBoxHeight = 75;
+            skill1.HitBoxPositions[0] = new Vector2(30, -10);
+            skill1.HitBoxHeight = 25;
             skill1.HitBoxWidth = 25;
 
-            CharacterSkill skill2 = new CharacterSkill(this, new Animation(spriteSheet, 0, 88, 121, 6, 8, 70, false, false), 200, 20);
+            #endregion
+            #region ComboSkill 2 Initialization
+            Animation SweepingPunch_R = new Animation(comboSheet, 1, 118, 120, 0, 5, 30, false, false);
+            SweepingPunch_R.FreezeFrames = new Animation.FrameFreezer
+            {
+                Frames = new List<int>
+                {
+                    3,
+                    4,
+                },
+
+                Amount = 150,
+            };
+            Animation SweepingPunch_L = new Animation(comboSheet, 1, 118, 120, 0, 5, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+            SweepingPunch_L.FreezeFrames = new Animation.FrameFreezer
+            {
+                Frames = new List<int>
+                {
+                    3,
+                    4,
+                },
+
+                Amount = 40,
+            };
+            CharacterSkill skill2 = new CharacterSkill(this, SweepingPunch_R, SweepingPunch_L, 300, 4, Constants.DamageType.Crushing);
+
             skill2.SoundEffectAsset = Constants.KarhuHit2;
-            /*skill2.Acceleration = 0.25f;
-            skill2.StartVelocity = new Vector2(9, -1);
-            skill2.UltimateVelocityX = 0;*/
+            skill2.Acceleration = 0.25f;
+            skill2.StartVelocity = new Vector2(4, 0);
+            skill2.UltimateVelocityX = 0;
             skill2.DamagingFrames = new List<int>
             {
-                6,
-                8,
+                3,
+                4,
             };
-            skill2.HitBoxPositions[0] = new Vector2(40, -25);
-            skill2.HitBoxPositions[1] = new Vector2(40, -25);
-            skill2.HitBoxHeight = 75;
+            skill2.HitBoxPositions[0] = new Vector2(30, -5);
+            skill2.HitBoxPositions[1] = new Vector2(30, 0);
+            skill2.HitBoxHeight = 25;
             skill2.HitBoxWidth = 25;
 
-            CharacterSkill skill3 = new CharacterSkill(this, new Animation(spriteSheet, 0, 88, 121, 12, 14, 70, false, false), 200, 20);
+            #endregion
+            #region ComboSkill 3 Initialization
+
+            Animation UpperCut_R = new Animation(comboSheet, 2, 118, 120, 3, 7, 25, false, false);
+            UpperCut_R.FreezeFrames = new Animation.FrameFreezer
+            {
+                Frames = new List<int>
+                {
+                    5,
+                },
+
+                Amount = 150,
+            };
+            Animation UpperCut_L = new Animation(comboSheet, 2, 118, 120, 2, 7, 25, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+            UpperCut_L.FreezeFrames = new Animation.FrameFreezer
+            {
+                Frames = new List<int>
+                {
+                    5,
+                },
+
+                Amount = 150,
+            };
+            CharacterSkill skill3 = new CharacterSkill(this, UpperCut_R, UpperCut_L, 300, 10, Constants.DamageType.Crushing);
+
             skill3.SoundEffectAsset = Constants.KarhuHit3;
-            /*skill3.Acceleration = 0.25f;
-            skill3.StartVelocity = new Vector2(0, -12);
-            skill3.UltimateVelocityX = 0;*/
+            skill3.Acceleration = 0.25f;
+            skill3.StartVelocity = new Vector2(3, -2);
+            skill3.UltimateVelocityX = 0;
+
+            skill3.InflictForce = new Vector2(30, -30);
+
             skill3.DamagingFrames = new List<int>
             {
-                11,
-                12,
+                5,
             };
-            skill3.HitBoxPositions[0] = new Vector2(50, -25);
-            skill3.HitBoxPositions[1] = new Vector2(50, -25);
-            skill3.HitBoxHeight = 75;
+            skill3.HitBoxPositions[0] = new Vector2(30, -25);
+            skill3.HitBoxHeight = 25;
             skill3.HitBoxWidth = 25;
+
+            #endregion
 
             combo1.SkillArray = new List<CharacterSkill>
             {
@@ -93,46 +191,53 @@ namespace Bearventure.Gameplay.Characters
                 skill3,
             };
 
-            combo1.ResetTime = 500;
-        }
+            combo1.ResetTime = 1500;
 
+            combo1.Name = "Flying Diarrhea Drops";
+            combo1.Description = "A basic 3-strike combo with the final strike causing a mediocre force knockback";
+
+            #endregion
+        }
         public override void Update(GameTime gameTime)
         {
-            currentAnimation.Animate(gameTime);
             CharacterPhysics.Apply(this, gameTime);
 
-            // TODO: This can be done more smartly. See MenuScreen.cs
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                SetState(Constants.CharacterState.Walking);
-
-                direction = Constants.Direction.Left;
-            }
-
-            else if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                SetState(Constants.CharacterState.Walking);
-
-                direction = Constants.Direction.Right;
-            }
-            else
-            {
-                SetState(Constants.CharacterState.Stopped);
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                SetState(Constants.CharacterState.Jumping);
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Q))
-            {
-                combo1.SetNextSkill();
-                UseSkill(combo1.ActiveSkill);
-            }
-
-            combo1.Update(gameTime);
-
             HandleAnimations();
+
+            currentAnimation.Animate(gameTime);
+
+            // TODO: This can be done more smartly. See MenuScreen.cs
+            if (!IsDisabled)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                {
+                    SetState(Constants.CharacterState.Walking);
+
+                    directionX = Constants.DirectionX.Left;
+                }
+
+                else if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                {
+                    SetState(Constants.CharacterState.Walking);
+
+                    directionX = Constants.DirectionX.Right;
+                }
+                else
+                {
+                    SetState(Constants.CharacterState.Stopped);
+                }
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                    SetState(Constants.CharacterState.Jumping);
+
+                if (Keyboard.GetState().IsKeyDown(Keys.Q))
+                {
+                    combo1.SetNextSkill();
+                    UseSkill(combo1.ActiveSkill);
+                }
+            }
+
+            combo1.Update(gameTime); 
 
             RegenerateHealth(gameTime);
 
@@ -144,41 +249,13 @@ namespace Bearventure.Gameplay.Characters
             switch (state)
             {
                 case Constants.CharacterState.Stopped:
-                    if (direction == Constants.Direction.Left) { currentAnimation = stoppedLeft; }
+                    if (directionX == Constants.DirectionX.Left) { currentAnimation = stoppedLeft; }
                     else { currentAnimation = stoppedRight; }
                     break;
                 case Constants.CharacterState.Walking:
-                    if (direction == Constants.Direction.Left) { currentAnimation = walkLeft; }
+                    if (directionX == Constants.DirectionX.Left) { currentAnimation = walkLeft; }
                     else { currentAnimation = walkRight; }
                     break;
-            }
-        }
-
-        private void SetState(Constants.CharacterState newState)
-        {
-            if (state != Constants.CharacterState.UsingSkill && state != Constants.CharacterState.Disabled)
-            {
-                switch (newState)
-                {
-                    case Constants.CharacterState.Walking:
-                        if (CharacterPhysics.OnGround(this))
-                            state = newState;
-                        else
-                            return;
-                        break;
-                    case Constants.CharacterState.Stopped:
-                        if (CharacterPhysics.OnGround(this))
-                            state = newState;
-                        else
-                            return;
-                        break;
-                    case Constants.CharacterState.Jumping:
-                        state = newState;
-                        break;
-                    case Constants.CharacterState.UsingSkill:
-                        state = newState;
-                        break;
-                }
             }
         }
     }

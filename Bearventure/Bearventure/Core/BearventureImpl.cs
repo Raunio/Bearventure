@@ -56,7 +56,9 @@ namespace Bearventure
             ResolutionManager.Initialize(ref graphics);
             ResolutionManager.SetVirtualResolution(Constants.ScreenMode.v720p);
             ResolutionManager.SetResolution(graphics.GraphicsDevice.DisplayMode.Width, graphics.GraphicsDevice.DisplayMode.Height, false); // Gets your system screen size etc...
-
+            Globals.SoundsEnabled = true;
+            Globals.GoreEnabled = true;
+            Globals.DisplayHealthBars = true;
 
 #if WINDOWS_PHONE
             // Hook events on the PhoneApplicationService so we're notified of the application's life cycle

@@ -36,7 +36,7 @@ namespace Bearventure.Gameplay.Characters
         /// <summary>
         /// Character brake strenght.
         /// </summary>
-        public float deacceleration;
+        public float decceleration;
         /// <summary>
         /// Character mass.
         /// </summary>
@@ -48,7 +48,27 @@ namespace Bearventure.Gameplay.Characters
         /// <summary>
         /// Left or right.
         /// </summary>
-        public Constants.Direction direction;
+        public Constants.DirectionX directionX;
+        /// <summary>
+        /// Up or down
+        /// </summary>
+        public Constants.DirectionY directionY;
+        /// <summary>
+        /// Character orientation. Air or Ground.
+        /// </summary>
+        public Constants.CharacterOrientation Orientation
+        {
+            protected set;
+            get;
+        }
+        /// <summary>
+        /// Armor type of the character.
+        /// </summary>
+        public Constants.ArmorType ArmorType
+        {
+            protected set;
+            get;
+        }
         /// <summary>
         /// Character current health.
         /// </summary>
@@ -86,14 +106,6 @@ namespace Bearventure.Gameplay.Characters
             }
         }
         private string name;
-        /// <summary>
-        /// Character orientation. Air or Ground.
-        /// </summary>
-        public Constants.CharacterOrientation orientation
-        {
-            protected set;
-            get;
-        }
         /// <summary>
         /// Color data used for collision
         /// </summary>
@@ -133,6 +145,17 @@ namespace Bearventure.Gameplay.Characters
                 return new Rectangle(x, y, width, height);
             }
         }
+
+        public bool IsDisabled
+        {
+            get
+            {
+                if (state == Constants.CharacterState.Disabled || state == Constants.CharacterState.Knocked || state == Constants.CharacterState.Stunned)
+                    return true;
+                else
+                    return false;
+            }
+        }
         /// <summary>
         /// Draw
         /// </summary>
@@ -140,7 +163,7 @@ namespace Bearventure.Gameplay.Characters
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             // TODO: Chop this too -Huemac
-            spriteBatch.Draw(spriteSheet, position, currentAnimation.FrameRectangle, Color.White, currentAnimation.Rotation, currentAnimation.Origin, scale, currentAnimation.Effects, currentAnimation.LayerDepth);
+            spriteBatch.Draw(currentAnimation.spriteSheet, position, currentAnimation.FrameRectangle, Color.White, currentAnimation.Rotation, currentAnimation.Origin, scale, currentAnimation.Effects, currentAnimation.LayerDepth);
         }
 
         public abstract void Update(GameTime gameTime);
@@ -160,14 +183,42 @@ namespace Bearventure.Gameplay.Characters
             }
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(float damage)
         {
             if (damageTimer > 300)
             {
-                health -= damage;
+                health -= (int)damage;
                 damageTimer = 0;
 
                 CombatManager.Instance.CombatLog.Add(this.Name + " took " + damage + " damage.");
+            }
+        }
+
+        public void SetState(Constants.CharacterState newState)
+        {
+            if (state != Constants.CharacterState.UsingSkill && !IsDisabled)
+            {
+                switch (newState)
+                {
+                    case Constants.CharacterState.Walking:
+                        if (CharacterPhysics.OnGround(this))
+                            state = newState;
+                        else
+                            return;
+                        break;
+                    case Constants.CharacterState.Stopped:
+                        if (CharacterPhysics.OnGround(this))
+                            state = newState;
+                        else
+                            return;
+                        break;
+                    case Constants.CharacterState.Jumping:
+                        state = newState;
+                        break;
+                    case Constants.CharacterState.UsingSkill:
+                        state = newState;
+                        break;
+                }
             }
         }
 
@@ -184,8 +235,11 @@ namespace Bearventure.Gameplay.Characters
         protected void CleanActiveSkill()
         {
             if(ActiveSkill != null)
-                if (!ActiveSkill.IsActive)
+                if (!ActiveSkill.IsActive || state != Constants.CharacterState.UsingSkill)
+                {
+                    ActiveSkill.Cancel();
                     ActiveSkill = null;
+                }
         }
 
         #endregion

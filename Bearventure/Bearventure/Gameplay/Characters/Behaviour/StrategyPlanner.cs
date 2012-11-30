@@ -28,9 +28,21 @@ namespace Bearventure
         /// </summary>
         private void InitActions()
         {
+            if (subject.combatBehaviour == Constants.CombatBehaviour.Default)
+                InitDefaultCombat();
+            else if (subject.combatBehaviour == Constants.CombatBehaviour.AttackAndFlee)
+                InitAttackAndFlee();
+        }
+        private void InitDefaultCombat()
+        {
+            defaultAction = new Action(Constants.ActionType.Default);
+            defaultAction.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, subject.Vision));
+            preDeterminedActions.Add(defaultAction);
+
             chase = new Action(Constants.ActionType.Chase);
             chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.Vision));
             chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, subject.AttackRange));
+            chase.AddCondition(new Condition(Constants.ConditionType.Blocked, false));
 
             preDeterminedActions.Add(chase);
 
@@ -40,16 +52,30 @@ namespace Bearventure
 
             preDeterminedActions.Add(stop);
 
-            defaultAction = new Action(Constants.ActionType.Default);
-            defaultAction.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, subject.Vision));
-
-            preDeterminedActions.Add(defaultAction);
-
             attack = new Action(Constants.ActionType.Attack);
             attack.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.AttackRange));
 
             preDeterminedActions.Add(attack);
+        }
 
+        private void InitAttackAndFlee()
+        {
+            defaultAction = new Action(Constants.ActionType.Default);
+            defaultAction.AddCondition(new Condition(Constants.ConditionType.AttackReady, false));
+
+            preDeterminedActions.Add(defaultAction);
+
+            chase = new Action(Constants.ActionType.Chase);
+            chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.Vision));
+            chase.AddCondition(new Condition(Constants.ConditionType.AttackReady, true));
+
+            preDeterminedActions.Add(chase);
+
+            attack = new Action(Constants.ActionType.Attack);
+            attack.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.AttackRange));
+            attack.AddCondition(new Condition(Constants.ConditionType.AttackReady, true));
+
+            preDeterminedActions.Add(attack);
         }
 
         public StrategyPlanner(Enemy subject, Character player)

@@ -71,23 +71,32 @@ namespace Bearventure.Gameplay.HUD
 
         private void DrawCombatLog(SpriteBatch spriteBatch)
         {
-            int count = CombatManager.Instance.CombatLog.Count;
+            int rows = 5;
+            int rowHeight = 20;
 
-            if (count > 0)
+            if (CombatManager.Instance.CombatLog.Count < rows)
             {
                 int counter = 0;
-
-                for (int i = count; i > count - 5; i--)
+                foreach (string s in CombatManager.Instance.CombatLog)
                 {
-                    if (i == 0)
-                        break;
-
-                    int x = (int)logPosition.X;
-                    int y = (int)logPosition.Y + 20 * counter;
+                    spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), CombatManager.Instance.CombatLog[counter],
+                        new Vector2(logPosition.X, logPosition.Y + (rowHeight * counter)), Color.Yellow);
 
                     counter++;
+                }
+            }
+            else
+            {
+                int i = CombatManager.Instance.CombatLog.Count - rows;
+                int j = 0;
 
-                    spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), CombatManager.Instance.CombatLog[i - 1], new Vector2(x, y), Color.Yellow);
+                while (i < CombatManager.Instance.CombatLog.Count)
+                {
+                    spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), CombatManager.Instance.CombatLog[i],
+                        new Vector2(logPosition.X, logPosition.Y + (rowHeight * j)), Color.Yellow);
+
+                    i++;
+                    j++;
                 }
             }
         }
@@ -98,7 +107,7 @@ namespace Bearventure.Gameplay.HUD
             {
                 if (!hb.FixedPosition)
                 {
-                    if (hb.CurrentHealth > 0 && Vector2.Distance(player.position, hb.Position) < DrawDistance && Globals.DisplayHealthBars)
+                    if (hb.CurrentValue > 0 && Vector2.Distance(player.position, hb.Position) < DrawDistance && Globals.DisplayHealthBars)
                         hb.Draw(spriteBatch);
                 }
                 else

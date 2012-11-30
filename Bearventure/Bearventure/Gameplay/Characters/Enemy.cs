@@ -6,7 +6,8 @@ using Bearventure.Gameplay.Characters.Skills;
 
 namespace Bearventure.Gameplay.Characters
 {
-    public class Enemy : Character
+    //Initialization, members, gets & sets
+    public partial class Enemy : Character
     {
         #region Members
 
@@ -66,6 +67,14 @@ namespace Bearventure.Gameplay.Characters
             get;
             private set;
         }
+        /// <summary>
+        /// Gets the basic attack skill of the enemy.
+        /// </summary>
+        public EnemySkill Attack
+        {
+            get;
+            private set;
+        }
 
         #region Animations
 
@@ -121,8 +130,9 @@ namespace Bearventure.Gameplay.Characters
 
             InitAnimations();
             InitStats();
-            InitBehavirour(player, 0, 0);
+            InitSkills();
             this.player = player;
+            InitBehavirour(player, 0, 0);
         }
 
         public Enemy(Constants.EnemyType type, int x, int y, Texture2D spriteSheet, Player player, int patrol_A, int patrol_B)
@@ -133,8 +143,8 @@ namespace Bearventure.Gameplay.Characters
             this.player = player;
             InitAnimations();
             InitStats();
-            InitBehavirour(player, patrol_A, patrol_B);
             InitSkills();
+            InitBehavirour(player, patrol_A, patrol_B);
         }
 
         private void InitAnimations()
@@ -157,6 +167,7 @@ namespace Bearventure.Gameplay.Characters
                     RunLeft = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
                     Stopped = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
                     Jumping = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
+                    Dying = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100, false, false);
                     break;
             }
 
@@ -190,9 +201,9 @@ namespace Bearventure.Gameplay.Characters
                     walkSpeed = 6f;
                     runSpeed = 9f;
                     acceleration = 1f;
-                    deacceleration = 0.5f;
+                    decceleration = 0.5f;
                     jumpStrenght = 5;
-                    orientation = Constants.CharacterOrientation.Ground;
+                    Orientation = Constants.CharacterOrientation.Ground;
                     Vision = 300;
                     AttackRange = 120;
                     health = 50;
@@ -201,20 +212,22 @@ namespace Bearventure.Gameplay.Characters
                     BoundingBoxOffset = 10;
                     ReactSpeed = 250f;
                     mass = 100;
+                    ArmorType = Constants.ArmorType.Fur;
                     break;
 
                 case Constants.EnemyType.DelayOwl:
-                    walkSpeed = 3f;
-                    runSpeed = 5f;
-                    acceleration = 1f;
-                    deacceleration = 0.1f;
+                    walkSpeed = 7f;
+                    runSpeed = 9f;
+                    acceleration = 0.25f;
+                    decceleration = 0.25f;
                     jumpStrenght = 1;
-                    orientation = Constants.CharacterOrientation.Air;
+                    Orientation = Constants.CharacterOrientation.Air;
                     Vision = 400;
-                    AttackRange = 80;
+                    AttackRange = 110;
                     health = 1;
                     maxHealth = 1;
                     healthRegen = 1;
+                    ArmorType = Constants.ArmorType.Feathers;
                     break;
             }
         }
@@ -225,70 +238,102 @@ namespace Bearventure.Gameplay.Characters
             {
                 case Constants.EnemyType.BlackMetalBadger:
                     #region TESTING
-                    EnemySkill testSkill = new EnemySkill(this, new Animation(spriteSheet, 0, 93, 103, 0, 15, 20, false, false), 8000, 2);
+                    EnemySkill testSkill = new EnemySkill(this, new Animation(spriteSheet, 0, 93, 103, 0, 15, 20, false, false), 8000, 2, Constants.DamageType.Crushing);
                     testSkill.Acceleration = 0.25f;
-                    testSkill.StartVelocity = new Vector2(15, -15);
+                    testSkill.StartVelocity = new Vector2(20, 0);
                     testSkill.UltimateVelocityX = 0;
-                    testSkill.AddEffect(Constants.TestEffect, Vector2.Zero);
                     testSkill.SoundEffectAsset = Constants.BadgerSkill;
-                    testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
+                    testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, Vision));
+                    testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, AttackRange));
+                    testSkill.Conditions.Add(new Condition(Constants.ConditionType.FacingPlayer, true));
                     testSkill.DamagingFrames = new List<int>
                     {
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        11,
+                        12,
+                        13,
+                        14,
                         15,
-                        16,
                     };
 
-                    testSkill.HitBoxPositions[0] = position;
-                    testSkill.HitBoxPositions[1] = position;
-                    testSkill.HitBoxHeight = 100;
-                    testSkill.HitBoxWidth = 200;
+                    for(int i = 0; i < 15; i++)
+                        testSkill.HitBoxPositions[i] = new Vector2(40, -BoundingBox.Height / 2);
+                   
+                    testSkill.HitBoxHeight = BoundingBox.Height;
+                    testSkill.HitBoxWidth = 20;
+                    testSkill.InflictForce = new Vector2(20, 0);
 
-                    EnemySkill testAttack = new EnemySkill(this, new Animation(spriteSheet, 0, 93, 103, 1, 4, 80, false, false), 900, 2);
-                    testAttack.StartVelocity = new Vector2(0, -8);
-                    testAttack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
-                    testAttack.SoundEffectAsset = Constants.BadgerAttack;
-                    testAttack.DamagingFrames = new List<int>
+                    Attack = new EnemySkill(this, new Animation(spriteSheet, 0, 93, 103, 1, 4, 80, false, false), 900, 2, Constants.DamageType.Crushing);
+                    Attack.StartVelocity = new Vector2(5, 0);
+                    Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
+                    Attack.SoundEffectAsset = Constants.BadgerAttack;
+                    Attack.DamagingFrames = new List<int>
                     {
                         1,
                         2,
                     };
 
-                    testAttack.HitBoxPositions[0] = position;
-                    testAttack.HitBoxPositions[1] = position;
-                    testAttack.HitBoxHeight = 100;
-                    testAttack.HitBoxWidth = 200;
+                    Attack.HitBoxPositions[0] = new Vector2(20, -10);
+                    Attack.HitBoxPositions[1] = new Vector2(20, -10);
+                    Attack.HitBoxHeight = 20;
+                    Attack.HitBoxWidth = 20;
 
                     Skills = new List<EnemySkill>();
                     Skills.Add(testSkill);
-                    Skills.Add(testAttack);
+                    Skills.Add(Attack);
                     #endregion
                     break;
+                case Constants.EnemyType.DelayOwl:
+                    #region TESTING
+                    Attack = new EnemySkill(this, new Animation(spriteSheet, 0, 91, 59, 0, 1, 100, false, false), 5000, 5, Constants.DamageType.Piercing);
+                    Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
+                    Attack.DamagingFrames = new List<int>();
+
+                    Skills = new List<EnemySkill>();
+                    Skills.Add(Attack);
+                    break;
+                    #endregion
             }
         }
 
         #endregion
 
+    }
+    //Updates and other methods
+    public partial class Enemy : Character
+    {
         #region Updates
 
         private void UpdateSkills(GameTime gameTime)
         {
-            foreach (EnemySkill s in Skills)
-                s.Update(gameTime);
+            if (Skills != null)
+                foreach (EnemySkill s in Skills)
+                    s.Update(gameTime);
         }
 
         public override void Update(GameTime gameTime)
         {
             if (state != Constants.CharacterState.Dead)
             {
-                behaviour.Apply(gameTime);
+                if (!IsDisabled)
+                {
+                    behaviour.Apply(gameTime);
+                }
 
                 HandleAnimations(gameTime);
-
                 UpdateSkills(gameTime);
-
-                RegenerateHealth(gameTime);
-
                 CleanActiveSkill();
+                RegenerateHealth(gameTime);
 
                 if (health <= 0)
                     Kill();
@@ -314,12 +359,12 @@ namespace Bearventure.Gameplay.Characters
             switch (state)
             {
                 case Constants.CharacterState.Walking:
-                    if (direction == Constants.Direction.Left) { ChangeAnimation(WalkLeft); }
+                    if (directionX == Constants.DirectionX.Left) { ChangeAnimation(WalkLeft); }
                     else { ChangeAnimation(WalkRight); }
                     break;
 
                 case Constants.CharacterState.Running:
-                    if (direction == Constants.Direction.Left) { ChangeAnimation(RunLeft); }
+                    if (directionX == Constants.DirectionX.Left) { ChangeAnimation(RunLeft); }
                     else { ChangeAnimation(RunRight); }
                     break;
 
@@ -348,9 +393,10 @@ namespace Bearventure.Gameplay.Characters
 
         public void Kill()
         {
-            state = Constants.CharacterState.Disabled;
+            if (state != Constants.CharacterState.Disabled || state != Constants.CharacterState.Knocked)
+                state = Constants.CharacterState.Disabled;
+
             ChangeAnimation(Dying);
         }
-
     }
 }

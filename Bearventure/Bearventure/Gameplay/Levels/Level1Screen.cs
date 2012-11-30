@@ -23,6 +23,7 @@ using Bearventure.Engine.Effects;
 using Bearventure.Gameplay.Characters;
 using Bearventure.Gameplay.Characters.Skills;
 using Bearventure.Gameplay.HUD;
+using Bearventure.Engine.CollisionDetection;
 
 #endregion
 
@@ -81,13 +82,17 @@ namespace Bearventure
             {
                 if (content == null)
                     content = new ContentManager(ScreenManager.Game.Services, "Content");
-
-                player = new Player(content.Load<Texture2D>("Sprites/Karhu"));
+                
+                player = new Player(content);
                 XmlReader.Initialize(content, player);
-                player.position = XmlReader.StartPoint("Levels/Testilevel2/Items/Testilevel2_StartPoint");
-                gameFont = content.Load<SpriteFont>(Constants.GameFont);
                 background = new LevelBackground(XmlReader.LevelInformation("Levels/Testilevel2/Testilevel2LevelInfo"), content);
+                player.position = XmlReader.StartPoint("Levels/Testilevel2/Items/Testilevel2_StartPoint");
+              
+                gameFont = content.Load<SpriteFont>(Constants.GameFont);
+                
                 enemies = XmlReader.EnemyList("Levels/Testilevel2/Items/Testilevel2_Enemies");
+                Enemy owl = new Enemy(Constants.EnemyType.DelayOwl, new Vector2(700, 3500), content.Load<Texture2D>("Sprites/player"), player);
+                enemies.Add(owl);
                 CombatManager.Instance.Initialize(player, enemies);
                 hud = new HeadsUpDisplay();
                 hud.Initialize(content, ResolutionManager.graphicsDevice, enemies, player);
@@ -96,14 +101,9 @@ namespace Bearventure
 
                 Texture2D[] collisionMap = new Texture2D[background.Fractions];
 
-                for (int i = 0; i < background.Fractions; i++)
-                {
-                    collisionMap[i] = content.Load<Texture2D>("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_" + i);
-                }
+                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 32, 4), background.Fractions, enemies, player, content);
 
-                CollisionHandler.Initialize(collisionMap, enemies, player);
-
-                CharacterPhysics.Gravity = 0.75f;
+                CharacterPhysics.Gravity = 1.25f;
 
                 MusicManager.Instance.LoadContent(content);
                 camera = new Camera(ScreenManager.GraphicsDevice.Viewport, new Vector2(background.Width, background.Height));
@@ -176,10 +176,14 @@ namespace Bearventure
             if (IsActive)
             {
                 foreach (Enemy enemy in enemies)
+                {
                     enemy.Update(gameTime);
+                }
 
                 player.Update(gameTime);
+
                 cameraController.Update(gameTime);
+
                 camera.LookAt(cameraController.Position);
                 VisualEffectManager.Instance.UpdateEffects(gameTime);
                 hud.Update(gameTime, camera.Position);
@@ -242,17 +246,17 @@ namespace Bearventure
                     RasterizerState.CullNone, null, camera.GetTransformation(ResolutionManager.graphicsDevice.GraphicsDevice));
 
             background.Draw(spriteBatch);
-
-            for (int x = 0; x < CollisionHandler.mapText.Length / 2; x++)
-                for (int y = 0; y < 2; y++)
-                    spriteBatch.Draw(CollisionHandler.mapText[x * 2 + y], new Vector2(x * CollisionHandler.mapText[0].Width, y * CollisionHandler.mapText[0].Height), Color.White);
-
+            //background.DrawEdges(spriteBatch);
             foreach (Enemy enemy in enemies)
+            {
                 enemy.Draw(spriteBatch);
-
-            VisualEffectManager.Instance.DrawEffects(spriteBatch);
+                //if (enemy.ActiveSkill != null)
+                    //enemy.ActiveSkill.DrawHitBox(spriteBatch, content.Load<Texture2D>("Sprites/player"));
+            }      
 
             player.Draw(spriteBatch);
+
+            VisualEffectManager.Instance.DrawEffects(spriteBatch);
 
             //if(player.ActiveSkill != null)
                 //player.ActiveSkill.DrawHitBox(spriteBatch, content.Load<Texture2D>("Sprites/player"));

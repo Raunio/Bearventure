@@ -174,7 +174,7 @@ namespace Bearventure.Gameplay.HUD
         /// <summary>
         /// Gets the current value of the bar.
         /// </summary>
-        public int CurrentHealth
+        public int CurrentValue
         {
             get;
             private set;
@@ -182,7 +182,7 @@ namespace Bearventure.Gameplay.HUD
         /// <summary>
         /// Gets the maximum value of the bar.
         /// </summary>
-        public int MaximumHealth
+        public int MaximumValue
         {
             get;
             private set;
@@ -237,9 +237,9 @@ namespace Bearventure.Gameplay.HUD
             else
                 this.Position = subject.position + Offset;
 
-            CurrentHealth = subject.health;
+            CurrentValue = subject.health;
 
-            MaximumHealth = subject.maxHealth;
+            MaximumValue = subject.maxHealth;
         }
 
         private void UpdateHealthBar()
@@ -284,7 +284,7 @@ namespace Bearventure.Gameplay.HUD
         private void DrawText(SpriteBatch spriteBatch)
         {
 
-            spriteBatch.DrawString(font, CurrentHealth.ToString() + "/" + MaximumHealth, new Vector2(Position.X, Position.Y - 15), TextColor);
+            spriteBatch.DrawString(font, CurrentValue.ToString() + "/" + MaximumValue, new Vector2(Position.X, Position.Y - 15), TextColor);
         }
     }
 }

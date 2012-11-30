@@ -8,7 +8,22 @@ namespace Bearventure.Gameplay.Characters.Skills
 {
     public class CharacterSkillCombo
     {
-
+        /// <summary>
+        /// Gets or sets the name of the skill combo.
+        /// </summary>
+        public string Name
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the description of the skill combo.
+        /// </summary>
+        public string Description
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// Gets or sets the array of skills this combo holds.
         /// </summary>

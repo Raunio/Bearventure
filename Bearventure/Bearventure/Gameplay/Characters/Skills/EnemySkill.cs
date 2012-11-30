@@ -9,6 +9,6 @@ namespace Bearventure.Gameplay.Characters.Skills
     {
         public List<Condition> Conditions = new List<Condition>();
 
-        public EnemySkill(Character subject, Animation animation, int cooldown, int damage) : base(subject, animation, cooldown, damage) { }
+        public EnemySkill(Character subject, Animation animation, int cooldown, int damage, Constants.DamageType damageType) : base(subject, animation, cooldown, damage, damageType) { }
     }
 }

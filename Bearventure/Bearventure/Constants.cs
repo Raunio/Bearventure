@@ -18,6 +18,8 @@ namespace Bearventure
         public const String KarhuHit2 = "SoundEffects/hit2";
         public const String KarhuHit3 = "SoundEffects/hit3";
         public const String Splat = "SoundEffects/splat";
+        public const String Scratch = "SoundEffects/scratch1";
+        public const String Crush = "SoundEffects/crush1";
         #endregion
         #region Music
         public const String Level1Music = "Music/Level1";
@@ -64,11 +66,19 @@ namespace Bearventure
             Disabled,
             UsingSkill,
             Dead,
+            Knocked,
+            Stunned,
         };
-        public enum Direction
+        public enum DirectionX
         {
             Left,
             Right
+        };
+        public enum DirectionY
+        {
+            Up,
+            Hold,
+            Down,
         };
         public enum CharacterOrientation
         {
@@ -108,7 +118,6 @@ namespace Bearventure
             Attack,
             Flee,
             Stop,
-            UseSkill,
         };
         public enum ConditionType
         {
@@ -117,6 +126,7 @@ namespace Bearventure
             HealthHigherThan,
             HealthOtherThan,
             PlayerState,
+            SubjectState,
             VelocityLowerThan,
             VelocityEqualTo,
             VelocityHigherThan,
@@ -125,8 +135,45 @@ namespace Bearventure
             DistanceToPlayerEqualTo,
             DistanceToPlayerGreaterThan,
             DistanceToPlayerOtherThan,
+            AttackReady,
+            Blocked,
+            FacingPlayer,
         };
 
+        #endregion
+        #region CombatEnumerations
+        public enum DamageType
+        {
+            Slashing,
+            Piercing,
+            Crushing,
+            Fire,
+            Cold,
+            Energy,
+            NegativeEnergy,
+            Force,
+        };
+
+        public enum ArmorType
+        {
+            Skin,
+            Fur,
+            Feathers,
+            Leather,
+            Metal,
+            Rock,
+            Energy,
+            NegativeEnergy,
+            Force,
+        }
+
+        public enum DebuffType
+        {
+            Stun,
+            Blind,
+            DoT,
+            Slow,
+        }
         #endregion
 
         #region Resolution

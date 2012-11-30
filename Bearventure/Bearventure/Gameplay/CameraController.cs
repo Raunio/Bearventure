@@ -64,7 +64,8 @@ namespace Bearventure.Gameplay
 
         private void Move()
         {
-            Vector2 speed;
+            position = target.position;
+            /*Vector2 speed;
 
             speed.X = target.velocity.X * speed_multiplier.X;
             speed.Y = target.velocity.Y * speed_multiplier.Y;
@@ -79,7 +80,7 @@ namespace Bearventure.Gameplay
             if (speed.Y < minimum_speed.Y)
                 speed.Y = minimum_speed.Y;
 
-            if (target.direction == Constants.Direction.Left)
+            if (target.directionX == Constants.DirectionX.Left)
             {
                 if (position.X > target.position.X - offset.X)
                 {
@@ -88,7 +89,7 @@ namespace Bearventure.Gameplay
                 else
                     velocity.X = target.velocity.X;
             }
-            else if (target.direction == Constants.Direction.Right)
+            else if (target.directionX == Constants.DirectionX.Right)
             {
                 if (position.X < target.position.X + offset.X)
                 {
@@ -133,6 +134,7 @@ namespace Bearventure.Gameplay
                     velocity.Y = 0;
                 }
             }
+             */
         }
 
     }
