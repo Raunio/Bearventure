@@ -38,8 +38,9 @@ namespace Bearventure.Gameplay.Characters
         {
             acceleration = 1f;
             decceleration = 1f;
-            walkSpeed = 12f;
-            jumpStrenght = 24;
+            walkSpeed = 10f;
+            runSpeed = 14f;
+            jumpStrenght = 20;
 
             maxHealth = 50;
             health = 50;
@@ -92,7 +93,7 @@ namespace Bearventure.Gameplay.Characters
 
             skill1.SoundEffectAsset = Constants.KarhuHit1;
             skill1.Acceleration = 0.25f;
-            skill1.StartVelocity = new Vector2(5, 0);
+            skill1.StartVelocity = new Vector2(4, 0);
             skill1.UltimateVelocityX = 0;
             skill1.DamagingFrames = new List<int>
             {
@@ -113,7 +114,7 @@ namespace Bearventure.Gameplay.Characters
                     4,
                 },
 
-                Amount = 150,
+                Amount = 70,
             };
             Animation SweepingPunch_L = new Animation(comboSheet, 1, 118, 120, 0, 5, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
             SweepingPunch_L.FreezeFrames = new Animation.FrameFreezer
@@ -124,13 +125,13 @@ namespace Bearventure.Gameplay.Characters
                     4,
                 },
 
-                Amount = 40,
+                Amount = 70,
             };
             CharacterSkill skill2 = new CharacterSkill(this, SweepingPunch_R, SweepingPunch_L, 300, 4, Constants.DamageType.Crushing);
 
             skill2.SoundEffectAsset = Constants.KarhuHit2;
             skill2.Acceleration = 0.25f;
-            skill2.StartVelocity = new Vector2(4, 0);
+            skill2.StartVelocity = new Vector2(3, 0);
             skill2.UltimateVelocityX = 0;
             skill2.DamagingFrames = new List<int>
             {
@@ -169,10 +170,10 @@ namespace Bearventure.Gameplay.Characters
 
             skill3.SoundEffectAsset = Constants.KarhuHit3;
             skill3.Acceleration = 0.25f;
-            skill3.StartVelocity = new Vector2(3, -2);
+            skill3.StartVelocity = new Vector2(2, -8);
             skill3.UltimateVelocityX = 0;
 
-            skill3.InflictForce = new Vector2(30, -30);
+            skill3.InflictForce = new Vector2(20, -20);
 
             skill3.DamagingFrames = new List<int>
             {

@@ -308,6 +308,7 @@ namespace Bearventure.Gameplay.Characters
 
                     if (freezeTimer >= FreezeFrames.Amount)
                     {
+                        freezeTimer = 0;
                         animTimer = 0;
                         PreviousFrame();
                     }

@@ -12,6 +12,7 @@ namespace Bearventure.Gameplay.Characters.Skills
         private float cdTimer;
         private Animation rightAnimation;
         private Animation leftAnimation;
+        private Animation currentAnimation;
         private Character subject;
 
         private List<string> effects = new List<string>();
@@ -257,7 +258,7 @@ namespace Bearventure.Gameplay.Characters.Skills
 
                 for (int i = 0; i < DamagingFrames.Count; i++)
                 {
-                    if (rightAnimation.CurrentFrame == DamagingFrames[i] || (leftAnimation != null && leftAnimation.CurrentFrame == DamagingFrames[i]))
+                    if (currentAnimation.CurrentFrame == DamagingFrames[i])
                     {
                         if (subject.directionX == Constants.DirectionX.Left)
                         {
@@ -270,6 +271,8 @@ namespace Bearventure.Gameplay.Characters.Skills
                                 (int)subject.position.Y + (int)HitBoxPositions[i].Y, HitBoxWidth, HitBoxHeight);
                         }
 
+                        CombatManager.Instance.Update();
+
                         break;
                     }
 
@@ -277,18 +280,12 @@ namespace Bearventure.Gameplay.Characters.Skills
                         HitBox = new Rectangle(-1, -1, 1, 1);
                 }
 
-                if (rightAnimation.HasFinished)
+                if (currentAnimation.HasFinished)
                 {
                     IsActive = false;
                     subject.state = Constants.CharacterState.Stopped;
                 }
-                if (leftAnimation != null && leftAnimation.HasFinished)
-                {
-                    IsActive = false;
-                    subject.state = Constants.CharacterState.Stopped;
-                }
-
-                CombatManager.Instance.Update();
+                
             }
         }
         /// <summary>
@@ -304,7 +301,6 @@ namespace Bearventure.Gameplay.Characters.Skills
             if(leftAnimation != null)
                 leftAnimation.Reset();
 
-            
             subject.velocity += new Vector2(subject.directionX == Constants.DirectionX.Left ? -StartVelocity.X : StartVelocity.X, StartVelocity.Y);
             HasDamaged = false;
 
@@ -312,13 +308,15 @@ namespace Bearventure.Gameplay.Characters.Skills
             {
                 if (leftAnimation != null)
                 {
-                    subject.currentAnimation = leftAnimation;
+                    currentAnimation = leftAnimation;
                 }
                 else
-                    subject.currentAnimation = rightAnimation;
+                    currentAnimation = rightAnimation;
             }
             else
-                subject.currentAnimation = rightAnimation;
+                currentAnimation = rightAnimation;
+
+            subject.currentAnimation = currentAnimation;
 
 
             for (int i = 0; i < effects.Count; i++)

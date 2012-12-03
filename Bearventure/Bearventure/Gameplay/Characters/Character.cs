@@ -201,13 +201,13 @@ namespace Bearventure.Gameplay.Characters
                 switch (newState)
                 {
                     case Constants.CharacterState.Walking:
-                        if (CharacterPhysics.OnGround(this))
+                        if (CharacterPhysics.OnGround(this) || Orientation == Constants.CharacterOrientation.Air)
                             state = newState;
                         else
                             return;
                         break;
                     case Constants.CharacterState.Stopped:
-                        if (CharacterPhysics.OnGround(this))
+                        if (CharacterPhysics.OnGround(this) || Orientation == Constants.CharacterOrientation.Air)
                             state = newState;
                         else
                             return;

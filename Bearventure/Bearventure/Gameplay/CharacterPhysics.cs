@@ -64,6 +64,8 @@ namespace Bearventure
             HandleTerrainCollisions(subject);
             HandleCharacterCollisions(subject);
 
+            FixOverlaps(subject);
+
             subject.position += subject.velocity;
         }
         /// <summary>
@@ -354,7 +356,8 @@ namespace Bearventure
         /// <param name="subject"></param>
         private static void FixOverlaps(Character subject)
         {
-            //subject.position.X += CollisionHandler.OverlapsCharacter(subject);
+            if(subject.IsDisabled)
+                subject.position.X += CollisionHandler.OverlapsCharacter(subject);
         }
         private static void UpdateAltitude(Character subject, GameTime gameTime)
         {

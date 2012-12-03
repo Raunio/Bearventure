@@ -211,11 +211,11 @@ namespace Bearventure.Gameplay.HUD
         /// rectangle defines the rectangular shape and size of the health bar.
         /// </summary>
         /// <param name="rectangle"></param>
-        public HealthBar(Rectangle rectangle, Character subject, Vector2 offset, bool fixedPosition)
+        public HealthBar(Rectangle rectangle, Character subject, Vector2 screenOffset, bool fixedPosition)
         {
             this.Base = rectangle;
             this.subject = subject;
-            this.Offset = offset;
+            this.Offset = screenOffset;
             EdgeColor = Color.Black;
             currentValue = subject.health;
             this.fixedPosition = fixedPosition;

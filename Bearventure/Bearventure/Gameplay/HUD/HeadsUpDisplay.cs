@@ -18,6 +18,12 @@ namespace Bearventure.Gameplay.HUD
         private List<Enemy> enemies;
         private Player player;
 
+        private int frameCounter;
+        private double fpsTimer;
+        private int framesPerSecond;
+        private Vector2 fpsCounterPosition;
+        private Vector2 fpsCounterPositionOffset;
+
         private const int DrawDistance = 350;
 
         private List<HealthBar> healthBars = new List<HealthBar>();
@@ -26,6 +32,7 @@ namespace Bearventure.Gameplay.HUD
         {
             this.content = content;
             this.logOffset = new Vector2(-graphics.GraphicsDevice.Viewport.Width / 2 + 300, graphics.GraphicsDevice.Viewport.Height / 2 - 250);
+            this.fpsCounterPositionOffset = new Vector2(-graphics.GraphicsDevice.Viewport.Width / 2 + 250, -graphics.GraphicsDevice.Viewport.Height / 2 + 250);
             this.enemies = enemies;
             this.player = player;
 
@@ -54,9 +61,12 @@ namespace Bearventure.Gameplay.HUD
         public void Update(GameTime gameTime, Vector2 cameraPosition)
         {
             logPosition = cameraPosition + logOffset;
+            fpsCounterPosition = cameraPosition + fpsCounterPositionOffset;
 
             foreach (HealthBar hb in healthBars)
                 hb.Update(gameTime, cameraPosition);
+
+            UpdateFPS(gameTime);
         }
         /// <summary>
         /// Draws the HUD
@@ -64,9 +74,12 @@ namespace Bearventure.Gameplay.HUD
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            DrawHealthBars(spriteBatch);
+            if(Globals.DisplayHealthBars)
+                DrawHealthBars(spriteBatch);
 
             DrawCombatLog(spriteBatch);
+
+            DrawFps(spriteBatch);
         }
 
         private void DrawCombatLog(SpriteBatch spriteBatch)
@@ -107,12 +120,31 @@ namespace Bearventure.Gameplay.HUD
             {
                 if (!hb.FixedPosition)
                 {
-                    if (hb.CurrentValue > 0 && Vector2.Distance(player.position, hb.Position) < DrawDistance && Globals.DisplayHealthBars)
+                    if (hb.CurrentValue > 0 && Vector2.Distance(player.position, hb.Position) < DrawDistance)
                         hb.Draw(spriteBatch);
                 }
                 else
                     hb.Draw(spriteBatch);
             } 
+        }
+
+        private void DrawFps(SpriteBatch spriteBatch)
+        {
+            spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), "Fps: " + framesPerSecond, fpsCounterPosition, Color.Yellow);
+        }
+
+        private void UpdateFPS(GameTime gameTime)
+        {
+            frameCounter++;
+
+            fpsTimer += gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (fpsTimer >= 1)
+            {            
+                framesPerSecond = frameCounter;
+                frameCounter = 0;
+                fpsTimer = 0;
+            }
         }
     }
 }
