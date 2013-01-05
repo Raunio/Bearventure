@@ -309,7 +309,7 @@ namespace Bearventure
         /// </summary>
         public void FadeBackBufferToBlack(float alpha)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullClockwise);
             //spriteBatch.Draw(blankTexture, GraphicsDevice.Viewport.Bounds, Color.Black * alpha);
             spriteBatch.Draw(blankTexture, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.Black * alpha);
             spriteBatch.End();

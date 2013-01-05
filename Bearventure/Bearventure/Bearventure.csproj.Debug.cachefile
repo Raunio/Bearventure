@@ -5,14 +5,6 @@ Content\Bitmaps\Blank.xnb
 Content\Bitmaps\Gradient.xnb
 Content\Bitmaps\SmokeCloud.xnb
 Content\Sprites\Karhu.xnb
-Content\Maps\Backround1.xnb
-Content\Maps\Backround2.xnb
-Content\Maps\Backround3.xnb
-Content\Maps\Backround4.xnb
-Content\Maps\CollisionBackround1.xnb
-Content\Maps\CollisionBackround2.xnb
-Content\Maps\CollisionBackround3.xnb
-Content\Maps\CollisionBackround4.xnb
 Content\Backgrounds\Menu.xnb
 Content\Sprites\bmbadger.xnb
 Content\Levels\Testilevel\Background\Testilevel_0.xnb
@@ -126,6 +118,7 @@ Content\Levels\Testilevel2\Items\Testilevel2_StartPoint.xnb
 Content\Levels\Testilevel2\Testilevel2LevelInfo.xnb
 Content\VisualEffects\blood2.xnb
 Content\VisualEffects\hitTest.xnb
+Content\Sprites\paskapollo.xnb
 Content\Music\Intro.wma
 Content\Music\Level1.wma
 Content\Music\Splash.wma

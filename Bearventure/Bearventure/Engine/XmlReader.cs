@@ -40,6 +40,7 @@ namespace Bearventure
                         break;
                     case "DelayOwl":
                         type = Constants.EnemyType.DelayOwl;
+                        spriteSheet = content.Load<Texture2D>(Constants.DelayOwl);
                         break;
                     case "WahCat":
                         type = Constants.EnemyType.WahCat;

@@ -64,6 +64,7 @@ namespace Bearventure
             width = graphicsDeviceManager.PreferredBackBufferWidth;
             height = graphicsDeviceManager.PreferredBackBufferHeight;
             graphicsDevice = graphicsDeviceManager;
+            
             isDirtyMatrix = true;
             ApplyResolutionSettings();
         }

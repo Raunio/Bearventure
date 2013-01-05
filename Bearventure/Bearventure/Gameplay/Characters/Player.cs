@@ -38,8 +38,8 @@ namespace Bearventure.Gameplay.Characters
         {
             acceleration = 1f;
             decceleration = 1f;
-            walkSpeed = 10f;
-            runSpeed = 14f;
+            walkSpeed = 15f;
+            runSpeed = 20f;
             jumpStrenght = 20;
 
             maxHealth = 50;

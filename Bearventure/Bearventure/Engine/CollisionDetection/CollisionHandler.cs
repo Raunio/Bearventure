@@ -383,9 +383,11 @@ namespace Bearventure.Engine.CollisionDetection
         {          
             if (movement < 0)
                 return new Rectangle(subject.BoundingBox.X / resizeFactor,
-                    (int)(subject.BoundingBox.Top / resizeFactor + movement / resizeFactor), subject.BoundingBox.Width / resizeFactor, 1);
+                    (int)(subject.BoundingBox.Top / resizeFactor + movement / resizeFactor), 
+                    subject.BoundingBox.Width / resizeFactor, 1);
             else
-                return new Rectangle(subject.BoundingBox.X / resizeFactor, (int)(subject.BoundingBox.Bottom / resizeFactor + movement / resizeFactor),
+                return new Rectangle(subject.BoundingBox.X / resizeFactor, 
+                    (int)(subject.BoundingBox.Bottom / resizeFactor + movement / resizeFactor),
                     subject.BoundingBox.Width / resizeFactor, 1);
         }
         /// <summary>
@@ -398,10 +400,12 @@ namespace Bearventure.Engine.CollisionDetection
         {
             if (movement < 0)
                 return new Rectangle((int)(subject.BoundingBox.Left / resizeFactor + movement / resizeFactor),
-                    subject.BoundingBox.Y / resizeFactor, 1, subject.BoundingBox.Height / resizeFactor);
+                    subject.BoundingBox.Y / resizeFactor, 1, 
+                    subject.BoundingBox.Height / resizeFactor);
             else
                 return new Rectangle((int)(subject.BoundingBox.Right / resizeFactor + movement / resizeFactor),
-                    subject.BoundingBox.Y / resizeFactor, 1, subject.BoundingBox.Height / resizeFactor);
+                    subject.BoundingBox.Y / resizeFactor, 1, 
+                    subject.BoundingBox.Height / resizeFactor);
         }
         /// <summary>
         /// Compares the masses of 2 characters and returns a "force value" from a's point of view.

@@ -19,6 +19,14 @@ namespace Bearventure.Gameplay.Characters.Skills
         private List<Vector2> effectPositions = new List<Vector2>();
         private List<Vector2> effectPositionOffsets = new List<Vector2>();
         /// <summary>
+        /// Gets or sets the icon for the skill.
+        /// </summary>
+        public Texture2D Icon
+        {
+            get;
+            set;
+        }
+        /// <summary>
         /// Gets the cooldown time of the skill in seconds.
         /// </summary>
         public float Cooldown

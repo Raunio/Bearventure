@@ -161,13 +161,13 @@ namespace Bearventure.Gameplay.Characters
                     Dying = new Animation(spriteSheet, 0, 93, 103, 1, 8, 80, false, false);
                     break;
                 case Constants.EnemyType.DelayOwl:
-                    WalkRight = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
-                    WalkLeft = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
-                    RunRight = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
-                    RunLeft = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
-                    Stopped = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
-                    Jumping = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100);
-                    Dying = new Animation(spriteSheet, 0, 91, 59, 0, 0, 100, false, false);
+                    WalkRight = new Animation(spriteSheet, 0, 126, 88, 8, 11, 70);
+                    WalkLeft = new Animation(spriteSheet, 0, 126, 88, 0, 3, 70, true, true);
+                    RunRight = new Animation(spriteSheet, 0, 126, 88, 8, 11, 50);
+                    RunLeft = new Animation(spriteSheet, 0, 126, 88, 0, 3, 50, true, true);
+                    Stopped = new Animation(spriteSheet, 0, 126, 88, 5, 5, 70);
+                    Jumping = new Animation(spriteSheet, 0, 126, 88, 0, 0, 70);
+                    Dying = new Animation(spriteSheet, 0, 126, 88, 5, 5, 100, false, false);
                     break;
             }
 
@@ -295,7 +295,8 @@ namespace Bearventure.Gameplay.Characters
                     break;
                 case Constants.EnemyType.DelayOwl:
                     #region TESTING
-                    Attack = new EnemySkill(this, new Animation(spriteSheet, 0, 91, 59, 0, 1, 100, false, false), 5000, 5, Constants.DamageType.Piercing);
+                    Attack = new EnemySkill(this, new Animation(spriteSheet, 0, 126, 88, 8, 9, 100, false, false),
+                        5000, 5, Constants.DamageType.Piercing);
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
                     Attack.DamagingFrames = new List<int>();
 
