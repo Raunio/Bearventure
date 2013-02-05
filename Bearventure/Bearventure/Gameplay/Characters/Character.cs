@@ -145,7 +145,9 @@ namespace Bearventure.Gameplay.Characters
                 return new Rectangle(x, y, width, height);
             }
         }
-
+        /// <summary>
+        /// Returns true if character is in any way disabled.
+        /// </summary>
         public bool IsDisabled
         {
             get
@@ -182,7 +184,10 @@ namespace Bearventure.Gameplay.Characters
                     health = maxHealth;
             }
         }
-
+        /// <summary>
+        /// Apply damage to character.
+        /// </summary>
+        /// <param name="damage"></param>
         public void TakeDamage(float damage)
         {
             if (damageTimer > 300)
@@ -193,7 +198,10 @@ namespace Bearventure.Gameplay.Characters
                 CombatManager.Instance.CombatLog.Add(this.Name + " took " + damage + " damage.");
             }
         }
-
+        /// <summary>
+        /// Change the characters state.
+        /// </summary>
+        /// <param name="newState"></param>
         public void SetState(Constants.CharacterState newState)
         {
             if (state != Constants.CharacterState.UsingSkill && !IsDisabled)
@@ -221,7 +229,10 @@ namespace Bearventure.Gameplay.Characters
                 }
             }
         }
-
+        /// <summary>
+        /// Try to activate a skill. Will not activate if the skill is not ready or it is already active.
+        /// </summary>
+        /// <param name="skill"></param>
         public void UseSkill(CharacterSkill skill)
         {
             if (skill.IsReady && !skill.IsActive)
@@ -231,7 +242,7 @@ namespace Bearventure.Gameplay.Characters
                 ActiveSkill = skill; 
             }
         }
-
+     
         protected void CleanActiveSkill()
         {
             if(ActiveSkill != null)

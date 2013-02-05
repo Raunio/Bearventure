@@ -14,8 +14,8 @@ namespace Bearventure.Engine.CollisionDetection
     {
         private static int resizeFactor;
 
-        #region Members;
-        private static CollisionMap map;
+        #region Members
+        
         private static int zone_width;
         private static int zone_height;
 
@@ -38,15 +38,15 @@ namespace Bearventure.Engine.CollisionDetection
 
             content = _content;
 
-            map = _map;
+            Map = _map;
 
-            resizeFactor = map.ResizeFactor;
+            resizeFactor = Map.ResizeFactor;
 
-            map.LoadAllTextures(_content);
-            map.LoadAllTextureData();
+            Map.LoadAllTextures(_content);
+            Map.LoadAllTextureData();
 
-            zone_height = map.CropSize.Y;
-            zone_width = map.CropSize.X;        
+            zone_height = Map.CropSize.Y;
+            zone_width = Map.CropSize.X;        
         }
         #endregion
         /// <summary>
@@ -77,7 +77,7 @@ namespace Bearventure.Engine.CollisionDetection
                 zones_y.Add(0);
             }
 
-            for (int i = 0; i < map.Fractions / 2; i++)
+            for (int i = 0; i < Map.Fractions / 2; i++)
             {
                 if(Right >= zone_width * i)
                 {
@@ -98,7 +98,8 @@ namespace Bearventure.Engine.CollisionDetection
             {
                 foreach (int x in zones_x)
                 {
-                    on_zones.Add(x * 2 + y);
+                    if(!on_zones.Contains(x * 2 + y))
+                        on_zones.Add(x * 2 + y);
                 }
             }
 
@@ -137,9 +138,9 @@ namespace Bearventure.Engine.CollisionDetection
         /// <summary>
         /// Returns Left, Right, Top, Bottom of the subjects BoundingBox if a collision happens. The method creates 2 rectangles 
         /// (CollisionRectangleY, CollisionRectangleX) which are positioned in relation to the characters BoundingBox and velocity.
-        /// The rectangles are then scanned for colors other than Transparent. The color then is passed to TerrainType.
+        /// The rectangles are then scanned for colors other than Transparent.
         /// </summary>
-        /// <param name="subject">The character we are checking for collisions</param>
+        /// <param name="subject">The character being checked for collisions</param>
         /// <param name="movement">The velocity of the character.</param>
         /// <returns></returns>
         public static int CollisionOccursWithMap(Character subject, Vector2 movement)
@@ -149,7 +150,6 @@ namespace Bearventure.Engine.CollisionDetection
 
             if (movement.Y != 0)
             {
-                Rectangle rect = CollisionAreaRectangleY(subject, movement.Y);
                 List<int> zones = OnZones(CollisionAreaRectangleY(subject, movement.Y));
 
                 int Top = Adjust(CollisionAreaRectangleY(subject, movement.Y)).Y;
@@ -161,6 +161,8 @@ namespace Bearventure.Engine.CollisionDetection
 
                 for (int x = Left; x < Right; x++)
                 {
+                    // Check if the true position of the rectangle exceeds the x-axis boundaries of a zone
+                    // Init the next zone and reset variables in case it does.
                     if (x >= zone_width)
                     {
                         x -= zone_width;
@@ -170,28 +172,33 @@ namespace Bearventure.Engine.CollisionDetection
 
                     for (int y = Top; y < Bottom; y++)
                     {
-                        if (map.CroppedTextures[zone].Data[x, y] != Color.Transparent && map.CroppedTextures[zone].Data[x, y].A == 255)
+                        // Check if the pixel isn't transparent and has an aplha value of 255, a collision happens. 
+                        // The alpha value must be 255 so that smoothened edges don't count.
+                        if (Map.CroppedTextures[zone].Data[x, y] != Color.Transparent && Map.CroppedTextures[zone].Data[x, y].A == 255)
                         {
-                            TerrainType = map.CroppedTextures[zone].Data[x, y];
+                            // Assing the color of the pixel to TerrainType which can be used to detect terrain upon collision.
+                            TerrainType = Map.CroppedTextures[zone].Data[x, y];
 
+                            // If the collision-rectangle is located beneath the characters BoundingBox divided by the resize multiplier of the map texture fractions,
+                            // the collision occurs between the bottom of the characters BoundingBox and terrain.
                             if (CollisionAreaRectangleY(subject, movement.Y).Y >= subject.BoundingBox.Bottom / resizeFactor)
                             {
                                 collision_y = subject.BoundingBox.Bottom;
                             }
-
+                            // If the conditions above do not meet, assume that the top of the BoundingBox collides with terrain.
                             else
                             {
                                 collision_y = subject.BoundingBox.Top;
                             }
                         }
                     }
-
+                    // If a collision occurs, no need to check further.
                     if (collision_y > 0)
                         break;
                 }
             }
            
-
+            // This is practicly the same as above, but with x-axis.
             if (movement.X != 0)
             {
                 List<int> zones = OnZones(CollisionAreaRectangleX(subject, movement.X));
@@ -230,7 +237,7 @@ namespace Bearventure.Engine.CollisionDetection
                             zone = zones[1];
                         }
 
-                        if (map.CroppedTextures[zone].Data[x, y] != Color.Transparent && map.CroppedTextures[zone].Data[x, y].A == 255)
+                        if (Map.CroppedTextures[zone].Data[x, y] != Color.Transparent && Map.CroppedTextures[zone].Data[x, y].A == 255)
                         {
                             if (Left <= subject.BoundingBox.Left / resizeFactor)
                             {
@@ -448,6 +455,14 @@ namespace Bearventure.Engine.CollisionDetection
         /// Gets the push velocity of the last calculated subject.
         /// </summary>
         public static float PushVelocity
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Gets the collision paskdas ghojgfok
+        /// </summary>
+        public static CollisionMap Map
         {
             get;
             private set;

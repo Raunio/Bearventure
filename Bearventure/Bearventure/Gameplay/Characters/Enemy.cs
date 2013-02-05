@@ -146,7 +146,9 @@ namespace Bearventure.Gameplay.Characters
             InitSkills();
             InitBehavirour(player, patrol_A, patrol_B);
         }
-
+        /// <summary>
+        /// Initialize all the animations.
+        /// </summary>
         private void InitAnimations()
         {
             switch (type)
@@ -173,7 +175,12 @@ namespace Bearventure.Gameplay.Characters
 
             currentAnimation = Stopped;
         }
-
+        /// <summary>
+        /// Initialize "AI"
+        /// </summary>
+        /// <param name="player">Pointer to player required for AI Initialization</param>
+        /// <param name="pointA">Patrol point A</param>
+        /// <param name="pointB">PAtrol point B</param>
         private void InitBehavirour(Player player, int pointA, int pointB)
         {
             switch (type)
@@ -192,7 +199,9 @@ namespace Bearventure.Gameplay.Characters
                     break;
             }
         }
-
+        /// <summary>
+        /// Initialize the stats (health etc.)
+        /// </summary>
         private void InitStats()
         {
             switch (type)
@@ -231,7 +240,9 @@ namespace Bearventure.Gameplay.Characters
                     break;
             }
         }
-
+        /// <summary>
+        /// Initialize the skills.
+        /// </summary>
         private void InitSkills()
         {
             switch (type)
@@ -321,7 +332,10 @@ namespace Bearventure.Gameplay.Characters
                 foreach (EnemySkill s in Skills)
                     s.Update(gameTime);
         }
-
+        /// <summary>
+        /// Main update method.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             if (state != Constants.CharacterState.Dead)
@@ -354,7 +368,10 @@ namespace Bearventure.Gameplay.Characters
 
             CharacterPhysics.Apply(this, gameTime);
         }
-
+        /// <summary>
+        /// Should be called in update. Reads the enemys state and changes its animations accordingly.
+        /// </summary>
+        /// <param name="gameTime"></param>
         private void HandleAnimations(GameTime gameTime)
         {
             switch (state)
@@ -391,7 +408,9 @@ namespace Bearventure.Gameplay.Characters
                 currentAnimation = animation;
             }
         }
-
+        /// <summary>
+        /// Kill the enemy.
+        /// </summary>
         public void Kill()
         {
             if (state != Constants.CharacterState.Disabled || state != Constants.CharacterState.Knocked)

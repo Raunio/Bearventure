@@ -12,7 +12,10 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Bearventure.Engine.Effects
 {
-    public class VisualEffect : ICloneable
+    /// <summary>
+    /// Provides basic particle effect functions.
+    /// </summary>
+    public class VisualEffect
     {
         private ParticleEffect particleEffect;
         private Renderer renderer;
@@ -311,12 +314,19 @@ namespace Bearventure.Engine.Effects
             set;
         }
         #endregion
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="asset">The path to the xml-file.</param>
         public VisualEffect(String asset)
         {
             TextureAsset = asset;
         }
-
+        /// <summary>
+        /// Initializes a new instance of an effect and loads it.
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="graphics"></param>
         public void Initialize(ContentManager content, GraphicsDeviceManager graphics)
         {
             renderer = new SpriteBatchRenderer
@@ -332,7 +342,10 @@ namespace Bearventure.Engine.Effects
             renderer.LoadContent(content);
             particleEffect.LoadContent(content);
         }
-
+        /// <summary>
+        /// Call to trigger the effect.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void Trigger(GameTime gameTime)
         {
             timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -349,23 +362,22 @@ namespace Bearventure.Engine.Effects
             }
             
         }
-
+        /// <summary>
+        /// Updates the effect and its particles.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
             particleEffect.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
         }
-
+        /// <summary>
+        /// Call to draw the effect.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
             SpriteBatchRenderer rend = this.renderer as SpriteBatchRenderer;
             rend.RenderEffect(particleEffect, spriteBatch);
         }
-
-        public object Clone()
-        {
-            return (VisualEffect)this.MemberwiseClone();
-        }
-
-
     }
 }

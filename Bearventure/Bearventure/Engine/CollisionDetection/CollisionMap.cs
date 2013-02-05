@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Bearventure.Engine.CollisionDetection
 {
@@ -25,7 +26,9 @@ namespace Bearventure.Engine.CollisionDetection
             get;
             private set;
         }
-
+        /// <summary>
+        /// Gets an array of CroppedTextureFraction objects
+        /// </summary>
         public CollisionMapTextureFraction[] CroppedTextures
         {
             get;
@@ -39,7 +42,12 @@ namespace Bearventure.Engine.CollisionDetection
             get;
             private set;
         }
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="asset">Texture asset name</param>
+        /// <param name="crops">Amount of fractions/crops</param>
+        /// <param name="resizeFactor">The resize multiplier of the textures</param>
         public CollisionMap(string asset, int crops, int resizeFactor)
         {
             Fractions = crops;
@@ -64,11 +72,27 @@ namespace Bearventure.Engine.CollisionDetection
 
             CropSize = new Point(CroppedTextures[0].Texture.Width, CroppedTextures[0].Texture.Height);
         }
-
+        /// <summary>
+        /// Loads all texture color data to memory.
+        /// </summary>
         public void LoadAllTextureData()
         {
             foreach (CollisionMapTextureFraction tx in CroppedTextures)
                 tx.LoadData();
+        }
+        /// <summary>
+        /// Draws the whole collision map. Mainly for testing purposes.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public void DrawMap(SpriteBatch spriteBatch)
+        {
+            for(int i = 0; i < CroppedTextures.Length / 2; i++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    spriteBatch.Draw(CroppedTextures[i].Texture, new Vector2(i * CroppedTextures[i].Texture.Width, j * CroppedTextures[i].Texture.Height), Color.White);
+                }
+            }
         }
     }
 }

@@ -54,10 +54,10 @@ namespace Bearventure.Gameplay.Characters
 
         private void InitAnimations()
         {
-            stoppedRight = new Animation(spriteSheet, 0, 88, 121, 12, 12, 70);
-            stoppedLeft = new Animation(spriteSheet, 0, 88, 121, 9, 9, 70);
-            walkRight = new Animation(spriteSheet, 0, 88, 121, 13, 21, 70);
-            walkLeft = new Animation(spriteSheet, 0, 88, 121, 0, 8, 70, true);
+            stoppedRight = new Animation(spriteSheet, 0, 88, 121, 12, 12, 50);
+            stoppedLeft = new Animation(spriteSheet, 0, 88, 121, 9, 9, 50);
+            walkRight = new Animation(spriteSheet, 0, 88, 121, 13, 21, 50);
+            walkLeft = new Animation(spriteSheet, 0, 88, 121, 0, 8, 50, true);
 
             currentAnimation = stoppedRight;
         }

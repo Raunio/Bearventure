@@ -14,17 +14,22 @@ namespace Bearventure
 {
     public static class XmlReader
     {
-        private static ContentManager content;
-        private static Player player;
+        private static ContentManager mContent;
+        private static Player mPlayer;
 
-        public static void Initialize(ContentManager _content, Player _player)
+        /// <summary>
+        /// Initializes the XmlReader by passing it pointers to content and the game player.
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="player">Pointer to player is required for enemy AI initializations</param>
+        public static void Initialize(ContentManager content, Player player)
         {
-            content = _content;
-            player = _player;
+            mContent = content;
+            mPlayer = player;
         }
         public static List<Enemy> EnemyList(string XmlPath)
         {
-            List<XmlEnemy> xEnemies = content.Load<List<XmlEnemy>>(XmlPath);
+            List<XmlEnemy> xEnemies = mContent.Load<List<XmlEnemy>>(XmlPath);
             List<Enemy> enemies = new List<Enemy>();         
 
             foreach (XmlEnemy xEnemy in xEnemies)
@@ -36,33 +41,41 @@ namespace Bearventure
                 {
                     case "BlackmetalBadger":
                         type = Constants.EnemyType.BlackMetalBadger;
-                        spriteSheet = content.Load<Texture2D>(Constants.BlackMetalBadger);
+                        spriteSheet = mContent.Load<Texture2D>(Constants.BlackMetalBadger);
                         break;
                     case "DelayOwl":
                         type = Constants.EnemyType.DelayOwl;
-                        spriteSheet = content.Load<Texture2D>(Constants.DelayOwl);
+                        spriteSheet = mContent.Load<Texture2D>(Constants.DelayOwl);
                         break;
                     case "WahCat":
                         type = Constants.EnemyType.WahCat;
                         break;
                 }
 
-                Enemy e = new Enemy(type, xEnemy.X, xEnemy.Y, spriteSheet, player, xEnemy.PatrolPoint_A, xEnemy.PatrolPoint_B);
+                Enemy e = new Enemy(type, xEnemy.X, xEnemy.Y, spriteSheet, mPlayer, xEnemy.PatrolPoint_A, xEnemy.PatrolPoint_B);
                 e.Name = xEnemy.Name;
                 enemies.Add(e);
             }
 
             return enemies;
         }
-
+        /// <summary>
+        /// Returns a LevelInfo object from xml.
+        /// </summary>
+        /// <param name="XmlPath"></param>
+        /// <returns></returns>
         public static LevelInfo LevelInformation(string XmlPath)
         {
-            return content.Load<LevelInfo>(XmlPath);
+            return mContent.Load<LevelInfo>(XmlPath);
         }
-
+        /// <summary>
+        /// Returns the start point of a level.
+        /// </summary>
+        /// <param name="XmlPath"></param>
+        /// <returns></returns>
         public static Vector2 StartPoint(string XmlPath)
         {
-            XmlStartPoint xSp = content.Load<XmlStartPoint>(XmlPath);
+            XmlStartPoint xSp = mContent.Load<XmlStartPoint>(XmlPath);
 
             return new Vector2(xSp.X, xSp.Y);
         }

@@ -244,7 +244,10 @@ namespace Bearventure.Gameplay.Characters
 
         #endregion
         #region Methods
-
+        /// <summary>
+        /// Main animation method. Should be called in the update of a character.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void Animate(GameTime gameTime)
         {
             switch (backwards)
@@ -257,7 +260,9 @@ namespace Bearventure.Gameplay.Characters
                     break;
             }
         }
-
+        /// <summary>
+        /// Resets the animation to its starting frame.
+        /// </summary>
         public void Reset()
         {
             HasFinished = false;

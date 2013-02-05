@@ -33,13 +33,21 @@ namespace Bearventure.Engine.Effects
                 return instance;
             }
         }
-
+        /// <summary>
+        /// Initialization by passing the contentmanager and graphics object.
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="graphics"></param>
         public void Initialize(ContentManager content, GraphicsDeviceManager graphics)
         {
             this.content = content;
             this.graphics = graphics;
         }
-
+        /// <summary>
+        /// Initializes the terrain effects by giving pointers to player and enemy positions.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="enemies"></param>
         public void InitializeTerrainEffects(Player player, List<Enemy> enemies)
         {
             this.player = player;
@@ -53,7 +61,10 @@ namespace Bearventure.Engine.Effects
                 terrainEffects[i].Initialize(content, graphics);
             }
         }
-
+        /// <summary>
+        /// Update all effects.
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void UpdateEffects(GameTime gameTime)
         {
             foreach (VisualEffect e in Effects)
@@ -65,7 +76,10 @@ namespace Bearventure.Engine.Effects
             UpdateTerrainEffects(gameTime);
             CleanEffects();
         }
-
+        /// <summary>
+        /// Update all terrain effects.
+        /// </summary>
+        /// <param name="gameTime"></param>
         private void UpdateTerrainEffects(GameTime gameTime)
         {
             if (CharacterPhysics.OnTerrain(player) == Constants.Solid && player.state == Constants.CharacterState.Walking)
@@ -85,7 +99,10 @@ namespace Bearventure.Engine.Effects
                 terrainEffects[i].Update(gameTime);
             
         }
-
+        /// <summary>
+        /// Draws all effetcs.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public void DrawEffects(SpriteBatch spriteBatch)
         {
             foreach (VisualEffect e in Effects)
@@ -93,7 +110,9 @@ namespace Bearventure.Engine.Effects
             foreach (VisualEffect e in terrainEffects)
                 e.Draw(spriteBatch);
         }
-
+        /// <summary>
+        /// Search for dead effects and remove them.
+        /// </summary>
         private void CleanEffects()
         {
             for (int i = 0; i < Effects.Count; i++)
