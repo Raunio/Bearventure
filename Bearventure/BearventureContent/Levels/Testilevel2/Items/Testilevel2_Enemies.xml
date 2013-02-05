@@ -4,25 +4,25 @@
     <Item>
       <Index>0</Index>
       <Position>
-        <X>855</X>
-        <Y>3658</Y>
+        <X>907</X>
+        <Y>3680</Y>
       </Position>
       <Type>BlackmetalBadger</Type>
       <Rectangle>
         <Location>
-          <X>827</X>
-          <Y>3653</Y>
+          <X>907</X>
+          <Y>3679</Y>
         </Location>
         <Size>
           <Width>50</Width>
           <Height>50</Height>
         </Size>
-        <X>827</X>
-        <Y>3653</Y>
+        <X>907</X>
+        <Y>3679</Y>
         <Width>50</Width>
         <Height>50</Height>
       </Rectangle>
-      <Name>Paska</Name>
+      <Name>BlackmetalBadger_0</Name>
       <Health>0</Health>
       <WalkSpeed>0</WalkSpeed>
       <RunSpeed>0</RunSpeed>
@@ -36,31 +36,31 @@
       <AttackDamage>0</AttackDamage>
       <behaviour>FixedPatrol</behaviour>
       <combatBehaviour>Default</combatBehaviour>
-      <PatrolPoint_A>642</PatrolPoint_A>
-      <PatrolPoint_B>1469</PatrolPoint_B>
+      <PatrolPoint_A>637</PatrolPoint_A>
+      <PatrolPoint_B>1180</PatrolPoint_B>
     </Item>
     <Item>
       <Index>1</Index>
       <Position>
-        <X>1108</X>
-        <Y>3657</Y>
+        <X>1174</X>
+        <Y>3687</Y>
       </Position>
       <Type>BlackmetalBadger</Type>
       <Rectangle>
         <Location>
-          <X>1108</X>
-          <Y>3657</Y>
+          <X>1174</X>
+          <Y>3687</Y>
         </Location>
         <Size>
           <Width>50</Width>
           <Height>50</Height>
         </Size>
-        <X>1108</X>
-        <Y>3657</Y>
+        <X>1174</X>
+        <Y>3687</Y>
         <Width>50</Width>
         <Height>50</Height>
       </Rectangle>
-      <Name>Homo</Name>
+      <Name>BlackmetalBadger_1</Name>
       <Health>0</Health>
       <WalkSpeed>0</WalkSpeed>
       <RunSpeed>0</RunSpeed>
@@ -74,8 +74,388 @@
       <AttackDamage>0</AttackDamage>
       <behaviour>FixedPatrol</behaviour>
       <combatBehaviour>Default</combatBehaviour>
-      <PatrolPoint_A>916</PatrolPoint_A>
-      <PatrolPoint_B>1262</PatrolPoint_B>
+      <PatrolPoint_A>703</PatrolPoint_A>
+      <PatrolPoint_B>1365</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>2</Index>
+      <Position>
+        <X>659</X>
+        <Y>4355</Y>
+      </Position>
+      <Type>BlackmetalBadger</Type>
+      <Rectangle>
+        <Location>
+          <X>659</X>
+          <Y>4356</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>659</X>
+        <Y>4356</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>BlackmetalBadger_2</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>FixedPatrol</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>387</PatrolPoint_A>
+      <PatrolPoint_B>764</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>3</Index>
+      <Position>
+        <X>745</X>
+        <Y>4360</Y>
+      </Position>
+      <Type>BlackmetalBadger</Type>
+      <Rectangle>
+        <Location>
+          <X>745</X>
+          <Y>4360</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>745</X>
+        <Y>4360</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>BlackmetalBadger_3</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>FixedPatrol</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>449</PatrolPoint_A>
+      <PatrolPoint_B>882</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>4</Index>
+      <Position>
+        <X>879</X>
+        <Y>4345</Y>
+      </Position>
+      <Type>BlackmetalBadger</Type>
+      <Rectangle>
+        <Location>
+          <X>878</X>
+          <Y>4345</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>878</X>
+        <Y>4345</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>BlackmetalBadger_4</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>FixedPatrol</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>599</PatrolPoint_A>
+      <PatrolPoint_B>878</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>5</Index>
+      <Position>
+        <X>1004</X>
+        <Y>4350</Y>
+      </Position>
+      <Type>BlackmetalBadger</Type>
+      <Rectangle>
+        <Location>
+          <X>1004</X>
+          <Y>4350</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>1004</X>
+        <Y>4350</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>BlackmetalBadger_5</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>FixedPatrol</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>294</PatrolPoint_A>
+      <PatrolPoint_B>1004</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>6</Index>
+      <Position>
+        <X>1172</X>
+        <Y>4359</Y>
+      </Position>
+      <Type>BlackmetalBadger</Type>
+      <Rectangle>
+        <Location>
+          <X>1173</X>
+          <Y>4362</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>1173</X>
+        <Y>4362</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>BlackmetalBadger_6</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>FixedPatrol</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>566</PatrolPoint_A>
+      <PatrolPoint_B>1144</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>7</Index>
+      <Position>
+        <X>1370</X>
+        <Y>4352</Y>
+      </Position>
+      <Type>BlackmetalBadger</Type>
+      <Rectangle>
+        <Location>
+          <X>1370</X>
+          <Y>4352</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>1370</X>
+        <Y>4352</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>BlackmetalBadger_7</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>FixedPatrol</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>1242</PatrolPoint_A>
+      <PatrolPoint_B>1749</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>8</Index>
+      <Position>
+        <X>1301</X>
+        <Y>4369</Y>
+      </Position>
+      <Type>BlackmetalBadger</Type>
+      <Rectangle>
+        <Location>
+          <X>1301</X>
+          <Y>4369</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>1301</X>
+        <Y>4369</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>BlackmetalBadger_8</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>FixedPatrol</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>1110</PatrolPoint_A>
+      <PatrolPoint_B>1301</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>9</Index>
+      <Position>
+        <X>1812</X>
+        <Y>4492</Y>
+      </Position>
+      <Type>BlackmetalBadger</Type>
+      <Rectangle>
+        <Location>
+          <X>1812</X>
+          <Y>4492</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>1812</X>
+        <Y>4492</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>BlackmetalBadger_9</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>FixedPatrol</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>1619</PatrolPoint_A>
+      <PatrolPoint_B>1812</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>10</Index>
+      <Position>
+        <X>1749</X>
+        <Y>4497</Y>
+      </Position>
+      <Type>BlackmetalBadger</Type>
+      <Rectangle>
+        <Location>
+          <X>1749</X>
+          <Y>4497</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>1749</X>
+        <Y>4497</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>BlackmetalBadger_10</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>FixedPatrol</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>1604</PatrolPoint_A>
+      <PatrolPoint_B>1749</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>11</Index>
+      <Position>
+        <X>2030</X>
+        <Y>4492</Y>
+      </Position>
+      <Type>BlackmetalBadger</Type>
+      <Rectangle>
+        <Location>
+          <X>2030</X>
+          <Y>4492</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>2030</X>
+        <Y>4492</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>BlackmetalBadger_11</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>FixedPatrol</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>1617</PatrolPoint_A>
+      <PatrolPoint_B>2030</PatrolPoint_B>
     </Item>
   </Asset>
 </XnaContent>
