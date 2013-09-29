@@ -173,7 +173,7 @@ namespace Bearventure.Gameplay.Characters
             skill3.StartVelocity = new Vector2(2, -8);
             skill3.UltimateVelocityX = 0;
 
-            skill3.InflictForce = new Vector2(20, -20);
+            skill3.InflictForce = new Vector2(30, -20);
 
             skill3.DamagingFrames = new List<int>
             {
@@ -195,7 +195,7 @@ namespace Bearventure.Gameplay.Characters
             combo1.ResetTime = 1500;
 
             combo1.Name = "Flying Diarrhea Drops";
-            combo1.Description = "A basic 3-strike combo with the final strike causing a mediocre force knockback";
+            combo1.Description = "A basic 3-strike combo with the final strike causing a medium force knockback";
 
             #endregion
         }

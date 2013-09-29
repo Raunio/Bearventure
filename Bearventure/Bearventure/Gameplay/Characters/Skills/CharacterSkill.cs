@@ -8,6 +8,7 @@ namespace Bearventure.Gameplay.Characters.Skills
 {
     public class CharacterSkill
     {
+        #region Members
         // TODO: Invent a more descriptive name
         private float cdTimer;
         private Animation rightAnimation;
@@ -18,6 +19,14 @@ namespace Bearventure.Gameplay.Characters.Skills
         private List<string> effects = new List<string>();
         private List<Vector2> effectPositions = new List<Vector2>();
         private List<Vector2> effectPositionOffsets = new List<Vector2>();
+
+        private int hitBoxWidth;
+        private int hitBoxHeight;
+
+        private List<int> damagingFrames;
+
+        #endregion
+        #region Gets & Sets
         /// <summary>
         /// Gets or sets the icon for the skill.
         /// </summary>
@@ -129,7 +138,7 @@ namespace Bearventure.Gameplay.Characters.Skills
                 HitBoxPositions = new Vector2[damagingFrames.Count];
             }
         }
-        private List<int> damagingFrames;
+        
         /// <summary>
         /// Gets or sets the force inflicted to the target of this skill upon hit.
         /// </summary>
@@ -153,7 +162,7 @@ namespace Bearventure.Gameplay.Characters.Skills
                 hitBoxWidth = value;
             }
         }
-        private int hitBoxWidth;
+        
         /// <summary>
         /// Gets or sets the height of the skills hitbox.
         /// </summary>
@@ -169,7 +178,7 @@ namespace Bearventure.Gameplay.Characters.Skills
                 hitBoxHeight = value;
             }
         }
-        private int hitBoxHeight;
+        
         /// <summary>
         /// Gets the hitbox of the skill.
         /// </summary>
@@ -200,6 +209,7 @@ namespace Bearventure.Gameplay.Characters.Skills
             get;
             private set;
         }
+        #endregion
         /// <summary>
         /// Setups the skill with 1 animation.
         /// </summary>

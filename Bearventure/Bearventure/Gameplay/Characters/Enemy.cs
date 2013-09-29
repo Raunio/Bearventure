@@ -282,7 +282,7 @@ namespace Bearventure.Gameplay.Characters
                    
                     testSkill.HitBoxHeight = BoundingBox.Height;
                     testSkill.HitBoxWidth = 20;
-                    testSkill.InflictForce = new Vector2(20, 0);
+                    testSkill.InflictForce = new Vector2(35, 0);
 
                     Attack = new EnemySkill(this, new Animation(spriteSheet, 0, 93, 103, 1, 4, 80, false, false), 900, 2, Constants.DamageType.Crushing);
                     Attack.StartVelocity = new Vector2(5, 0);

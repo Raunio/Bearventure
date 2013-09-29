@@ -244,9 +244,11 @@ namespace Bearventure
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None,
                     RasterizerState.CullNone, null, camera.GetTransformation(ResolutionManager.graphicsDevice.GraphicsDevice));
-
+            
 
             background.Draw(spriteBatch);
+
+            CollisionHandler.Map.DrawMap(spriteBatch);
 
             foreach (Enemy enemy in enemies)
             {

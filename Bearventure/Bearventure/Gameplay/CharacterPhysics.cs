@@ -198,7 +198,7 @@ namespace Bearventure
         }
         private static void Knock(Character subject)
         {
-            float decceleration = subject.mass / 50;
+            float decceleration = subject.mass / 75; // Magic number
 
             if (subject.velocity.X == 0 && OnGround(subject))
                 subject.state = Constants.CharacterState.Stopped;

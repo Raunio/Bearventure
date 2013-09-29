@@ -163,8 +163,10 @@ namespace Bearventure.Gameplay
             Vector2 mass = new Vector2(skill.InflictForce.X > 0 ? subject.mass * 0.033f : 0, skill.InflictForce.Y != 0 ? subject.mass * 0.033f : 0);
             Vector2 force = new Vector2(direction == Constants.DirectionX.Left ? -skill.InflictForce.X + mass.X : skill.InflictForce.X - mass.X, skill.InflictForce.Y + mass.Y);
             subject.velocity += force;
+            subject.position += force;
 
-            subject.state = Constants.CharacterState.Knocked;
+            if(force != Vector2.Zero)
+                subject.state = Constants.CharacterState.Knocked;
         }
     }
 }
