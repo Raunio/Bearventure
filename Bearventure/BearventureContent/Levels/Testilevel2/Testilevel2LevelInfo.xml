@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <XnaContent>
   <Asset Type="XmlItems.LevelInfo">
-    <BackgroundFractions>32</BackgroundFractions>
+    <BackgroundFractions>64</BackgroundFractions>
     <BackgroundAssetName>Testilevel2</BackgroundAssetName>
     <Name>Testilevel2</Name>
   </Asset>

@@ -87,7 +87,7 @@ namespace Bearventure.Gameplay.Levels
         {
             for (int x = 0; x < Fractions / 2; x++)
                 for (int y = 0; y < 2; y++)
-                    spriteBatch.Draw(Backgrounds[x, y], new Vector2(Backgrounds[x, y].Width * x * 2, Backgrounds[x, y].Height * y * 2), null, Color.White, 0f, Vector2.Zero, 2f, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(Backgrounds[x, y], new Vector2(Backgrounds[x, y].Width * x * 4, Backgrounds[x, y].Height * y * 4), null, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0f);
         }
         /// <summary>
         /// Method used for testing

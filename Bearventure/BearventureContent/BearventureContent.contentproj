@@ -339,13 +339,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Levels\Testilevel2\Testilevel2LevelInfo.xml">
-      <Name>Testilevel2LevelInfo</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Sprites\karhukombo1.png">
       <Name>karhukombo1</Name>
       <Importer>TextureImporter</Importer>
@@ -390,200 +383,6 @@
       <Name>hitTest</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_0.Png">
-      <Name>Testilevel2_0</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_1.Png">
-      <Name>Testilevel2_1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_10.Png">
-      <Name>Testilevel2_10</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_11.Png">
-      <Name>Testilevel2_11</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_12.Png">
-      <Name>Testilevel2_12</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_13.Png">
-      <Name>Testilevel2_13</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_14.Png">
-      <Name>Testilevel2_14</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_15.Png">
-      <Name>Testilevel2_15</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_16.Png">
-      <Name>Testilevel2_16</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_17.Png">
-      <Name>Testilevel2_17</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_18.Png">
-      <Name>Testilevel2_18</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_19.Png">
-      <Name>Testilevel2_19</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_2.Png">
-      <Name>Testilevel2_2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_20.Png">
-      <Name>Testilevel2_20</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_21.Png">
-      <Name>Testilevel2_21</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_22.Png">
-      <Name>Testilevel2_22</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_23.Png">
-      <Name>Testilevel2_23</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_24.Png">
-      <Name>Testilevel2_24</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_25.Png">
-      <Name>Testilevel2_25</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_26.Png">
-      <Name>Testilevel2_26</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_27.Png">
-      <Name>Testilevel2_27</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_28.Png">
-      <Name>Testilevel2_28</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_29.Png">
-      <Name>Testilevel2_29</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_3.Png">
-      <Name>Testilevel2_3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_30.Png">
-      <Name>Testilevel2_30</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_31.Png">
-      <Name>Testilevel2_31</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_4.Png">
-      <Name>Testilevel2_4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_5.Png">
-      <Name>Testilevel2_5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_6.Png">
-      <Name>Testilevel2_6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_7.Png">
-      <Name>Testilevel2_7</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_8.Png">
-      <Name>Testilevel2_8</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\Background\Testilevel2_9.Png">
-      <Name>Testilevel2_9</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-      <ProcessorParameters_TextureFormat>DxtCompressed</ProcessorParameters_TextureFormat>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -770,6 +569,335 @@
       <Name>taso</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_0.Png">
+      <Name>Testilevel2_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_1.Png">
+      <Name>Testilevel2_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_10.Png">
+      <Name>Testilevel2_10</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_11.Png">
+      <Name>Testilevel2_11</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_12.Png">
+      <Name>Testilevel2_12</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_13.Png">
+      <Name>Testilevel2_13</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_14.Png">
+      <Name>Testilevel2_14</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_15.Png">
+      <Name>Testilevel2_15</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_16.Png">
+      <Name>Testilevel2_16</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_17.Png">
+      <Name>Testilevel2_17</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_18.Png">
+      <Name>Testilevel2_18</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_19.Png">
+      <Name>Testilevel2_19</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_2.Png">
+      <Name>Testilevel2_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_20.Png">
+      <Name>Testilevel2_20</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_21.Png">
+      <Name>Testilevel2_21</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_22.Png">
+      <Name>Testilevel2_22</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_23.Png">
+      <Name>Testilevel2_23</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_24.Png">
+      <Name>Testilevel2_24</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_25.Png">
+      <Name>Testilevel2_25</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_26.Png">
+      <Name>Testilevel2_26</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_27.Png">
+      <Name>Testilevel2_27</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_28.Png">
+      <Name>Testilevel2_28</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_29.Png">
+      <Name>Testilevel2_29</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_3.Png">
+      <Name>Testilevel2_3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_30.Png">
+      <Name>Testilevel2_30</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_31.Png">
+      <Name>Testilevel2_31</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_32.Png">
+      <Name>Testilevel2_32</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_33.Png">
+      <Name>Testilevel2_33</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_34.Png">
+      <Name>Testilevel2_34</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_35.Png">
+      <Name>Testilevel2_35</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_36.Png">
+      <Name>Testilevel2_36</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_37.Png">
+      <Name>Testilevel2_37</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_38.Png">
+      <Name>Testilevel2_38</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_39.Png">
+      <Name>Testilevel2_39</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_4.Png">
+      <Name>Testilevel2_4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_40.Png">
+      <Name>Testilevel2_40</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_41.Png">
+      <Name>Testilevel2_41</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_42.Png">
+      <Name>Testilevel2_42</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_43.Png">
+      <Name>Testilevel2_43</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_44.Png">
+      <Name>Testilevel2_44</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_45.Png">
+      <Name>Testilevel2_45</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_46.Png">
+      <Name>Testilevel2_46</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_47.Png">
+      <Name>Testilevel2_47</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_48.Png">
+      <Name>Testilevel2_48</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_49.Png">
+      <Name>Testilevel2_49</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_5.Png">
+      <Name>Testilevel2_5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_50.Png">
+      <Name>Testilevel2_50</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_51.Png">
+      <Name>Testilevel2_51</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_52.Png">
+      <Name>Testilevel2_52</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_53.Png">
+      <Name>Testilevel2_53</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_54.Png">
+      <Name>Testilevel2_54</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_55.Png">
+      <Name>Testilevel2_55</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_56.Png">
+      <Name>Testilevel2_56</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_57.Png">
+      <Name>Testilevel2_57</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_58.Png">
+      <Name>Testilevel2_58</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_59.Png">
+      <Name>Testilevel2_59</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_6.Png">
+      <Name>Testilevel2_6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_60.Png">
+      <Name>Testilevel2_60</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_61.Png">
+      <Name>Testilevel2_61</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_62.Png">
+      <Name>Testilevel2_62</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_63.Png">
+      <Name>Testilevel2_63</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_7.Png">
+      <Name>Testilevel2_7</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_8.Png">
+      <Name>Testilevel2_8</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\Background\Testilevel2_9.Png">
+      <Name>Testilevel2_9</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Levels\Testilevel2\Testilevel2LevelInfo.xml">
+      <Name>Testilevel2LevelInfo</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
