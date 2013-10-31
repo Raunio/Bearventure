@@ -133,111 +133,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Levels\Testilevel\Background\Testilevel_0.Png">
-      <Name>Testilevel_0</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\Background\Testilevel_1.Png">
-      <Name>Testilevel_1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\Background\Testilevel_2.Png">
-      <Name>Testilevel_2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\Background\Testilevel_3.Png">
-      <Name>Testilevel_3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\Background\Testilevel_4.Png">
-      <Name>Testilevel_4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\Background\Testilevel_5.Png">
-      <Name>Testilevel_5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\Background\Testilevel_6.Png">
-      <Name>Testilevel_6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\Background\Testilevel_7.Png">
-      <Name>Testilevel_7</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Levels\Testilevel\TestilevelLevelInfo.xml">
-      <Name>TestilevelLevelInfo</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Levels\Testilevel\CollisionMap\Testilevel_0.Png">
-      <Name>Testilevel_0</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\CollisionMap\Testilevel_1.Png">
-      <Name>Testilevel_1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\CollisionMap\Testilevel_2.Png">
-      <Name>Testilevel_2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\CollisionMap\Testilevel_3.Png">
-      <Name>Testilevel_3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\CollisionMap\Testilevel_4.Png">
-      <Name>Testilevel_4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\CollisionMap\Testilevel_5.Png">
-      <Name>Testilevel_5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\CollisionMap\Testilevel_6.Png">
-      <Name>Testilevel_6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel\CollisionMap\Testilevel_7.Png">
-      <Name>Testilevel_7</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Levels\Testilevel\Items\Testilevel_StartPoint.xml">
-      <Name>Testilevel_StartPoint</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Levels\Testilevel\Items\Testilevel_Enemies.xml">
-      <Name>Testilevel_Enemies</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Sprites\player.png">
       <Name>player</Name>
       <Importer>TextureImporter</Importer>
@@ -383,168 +278,6 @@
       <Name>hitTest</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_0.Png">
-      <Name>Testilevel2CollisionMap_0</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_1.Png">
-      <Name>Testilevel2CollisionMap_1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_10.Png">
-      <Name>Testilevel2CollisionMap_10</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_11.Png">
-      <Name>Testilevel2CollisionMap_11</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_12.Png">
-      <Name>Testilevel2CollisionMap_12</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_13.Png">
-      <Name>Testilevel2CollisionMap_13</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_14.Png">
-      <Name>Testilevel2CollisionMap_14</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_15.Png">
-      <Name>Testilevel2CollisionMap_15</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_16.Png">
-      <Name>Testilevel2CollisionMap_16</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_17.Png">
-      <Name>Testilevel2CollisionMap_17</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_18.Png">
-      <Name>Testilevel2CollisionMap_18</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_19.Png">
-      <Name>Testilevel2CollisionMap_19</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_2.Png">
-      <Name>Testilevel2CollisionMap_2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_20.Png">
-      <Name>Testilevel2CollisionMap_20</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_21.Png">
-      <Name>Testilevel2CollisionMap_21</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_22.Png">
-      <Name>Testilevel2CollisionMap_22</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_23.Png">
-      <Name>Testilevel2CollisionMap_23</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_24.Png">
-      <Name>Testilevel2CollisionMap_24</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_25.Png">
-      <Name>Testilevel2CollisionMap_25</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_26.Png">
-      <Name>Testilevel2CollisionMap_26</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_27.Png">
-      <Name>Testilevel2CollisionMap_27</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_28.Png">
-      <Name>Testilevel2CollisionMap_28</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_29.Png">
-      <Name>Testilevel2CollisionMap_29</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_3.Png">
-      <Name>Testilevel2CollisionMap_3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_30.Png">
-      <Name>Testilevel2CollisionMap_30</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_31.Png">
-      <Name>Testilevel2CollisionMap_31</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_4.Png">
-      <Name>Testilevel2CollisionMap_4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_5.Png">
-      <Name>Testilevel2CollisionMap_5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_6.Png">
-      <Name>Testilevel2CollisionMap_6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_7.Png">
-      <Name>Testilevel2CollisionMap_7</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_8.Png">
-      <Name>Testilevel2CollisionMap_8</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_9.Png">
-      <Name>Testilevel2CollisionMap_9</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -898,6 +631,328 @@
       <Name>Testilevel2LevelInfo</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_0.Png">
+      <Name>Testilevel2CollisionMap_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_1.Png">
+      <Name>Testilevel2CollisionMap_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_10.Png">
+      <Name>Testilevel2CollisionMap_10</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_11.Png">
+      <Name>Testilevel2CollisionMap_11</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_12.Png">
+      <Name>Testilevel2CollisionMap_12</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_13.Png">
+      <Name>Testilevel2CollisionMap_13</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_14.Png">
+      <Name>Testilevel2CollisionMap_14</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_15.Png">
+      <Name>Testilevel2CollisionMap_15</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_16.Png">
+      <Name>Testilevel2CollisionMap_16</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_17.Png">
+      <Name>Testilevel2CollisionMap_17</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_18.Png">
+      <Name>Testilevel2CollisionMap_18</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_19.Png">
+      <Name>Testilevel2CollisionMap_19</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_2.Png">
+      <Name>Testilevel2CollisionMap_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_20.Png">
+      <Name>Testilevel2CollisionMap_20</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_21.Png">
+      <Name>Testilevel2CollisionMap_21</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_22.Png">
+      <Name>Testilevel2CollisionMap_22</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_23.Png">
+      <Name>Testilevel2CollisionMap_23</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_24.Png">
+      <Name>Testilevel2CollisionMap_24</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_25.Png">
+      <Name>Testilevel2CollisionMap_25</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_26.Png">
+      <Name>Testilevel2CollisionMap_26</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_27.Png">
+      <Name>Testilevel2CollisionMap_27</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_28.Png">
+      <Name>Testilevel2CollisionMap_28</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_29.Png">
+      <Name>Testilevel2CollisionMap_29</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_3.Png">
+      <Name>Testilevel2CollisionMap_3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_30.Png">
+      <Name>Testilevel2CollisionMap_30</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_31.Png">
+      <Name>Testilevel2CollisionMap_31</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_32.Png">
+      <Name>Testilevel2CollisionMap_32</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_33.Png">
+      <Name>Testilevel2CollisionMap_33</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_34.Png">
+      <Name>Testilevel2CollisionMap_34</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_35.Png">
+      <Name>Testilevel2CollisionMap_35</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_36.Png">
+      <Name>Testilevel2CollisionMap_36</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_37.Png">
+      <Name>Testilevel2CollisionMap_37</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_38.Png">
+      <Name>Testilevel2CollisionMap_38</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_39.Png">
+      <Name>Testilevel2CollisionMap_39</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_4.Png">
+      <Name>Testilevel2CollisionMap_4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_40.Png">
+      <Name>Testilevel2CollisionMap_40</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_41.Png">
+      <Name>Testilevel2CollisionMap_41</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_42.Png">
+      <Name>Testilevel2CollisionMap_42</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_43.Png">
+      <Name>Testilevel2CollisionMap_43</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_44.Png">
+      <Name>Testilevel2CollisionMap_44</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_45.Png">
+      <Name>Testilevel2CollisionMap_45</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_46.Png">
+      <Name>Testilevel2CollisionMap_46</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_47.Png">
+      <Name>Testilevel2CollisionMap_47</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_48.Png">
+      <Name>Testilevel2CollisionMap_48</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_49.Png">
+      <Name>Testilevel2CollisionMap_49</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_5.Png">
+      <Name>Testilevel2CollisionMap_5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_50.Png">
+      <Name>Testilevel2CollisionMap_50</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_51.Png">
+      <Name>Testilevel2CollisionMap_51</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_52.Png">
+      <Name>Testilevel2CollisionMap_52</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_53.Png">
+      <Name>Testilevel2CollisionMap_53</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_54.Png">
+      <Name>Testilevel2CollisionMap_54</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_55.Png">
+      <Name>Testilevel2CollisionMap_55</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_56.Png">
+      <Name>Testilevel2CollisionMap_56</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_57.Png">
+      <Name>Testilevel2CollisionMap_57</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_58.Png">
+      <Name>Testilevel2CollisionMap_58</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_59.Png">
+      <Name>Testilevel2CollisionMap_59</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_6.Png">
+      <Name>Testilevel2CollisionMap_6</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_60.Png">
+      <Name>Testilevel2CollisionMap_60</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_61.Png">
+      <Name>Testilevel2CollisionMap_61</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_62.Png">
+      <Name>Testilevel2CollisionMap_62</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_63.Png">
+      <Name>Testilevel2CollisionMap_63</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_7.Png">
+      <Name>Testilevel2CollisionMap_7</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_8.Png">
+      <Name>Testilevel2CollisionMap_8</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_9.Png">
+      <Name>Testilevel2CollisionMap_9</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

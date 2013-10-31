@@ -176,7 +176,7 @@ namespace Bearventure.Engine.CollisionDetection
                     {
                         // Check if the pixel isn't transparent and has an aplha value of 255, a collision happens. 
                         // The alpha value must be 255 so that smoothened edges don't count.
-                        if (Map.CroppedTextures[zone].Data[x, y] != Color.Transparent && Map.CroppedTextures[zone].Data[x, y].A == 255)
+                        if ((Map.CroppedTextures[zone].Data[x, y] != Color.Transparent && Map.CroppedTextures[zone].Data[x, y] != Color.White) && Map.CroppedTextures[zone].Data[x, y].A == 255)
                         {
                             // Assing the color of the pixel to TerrainType which can be used to detect terrain upon collision.
                             TerrainType = Map.CroppedTextures[zone].Data[x, y];
@@ -240,7 +240,7 @@ namespace Bearventure.Engine.CollisionDetection
                             zone = zones[1];
                         }
 
-                        if (Map.CroppedTextures[zone].Data[x, y] != Color.Transparent && Map.CroppedTextures[zone].Data[x, y].A == 255)
+                        if ((Map.CroppedTextures[zone].Data[x, y] != Color.Transparent && Map.CroppedTextures[zone].Data[x, y] != Color.White) && Map.CroppedTextures[zone].Data[x, y].A == 255)
                         {
                             if (Left <= subject.BoundingBox.Left / resizeFactor)
                             {

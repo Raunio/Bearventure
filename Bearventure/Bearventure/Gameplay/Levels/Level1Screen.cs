@@ -51,8 +51,6 @@ namespace Bearventure
         List<Platform> platforms;
         Player player;
 
-        Platform platform;
-
         float pauseAlpha;
 
         InputAction pauseAction;
@@ -111,7 +109,7 @@ namespace Bearventure
 
                 Texture2D[] collisionMap = new Texture2D[background.Fractions];
 
-                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 32, 4), background.Fractions, enemies, player, platforms, content);
+                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 64, 4), background.Fractions, enemies, player, platforms, content);
 
                 CharacterPhysics.Gravity = 1.5f;
 
