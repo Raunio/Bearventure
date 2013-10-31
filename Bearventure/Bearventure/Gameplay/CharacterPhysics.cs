@@ -59,6 +59,13 @@ namespace Bearventure
                 case Constants.CharacterState.Knocked:
                     Knock(subject);
                     break;
+                case Constants.CharacterState.ClimbingUp:
+                    ClimbUp(subject);
+                    break;
+                case Constants.CharacterState.ClimbingDown:
+                    ClimbDown(subject);
+                    break;
+
             }
 
             HandleTerrainCollisions(subject);
@@ -214,6 +221,28 @@ namespace Bearventure
 
         }
 
+        private static void ClimbUp(Character subject)
+        {
+            if (subject.velocity.Y == 0 && OnLadder(subject))
+                subject.state = Constants.CharacterState.Stopped;
+            else
+            {
+                if (subject.velocity.Y <= 0)
+                    subject.velocity.Y = 5;
+            }
+
+        }
+        private static void ClimbDown(Character subject)
+        {
+            if (subject.velocity.Y == 0 && OnLadder(subject))
+                subject.state = Constants.CharacterState.Stopped;
+            else
+            {
+                if (subject.velocity.Y <= 0)
+                    subject.velocity.Y = -5;
+            }
+        }
+
         private static void HandleTerrainCollisions(Character subject)
         {
             int collision = CollisionHandler.CollisionOccursWithMap(subject, subject.velocity);
@@ -250,6 +279,12 @@ namespace Bearventure
             {
                 subject.velocity.X = 0;
                 subject.velocity.Y = 0;
+            }
+
+            else if ((collision == Top || collision == Bottom || collision == Left || collision == Right) && CollisionHandler.TerrainType == Constants.Ladder)
+            {
+                subject.velocity.X = 0;
+                subject.velocity.Y = 0; 
             }
         }
         private static void HandleCharacterCollisions(Character subject)
@@ -304,6 +339,33 @@ namespace Bearventure
         /// <param name="subject"></param>
         /// <returns></returns>
         public static bool OnGround(Character subject)
+        {
+            int collision = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(subject.velocity.X, subject.velocity.Y + 2));
+
+            if (collision == subject.BoundingBox.Bottom ||
+                collision == subject.BoundingBox.Bottom + subject.BoundingBox.Right ||
+                collision == subject.BoundingBox.Bottom + subject.BoundingBox.Left)
+            {
+                return true;
+            }
+
+            collision = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(subject.velocity.X, subject.velocity.Y + 2));
+
+            if (collision == subject.BoundingBox.Bottom ||
+                collision == subject.BoundingBox.Bottom + subject.BoundingBox.Right ||
+                collision == subject.BoundingBox.Bottom + subject.BoundingBox.Left)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        /// <summary>
+        /// Checks if the character is currently standing on a ladder.
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <returns></returns>
+        public static bool OnLadder(Character subject)
         {
             int collision = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(subject.velocity.X, subject.velocity.Y + 2));
 
@@ -388,7 +450,7 @@ namespace Bearventure
             FlipFlap(subject, gameTime);
         }
         /// <summary>
-        /// Flippidy flap
+        /// Flippidy flap / Owl flight
         /// </summary>
         /// <param name="subject"></param>
         /// <param name="gameTime"></param>
