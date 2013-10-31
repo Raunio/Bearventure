@@ -12,11 +12,21 @@ namespace Bearventure.Gameplay.GameObjects
     public class Platform : GameplayObject
     {
         Constants.PlatformType type;
+        Behaviour behaviour;
 
         public Platform(ContentManager content, Constants.PlatformType type, Vector2 position)
         {
             this.type = type;
             this.position = position;
+
+            Initialize(content);
+        }
+
+        public Platform(ContentManager content, Constants.PlatformType type, Vector2 position, Behaviour behaviour)
+        {
+            this.type = type;
+            this.position = position;
+            this.behaviour = behaviour;
 
             Initialize(content);
         }
@@ -34,6 +44,10 @@ namespace Bearventure.Gameplay.GameObjects
         public override void Update(GameTime gameTime)
         {
             currentAnimation.Animate(gameTime);
+            if (behaviour != null)
+            {
+                behaviour.Apply(gameTime);
+            }
         }
     }
 }

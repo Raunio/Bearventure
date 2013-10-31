@@ -109,7 +109,7 @@ namespace Bearventure
 
                 Texture2D[] collisionMap = new Texture2D[background.Fractions];
 
-                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 64, 4), background.Fractions, enemies, player, platforms, content);
+                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 32, 4), enemies, player, platforms, content);
 
                 CharacterPhysics.Gravity = 1.5f;
 
@@ -260,9 +260,10 @@ namespace Bearventure
             
 
             background.Draw(spriteBatch);
+            background.DrawGrid(spriteBatch);
             
-            //CollisionHandler.Map.DrawMap(spriteBatch);
-            //CollisionHandler.Map.DrawGrid(spriteBatch);
+            CollisionHandler.Map.DrawMap(spriteBatch);
+            CollisionHandler.Map.DrawGrid(spriteBatch);
 
             foreach (Enemy enemy in enemies)
             {

@@ -31,12 +31,13 @@ namespace Bearventure.Engine.CollisionDetection
         /// <summary>
         /// Initialize CollisionHandler by passing it the collision map. An individual image fraction is then refered to as a zone.
         /// </summary>
-        /// <param name="mapCollisionTextures"></param>
-        public static void Initialize(CollisionMap _map, int fractions, List<Enemy> enem, Player player, List<Platform> platforms, ContentManager _content)
+        public static void Initialize(CollisionMap _map, List<Enemy> enem, Player player, List<Platform> plat, ContentManager _content)
         {
             _player = player;
 
             enemies = enem;
+
+            platforms = plat;
 
             content = _content;
 
@@ -334,10 +335,10 @@ namespace Bearventure.Engine.CollisionDetection
                 #region Check if player collides with platforms
                 for (int i = 0; i < platforms.Count; i++)
                 {
-                    Rectangle platformBox = new Rectangle(enemies[i].BoundingBox.X / resizeFactor, enemies[i].BoundingBox.Y / resizeFactor,
-                        platforms[i].BoundingBox.Width / resizeFactor, enemies[i].BoundingBox.Height / resizeFactor);
+                    Rectangle platformBox = new Rectangle(platforms[i].BoundingBox.X / resizeFactor, platforms[i].BoundingBox.Y / resizeFactor,
+                        platforms[i].BoundingBox.Width / resizeFactor, platforms[i].BoundingBox.Height / resizeFactor);
 
-                    if (Y.Intersects(platformBox) && subject.BoundingBox != enemies[i].BoundingBox)
+                    if (Y.Intersects(platformBox) && subject.BoundingBox != platforms[i].BoundingBox)
                     {
                         if (Y.Y < platformBox.Y + platformBox.Height / 2)
                         {
@@ -359,8 +360,6 @@ namespace Bearventure.Engine.CollisionDetection
                         {
                             collision += subject.BoundingBox.Right;
                         }
-
-                        PushVelocity = PushForce(subject, enemies[i]);
                     }
                     
                 }

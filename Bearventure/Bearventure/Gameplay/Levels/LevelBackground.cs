@@ -17,6 +17,7 @@ namespace Bearventure.Gameplay.Levels
         private Texture2D edgeTexture;
         private int zone_height;
         private int zone_width;
+        private int resizeFactor = 4;
 
         /// <summary>
         /// Gets the amount of fractions the background object has.
@@ -79,15 +80,18 @@ namespace Bearventure.Gameplay.Levels
             Width = Backgrounds[0, 0].Width * Fractions / 2;
             Height = Backgrounds[0, 0].Height * 2;
 
-            zone_width = Backgrounds[0, 0].Width * 2;
-            zone_height = Backgrounds[0, 0].Height * 2;
+            zone_width = Backgrounds[0, 0].Width * resizeFactor;
+            zone_height = Backgrounds[0, 0].Height * resizeFactor;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             for (int x = 0; x < Fractions / 2; x++)
                 for (int y = 0; y < 2; y++)
-                    spriteBatch.Draw(Backgrounds[x, y], new Vector2(Backgrounds[x, y].Width * x * 4, Backgrounds[x, y].Height * y * 4), null, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(Backgrounds[x, y],
+                        new Vector2(x * Backgrounds[x, y].Width * resizeFactor,
+                            y * Backgrounds[x, y].Height * resizeFactor), null, Color.White,
+                            0f, Vector2.Zero, resizeFactor, SpriteEffects.None, 0f);
         }
         /// <summary>
         /// Method used for testing
@@ -98,8 +102,10 @@ namespace Bearventure.Gameplay.Levels
             for(int x = 0; x < Fractions / 2; x++)
                 for(int y = 0; y < 2; y++)
                 {
-                    spriteBatch.Draw(edgeTexture, new Rectangle(Backgrounds[x, y].Width * x * 2, Backgrounds[x, y].Height * y * 2, Backgrounds[x, y].Width * 2, 1), Color.White);
-                    spriteBatch.Draw(edgeTexture, new Rectangle(Backgrounds[x, y].Width * x * 2, Backgrounds[x, y].Height * y * 2, 1, Backgrounds[x, y].Height * 2), Color.White);
+                    spriteBatch.Draw(edgeTexture, new Rectangle(Backgrounds[x, y].Width * x * resizeFactor,
+                        Backgrounds[x, y].Height * y * resizeFactor, Backgrounds[x, y].Width * resizeFactor, 1), Color.White);
+                    spriteBatch.Draw(edgeTexture, new Rectangle(Backgrounds[x, y].Width * x * resizeFactor,
+                        Backgrounds[x, y].Height * y * resizeFactor, 1, Backgrounds[x, y].Height * resizeFactor), Color.White);
                 }
         }
         /// <summary>
@@ -119,11 +125,11 @@ namespace Bearventure.Gameplay.Levels
                     {
                         if (rectangle.Y > zone_height)
                         {
-                            zone = i * 2 + 1;
+                            zone = i * resizeFactor + 1;
                         }
                         else
                         {
-                            zone = i * 2;
+                            zone = i * resizeFactor;
                         }
                     }
                 }

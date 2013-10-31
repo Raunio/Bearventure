@@ -305,6 +305,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Levels\Testilevel2\Testilevel2LevelInfo.xml">
+      <Name>Testilevel2LevelInfo</Name>
+      <Importer>XmlImporter</Importer>
+      <Processor>PassThroughProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Levels\Testilevel2\Background\Testilevel2_0.Png">
       <Name>Testilevel2_0</Name>
       <Importer>TextureImporter</Importer>
@@ -624,13 +631,6 @@
       <Name>Testilevel2_9</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Levels\Testilevel2\Testilevel2LevelInfo.xml">
-      <Name>Testilevel2LevelInfo</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
