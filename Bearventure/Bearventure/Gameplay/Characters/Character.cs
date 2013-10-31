@@ -150,6 +150,9 @@ namespace Bearventure.Gameplay.Characters
                     case Constants.CharacterState.UsingSkill:
                         state = newState;
                         break;
+                    case Constants.CharacterState.ClimbingUp:
+                        state = newState;
+                        break;
                 }
             }
         }

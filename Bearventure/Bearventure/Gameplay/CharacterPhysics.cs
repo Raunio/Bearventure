@@ -223,24 +223,12 @@ namespace Bearventure
 
         private static void ClimbUp(Character subject)
         {
-            if (subject.velocity.Y == 0 && OnLadder(subject))
-                subject.state = Constants.CharacterState.Stopped;
-            else
-            {
-                if (subject.velocity.Y <= 0)
-                    subject.velocity.Y = 5;
-            }
-
+                        
+            
         }
         private static void ClimbDown(Character subject)
         {
-            if (subject.velocity.Y == 0 && OnLadder(subject))
-                subject.state = Constants.CharacterState.Stopped;
-            else
-            {
-                if (subject.velocity.Y <= 0)
-                    subject.velocity.Y = -5;
-            }
+
         }
 
         private static void HandleTerrainCollisions(Character subject)
@@ -367,7 +355,7 @@ namespace Bearventure
         /// <returns></returns>
         public static bool OnLadder(Character subject)
         {
-            int collision = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(subject.velocity.X, subject.velocity.Y + 2));
+            int collision = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(subject.velocity.X, subject.velocity.Y));
 
             if (collision == subject.BoundingBox.Bottom ||
                 collision == subject.BoundingBox.Bottom + subject.BoundingBox.Right ||
