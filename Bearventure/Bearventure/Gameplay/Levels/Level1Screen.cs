@@ -24,6 +24,7 @@ using Bearventure.Gameplay.Characters;
 using Bearventure.Gameplay.Characters.Skills;
 using Bearventure.Gameplay.HUD;
 using Bearventure.Engine.CollisionDetection;
+using Bearventure.Gameplay.GameObjects;
 
 #endregion
 
@@ -47,7 +48,10 @@ namespace Bearventure
         HeadsUpDisplay hud;
 
         List<Enemy> enemies;
+        List<Platform> platforms;
         Player player;
+
+        Platform platform;
 
         float pauseAlpha;
 
@@ -93,17 +97,23 @@ namespace Bearventure
                 enemies = XmlReader.EnemyList("Levels/Testilevel2/Items/Testilevel2_Enemies");
                 Enemy owl = new Enemy(Constants.EnemyType.DelayOwl, new Vector2(700, 3500), content.Load<Texture2D>("Sprites/paskapollo"), player);
                 enemies.Add(owl);
+
+                platforms = new List<Platform>();
+                platforms.Add(new Platform(content, Constants.PlatformType.Basic, new Vector2(700, 3600)));
+
                 CombatManager.Instance.Initialize(player, enemies);
                 hud = new HeadsUpDisplay();
                 hud.Initialize(content, ResolutionManager.graphicsDevice, enemies, player);
                 cameraController = new CameraController();
                 cameraController.AssingTo(player);
 
+                
+
                 Texture2D[] collisionMap = new Texture2D[background.Fractions];
 
-                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 32, 4), background.Fractions, enemies, player, content);
+                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 32, 4), background.Fractions, enemies, player, platforms, content);
 
-                CharacterPhysics.Gravity = 1.25f;
+                CharacterPhysics.Gravity = 1.5f;
 
                 MusicManager.Instance.LoadContent(content);
                 camera = new Camera(ScreenManager.GraphicsDevice.Viewport, new Vector2(background.Width, background.Height));
@@ -113,7 +123,7 @@ namespace Bearventure
                 VisualEffectManager.Instance.InitializeTerrainEffects(player, enemies);
                 // once the load has finished, we use ResetElapsedTime to tell the game's
                 // timing mechanism that we have just finished a very long frame, and that
-                // it should not try to catch up.
+                // it should not try to catch up.s
                 ScreenManager.Game.ResetElapsedTime();
             }
 
@@ -182,6 +192,11 @@ namespace Bearventure
 
                 player.Update(gameTime);
 
+                foreach (Platform p in platforms)
+                {
+                    p.Update(gameTime);
+                }
+
                 cameraController.Update(gameTime);
 
                 camera.LookAt(cameraController.Position);
@@ -247,8 +262,9 @@ namespace Bearventure
             
 
             background.Draw(spriteBatch);
-
-            CollisionHandler.Map.DrawMap(spriteBatch);
+            
+            //CollisionHandler.Map.DrawMap(spriteBatch);
+            //CollisionHandler.Map.DrawGrid(spriteBatch);
 
             foreach (Enemy enemy in enemies)
             {
@@ -258,6 +274,11 @@ namespace Bearventure
             }      
 
             player.Draw(spriteBatch);
+
+            foreach (Platform p in platforms)
+            {
+                p.Draw(spriteBatch);
+            }
 
             VisualEffectManager.Instance.DrawEffects(spriteBatch);
 

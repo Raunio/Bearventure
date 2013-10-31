@@ -67,6 +67,7 @@ namespace Bearventure
 
             chase = new Action(Constants.ActionType.Chase);
             chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.Vision));
+            chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, subject.AttackRange));
             chase.AddCondition(new Condition(Constants.ConditionType.AttackReady, true));
 
             preDeterminedActions.Add(chase);

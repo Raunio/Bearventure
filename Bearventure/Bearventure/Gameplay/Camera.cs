@@ -22,7 +22,7 @@ namespace Bearventure.Gameplay
 
         public Camera(Viewport ViewPort, Vector2 levelSize)
         {
-            zoom = 1.0f;
+            zoom = 1f;
             Rotation = 0.0f;
             Position = Vector2.Zero;
             Origin = new Vector2(ViewPort.Width / 2.0f, ViewPort.Height / 2.0f);
@@ -67,9 +67,9 @@ namespace Bearventure.Gameplay
             Transform =
                 Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0f)) *
                     Matrix.CreateRotationZ(rotation) *
-                    Matrix.CreateScale((float)graphicsDevice.Viewport.Width / ResolutionManager.GetVirtualResolution().X,
-                           (float)graphicsDevice.Viewport.Width / ResolutionManager.GetVirtualResolution().X,
-                           1f) *
+                    Matrix.CreateScale((float)graphicsDevice.Viewport.Width / ResolutionManager.GetVirtualResolution().X * zoom,
+                           (float)graphicsDevice.Viewport.Height / ResolutionManager.GetVirtualResolution().Y * zoom,
+                           zoom) *
                     Matrix.CreateTranslation(new Vector3(Origin, 0));
             return Transform;
         }

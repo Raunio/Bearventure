@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Bearventure.Gameplay.Characters;
 using Microsoft.Xna.Framework.Content;
 using Bearventure.Engine;
+using Bearventure.Gameplay.GameObjects;
 
 namespace Bearventure.Engine.CollisionDetection
 {
@@ -20,6 +21,7 @@ namespace Bearventure.Engine.CollisionDetection
         private static int zone_height;
 
         private static List<Enemy> enemies = new List<Enemy>();
+        private static List<Platform> platforms = new List<Platform>();
         private static Player _player;
 
         private static ContentManager content;
@@ -30,7 +32,7 @@ namespace Bearventure.Engine.CollisionDetection
         /// Initialize CollisionHandler by passing it the collision map. An individual image fraction is then refered to as a zone.
         /// </summary>
         /// <param name="mapCollisionTextures"></param>
-        public static void Initialize(CollisionMap _map, int fractions, List<Enemy> enem, Player player, ContentManager _content)
+        public static void Initialize(CollisionMap _map, int fractions, List<Enemy> enem, Player player, List<Platform> platforms, ContentManager _content)
         {
             _player = player;
 
@@ -184,6 +186,7 @@ namespace Bearventure.Engine.CollisionDetection
                             if (CollisionAreaRectangleY(subject, movement.Y).Y >= subject.BoundingBox.Bottom / resizeFactor)
                             {
                                 collision_y = subject.BoundingBox.Bottom;
+                                //CalculateDistanceToTerrain(zone, x, y, subject.BoundingBox.Bottom);    
                             }
                             // If the conditions above do not meet, assume that the top of the BoundingBox collides with terrain.
                             else
@@ -259,6 +262,21 @@ namespace Bearventure.Engine.CollisionDetection
 
             return collision_x + collision_y;
         }
+
+        private static void CalculateDistanceToTerrain(int zone, int x, int y, int bottom)
+        {
+            for (int i = x; i < 0; i--)
+            {
+                for (int j = y; j < 0; j--)
+                {
+                    if (Map.CroppedTextures[zone].Data[i, j] == Color.Transparent || Map.CroppedTextures[zone].Data[i, j].A != 255)
+                    {
+                        DistanceToTerrain = (int)(j * resizeFactor - bottom);
+                        return;
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Returns Left, Right, Top, Bottom of the subjects BoundingBox if a collision happens. The method creates 2 rectangles 
         /// (CollisionRectangleY, CollisionRectangleX) which are positioned in relation to the characters BoundingBox and velocity.
@@ -276,6 +294,7 @@ namespace Bearventure.Engine.CollisionDetection
                 Rectangle Y = CollisionAreaRectangleY(subject, subject.velocity.Y);
                 Rectangle X = CollisionAreaRectangleX(subject, subject.velocity.X);
 
+                #region Check if player collides with enemies
                 for (int i = 0; i < enemies.Count; i++)
                 {
                     if (enemies[i].state != Constants.CharacterState.Dead && enemies[i].Orientation != Constants.CharacterOrientation.Air)
@@ -310,10 +329,48 @@ namespace Bearventure.Engine.CollisionDetection
                         }
                     }
                 }
+                #endregion
+
+                #region Check if player collides with platforms
+                for (int i = 0; i < platforms.Count; i++)
+                {
+                    Rectangle platformBox = new Rectangle(enemies[i].BoundingBox.X / resizeFactor, enemies[i].BoundingBox.Y / resizeFactor,
+                        platforms[i].BoundingBox.Width / resizeFactor, enemies[i].BoundingBox.Height / resizeFactor);
+
+                    if (Y.Intersects(platformBox) && subject.BoundingBox != enemies[i].BoundingBox)
+                    {
+                        if (Y.Y < platformBox.Y + platformBox.Height / 2)
+                        {
+                            collision = subject.BoundingBox.Bottom;
+                        }
+                        else
+                        {
+                            collision = subject.BoundingBox.Top;
+                            ObjectVelocity = platforms[i].velocity;
+                        }
+                    }
+                    if (X.Intersects(platformBox) && subject.BoundingBox != platforms[i].BoundingBox)
+                    {
+                        if (X.X < platformBox.X + platformBox.Width / 2)
+                        {
+                            collision += subject.BoundingBox.Left;
+                        }
+                        else
+                        {
+                            collision += subject.BoundingBox.Right;
+                        }
+
+                        PushVelocity = PushForce(subject, enemies[i]);
+                    }
+                    
+                }
+                #endregion
 
                 Rectangle playerBox = new Rectangle(_player.BoundingBox.X / resizeFactor, _player.BoundingBox.Y / resizeFactor,
                             _player.BoundingBox.Width / resizeFactor, _player.BoundingBox.Height / resizeFactor);
 
+
+                #region Check if enemy collides with player
                 if (Y.Intersects(playerBox) && _player.BoundingBox != subject.BoundingBox)
                 {
                     if (Y.Y < playerBox.Y + playerBox.Height / 2)
@@ -339,6 +396,8 @@ namespace Bearventure.Engine.CollisionDetection
 
                     PushVelocity = PushForce(subject, _player);
                 }
+
+            #endregion
             }
 
             return collision;
@@ -463,6 +522,12 @@ namespace Bearventure.Engine.CollisionDetection
         /// Gets the collision paskdas ghojgfok
         /// </summary>
         public static CollisionMap Map
+        {
+            get;
+            private set;
+        }
+
+        public static int DistanceToTerrain
         {
             get;
             private set;

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Bearventure.Gameplay.Characters;
 
 namespace Bearventure
 {
@@ -51,6 +52,12 @@ namespace Bearventure
 
         public const String BlackMetalBadger = "Sprites/bmbadger";
         public const String DelayOwl = "Sprites/paskapollo";
+
+        #endregion
+
+        #region GameObjects
+
+        public const String BasicPlatform = "Sprites/taso";
 
         #endregion
 
@@ -142,7 +149,7 @@ namespace Bearventure
         };
 
         #endregion
-        #region CombatEnumerations
+        #region Combat Enumerations
         public enum DamageType
         {
             Slashing,
@@ -175,6 +182,14 @@ namespace Bearventure
             DoT,
             Slow,
         }
+        #endregion
+        #region GameObject Enumerations
+
+        public enum PlatformType
+        {
+            Basic,
+        }
+
         #endregion
 
         #region Resolution

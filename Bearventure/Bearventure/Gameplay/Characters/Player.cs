@@ -36,10 +36,10 @@ namespace Bearventure.Gameplay.Characters
 
         private void InitStats()
         {
-            acceleration = 1f;
-            decceleration = 1f;
-            walkSpeed = 15f;
-            runSpeed = 20f;
+            acceleration = 1.75f;
+            decceleration = 1.75f;
+            walkSpeed = 12f;
+            runSpeed = 17f;
             jumpStrenght = 20;
 
             maxHealth = 50;

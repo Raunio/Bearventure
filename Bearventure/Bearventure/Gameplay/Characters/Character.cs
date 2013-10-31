@@ -4,39 +4,10 @@ using Bearventure.Gameplay.Characters.Skills;
 
 namespace Bearventure.Gameplay.Characters
 {
-    public abstract class Character
+    public abstract class Character : GameplayObject
     {
         #region Members
-        protected Texture2D spriteSheet;
-        /// <summary>
-        /// Character position.
-        /// </summary>
-        public Vector2 position;
-        /// <summary>
-        /// Character velocity.
-        /// </summary>
-        public Vector2 velocity;
-        /// <summary>
-        /// Current animation of character
-        /// </summary>
-        public Animation currentAnimation;
-        protected float scale = 1f;
-        /// <summary>
-        /// Character walking speed.
-        /// </summary>
-        public float walkSpeed;
-        /// <summary>
-        /// Character running speed.
-        /// </summary>
-        public float runSpeed;
-        /// <summary>
-        /// Character acceleration.
-        /// </summary>
-        public float acceleration;
-        /// <summary>
-        /// Character brake strenght.
-        /// </summary>
-        public float decceleration;
+
         /// <summary>
         /// Character mass.
         /// </summary>
@@ -45,14 +16,7 @@ namespace Bearventure.Gameplay.Characters
         /// Represents the state of the character
         /// </summary>
         public Constants.CharacterState state;
-        /// <summary>
-        /// Left or right.
-        /// </summary>
-        public Constants.DirectionX directionX;
-        /// <summary>
-        /// Up or down
-        /// </summary>
-        public Constants.DirectionY directionY;
+
         /// <summary>
         /// Character orientation. Air or Ground.
         /// </summary>
@@ -87,7 +51,6 @@ namespace Bearventure.Gameplay.Characters
         public int healthRegen;
         private float regenTimer;
         private float damageTimer;
-        protected int BoundingBoxOffset;
         /// <summary>
         /// Gets or sets the name of the character.
         /// </summary>
@@ -107,19 +70,6 @@ namespace Bearventure.Gameplay.Characters
         }
         private string name;
         /// <summary>
-        /// Color data used for collision
-        /// </summary>
-        public Color[] textureData
-        {
-            get
-            {
-                Color[] td =  new Color[currentAnimation.FrameWidth * currentAnimation.FrameHeight];
-                currentAnimation.FrameTexture.GetData(td);
-
-                return td;
-            }
-        }
-        /// <summary>
         /// Gets the currently active skill of the character.
         /// </summary>
         public CharacterSkill ActiveSkill
@@ -130,21 +80,6 @@ namespace Bearventure.Gameplay.Characters
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Rectangle used primarily for collision detection.
-        /// </summary>
-        public Rectangle BoundingBox
-        {
-            get
-            {
-                int x = (int)(position.X - (currentAnimation.Origin.X * scale)) + BoundingBoxOffset;
-                int y = (int)(position.Y - (currentAnimation.Origin.Y * scale)) + BoundingBoxOffset;
-                int width = (int)(currentAnimation.FrameWidth * scale) - BoundingBoxOffset * 2;
-                int height = (int)(currentAnimation.FrameHeight * scale) - BoundingBoxOffset;
-
-                return new Rectangle(x, y, width, height);
-            }
-        }
         /// <summary>
         /// Returns true if character is in any way disabled.
         /// </summary>
@@ -158,17 +93,6 @@ namespace Bearventure.Gameplay.Characters
                     return false;
             }
         }
-        /// <summary>
-        /// Draw
-        /// </summary>
-        /// <param name="spriteBatch"></param>
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-            // TODO: Chop this too -Huemac
-            spriteBatch.Draw(currentAnimation.spriteSheet, position, currentAnimation.FrameRectangle, Color.White, currentAnimation.Rotation, currentAnimation.Origin, scale, currentAnimation.Effects, currentAnimation.LayerDepth);
-        }
-
-        public abstract void Update(GameTime gameTime);
 
         protected void RegenerateHealth(GameTime gameTime)
         {

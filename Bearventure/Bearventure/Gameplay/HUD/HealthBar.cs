@@ -24,6 +24,8 @@ namespace Bearventure.Gameplay.HUD
 
         private bool fixedPosition;
 
+        private float updateSpeed = 25;
+
         #endregion
         #region Gets and Sets
         /// <summary>
@@ -227,7 +229,7 @@ namespace Bearventure.Gameplay.HUD
         {
             animTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (animTimer > 35)
+            if (animTimer > updateSpeed)
             {
                 UpdateHealthBar();
                 animTimer = 0;

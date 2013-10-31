@@ -42,6 +42,9 @@ namespace Bearventure.Engine.CollisionDetection
             get;
             private set;
         }
+
+        private Texture2D edgeTexture;
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -71,6 +74,9 @@ namespace Bearventure.Engine.CollisionDetection
                 tx.LoadTexture(content);
 
             CropSize = new Point(CroppedTextures[0].Texture.Width, CroppedTextures[0].Texture.Height);
+
+            edgeTexture = new Texture2D(ResolutionManager.graphicsDevice.GraphicsDevice, 1, 1);
+            edgeTexture.SetData(new[] { Color.Yellow });
         }
         /// <summary>
         /// Loads all texture color data to memory.
@@ -86,13 +92,40 @@ namespace Bearventure.Engine.CollisionDetection
         /// <param name="spriteBatch"></param>
         public void DrawMap(SpriteBatch spriteBatch)
         {
-            for(int i = 0; i < CroppedTextures.Length / 2; i++)
+            for(int x = 0; x < CroppedTextures.Length / 2; x++)
             {
-                for (int j = 0; j < 2; j++)
+                for(int y = 0; y < 2; y++)
                 {
-                    spriteBatch.Draw(CroppedTextures[i].Texture, new Vector2(i * CroppedTextures[i].Texture.Width, j * CroppedTextures[i].Texture.Height), Color.White);
+                    spriteBatch.Draw(CroppedTextures[x * 2 + y].Texture, 
+                        new Vector2(x * CroppedTextures[x * 2 + y].Texture.Width * ResizeFactor, y * CroppedTextures[x * 2 + y].Texture.Height * ResizeFactor), 
+                            null, 
+                            Color.White, 
+                            0f, 
+                            Vector2.Zero, 
+                            ResizeFactor, 
+                            SpriteEffects.None, 
+                            0f);
                 }
             }
+        }
+
+        public void DrawGrid(SpriteBatch spriteBatch)
+        {
+            for (int x = 0; x < Fractions / 2; x++)
+                for (int y = 0; y < 2; y++)
+                {
+                    spriteBatch.Draw(edgeTexture, new Rectangle(CroppedTextures[x * 2 + y].Texture.Width * x * ResizeFactor, 
+                        CroppedTextures[x * 2 + y].Texture.Height * y * ResizeFactor, 
+                        CroppedTextures[x * 2 + y].Texture.Width * ResizeFactor, 
+                        1), 
+                        Color.White);
+
+                    spriteBatch.Draw(edgeTexture, new Rectangle(CroppedTextures[x * 2 + y].Texture.Width * x * ResizeFactor, 
+                        CroppedTextures[x * 2 + y].Texture.Height * y * ResizeFactor, 
+                        1, 
+                        CroppedTextures[x * 2 + y].Texture.Height * ResizeFactor), 
+                        Color.White);
+                }
         }
     }
 }
