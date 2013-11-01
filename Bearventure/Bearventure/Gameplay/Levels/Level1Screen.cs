@@ -49,6 +49,7 @@ namespace Bearventure
 
         List<Enemy> enemies;
         List<Platform> platforms;
+        List<Ladder> ladders;
         Player player;
 
         float pauseAlpha;
@@ -100,6 +101,9 @@ namespace Bearventure
                 Platform plat = new Platform(content, Constants.PlatformType.Basic, new Vector2(700, 3600));
                 plat.InitPatrol(600, 900, 200f);
                 platforms.Add(plat);
+
+                ladders = new List<Ladder>();
+                ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(500, 4000)));
 
                 CombatManager.Instance.Initialize(player, enemies);
                 hud = new HeadsUpDisplay();
@@ -197,6 +201,11 @@ namespace Bearventure
                     p.Update(gameTime);
                 }
 
+                foreach (Ladder l in ladders)
+                {
+                    l.Update(gameTime);
+                }
+
                 cameraController.Update(gameTime);
 
                 camera.LookAt(cameraController.Position);
@@ -279,6 +288,11 @@ namespace Bearventure
             foreach (Platform p in platforms)
             {
                 p.Draw(spriteBatch);
+            }
+
+            foreach (Ladder l in ladders)
+            {
+                l.Draw(spriteBatch);
             }
 
             VisualEffectManager.Instance.DrawEffects(spriteBatch);

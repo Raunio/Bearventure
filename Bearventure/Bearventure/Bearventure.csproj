@@ -142,6 +142,7 @@
     <Compile Include="Engine\CollisionDetection\CollisionHandler.cs" />
     <Compile Include="Gameplay\Characters\Enemy.cs" />
     <Compile Include="Gameplay\Characters\Player.cs" />
+    <Compile Include="Gameplay\GameObjects\Ladder.cs" />
     <Compile Include="Gameplay\GameObjects\Platform.cs" />
     <Compile Include="Gameplay\GameplayObject.cs" />
     <Compile Include="Gameplay\HUD\HeadsUpDisplay.cs" />

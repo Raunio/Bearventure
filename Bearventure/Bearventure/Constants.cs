@@ -37,10 +37,11 @@ namespace Bearventure
         #endregion
 
         #region Terrain Colors
-        public static Color Solid = Color.Black;
-        public static Color Water = Color.Blue;
-        public static Color Lava = Color.Red;
-        public static Color Quicksand = Color.Yellow;
+        public static Color Solid = Color.Black; // 0,0,0
+        public static Color Water = Color.Blue; // 0,0,255
+        public static Color Lava = Color.Red; // 255,0,0
+        public static Color Quicksand = Color.Yellow; // 255,255,0
+        public static Color Ladder = Color.Green; // 0,128,0
         #endregion
 
         #region Background Textures
@@ -58,6 +59,7 @@ namespace Bearventure
         #region GameObjects
 
         public const String BasicPlatform = "Sprites/taso";
+        public const String WoodenLadder = "Sprites/player";
 
         #endregion
 
@@ -76,6 +78,8 @@ namespace Bearventure
             Dead,
             Knocked,
             Stunned,
+            ClimbingUp,
+            ClimbingDown,
         };
         public enum DirectionX
         {
@@ -188,6 +192,11 @@ namespace Bearventure
         public enum PlatformType
         {
             Basic,
+        }
+
+        public enum LadderType
+        {
+            Wooden,
         }
 
         public enum PlatformState

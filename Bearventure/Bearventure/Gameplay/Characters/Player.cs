@@ -237,15 +237,25 @@ namespace Bearventure.Gameplay.Characters
                 }
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                {
+                    if(CharacterPhysics.OnLadder(this))
+                    {
+                        SetState(Constants.CharacterState.ClimbingUp);
+                    }
+                    else
                     SetState(Constants.CharacterState.Jumping);
-
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                {
+                    if (CharacterPhysics.OnLadder(this))
+                        SetState(Constants.CharacterState.ClimbingDown);
+                }
                 if (Keyboard.GetState().IsKeyDown(Keys.Q))
                 {
                     combo1.SetNextSkill();
                     UseSkill(combo1.ActiveSkill);
                 }
             }
-
             combo1.Update(gameTime); 
 
             RegenerateHealth(gameTime);

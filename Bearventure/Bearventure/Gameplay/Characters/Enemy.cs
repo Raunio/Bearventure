@@ -215,7 +215,7 @@ namespace Bearventure.Gameplay.Characters
                     Orientation = Constants.CharacterOrientation.Ground;
                     Vision = 300;
                     AttackRange = 120;
-                    health = 50;
+                    health = 1;
                     maxHealth = 50;
                     healthRegen = 2;
                     BoundingBoxOffset = 10;

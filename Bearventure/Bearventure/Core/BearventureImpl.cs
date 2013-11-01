@@ -49,6 +49,7 @@ namespace Bearventure
 
             // Create the screen manager component.
             screenManager = new ScreenManager(this);
+
             Components.Add(screenManager);
 
             SoundEffectManager.Instance.LoadContent(Content);
