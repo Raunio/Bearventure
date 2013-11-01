@@ -11,7 +11,6 @@ namespace Bearventure
         #region Members
 
         private Enemy subject;
-        private Platform platformSubject;
         private Character target;
         private Constants.BehaviourType behaviourType;
         private StrategyPlanner strategyPlanner;
@@ -59,10 +58,6 @@ namespace Bearventure
             target = player;
             strategyPlanner = new StrategyPlanner(subject, target);
             PointY = subject.Orientation == Constants.CharacterOrientation.Air ? (int)subject.position.Y : 0;
-        }
-        public Behaviour(Platform subject)
-        {
-            platformSubject = subject;
         }
         /// <summary>
         /// Set up passive behaviour. A passive subject stands still until the player reaches its line of sight. This method can be called upon at any time to switch from a previously initialized behaviour type.

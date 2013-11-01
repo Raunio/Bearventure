@@ -190,6 +190,12 @@ namespace Bearventure
             Basic,
         }
 
+        public enum PlatformState
+        {
+            Stopped,
+            Moving,
+        }
+
         #endregion
 
         #region Resolution

@@ -97,7 +97,9 @@ namespace Bearventure
                 enemies.Add(owl);
 
                 platforms = new List<Platform>();
-                platforms.Add(new Platform(content, Constants.PlatformType.Basic, new Vector2(700, 3600)));
+                Platform plat = new Platform(content, Constants.PlatformType.Basic, new Vector2(700, 3600));
+                plat.InitPatrol(600, 900, 200f);
+                platforms.Add(plat);
 
                 CombatManager.Instance.Initialize(player, enemies);
                 hud = new HeadsUpDisplay();
@@ -109,7 +111,7 @@ namespace Bearventure
 
                 Texture2D[] collisionMap = new Texture2D[background.Fractions];
 
-                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 32, 4), enemies, player, platforms, content);
+                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 24, 4), enemies, player, platforms, content);
 
                 CharacterPhysics.Gravity = 1.5f;
 
@@ -260,10 +262,10 @@ namespace Bearventure
             
 
             background.Draw(spriteBatch);
-            background.DrawGrid(spriteBatch);
+            //background.DrawGrid(spriteBatch);
             
-            CollisionHandler.Map.DrawMap(spriteBatch);
-            CollisionHandler.Map.DrawGrid(spriteBatch);
+            //CollisionHandler.Map.DrawMap(spriteBatch);
+            //CollisionHandler.Map.DrawGrid(spriteBatch);
 
             foreach (Enemy enemy in enemies)
             {

@@ -14,8 +14,11 @@ namespace Bearventure.Gameplay.Characters
         Animation stoppedLeft;
         Animation walkRight;
         Animation walkLeft;
+        Animation jumpingRight;
+        Animation jumpingLeft;
 
         Texture2D comboSheet;
+        Texture2D jumpSheet;
 
         CharacterSkillCombo combo1 = new CharacterSkillCombo();
 
@@ -25,6 +28,7 @@ namespace Bearventure.Gameplay.Characters
             scale = 1f;
             this.spriteSheet = content.Load<Texture2D>("Sprites/Karhu");
             comboSheet = content.Load<Texture2D>("Sprites/karhukombo1");
+            jumpSheet = content.Load<Texture2D>("Sprites/hyppy");
 
             this.position = position;
             directionX = Constants.DirectionX.Right;
@@ -58,6 +62,10 @@ namespace Bearventure.Gameplay.Characters
             stoppedLeft = new Animation(spriteSheet, 0, 88, 121, 9, 9, 50);
             walkRight = new Animation(spriteSheet, 0, 88, 121, 13, 21, 50);
             walkLeft = new Animation(spriteSheet, 0, 88, 121, 0, 8, 50, true);
+
+            jumpingRight = new Animation(jumpSheet, 0, 93, 120, 0, 3, 40, false, false);
+            jumpingLeft = new Animation(jumpSheet, 0, 93, 120, 0, 3, 40, false, false);
+            jumpingLeft.Effects = SpriteEffects.FlipHorizontally;
 
             currentAnimation = stoppedRight;
         }
@@ -250,12 +258,24 @@ namespace Bearventure.Gameplay.Characters
             switch (state)
             {
                 case Constants.CharacterState.Stopped:
+                    jumpingRight.Reset();
+                    jumpingLeft.Reset();
                     if (directionX == Constants.DirectionX.Left) { currentAnimation = stoppedLeft; }
                     else { currentAnimation = stoppedRight; }
                     break;
                 case Constants.CharacterState.Walking:
+                    jumpingRight.Reset();
+                    jumpingLeft.Reset();
                     if (directionX == Constants.DirectionX.Left) { currentAnimation = walkLeft; }
                     else { currentAnimation = walkRight; }
+                    break;
+                case Constants.CharacterState.Jumping:
+                    if (directionX == Constants.DirectionX.Left) { currentAnimation = jumpingLeft; }
+                    else { currentAnimation = jumpingRight; }
+                    break;
+                case Constants.CharacterState.Falling:
+                    if (directionX == Constants.DirectionX.Left) { currentAnimation = jumpingLeft; }
+                    else { currentAnimation = jumpingRight; }
                     break;
             }
         }

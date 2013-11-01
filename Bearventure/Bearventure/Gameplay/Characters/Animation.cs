@@ -163,7 +163,7 @@ namespace Bearventure.Gameplay.Characters
         public SpriteEffects Effects
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>
