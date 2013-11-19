@@ -70,7 +70,7 @@ namespace Bearventure.Engine.CollisionDetection
 
             if (Bottom >= zone_height)
             {
-                if(Top <= zone_height)
+                if(Top < zone_height)
                     zones_y.Add(0);
 
                 zones_y.Add(1);
@@ -153,6 +153,7 @@ namespace Bearventure.Engine.CollisionDetection
 
             if (movement.Y != 0)
             {
+
                 List<int> zones = OnZones(CollisionAreaRectangleY(subject, movement.Y));
 
                 int Top = Adjust(CollisionAreaRectangleY(subject, movement.Y)).Y;
@@ -325,8 +326,6 @@ namespace Bearventure.Engine.CollisionDetection
                             {
                                 collision += subject.BoundingBox.Right;
                             }
-
-                            PushVelocity = PushForce(subject, enemies[i]);
                         }
                     }
                 }
@@ -392,8 +391,6 @@ namespace Bearventure.Engine.CollisionDetection
                     {
                         collision += subject.BoundingBox.Right;
                     }
-
-                    PushVelocity = PushForce(subject, _player);
                 }
 
             #endregion
@@ -472,19 +469,7 @@ namespace Bearventure.Engine.CollisionDetection
                     subject.BoundingBox.Y / resizeFactor, 1, 
                     subject.BoundingBox.Height / resizeFactor);
         }
-        /// <summary>
-        /// Compares the masses of 2 characters and returns a "force value" from a's point of view.
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        private static float PushForce(Character a, Character b)
-        {
-            if (b.mass > a.mass && a.state != Constants.CharacterState.Dead && b.state != Constants.CharacterState.Dead)
-                return (b.mass - a.mass) / 5;
 
-           return 0;
-        }
         /// <summary>
         /// Returns the color of the terrain on which the last calculated subject is on.
         /// </summary>

@@ -103,6 +103,7 @@ namespace Bearventure.Gameplay.Characters
             skill1.Acceleration = 0.25f;
             skill1.StartVelocity = new Vector2(4, 0);
             skill1.UltimateVelocityX = 0;
+            skill1.InflictForce = new Vector2(7, -5);
             skill1.DamagingFrames = new List<int>
             {
                 2,
@@ -140,6 +141,7 @@ namespace Bearventure.Gameplay.Characters
             skill2.SoundEffectAsset = Constants.KarhuHit2;
             skill2.Acceleration = 0.25f;
             skill2.StartVelocity = new Vector2(3, 0);
+            skill2.InflictForce = new Vector2(7, -5);
             skill2.UltimateVelocityX = 0;
             skill2.DamagingFrames = new List<int>
             {

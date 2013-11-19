@@ -69,7 +69,7 @@ namespace Bearventure
             }
 
             HandleTerrainCollisions(subject);
-            HandleCharacterCollisions(subject);
+            HandleObjectCollisions(subject);
 
             FixOverlaps(subject);
 
@@ -269,13 +269,13 @@ namespace Bearventure
                 subject.velocity.Y = 0;
             }
 
-            else if ((collision == Top || collision == Bottom || collision == Left || collision == Right) && CollisionHandler.TerrainType == Constants.Ladder)
-            {
-                subject.velocity.X = 0;
-                subject.velocity.Y = 0; 
-            }
+            //else if ((collision == Top || collision == Bottom || collision == Left || collision == Right) && CollisionHandler.TerrainType == Constants.Ladder)
+            //{
+            //    subject.velocity.X = 0;
+            //    subject.velocity.Y = 0; 
+            //}
         }
-        private static void HandleCharacterCollisions(Character subject)
+        private static void HandleObjectCollisions(Character subject)
         {
             int collision = CollisionHandler.CollisionOccursWithObject(subject, subject.velocity);
 
@@ -297,15 +297,16 @@ namespace Bearventure
             }
             else if (collision == Left)
             {
-                //subject.velocity.X = -CollisionHandler.PushVelocity;
+                subject.velocity.X = -CollisionHandler.PushVelocity;
 
-                subject.velocity.X = 0;
+                //subject.velocity.X = 0;
             }
             else if (collision == Right)
             {
-                //subject.velocity.X = CollisionHandler.PushVelocity;
+                subject.velocity.X = CollisionHandler.PushVelocity;
 
-                subject.velocity.X = 0;
+                
+                //subject.velocity.X = 0;
             }
             else if (collision == Top + Left || collision == Top + Right)
             {
