@@ -24,6 +24,7 @@ namespace Bearventure.Gameplay.Characters
 
         public Player(ContentManager content)
         {
+            TAG = "Player";
             Name = "You";
             scale = 1f;
             this.spriteSheet = content.Load<Texture2D>("Sprites/Karhu");

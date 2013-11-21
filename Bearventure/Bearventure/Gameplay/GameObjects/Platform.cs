@@ -29,6 +29,7 @@ namespace Bearventure.Gameplay.GameObjects
 
         public Platform(ContentManager content, Constants.PlatformType type, Vector2 position)
         {
+            TAG = "Platform";
             this.type = type;
             this.position = position;
 

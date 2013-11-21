@@ -124,6 +124,7 @@ namespace Bearventure.Gameplay.Characters
 
         public Enemy(Constants.EnemyType type, Vector2 position, Texture2D spriteSheet, Player player)
         {
+            TAG = "Enemy";
             this.type = type;
             this.position = position;
             this.spriteSheet = spriteSheet;
@@ -132,11 +133,12 @@ namespace Bearventure.Gameplay.Characters
             InitStats();
             InitSkills();
             this.player = player;
-            InitBehavirour(player, 0, 0);
+            InitBehaviour(player, 0, 0);
         }
 
         public Enemy(Constants.EnemyType type, int x, int y, Texture2D spriteSheet, Player player, int patrol_A, int patrol_B)
         {
+            TAG = "Enemy";
             this.type = type;
             this.position = new Vector2(x, y);
             this.spriteSheet = spriteSheet;
@@ -144,7 +146,7 @@ namespace Bearventure.Gameplay.Characters
             InitAnimations();
             InitStats();
             InitSkills();
-            InitBehavirour(player, patrol_A, patrol_B);
+            InitBehaviour(player, patrol_A, patrol_B);
         }
         /// <summary>
         /// Initialize all the animations.
@@ -181,7 +183,7 @@ namespace Bearventure.Gameplay.Characters
         /// <param name="player">Pointer to player required for AI Initialization</param>
         /// <param name="pointA">Patrol point A</param>
         /// <param name="pointB">PAtrol point B</param>
-        private void InitBehavirour(Player player, int pointA, int pointB)
+        private void InitBehaviour(Player player, int pointA, int pointB)
         {
             switch (type)
             {

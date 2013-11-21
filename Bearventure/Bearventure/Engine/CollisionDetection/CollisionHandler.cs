@@ -287,12 +287,14 @@ namespace Bearventure.Engine.CollisionDetection
         /// <param name="subject"></param>
         /// <param name="movement"></param>
         /// <returns></returns>
-        public static int CollisionOccursWithObject(Character subject, Vector2 movement)
+        public static ObjectCollisionEvent CollisionOccursWithObject(Character subject, Vector2 movement)
         {
-            int collision = 0;
+            ObjectCollisionEvent collisionEvent = null;
 
             if (subject.Orientation != Constants.CharacterOrientation.Air)
-            {               
+            {
+                int collision = 0;
+
                 Rectangle Y = CollisionAreaRectangleY(subject, subject.velocity.Y);
                 Rectangle X = CollisionAreaRectangleX(subject, subject.velocity.X);
 
@@ -313,7 +315,6 @@ namespace Bearventure.Engine.CollisionDetection
                             else
                             {
                                 collision = subject.BoundingBox.Top;
-                                ObjectVelocity = enemies[i].velocity;
                             }
                         }
                         if (X.Intersects(enemyBox) && subject.BoundingBox != enemies[i].BoundingBox)
@@ -328,6 +329,12 @@ namespace Bearventure.Engine.CollisionDetection
                             }
                         }
                     }
+
+                    if (collision != 0)
+                    {
+                        collisionEvent = new ObjectCollisionEvent(subject, enemies[i], collision);
+                    }
+
                 }
                 #endregion
 
@@ -360,7 +367,11 @@ namespace Bearventure.Engine.CollisionDetection
                             collision += subject.BoundingBox.Right;
                         }
                     }
-                    
+
+                    if (collision != 0)
+                    {
+                        collisionEvent = new ObjectCollisionEvent(subject, platforms[i], collision);
+                    }
                 }
                 #endregion
 
@@ -393,10 +404,15 @@ namespace Bearventure.Engine.CollisionDetection
                     }
                 }
 
+                if (collision != 0)
+                {
+                    collisionEvent = new ObjectCollisionEvent(subject, _player, collision);
+                }
+
             #endregion
             }
 
-            return collision;
+            return collisionEvent;
         }
         /// <summary>
         /// Returns a point which indicates the amount the subject overlaps another character.

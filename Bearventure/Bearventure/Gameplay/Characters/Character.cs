@@ -7,11 +7,6 @@ namespace Bearventure.Gameplay.Characters
     public abstract class Character : GameplayObject
     {
         #region Members
-
-        /// <summary>
-        /// Character mass.
-        /// </summary>
-        public int mass;
         /// <summary>
         /// Represents the state of the character
         /// </summary>

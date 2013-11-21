@@ -205,7 +205,7 @@ namespace Bearventure
         }
         private static void Knock(Character subject)
         {
-            float decceleration = subject.mass / 75; // Magic number
+            float decceleration = subject.Mass / 75; // Magic number
 
             if (subject.velocity.X == 0 && OnGround(subject))
                 subject.state = Constants.CharacterState.Stopped;
@@ -277,7 +277,10 @@ namespace Bearventure
         }
         private static void HandleObjectCollisions(Character subject)
         {
-            int collision = CollisionHandler.CollisionOccursWithObject(subject, subject.velocity);
+            ObjectCollisionEvent collision = CollisionHandler.CollisionOccursWithObject(subject, subject.velocity);
+
+            if (collision == null)
+                return;
 
             int Top = subject.BoundingBox.Top;
             int Bottom = subject.BoundingBox.Bottom;
@@ -285,35 +288,29 @@ namespace Bearventure
             int Right = subject.BoundingBox.Right;
 
 
-            if (collision == Top)
+            if (collision.CollisionLocation == Top)
             {
                 subject.velocity.Y = 0;
             }
-            else if (collision == Bottom)
+            else if (collision.CollisionLocation == Bottom)
             {
                 subject.velocity.Y = 0;
-                //Vector2 ownVelocity = subject.velocity - CollisionHandler.ObjectVelocity;
-                //subject.velocity = subject.velocity + CollisionHandler.ObjectVelocity;
+                subject.velocity.X = collision.B.TAG == "Player" ? collision.A.velocity.X : collision.B.velocity.X;
             }
-            else if (collision == Left)
+            else if (collision.CollisionLocation == Left)
             {
-                subject.velocity.X = -CollisionHandler.PushVelocity;
-
-                //subject.velocity.X = 0;
+                subject.velocity.X = 0;
             }
-            else if (collision == Right)
+            else if (collision.CollisionLocation == Right)
             {
-                subject.velocity.X = CollisionHandler.PushVelocity;
-
-                
-                //subject.velocity.X = 0;
+                subject.velocity.X = 0;
             }
-            else if (collision == Top + Left || collision == Top + Right)
+            else if (collision.CollisionLocation == Top + Left || collision.CollisionLocation == Top + Right)
             {
                 subject.velocity.Y = 0;
                 subject.velocity.X = 0;
             }
-            else if (collision == Bottom + Left || collision == Bottom + Right)
+            else if (collision.CollisionLocation == Bottom + Left || collision.CollisionLocation == Bottom + Right)
             {
                 subject.velocity.Y = 0;
                 subject.velocity.X = 0;
@@ -330,6 +327,7 @@ namespace Bearventure
         public static bool OnGround(Character subject)
         {
             int collision = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(subject.velocity.X, subject.velocity.Y + 2));
+             
 
             if (collision == subject.BoundingBox.Bottom ||
                 collision == subject.BoundingBox.Bottom + subject.BoundingBox.Right ||
@@ -338,11 +336,11 @@ namespace Bearventure
                 return true;
             }
 
-            collision = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(subject.velocity.X, subject.velocity.Y + 2));
+            ObjectCollisionEvent objectCollision = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(subject.velocity.X, subject.velocity.Y + 2));
 
-            if (collision == subject.BoundingBox.Bottom ||
-                collision == subject.BoundingBox.Bottom + subject.BoundingBox.Right ||
-                collision == subject.BoundingBox.Bottom + subject.BoundingBox.Left)
+            if (objectCollision != null && (objectCollision.CollisionLocation == subject.BoundingBox.Bottom ||
+                objectCollision.CollisionLocation == subject.BoundingBox.Bottom + subject.BoundingBox.Right ||
+                objectCollision.CollisionLocation == subject.BoundingBox.Bottom + subject.BoundingBox.Left))
             {
                 return true;
             }
@@ -365,11 +363,14 @@ namespace Bearventure
                 return true;
             }
 
-            collision = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(subject.velocity.X, subject.velocity.Y + 2));
+            ObjectCollisionEvent objectCollision = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(subject.velocity.X, subject.velocity.Y + 2));
 
-            if (collision == subject.BoundingBox.Bottom ||
-                collision == subject.BoundingBox.Bottom + subject.BoundingBox.Right ||
-                collision == subject.BoundingBox.Bottom + subject.BoundingBox.Left)
+            if (objectCollision == null)
+                return false;
+
+            if (objectCollision.CollisionLocation == subject.BoundingBox.Bottom ||
+                objectCollision.CollisionLocation == subject.BoundingBox.Bottom + subject.BoundingBox.Right ||
+                objectCollision.CollisionLocation == subject.BoundingBox.Bottom + subject.BoundingBox.Left)
             {
                 return true;
             }
@@ -391,8 +392,8 @@ namespace Bearventure
             if (LeftCheck == subject.BoundingBox.Left)
                 return true;
 
-            RightCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(1, 0));
-            LeftCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(-1, 0));
+            RightCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(1, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(1, 0)).CollisionLocation;
+            LeftCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(-1, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(1, 0)).CollisionLocation;
 
             if (RightCheck == subject.BoundingBox.Right)
                 return true;

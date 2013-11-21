@@ -119,6 +119,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Engine\Audio\MusicManager.cs" />
     <Compile Include="Engine\Audio\SoundEffectManager.cs" />
+    <Compile Include="Engine\CollisionDetection\ObjectCollisionEvent.cs" />
     <Compile Include="Engine\Effects\VisualEffect.cs" />
     <Compile Include="Engine\Effects\VisualEffectManager.cs" />
     <Compile Include="Engine\Globals.cs" />
@@ -144,7 +145,7 @@
     <Compile Include="Gameplay\Characters\Player.cs" />
     <Compile Include="Gameplay\GameObjects\Ladder.cs" />
     <Compile Include="Gameplay\GameObjects\Platform.cs" />
-    <Compile Include="Gameplay\GameplayObject.cs" />
+    <Compile Include="Gameplay\GameObjects\GameplayObject.cs" />
     <Compile Include="Gameplay\HUD\HeadsUpDisplay.cs" />
     <Compile Include="Gameplay\HUD\HealthBar.cs" />
     <Compile Include="Gameplay\Levels\LevelBackground.cs" />
