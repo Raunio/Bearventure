@@ -51,9 +51,12 @@ namespace Bearventure.Engine.CollisionDetection
             this.collision_location = collision_location;
         }
 
-        public void ApplyPushForce()
+        public bool EventCausedByPlayer
         {
-
+            get
+            {
+                return a.TAG == "Player" ? true : false;
+            }
         }
     }
 }

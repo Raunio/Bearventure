@@ -163,6 +163,7 @@ namespace Bearventure
             if (OnGround(subject))
             {
                 subject.velocity.Y -= subject.jumpStrenght;
+                subject.position.Y -= subject.jumpStrenght;
             }
 
             if(subject.velocity.Y > Gravity)
@@ -295,15 +296,39 @@ namespace Bearventure
             else if (collision.CollisionLocation == Bottom)
             {
                 subject.velocity.Y = 0;
-                subject.velocity.X = collision.B.TAG == "Player" ? collision.A.velocity.X : collision.B.velocity.X;
+                subject.position.X += collision.A.TAG == "Player" ? collision.B.velocity.X : collision.A.velocity.X;
             }
             else if (collision.CollisionLocation == Left)
             {
-                subject.velocity.X = 0;
+                if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
+                {
+                    subject.velocity.X /= 2;
+                    collision.B.position.X += subject.velocity.X;
+                }
+                else if (collision.A.Mass == -1)
+                {
+                    collision.B.position.X += subject.velocity.X;
+                }
+                else if(collision.B.Mass != 0)
+                {
+                    subject.velocity.X = 0;
+                }
             }
             else if (collision.CollisionLocation == Right)
             {
-                subject.velocity.X = 0;
+                if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
+                {
+                    subject.velocity.X /= 2;
+                    collision.B.position.X += subject.velocity.X;
+                }
+                else if (collision.A.Mass == -1)
+                {
+                    collision.B.position.X += subject.velocity.X;
+                }
+                else if(collision.B.Mass != 0)
+                {
+                    subject.velocity.X = 0;
+                }
             }
             else if (collision.CollisionLocation == Top + Left || collision.CollisionLocation == Top + Right)
             {
@@ -408,7 +433,7 @@ namespace Bearventure
         /// <param name="subject"></param>
         private static void FixOverlaps(Character subject)
         {
-            if(subject.IsDisabled)
+            //if(subject.IsDisabled)
                 subject.position.X += CollisionHandler.OverlapsCharacter(subject);
         }
         private static void UpdateAltitude(Character subject, GameTime gameTime)

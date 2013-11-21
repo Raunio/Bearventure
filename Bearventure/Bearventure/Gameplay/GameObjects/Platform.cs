@@ -32,6 +32,7 @@ namespace Bearventure.Gameplay.GameObjects
             TAG = "Platform";
             this.type = type;
             this.position = position;
+            IsActive = true;
 
             Initialize(content);
         }
@@ -47,6 +48,8 @@ namespace Bearventure.Gameplay.GameObjects
 
             acceleration = 0.5f;
 
+            mass = -1;
+
             this.waitTime = waitTime;
         }
 
@@ -55,7 +58,7 @@ namespace Bearventure.Gameplay.GameObjects
             switch (type)
             {
                 case Constants.PlatformType.Basic:
-                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.BasicPlatform), 0, 80, 25, 0, 1, 25);
+                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.BasicPlatform), 0, 100, 25, 0, 1, 25);
                     break;
             }
         }

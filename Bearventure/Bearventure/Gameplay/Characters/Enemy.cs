@@ -206,6 +206,8 @@ namespace Bearventure.Gameplay.Characters
         /// </summary>
         private void InitStats()
         {
+            IsActive = true;
+
             switch (type)
             {
                 case Constants.EnemyType.BlackMetalBadger:
@@ -238,6 +240,7 @@ namespace Bearventure.Gameplay.Characters
                     health = 1;
                     maxHealth = 1;
                     healthRegen = 1;
+                    mass = 0;
                     ArmorType = Constants.ArmorType.Feathers;
                     break;
             }
@@ -284,7 +287,7 @@ namespace Bearventure.Gameplay.Characters
                    
                     testSkill.HitBoxHeight = BoundingBox.Height;
                     testSkill.HitBoxWidth = 20;
-                    testSkill.InflictForce = new Vector2(35, 0);
+                    //testSkill.InflictForce = new Vector2(35, 0);
 
                     Attack = new EnemySkill(this, new Animation(spriteSheet, 0, 93, 103, 1, 4, 80, false, false), 900, 2, Constants.DamageType.Crushing);
                     Attack.StartVelocity = new Vector2(5, 0);
@@ -364,6 +367,7 @@ namespace Bearventure.Gameplay.Characters
                     {
                         velocity.X = 0;
                         state = Constants.CharacterState.Dead;
+                        IsActive = false;
                     }
                 }
             }

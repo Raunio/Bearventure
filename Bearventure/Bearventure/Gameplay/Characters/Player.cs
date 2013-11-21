@@ -27,9 +27,10 @@ namespace Bearventure.Gameplay.Characters
             TAG = "Player";
             Name = "You";
             scale = 1f;
-            this.spriteSheet = content.Load<Texture2D>("Sprites/Karhu");
+            this.spriteSheet = content.Load<Texture2D>("Sprites/kavelyfixed");
             comboSheet = content.Load<Texture2D>("Sprites/karhukombo1");
-            jumpSheet = content.Load<Texture2D>("Sprites/hyppy");
+            jumpSheet = content.Load<Texture2D>("Sprites/hyppyfix");
+            IsActive = true;
 
             this.position = position;
             directionX = Constants.DirectionX.Right;
@@ -64,8 +65,8 @@ namespace Bearventure.Gameplay.Characters
             walkRight = new Animation(spriteSheet, 0, 88, 121, 13, 21, 50);
             walkLeft = new Animation(spriteSheet, 0, 88, 121, 0, 8, 50, true);
 
-            jumpingRight = new Animation(jumpSheet, 0, 93, 120, 0, 3, 40, false, false);
-            jumpingLeft = new Animation(jumpSheet, 0, 93, 120, 0, 3, 40, false, false);
+            jumpingRight = new Animation(jumpSheet, 0, 106, 120, 0, 3, 40, false, false);
+            jumpingLeft = new Animation(jumpSheet, 0, 106, 120, 0, 3, 40, false, false);
             jumpingLeft.Effects = SpriteEffects.FlipHorizontally;
 
             currentAnimation = stoppedRight;
@@ -241,12 +242,8 @@ namespace Bearventure.Gameplay.Characters
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Up))
                 {
-                    if(CharacterPhysics.OnLadder(this))
-                    {
-                        SetState(Constants.CharacterState.ClimbingUp);
-                    }
-                    else
-                    SetState(Constants.CharacterState.Jumping);
+                    if(CharacterPhysics.OnGround(this))
+                        SetState(Constants.CharacterState.Jumping);
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 {

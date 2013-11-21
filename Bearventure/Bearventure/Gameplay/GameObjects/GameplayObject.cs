@@ -60,6 +60,11 @@ namespace Bearventure.Gameplay
                 return td;
             }
         }
+        public bool IsActive
+        {
+            get;
+            protected set;
+        }
         /// <summary>
         /// Rectangle used primarily for collision detection.
         /// </summary>

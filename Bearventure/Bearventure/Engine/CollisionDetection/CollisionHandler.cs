@@ -8,6 +8,7 @@ using Bearventure.Gameplay.Characters;
 using Microsoft.Xna.Framework.Content;
 using Bearventure.Engine;
 using Bearventure.Gameplay.GameObjects;
+using Bearventure.Gameplay;
 
 namespace Bearventure.Engine.CollisionDetection
 {
@@ -20,9 +21,7 @@ namespace Bearventure.Engine.CollisionDetection
         private static int zone_width;
         private static int zone_height;
 
-        private static List<Enemy> enemies = new List<Enemy>();
-        private static List<Platform> platforms = new List<Platform>();
-        private static Player _player;
+        private static List<GameplayObject> gameObjects = new List<GameplayObject>();
 
         private static ContentManager content;
 
@@ -33,11 +32,12 @@ namespace Bearventure.Engine.CollisionDetection
         /// </summary>
         public static void Initialize(CollisionMap _map, List<Enemy> enem, Player player, List<Platform> plat, ContentManager _content)
         {
-            _player = player;
+            for (int i = 0; i < enem.Count; i++)
+                gameObjects.Add(enem[i]);
+            for (int i = 0; i < plat.Count; i++)
+                gameObjects.Add(plat[i]);
 
-            enemies = enem;
-
-            platforms = plat;
+            gameObjects.Add(player);
 
             content = _content;
 
@@ -298,48 +298,48 @@ namespace Bearventure.Engine.CollisionDetection
                 Rectangle Y = CollisionAreaRectangleY(subject, subject.velocity.Y);
                 Rectangle X = CollisionAreaRectangleX(subject, subject.velocity.X);
 
-                #region Check if player collides with enemies
-                for (int i = 0; i < enemies.Count; i++)
+                for (int i = 0; i < gameObjects.Count; i++)
                 {
-                    if (enemies[i].state != Constants.CharacterState.Dead && enemies[i].Orientation != Constants.CharacterOrientation.Air)
-                    {
-                        Rectangle enemyBox = new Rectangle(enemies[i].BoundingBox.X / resizeFactor, enemies[i].BoundingBox.Y / resizeFactor, 
-                            enemies[i].BoundingBox.Width / resizeFactor, enemies[i].BoundingBox.Height / resizeFactor);
+                    if (subject == gameObjects[i] || !gameObjects[i].IsActive)
+                        continue;
 
-                        if (Y.Intersects(enemyBox) && subject.BoundingBox != enemies[i].BoundingBox)
+                    Rectangle targetBox = new Rectangle(gameObjects[i].BoundingBox.X / resizeFactor, gameObjects[i].BoundingBox.Y / resizeFactor,
+                        gameObjects[i].BoundingBox.Width / resizeFactor, gameObjects[i].BoundingBox.Height / resizeFactor);
+
+                    if (Y.Intersects(targetBox))
+                    {
+                        if (Y.Y < targetBox.Y + targetBox.Height / 2)
                         {
-                            if (Y.Y < enemyBox.Y + enemyBox.Height / 2)
-                            {
-                                collision = subject.BoundingBox.Bottom;
-                            }
-                            else
-                            {
-                                collision = subject.BoundingBox.Top;
-                            }
+                            collision = subject.BoundingBox.Bottom;
                         }
-                        if (X.Intersects(enemyBox) && subject.BoundingBox != enemies[i].BoundingBox)
+                        else
                         {
-                            if (X.X < enemyBox.X + enemyBox.Width / 2)
-                            {
-                                collision += subject.BoundingBox.Left;
-                            }
-                            else
-                            {
-                                collision += subject.BoundingBox.Right;
-                            }
+                            collision = subject.BoundingBox.Top;
                         }
                     }
+                    if (X.Intersects(targetBox))
+                    {
+                        if (X.X < targetBox.X + targetBox.Width / 2)
+                        {
+                            collision += subject.BoundingBox.Left;
+                        }
+                        else
+                        {
+                            collision += subject.BoundingBox.Right;
+                        }
+                    }
+
 
                     if (collision != 0)
                     {
-                        collisionEvent = new ObjectCollisionEvent(subject, enemies[i], collision);
+                        collisionEvent = new ObjectCollisionEvent(subject, gameObjects[i], collision);
+                        return collisionEvent;
                     }
 
                 }
-                #endregion
 
                 #region Check if player collides with platforms
-                for (int i = 0; i < platforms.Count; i++)
+                /*for (int i = 0; i < platforms.Count; i++)
                 {
                     Rectangle platformBox = new Rectangle(platforms[i].BoundingBox.X / resizeFactor, platforms[i].BoundingBox.Y / resizeFactor,
                         platforms[i].BoundingBox.Width / resizeFactor, platforms[i].BoundingBox.Height / resizeFactor);
@@ -353,7 +353,6 @@ namespace Bearventure.Engine.CollisionDetection
                         else
                         {
                             collision = subject.BoundingBox.Top;
-                            ObjectVelocity = platforms[i].velocity;
                         }
                     }
                     if (X.Intersects(platformBox) && subject.BoundingBox != platforms[i].BoundingBox)
@@ -408,11 +407,11 @@ namespace Bearventure.Engine.CollisionDetection
                 {
                     collisionEvent = new ObjectCollisionEvent(subject, _player, collision);
                 }
-
+                */
             #endregion
             }
 
-            return collisionEvent;
+            return null;
         }
         /// <summary>
         /// Returns a point which indicates the amount the subject overlaps another character.
@@ -423,14 +422,14 @@ namespace Bearventure.Engine.CollisionDetection
         {
             int overlap = 0;
 
-            for (int i = 0; i < enemies.Count; i++)
+            for (int i = 0; i < gameObjects.Count; i++)
             {
-                if (enemies[i] != subject)
+                if (gameObjects[i] != subject)
                 {
-                    if (enemies[i].BoundingBox.Intersects(subject.BoundingBox) && enemies[i].state != Constants.CharacterState.Dead)
+                    if (gameObjects[i].BoundingBox.Intersects(subject.BoundingBox) && gameObjects[i].IsActive)
                     {
                         Rectangle a = subject.BoundingBox;
-                        Rectangle b = enemies[i].BoundingBox;
+                        Rectangle b = gameObjects[i].BoundingBox;
 
                         if (a.Right > b.Left)
                         {
@@ -444,8 +443,6 @@ namespace Bearventure.Engine.CollisionDetection
                             }
                         }
                     }
-
-                    //if(subject != player && 
                 }
             }
 
