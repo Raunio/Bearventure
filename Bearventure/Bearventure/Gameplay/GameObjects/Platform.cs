@@ -34,6 +34,8 @@ namespace Bearventure.Gameplay.GameObjects
             this.position = position;
             IsActive = true;
 
+            mass = -1;
+
             Initialize(content);
         }
 
@@ -47,8 +49,6 @@ namespace Bearventure.Gameplay.GameObjects
             nextPoint = pointA;
 
             acceleration = 0.5f;
-
-            mass = -1;
 
             this.waitTime = waitTime;
         }
@@ -68,6 +68,8 @@ namespace Bearventure.Gameplay.GameObjects
             currentAnimation.Animate(gameTime);
 
             this.position += velocity;
+
+            CharacterPhysics.HandleObjectCollisions(this);
 
             if (isPatrolling)
             {

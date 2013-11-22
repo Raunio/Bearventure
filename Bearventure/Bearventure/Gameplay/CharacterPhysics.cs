@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Bearventure.Gameplay.Characters;
 using Bearventure.Engine.CollisionDetection;
+using Bearventure.Gameplay;
 
 namespace Bearventure
 {
@@ -276,7 +277,7 @@ namespace Bearventure
             //    subject.velocity.Y = 0; 
             //}
         }
-        private static void HandleObjectCollisions(Character subject)
+        public static void HandleObjectCollisions(GameplayObject subject)
         {
             ObjectCollisionEvent collision = CollisionHandler.CollisionOccursWithObject(subject, subject.velocity);
 
@@ -287,7 +288,6 @@ namespace Bearventure
             int Bottom = subject.BoundingBox.Bottom;
             int Left = subject.BoundingBox.Left;
             int Right = subject.BoundingBox.Right;
-
 
             if (collision.CollisionLocation == Top)
             {
@@ -409,16 +409,16 @@ namespace Bearventure
         /// <returns></returns>
         public static bool Blocked(Character subject)
         {
-            int RightCheck = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(1, 0));
-            int LeftCheck = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(-1, 0));
+            int RightCheck = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(2, 0));
+            int LeftCheck = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(-2, 0));
 
             if (RightCheck == subject.BoundingBox.Right)
                 return true;
             if (LeftCheck == subject.BoundingBox.Left)
                 return true;
 
-            RightCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(1, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(1, 0)).CollisionLocation;
-            LeftCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(-1, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(1, 0)).CollisionLocation;
+            RightCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(2, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(1, 0)).CollisionLocation;
+            LeftCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(-2, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(1, 0)).CollisionLocation;
 
             if (RightCheck == subject.BoundingBox.Right)
                 return true;
@@ -434,7 +434,7 @@ namespace Bearventure
         private static void FixOverlaps(Character subject)
         {
             //if(subject.IsDisabled)
-                subject.position.X += CollisionHandler.OverlapsCharacter(subject);
+                //subject.position.X += CollisionHandler.OverlapsCharacter(subject);
         }
         private static void UpdateAltitude(Character subject, GameTime gameTime)
         {

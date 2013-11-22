@@ -287,113 +287,37 @@ namespace Bearventure.Engine.CollisionDetection
         /// <param name="subject"></param>
         /// <param name="movement"></param>
         /// <returns></returns>
-        public static ObjectCollisionEvent CollisionOccursWithObject(Character subject, Vector2 movement)
+        public static ObjectCollisionEvent CollisionOccursWithObject(GameplayObject subject, Vector2 movement)
         {
             ObjectCollisionEvent collisionEvent = null;
 
-            if (subject.Orientation != Constants.CharacterOrientation.Air)
+            int collision = 0;
+
+            Rectangle Y = CollisionAreaRectangleY(subject, subject.velocity.Y);
+            Rectangle X = CollisionAreaRectangleX(subject, subject.velocity.X);
+
+            for (int i = 0; i < gameObjects.Count; i++)
             {
-                int collision = 0;
+                if (subject == gameObjects[i] || !gameObjects[i].IsActive)
+                    continue;
 
-                Rectangle Y = CollisionAreaRectangleY(subject, subject.velocity.Y);
-                Rectangle X = CollisionAreaRectangleX(subject, subject.velocity.X);
+                Rectangle targetBox = new Rectangle(gameObjects[i].BoundingBox.X / resizeFactor, gameObjects[i].BoundingBox.Y / resizeFactor,
+                    gameObjects[i].BoundingBox.Width / resizeFactor, gameObjects[i].BoundingBox.Height / resizeFactor);
 
-                for (int i = 0; i < gameObjects.Count; i++)
+                if (Y.Intersects(targetBox))
                 {
-                    if (subject == gameObjects[i] || !gameObjects[i].IsActive)
-                        continue;
-
-                    Rectangle targetBox = new Rectangle(gameObjects[i].BoundingBox.X / resizeFactor, gameObjects[i].BoundingBox.Y / resizeFactor,
-                        gameObjects[i].BoundingBox.Width / resizeFactor, gameObjects[i].BoundingBox.Height / resizeFactor);
-
-                    if (Y.Intersects(targetBox))
-                    {
-                        if (Y.Y < targetBox.Y + targetBox.Height / 2)
-                        {
-                            collision = subject.BoundingBox.Bottom;
-                        }
-                        else
-                        {
-                            collision = subject.BoundingBox.Top;
-                        }
-                    }
-                    if (X.Intersects(targetBox))
-                    {
-                        if (X.X < targetBox.X + targetBox.Width / 2)
-                        {
-                            collision += subject.BoundingBox.Left;
-                        }
-                        else
-                        {
-                            collision += subject.BoundingBox.Right;
-                        }
-                    }
-
-
-                    if (collision != 0)
-                    {
-                        collisionEvent = new ObjectCollisionEvent(subject, gameObjects[i], collision);
-                        return collisionEvent;
-                    }
-
-                }
-
-                #region Check if player collides with platforms
-                /*for (int i = 0; i < platforms.Count; i++)
-                {
-                    Rectangle platformBox = new Rectangle(platforms[i].BoundingBox.X / resizeFactor, platforms[i].BoundingBox.Y / resizeFactor,
-                        platforms[i].BoundingBox.Width / resizeFactor, platforms[i].BoundingBox.Height / resizeFactor);
-
-                    if (Y.Intersects(platformBox) && subject.BoundingBox != platforms[i].BoundingBox)
-                    {
-                        if (Y.Y < platformBox.Y + platformBox.Height / 2)
-                        {
-                            collision = subject.BoundingBox.Bottom;
-                        }
-                        else
-                        {
-                            collision = subject.BoundingBox.Top;
-                        }
-                    }
-                    if (X.Intersects(platformBox) && subject.BoundingBox != platforms[i].BoundingBox)
-                    {
-                        if (X.X < platformBox.X + platformBox.Width / 2)
-                        {
-                            collision += subject.BoundingBox.Left;
-                        }
-                        else
-                        {
-                            collision += subject.BoundingBox.Right;
-                        }
-                    }
-
-                    if (collision != 0)
-                    {
-                        collisionEvent = new ObjectCollisionEvent(subject, platforms[i], collision);
-                    }
-                }
-                #endregion
-
-                Rectangle playerBox = new Rectangle(_player.BoundingBox.X / resizeFactor, _player.BoundingBox.Y / resizeFactor,
-                            _player.BoundingBox.Width / resizeFactor, _player.BoundingBox.Height / resizeFactor);
-
-
-                #region Check if enemy collides with player
-                if (Y.Intersects(playerBox) && _player.BoundingBox != subject.BoundingBox)
-                {
-                    if (Y.Y < playerBox.Y + playerBox.Height / 2)
+                    if (Y.Y < targetBox.Y + targetBox.Height / 2)
                     {
                         collision = subject.BoundingBox.Bottom;
                     }
                     else
                     {
                         collision = subject.BoundingBox.Top;
-                        ObjectVelocity = _player.velocity;
                     }
                 }
-                if (X.Intersects(playerBox) && _player.BoundingBox != subject.BoundingBox)
+                if (X.Intersects(targetBox))
                 {
-                    if (X.X < playerBox.X + playerBox.Width / 2)
+                    if (X.X < targetBox.X + targetBox.Width / 2)
                     {
                         collision += subject.BoundingBox.Left;
                     }
@@ -403,15 +327,15 @@ namespace Bearventure.Engine.CollisionDetection
                     }
                 }
 
+
                 if (collision != 0)
                 {
-                    collisionEvent = new ObjectCollisionEvent(subject, _player, collision);
-                }
-                */
-            #endregion
-            }
+                    collisionEvent = new ObjectCollisionEvent(subject, gameObjects[i], collision);
+                    return collisionEvent;
+                }                
+        }
 
-            return null;
+        return null;
         }
         /// <summary>
         /// Returns a point which indicates the amount the subject overlaps another character.
@@ -454,7 +378,7 @@ namespace Bearventure.Engine.CollisionDetection
         /// <param name="subject">The character</param>
         /// <param name="movement">Characters y-scale movement</param>
         /// <returns></returns>
-        private static Rectangle CollisionAreaRectangleY(Character subject, float movement)
+        private static Rectangle CollisionAreaRectangleY(GameplayObject subject, float movement)
         {          
             if (movement < 0)
                 return new Rectangle(subject.BoundingBox.X / resizeFactor,
@@ -471,7 +395,7 @@ namespace Bearventure.Engine.CollisionDetection
         /// <param name="subject">The character</param>
         /// <param name="movement">Characters x-scale movement</param>
         /// <returns></returns>
-        private static Rectangle CollisionAreaRectangleX(Character subject, float movement)
+        private static Rectangle CollisionAreaRectangleX(GameplayObject subject, float movement)
         {
             if (movement < 0)
                 return new Rectangle((int)(subject.BoundingBox.Left / resizeFactor + movement / resizeFactor),
