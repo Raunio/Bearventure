@@ -100,7 +100,7 @@ namespace Bearventure
                 platforms = new List<Platform>();
                 Platform plat = new Platform(content, Constants.PlatformType.Basic, new Vector2(900, 3700));
                 plat.InitPatrol(700, 1100, 200f);
-                //platforms.Add(plat);
+                platforms.Add(plat);
 
                 ladders = new List<Ladder>();
                 ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(500, 4000)));
