@@ -94,12 +94,16 @@ namespace Bearventure
                 gameFont = content.Load<SpriteFont>(Constants.GameFont);
                 
                 enemies = XmlReader.EnemyList("Levels/Testilevel2/Items/Testilevel2_Enemies");
+<<<<<<< HEAD
                 Enemy owl = new Enemy(Constants.EnemyType.DelayOwl, new Vector2(700, 3500), content.Load<Texture2D>("Sprites/paskapollo"), _player);
+=======
+                Enemy owl = new Enemy(Constants.EnemyType.DelayOwl, new Vector2(700, 3500), content.Load<Texture2D>(Constants.DelayOwl), player);
+>>>>>>> bcbbde87d207818d612e70932cc85bc8b1be1045
                 //enemies.Add(owl);
 
                 platforms = new List<Platform>();
-                Platform plat = new Platform(content, Constants.PlatformType.Basic, new Vector2(900, 3700));
-                plat.InitPatrol(700, 1100, 200f);
+                Platform plat = new Platform(content, Constants.PlatformType.Basic, new Vector2(5100, 5200));
+                plat.InitPatrol(5100, 5900, 200f);
                 platforms.Add(plat);
 
                 ladders = new List<Ladder>();

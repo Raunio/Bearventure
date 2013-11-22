@@ -17,5 +17,11 @@ namespace Bearventure.Gameplay.Characters.Skills
         {
             Conditions = new List<Condition>();
         }
+
+        public EnemySkill(Character subject, Animation right, Animation left, int cooldown, int damage, Constants.DamageType damageType)
+            : base(subject, right, left, cooldown, damage, damageType)
+        {
+            Conditions = new List<Condition>();
+        }
     }
 }

@@ -50,8 +50,8 @@ namespace Bearventure
         #endregion
         #region Character Textures
 
-        public const String BlackMetalBadger = "Sprites/bmbadger";
-        public const String DelayOwl = "Sprites/paskapollo";
+        public const String BlackMetalBadger = "Sprites/badger";
+        public const String DelayOwl = "Sprites/paskapollofix";
 
         #endregion
 

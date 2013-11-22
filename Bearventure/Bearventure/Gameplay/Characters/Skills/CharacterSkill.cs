@@ -209,6 +209,14 @@ namespace Bearventure.Gameplay.Characters.Skills
             get;
             private set;
         }
+        /// <summary>
+        /// Gets and sets the treshold for the needed force to interrupt this skill.
+        /// </summary>
+        public int ForceInterruptTreshold
+        {
+            get;
+            set;
+        }
         #endregion
         /// <summary>
         /// Setups the skill with 1 animation.

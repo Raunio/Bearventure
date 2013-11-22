@@ -13,7 +13,6 @@ Content\VisualEffects\Particle005.xnb
 Content\Sprites\karhukombo1.xnb
 Content\Bitmaps\blood.xnb
 Content\Bitmaps\Particle003.xnb
-Content\Sprites\paskapollo.xnb
 Content\Sprites\taso.xnb
 Content\Levels\Testilevel2\Background\Testilevel2_0.xnb
 Content\Levels\Testilevel2\Background\Testilevel2_1.xnb
@@ -79,6 +78,10 @@ Content\Levels\Testilevel2\Testilevel2LevelInfo.xnb
 Content\Sprites\hyppyfix.xnb
 Content\Sprites\kavelyfixed.xnb
 Content\Sprites\WoodenLadder.xnb
+Content\Sprites\paskapollofix.xnb
+Content\Sprites\badgerattack.xnb
+Content\Sprites\badger.xnb
+Content\Sprites\hover.xnb
 Content\Music\Intro.wma
 Content\Music\Level1.wma
 Content\Music\Splash.wma

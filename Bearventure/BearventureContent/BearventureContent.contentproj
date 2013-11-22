@@ -277,13 +277,6 @@
     <Folder Include="Maps\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sprites\paskapollo.png">
-      <Name>paskapollo</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Levels\Testilevel2\Items\Testilevel2_Enemies.xml">
       <Name>Testilevel2_Enemies</Name>
       <Importer>XmlImporter</Importer>
@@ -525,6 +518,34 @@
   <ItemGroup>
     <Compile Include="Sprites\WoodenLadder.png">
       <Name>WoodenLadder</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sprites\paskapollofix.png">
+      <Name>paskapollofix</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sprites\badgerattack.png">
+      <Name>badgerattack</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sprites\badger.png">
+      <Name>badger</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sprites\hover.png">
+      <Name>hover</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

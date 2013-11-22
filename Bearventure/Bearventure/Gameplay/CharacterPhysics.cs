@@ -319,15 +319,77 @@ namespace Bearventure
                     subject.velocity.X = 0;
                 }
             }
-            else if ((collision.CollisionLocation == Top + Left || collision.CollisionLocation == Top + Right) && collision.B.TAG != "Ladder")
+            else if (collision.CollisionLocation == Top + Left && collision.B.TAG != "Ladder")
             {
                 subject.velocity.Y = 0;
-                subject.velocity.X = 0;
+
+                if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
+                {
+                    subject.velocity.X /= 2;
+                    collision.B.position.X += subject.velocity.X;
+                }
+                else if (collision.A.Mass == -1)
+                {
+                    collision.B.position.X += subject.velocity.X;
+                }
+                else if (collision.B.Mass != 0)
+                {
+                    subject.velocity.X = 0;
+                }
             }
-            else if ((collision.CollisionLocation == Bottom + Left || collision.CollisionLocation == Bottom + Right) && collision.B.TAG != "Ladder")
+            else if (collision.CollisionLocation == Bottom + Left && collision.B.TAG != "Ladder")
             {
                 subject.velocity.Y = 0;
-                subject.velocity.X = 0;
+
+                if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
+                {
+                    subject.velocity.X /= 2;
+                    collision.B.position.X += subject.velocity.X;
+                }
+                else if (collision.A.Mass == -1)
+                {
+                    collision.B.position.X += subject.velocity.X;
+                }
+                else if (collision.B.Mass != 0)
+                {
+                    subject.velocity.X = 0;
+                }
+            }
+            else if (collision.CollisionLocation == Top + Right && collision.B.TAG != "Ladder")
+            {
+                subject.velocity.Y = 0;
+
+                if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
+                {
+                    subject.velocity.X /= 2;
+                    collision.B.position.X += subject.velocity.X;
+                }
+                else if (collision.A.Mass == -1)
+                {
+                    collision.B.position.X += subject.velocity.X;
+                }
+                else if (collision.B.Mass != 0)
+                {
+                    subject.velocity.X = 0;
+                }
+            }
+            else if (collision.CollisionLocation == Bottom + Right && collision.B.TAG != "Ladder")
+            {
+                subject.velocity.Y = 0;
+
+                if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
+                {
+                    subject.velocity.X /= 2;
+                    collision.B.position.X += subject.velocity.X;
+                }
+                else if (collision.A.Mass == -1)
+                {
+                    collision.B.position.X += subject.velocity.X;
+                }
+                else if (collision.B.Mass != 0)
+                {
+                    subject.velocity.X = 0;
+                }
             }
 
         }
