@@ -215,12 +215,35 @@ namespace Bearventure.Gameplay.Characters
         {
             CharacterPhysics.Apply(this, gameTime);
 
+            if (state == Constants.CharacterState.Climbing && CharacterPhysics.OnLadder(this))
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                {
+                    velocity.X = walkSpeed;
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                {
+                    velocity.X = -walkSpeed;
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                {
+                    velocity.Y = -walkSpeed;
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                {
+                    velocity.Y = walkSpeed;
+                }
+                else
+                    velocity = Vector2.Zero;
+            }
+                
+
             HandleAnimations();
 
             currentAnimation.Animate(gameTime);
 
             // TODO: This can be done more smartly. See MenuScreen.cs
-            if (!IsDisabled)
+            if (!IsDisabled && !CharacterPhysics.OnLadder(this))
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.Left))
                 {
@@ -242,13 +265,10 @@ namespace Bearventure.Gameplay.Characters
 
                 if (Keyboard.GetState().IsKeyDown(Keys.Up))
                 {
-                    if(CharacterPhysics.OnGround(this))
+                    if (CharacterPhysics.OnGround(this))
                         SetState(Constants.CharacterState.Jumping);
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                {
-                    if (CharacterPhysics.OnLadder(this))
-                        SetState(Constants.CharacterState.ClimbingDown);
+                    else
+                        SetState(Constants.CharacterState.Falling);
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.Q))
                 {
@@ -256,6 +276,14 @@ namespace Bearventure.Gameplay.Characters
                     UseSkill(combo1.ActiveSkill);
                 }
             }
+            else
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.Down))
+                {
+                    SetState(Constants.CharacterState.Climbing);
+                }
+            }
+
             combo1.Update(gameTime); 
 
             RegenerateHealth(gameTime);

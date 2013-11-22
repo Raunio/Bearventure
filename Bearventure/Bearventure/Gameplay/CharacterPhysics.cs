@@ -60,12 +60,6 @@ namespace Bearventure
                 case Constants.CharacterState.Knocked:
                     Knock(subject);
                     break;
-                case Constants.CharacterState.ClimbingUp:
-                    ClimbUp(subject);
-                    break;
-                case Constants.CharacterState.ClimbingDown:
-                    ClimbDown(subject);
-                    break;
 
             }
 
@@ -82,6 +76,7 @@ namespace Bearventure
         /// <param name="subject"></param>
         public static void ApplyGravity(Character subject)
         {
+            if(!OnLadder(subject) || subject.TAG == "Enemy")
             subject.velocity.Y += Gravity;
         }
         /// <summary>
@@ -110,7 +105,7 @@ namespace Bearventure
         }
         private static void Walk(Character subject)
         {
-            if (!OnGround(subject) && subject.Orientation == Constants.CharacterOrientation.Ground)
+            if (!OnGround(subject) && subject.Orientation == Constants.CharacterOrientation.Ground && !OnLadder(subject))
             {
                 subject.state = Constants.CharacterState.Falling;
                 return;
@@ -136,7 +131,7 @@ namespace Bearventure
         }
         private static void Run(Character subject)
         {
-            if (!OnGround(subject) && subject.Orientation == Constants.CharacterOrientation.Ground)
+            if (!OnGround(subject) && subject.Orientation == Constants.CharacterOrientation.Ground && !OnLadder(subject))
             {
                 subject.state = Constants.CharacterState.Falling;
                 return;
@@ -161,7 +156,7 @@ namespace Bearventure
         }
         private static void Jump(Character subject)
         {
-            if (OnGround(subject))
+            if (OnGround(subject) && !OnLadder(subject))
             {
                 subject.velocity.Y -= subject.jumpStrenght;
                 subject.position.Y -= subject.jumpStrenght;
@@ -223,16 +218,6 @@ namespace Bearventure
 
         }
 
-        private static void ClimbUp(Character subject)
-        {
-                        
-            
-        }
-        private static void ClimbDown(Character subject)
-        {
-
-        }
-
         private static void HandleTerrainCollisions(Character subject)
         {
             int collision = CollisionHandler.CollisionOccursWithMap(subject, subject.velocity);
@@ -291,14 +276,18 @@ namespace Bearventure
 
             if (collision.CollisionLocation == Top)
             {
-                subject.velocity.Y = 0;
+                if(collision.B.TAG != "Ladder")
+                    subject.velocity.Y = 0;
             }
             else if (collision.CollisionLocation == Bottom)
             {
-                subject.velocity.Y = 0;
-                subject.position.X += collision.A.TAG == "Player" ? collision.B.velocity.X : collision.A.velocity.X;
+                if (collision.B.TAG != "Ladder")
+                {
+                    subject.velocity.Y = 0;
+                    subject.position.X += collision.A.TAG == "Player" ? collision.B.velocity.X : collision.A.velocity.X;
+                }
             }
-            else if (collision.CollisionLocation == Left)
+            else if (collision.CollisionLocation == Left && collision.B.TAG != "Ladder")
             {
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {
@@ -314,7 +303,7 @@ namespace Bearventure
                     subject.velocity.X = 0;
                 }
             }
-            else if (collision.CollisionLocation == Right)
+            else if (collision.CollisionLocation == Right && collision.B.TAG != "Ladder")
             {
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {
@@ -330,12 +319,12 @@ namespace Bearventure
                     subject.velocity.X = 0;
                 }
             }
-            else if (collision.CollisionLocation == Top + Left || collision.CollisionLocation == Top + Right)
+            else if ((collision.CollisionLocation == Top + Left || collision.CollisionLocation == Top + Right) && collision.B.TAG != "Ladder")
             {
                 subject.velocity.Y = 0;
                 subject.velocity.X = 0;
             }
-            else if (collision.CollisionLocation == Bottom + Left || collision.CollisionLocation == Bottom + Right)
+            else if ((collision.CollisionLocation == Bottom + Left || collision.CollisionLocation == Bottom + Right) && collision.B.TAG != "Ladder")
             {
                 subject.velocity.Y = 0;
                 subject.velocity.X = 0;
@@ -372,36 +361,18 @@ namespace Bearventure
 
             return false;
         }
-        /// <summary>
-        /// Checks if the character is currently standing on a ladder.
-        /// </summary>
-        /// <param name="subject"></param>
-        /// <returns></returns>
+
         public static bool OnLadder(Character subject)
         {
-            int collision = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(subject.velocity.X, subject.velocity.Y));
+            ObjectCollisionEvent collision = CollisionHandler.CollisionOccursWithObject(subject, subject.velocity);
 
-            if (collision == subject.BoundingBox.Bottom ||
-                collision == subject.BoundingBox.Bottom + subject.BoundingBox.Right ||
-                collision == subject.BoundingBox.Bottom + subject.BoundingBox.Left)
+            if (collision != null && collision.B.TAG == "Ladder")
             {
                 return true;
             }
-
-            ObjectCollisionEvent objectCollision = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(subject.velocity.X, subject.velocity.Y + 2));
-
-            if (objectCollision == null)
-                return false;
-
-            if (objectCollision.CollisionLocation == subject.BoundingBox.Bottom ||
-                objectCollision.CollisionLocation == subject.BoundingBox.Bottom + subject.BoundingBox.Right ||
-                objectCollision.CollisionLocation == subject.BoundingBox.Bottom + subject.BoundingBox.Left)
-            {
-                return true;
-            }
-
             return false;
         }
+
         /// <summary>
         /// Checks if the character is being blocked from either of its sides.
         /// </summary>

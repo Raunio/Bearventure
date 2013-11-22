@@ -100,7 +100,7 @@ namespace Bearventure
                 platforms = new List<Platform>();
                 Platform plat = new Platform(content, Constants.PlatformType.Basic, new Vector2(900, 3700));
                 plat.InitPatrol(700, 1100, 200f);
-                platforms.Add(plat);
+                //platforms.Add(plat);
 
                 ladders = new List<Ladder>();
                 ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(500, 4000)));
@@ -115,7 +115,7 @@ namespace Bearventure
 
                 Texture2D[] collisionMap = new Texture2D[background.Fractions];
 
-                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 8, 8), enemies, player, platforms, content);
+                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 8, 8), enemies, player, platforms, ladders, content);
 
                 CharacterPhysics.Gravity = 1.5f;
 
@@ -281,18 +281,18 @@ namespace Bearventure
                 enemy.Draw(spriteBatch);
                 //if (enemy.ActiveSkill != null)
                     //enemy.ActiveSkill.DrawHitBox(spriteBatch, content.Load<Texture2D>("Sprites/player"));
-            }      
+            }
+
+            foreach (Ladder l in ladders)
+            {
+                l.Draw(spriteBatch);
+            }
 
             player.Draw(spriteBatch);
 
             foreach (Platform p in platforms)
             {
                 p.Draw(spriteBatch);
-            }
-
-            foreach (Ladder l in ladders)
-            {
-                l.Draw(spriteBatch);
             }
 
             VisualEffectManager.Instance.DrawEffects(spriteBatch);

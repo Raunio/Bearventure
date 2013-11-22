@@ -18,6 +18,9 @@ namespace Bearventure.Gameplay.GameObjects
             this.type = type;
             this.position = position;
 
+            TAG = "Ladder";
+            IsActive = true;
+
             Initialize(content);
         }
         private void Initialize(ContentManager content)
@@ -25,7 +28,7 @@ namespace Bearventure.Gameplay.GameObjects
             switch (type)
             {
                 case Constants.LadderType.Wooden:
-                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.WoodenLadder), 0, 32, 32, 0, 1, 25);
+                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.WoodenLadder), 0, 92, 238, 0, 0, 25);
                     break;
 
             }

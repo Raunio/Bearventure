@@ -4,7 +4,6 @@ Content\Fonts\HudFont.xnb
 Content\Bitmaps\Blank.xnb
 Content\Bitmaps\Gradient.xnb
 Content\Bitmaps\SmokeCloud.xnb
-Content\Sprites\Karhu.xnb
 Content\Backgrounds\Menu.xnb
 Content\Sprites\bmbadger.xnb
 Content\Sprites\player.xnb
@@ -16,7 +15,6 @@ Content\Bitmaps\blood.xnb
 Content\Bitmaps\Particle003.xnb
 Content\Sprites\paskapollo.xnb
 Content\Sprites\taso.xnb
-Content\Sprites\hyppy.xnb
 Content\Levels\Testilevel2\Background\Testilevel2_0.xnb
 Content\Levels\Testilevel2\Background\Testilevel2_1.xnb
 Content\Levels\Testilevel2\Background\Testilevel2_10.xnb
@@ -80,6 +78,7 @@ Content\Levels\Testilevel2\Items\Testilevel2_Enemies.xnb
 Content\Levels\Testilevel2\Testilevel2LevelInfo.xnb
 Content\Sprites\hyppyfix.xnb
 Content\Sprites\kavelyfixed.xnb
+Content\Sprites\WoodenLadder.xnb
 Content\Music\Intro.wma
 Content\Music\Level1.wma
 Content\Music\Splash.wma
