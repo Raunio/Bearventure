@@ -409,6 +409,18 @@ namespace Bearventure.Engine.CollisionDetection
                     subject.BoundingBox.Height / resizeFactor);
         }
 
+        public static void DrawCollisionRectangles(SpriteBatch spriteBatch, GameplayObject subject, Vector2 movement)
+        {
+            Rectangle xRect = CollisionAreaRectangleX(subject, movement.X);
+            Rectangle yRect = CollisionAreaRectangleY(subject, movement.Y);
+
+            xRect.Width = 2;
+            yRect.Height = 2;
+
+            spriteBatch.Draw(content.Load<Texture2D>("Sprites/tosi"), xRect, Color.White);
+            spriteBatch.Draw(content.Load<Texture2D>("Sprites/tosi"), yRect, Color.White);
+        }
+
         /// <summary>
         /// Returns the color of the terrain on which the last calculated subject is on.
         /// </summary>

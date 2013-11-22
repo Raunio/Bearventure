@@ -277,8 +277,10 @@ namespace Bearventure
             background.Draw(spriteBatch);
             //background.DrawGrid(spriteBatch);
             
-            //CollisionHandler.Map.DrawMap(spriteBatch);
-            CollisionHandler.Map.DrawGrid(spriteBatch);
+            CollisionHandler.Map.DrawMap(spriteBatch);
+            //CollisionHandler.Map.DrawGrid(spriteBatch);
+
+            
 
             foreach (Enemy enemy in enemies)
             {
@@ -300,6 +302,8 @@ namespace Bearventure
             }
 
             VisualEffectManager.Instance.DrawEffects(spriteBatch);
+
+            CollisionHandler.DrawCollisionRectangles(spriteBatch, _player, _player.velocity);
 
             //if(player.ActiveSkill != null)
                 //player.ActiveSkill.DrawHitBox(spriteBatch, content.Load<Texture2D>("Sprites/player"));
