@@ -50,7 +50,7 @@ namespace Bearventure
         List<Enemy> enemies;
         List<Platform> platforms;
         List<Ladder> ladders;
-        Player player;
+        Player _player;
 
         float pauseAlpha;
 
@@ -86,15 +86,15 @@ namespace Bearventure
                 if (content == null)
                     content = new ContentManager(ScreenManager.Game.Services, "Content");
                 
-                player = new Player(content);
-                XmlReader.Initialize(content, player);
+                _player = new Player(content);
+                XmlReader.Initialize(content, _player);
                 background = new LevelBackground(XmlReader.LevelInformation("Levels/Testilevel2/Testilevel2LevelInfo"), content);
-                player.position = XmlReader.StartPoint("Levels/Testilevel2/Items/Testilevel2_StartPoint");
+                _player.position = XmlReader.StartPoint("Levels/Testilevel2/Items/Testilevel2_StartPoint");
               
                 gameFont = content.Load<SpriteFont>(Constants.GameFont);
                 
                 enemies = XmlReader.EnemyList("Levels/Testilevel2/Items/Testilevel2_Enemies");
-                Enemy owl = new Enemy(Constants.EnemyType.DelayOwl, new Vector2(700, 3500), content.Load<Texture2D>("Sprites/paskapollo"), player);
+                Enemy owl = new Enemy(Constants.EnemyType.DelayOwl, new Vector2(700, 3500), content.Load<Texture2D>("Sprites/paskapollo"), _player);
                 //enemies.Add(owl);
 
                 platforms = new List<Platform>();
@@ -105,17 +105,17 @@ namespace Bearventure
                 ladders = new List<Ladder>();
                 ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(500, 4000)));
 
-                CombatManager.Instance.Initialize(player, enemies);
+                CombatManager.Instance.Initialize(_player, enemies);
                 hud = new HeadsUpDisplay();
-                hud.Initialize(content, ResolutionManager.graphicsDevice, enemies, player);
+                hud.Initialize(content, ResolutionManager.graphicsDevice, enemies, _player);
                 cameraController = new CameraController();
-                cameraController.AssingTo(player);
+                cameraController.AssingTo(_player);
 
                 
 
                 Texture2D[] collisionMap = new Texture2D[background.Fractions];
 
-                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 8, 8), enemies, player, platforms, ladders, content);
+                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 8, 8), enemies, _player, platforms, ladders, content);
 
                 CharacterPhysics.Gravity = 1.5f;
 
@@ -124,7 +124,7 @@ namespace Bearventure
                 
                 MusicManager.Instance.PlayLevel1Music();
                 VisualEffectManager.Instance.Initialize(content, ResolutionManager.graphicsDevice);
-                VisualEffectManager.Instance.InitializeTerrainEffects(player, enemies);
+                VisualEffectManager.Instance.InitializeTerrainEffects(_player, enemies);
                 // once the load has finished, we use ResetElapsedTime to tell the game's
                 // timing mechanism that we have just finished a very long frame, and that
                 // it should not try to catch up.s
@@ -194,7 +194,7 @@ namespace Bearventure
                     enemy.Update(gameTime);
                 }
 
-                player.Update(gameTime);
+                _player.Update(gameTime);
 
                 foreach (Platform p in platforms)
                 {
@@ -205,9 +205,9 @@ namespace Bearventure
                 {
                     l.Update(gameTime);
                 }
-
+             
                 cameraController.Update(gameTime);
-
+                
                 camera.LookAt(cameraController.Position);
                 VisualEffectManager.Instance.UpdateEffects(gameTime);
                 hud.Update(gameTime, camera.Position);
@@ -231,6 +231,8 @@ namespace Bearventure
 
             KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
             GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
+            _player.HandleInput(gameTime, input);
+            
 
             // The game pauses either if the user presses the pause button, or if
             // they unplug the active gamepad. This requires us to keep track of
@@ -288,7 +290,7 @@ namespace Bearventure
                 l.Draw(spriteBatch);
             }
 
-            player.Draw(spriteBatch);
+            _player.Draw(spriteBatch);
 
             foreach (Platform p in platforms)
             {

@@ -176,5 +176,15 @@ namespace Bearventure.Gameplay.Characters
         }
 
         #endregion
+        
+        public PlayerIndex? ControllingPlayer
+        {
+            get { return controllingPlayer; }
+            internal set { controllingPlayer = value; }
+        }
+
+        PlayerIndex? controllingPlayer;
+
+        public virtual void HandleInput(GameTime gameTime, InputState input) { }
     }
 }
