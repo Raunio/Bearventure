@@ -156,22 +156,22 @@ namespace Bearventure.Gameplay.Characters
             switch (type)
             {
                 case Constants.EnemyType.BlackMetalBadger:
-                    WalkRight = new Animation(spriteSheet, 0, 93, 103, 9, 15, 60);
-                    WalkLeft = new Animation(spriteSheet, 0, 93, 103, 0, 6, 60);
-                    RunRight = new Animation(spriteSheet, 0, 93, 103, 9, 15, 40);
-                    RunLeft = new Animation(spriteSheet, 0, 93, 103, 0, 6, 40);
-                    Stopped = new Animation(spriteSheet, 0, 93, 103, 7, 7, 60);
+                    WalkRight = new Animation(spriteSheet, 0, 93, 103, 0, 7, 60);
+                    WalkLeft = new Animation(spriteSheet, 0, 93, 103, 0, 7, 60, true, true);
+                    RunRight = new Animation(spriteSheet, 0, 93, 103, 0, 7, 40);
+                    RunLeft = new Animation(spriteSheet, 0, 93, 103, 0, 7, 40);
+                    Stopped = new Animation(spriteSheet, 0, 93, 103, 4, 4, 60);
                     Jumping = new Animation(spriteSheet, 0, 93, 103, 5, 6, 100);
-                    Dying = new Animation(spriteSheet, 0, 93, 103, 1, 8, 80, false, false);
+                    Dying = new Animation(spriteSheet, 0, 93, 103, 7, 7, 80, false, false);
                     break;
                 case Constants.EnemyType.DelayOwl:
-                    WalkRight = new Animation(spriteSheet, 0, 126, 88, 8, 11, 70);
-                    WalkLeft = new Animation(spriteSheet, 0, 126, 88, 0, 3, 70, true, true);
-                    RunRight = new Animation(spriteSheet, 0, 126, 88, 8, 11, 50);
-                    RunLeft = new Animation(spriteSheet, 0, 126, 88, 0, 3, 50, true, true);
-                    Stopped = new Animation(spriteSheet, 0, 126, 88, 5, 5, 70);
-                    Jumping = new Animation(spriteSheet, 0, 126, 88, 0, 0, 70);
-                    Dying = new Animation(spriteSheet, 0, 126, 88, 5, 5, 100, false, false);
+                    WalkRight = new Animation(spriteSheet, 0, 128, 90, 8, 11, 70);
+                    WalkLeft = new Animation(spriteSheet, 0, 128, 90, 0, 3, 70, true, true);
+                    RunRight = new Animation(spriteSheet, 0, 128, 90, 8, 11, 50);
+                    RunLeft = new Animation(spriteSheet, 0, 128, 90, 0, 3, 50, true, true);
+                    Stopped = new Animation(spriteSheet, 0, 128, 90, 5, 5, 70);
+                    Jumping = new Animation(spriteSheet, 0, 128, 90, 0, 0, 70);
+                    Dying = new Animation(spriteSheet, 0, 128, 90, 5, 5, 100, false, false);
                     break;
             }
 
@@ -211,15 +211,15 @@ namespace Bearventure.Gameplay.Characters
             switch (type)
             {
                 case Constants.EnemyType.BlackMetalBadger:
-                    walkSpeed = 6f;
-                    runSpeed = 9f;
+                    walkSpeed = 5f;
+                    runSpeed = 7f;
                     acceleration = 1f;
                     decceleration = 0.5f;
                     jumpStrenght = 5;
                     Orientation = Constants.CharacterOrientation.Ground;
                     Vision = 300;
                     AttackRange = 120;
-                    health = 1;
+                    health = 50;
                     maxHealth = 50;
                     healthRegen = 2;
                     BoundingBoxOffset = 10;
@@ -254,7 +254,7 @@ namespace Bearventure.Gameplay.Characters
             {
                 case Constants.EnemyType.BlackMetalBadger:
                     #region TESTING
-                    EnemySkill testSkill = new EnemySkill(this, new Animation(spriteSheet, 0, 93, 103, 0, 15, 20, false, false), 8000, 2, Constants.DamageType.Crushing);
+                    EnemySkill testSkill = new EnemySkill(this, new Animation(spriteSheet, 0, 93, 103, 0, 4, 20, false, false), 8000, 2, Constants.DamageType.Crushing);
                     testSkill.Acceleration = 0.25f;
                     testSkill.StartVelocity = new Vector2(20, 0);
                     testSkill.UltimateVelocityX = 0;
@@ -287,22 +287,29 @@ namespace Bearventure.Gameplay.Characters
                    
                     testSkill.HitBoxHeight = BoundingBox.Height;
                     testSkill.HitBoxWidth = 20;
-                    //testSkill.InflictForce = new Vector2(35, 0);
+                    testSkill.InflictForce = new Vector2(25, 0);
 
-                    Attack = new EnemySkill(this, new Animation(spriteSheet, 0, 93, 103, 1, 4, 80, false, false), 900, 2, Constants.DamageType.Crushing);
+                    Animation attack_right = new Animation(spriteSheet, 1, 149, 105, 0, 5, 30, false, false);
+                    Animation attack_left = new Animation(spriteSheet, 1, 149, 105, 0, 5, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+
+                    Attack = new EnemySkill(this, attack_right, attack_left, 900, 2, Constants.DamageType.Crushing);
                     Attack.StartVelocity = new Vector2(5, 0);
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
                     Attack.SoundEffectAsset = Constants.BadgerAttack;
                     Attack.DamagingFrames = new List<int>
                     {
-                        1,
                         2,
+                        3,
+                        4,
                     };
 
-                    Attack.HitBoxPositions[0] = new Vector2(20, -10);
-                    Attack.HitBoxPositions[1] = new Vector2(20, -10);
-                    Attack.HitBoxHeight = 20;
-                    Attack.HitBoxWidth = 20;
+                    Attack.HitBoxPositions[0] = new Vector2(55, -10);
+                    Attack.HitBoxPositions[1] = new Vector2(55, -10);
+                    Attack.HitBoxHeight = 25;
+                    Attack.HitBoxWidth = 25;
+
+                    Attack.InflictForce = new Vector2(15, 0);
+                    Attack.ForceInterruptTreshold = 5;
 
                     Skills = new List<EnemySkill>();
                     Skills.Add(testSkill);

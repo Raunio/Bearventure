@@ -165,6 +165,9 @@ namespace Bearventure.Gameplay
             subject.velocity += force;
             subject.position += force;
 
+            if (subject.ActiveSkill != null && force.Length() >= subject.ActiveSkill.ForceInterruptTreshold)
+                subject.ActiveSkill.Cancel();
+
             if(force != Vector2.Zero)
                 subject.state = Constants.CharacterState.Knocked;
         }
