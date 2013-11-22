@@ -16,9 +16,12 @@ namespace Bearventure.Gameplay.Characters
         Animation walkLeft;
         Animation jumpingRight;
         Animation jumpingLeft;
+        Animation climbing;
+        Animation climbingStopped;
 
         Texture2D comboSheet;
         Texture2D jumpSheet;
+        Texture2D climbSheet;
 
         #region InputActions
 
@@ -45,6 +48,7 @@ namespace Bearventure.Gameplay.Characters
             this.spriteSheet = content.Load<Texture2D>("Sprites/kavelyfixed");
             comboSheet = content.Load<Texture2D>("Sprites/karhukombo1");
             jumpSheet = content.Load<Texture2D>("Sprites/hyppyfix");
+            climbSheet = content.Load<Texture2D>("Sprites/karhuclimb2");
             IsActive = true;
 
             this.position = position;
@@ -111,6 +115,9 @@ namespace Bearventure.Gameplay.Characters
             jumpingRight = new Animation(jumpSheet, 0, 106, 120, 0, 3, 40, false, false);
             jumpingLeft = new Animation(jumpSheet, 0, 106, 120, 0, 3, 40, false, false);
             jumpingLeft.Effects = SpriteEffects.FlipHorizontally;
+
+            climbing = new Animation(climbSheet, 0, 90, 135, 0, 4, 70);
+            climbingStopped = new Animation(climbSheet, 0, 90, 135, 0, 4, 70, false, false);
 
             currentAnimation = stoppedRight;
         }
@@ -432,6 +439,17 @@ namespace Bearventure.Gameplay.Characters
                 case Constants.CharacterState.Falling:
                     if (directionX == Constants.DirectionX.Left) { currentAnimation = jumpingLeft; }
                     else { currentAnimation = jumpingRight; }
+                    break;
+                case Constants.CharacterState.Climbing:
+                    if (velocity.Y == 0)
+                    {
+                        currentAnimation = climbingStopped;
+                        climbingStopped.GoToFrame(currentAnimation.CurrentFrame);
+                    }
+                    else
+                    {
+                        currentAnimation = climbing;
+                    }
                     break;
             }
         }

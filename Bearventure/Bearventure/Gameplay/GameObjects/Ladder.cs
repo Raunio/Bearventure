@@ -20,6 +20,7 @@ namespace Bearventure.Gameplay.GameObjects
 
             TAG = "Ladder";
             IsActive = true;
+            this.BoundingBoxOffset = 30;
 
             Initialize(content);
         }
