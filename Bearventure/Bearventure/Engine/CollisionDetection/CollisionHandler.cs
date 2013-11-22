@@ -30,12 +30,14 @@ namespace Bearventure.Engine.CollisionDetection
         /// <summary>
         /// Initialize CollisionHandler by passing it the collision map. An individual image fraction is then refered to as a zone.
         /// </summary>
-        public static void Initialize(CollisionMap _map, List<Enemy> enem, Player player, List<Platform> plat, ContentManager _content)
+        public static void Initialize(CollisionMap _map, List<Enemy> enem, Player player, List<Platform> plat, List<Ladder> ladders, ContentManager _content)
         {
             for (int i = 0; i < enem.Count; i++)
                 gameObjects.Add(enem[i]);
             for (int i = 0; i < plat.Count; i++)
                 gameObjects.Add(plat[i]);
+            for (int i = 0; i < ladders.Count; i++)
+                gameObjects.Add(ladders[i]);
 
             gameObjects.Add(player);
 
@@ -426,7 +428,7 @@ namespace Bearventure.Engine.CollisionDetection
             {
                 if (gameObjects[i] != subject)
                 {
-                    if (gameObjects[i].BoundingBox.Intersects(subject.BoundingBox) && gameObjects[i].IsActive)
+                    if (gameObjects[i].BoundingBox.Intersects(subject.BoundingBox) && gameObjects[i].IsActive && gameObjects[i].TAG != "Ladder")
                     {
                         Rectangle a = subject.BoundingBox;
                         Rectangle b = gameObjects[i].BoundingBox;
