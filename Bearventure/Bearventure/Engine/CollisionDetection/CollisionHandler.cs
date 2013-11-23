@@ -414,8 +414,12 @@ namespace Bearventure.Engine.CollisionDetection
             Rectangle xRect = CollisionAreaRectangleX(subject, movement.X);
             Rectangle yRect = CollisionAreaRectangleY(subject, movement.Y);
 
-            xRect.Width = 2;
-            yRect.Height = 2;
+            xRect.X *= resizeFactor;
+            xRect.Y *= resizeFactor;
+            yRect.X *= resizeFactor;
+            yRect.Y *= resizeFactor;
+            xRect.Height *= resizeFactor;
+            yRect.Width *= resizeFactor;
 
             spriteBatch.Draw(content.Load<Texture2D>("Sprites/tosi"), xRect, Color.White);
             spriteBatch.Draw(content.Load<Texture2D>("Sprites/tosi"), yRect, Color.White);

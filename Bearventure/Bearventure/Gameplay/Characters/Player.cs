@@ -96,7 +96,7 @@ namespace Bearventure.Gameplay.Characters
 
             mass = 150;
 
-            BoundingBoxOffset = 15;
+            BoundingBoxOffset = 12;
 
             ArmorType = Constants.ArmorType.Fur;
         }
@@ -327,81 +327,10 @@ namespace Bearventure.Gameplay.Characters
 
             jumpTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-          /*  #region oldLadderInput
-            if (state == Constants.CharacterState.Climbing && CharacterPhysics.OnLadder(this))
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                {
-                    velocity.X = walkSpeed;
-                }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                {
-                    velocity.X = -walkSpeed;
-                }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                {
-                    velocity.Y = -walkSpeed;
-                }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                {
-                    velocity.Y = walkSpeed;
-                }
-                else
-                    velocity = Vector2.Zero;
-            }
-            #endregion
-            */
             HandleAnimations();
 
             currentAnimation.Animate(gameTime);
 
-            // TODO: This can be done more smartly. See MenuScreen.cs
-         /*   #region oldInput
-            if (!IsDisabled && !CharacterPhysics.OnLadder(this))
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                {
-                    SetState(Constants.CharacterState.Walking);
-
-                    directionX = Constants.DirectionX.Left;
-                }
-
-                else if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                {
-                    SetState(Constants.CharacterState.Walking);
-
-                    directionX = Constants.DirectionX.Right;
-                }
-                else
-                {
-                    SetState(Constants.CharacterState.Stopped);
-                }
-
-                if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                {
-                    if (CharacterPhysics.OnGround(this) && jumpTimer >= jumpFrequency)
-                    {
-                        SetState(Constants.CharacterState.Jumping);
-                        jumpTimer = 0;
-                    }
-                    else
-                        SetState(Constants.CharacterState.Falling);
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.Q))
-                {
-                    combo1.SetNextSkill();
-                    UseSkill(combo1.ActiveSkill);
-                }
-            }
-            else
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.Down))
-                {
-                    SetState(Constants.CharacterState.Climbing);
-                }
-            }
-            #endregion
-            */
             combo1.Update(gameTime); 
 
             RegenerateHealth(gameTime);
