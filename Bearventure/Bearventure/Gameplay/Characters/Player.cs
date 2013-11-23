@@ -10,6 +10,7 @@ namespace Bearventure.Gameplay.Characters
 {
     public class Player : Character
     {
+        #region Animation
         Animation stoppedRight;
         Animation stoppedLeft;
         Animation walkRight;
@@ -18,6 +19,7 @@ namespace Bearventure.Gameplay.Characters
         Animation jumpingLeft;
         Animation climbing;
         Animation climbingStopped;
+        #endregion
 
         Texture2D comboSheet;
         Texture2D jumpSheet;
@@ -60,9 +62,9 @@ namespace Bearventure.Gameplay.Characters
             InitAnimations();
             InitSkills();
         }
+        #region ControlInitiation
         private void InitControls()
         {
-            #region InputAction
             moveLeft = new InputAction(
         new Buttons[] { Buttons.DPadLeft, Buttons.LeftThumbstickLeft },
         new Keys[] { Keys.Left },
@@ -72,11 +74,11 @@ namespace Bearventure.Gameplay.Characters
         new Keys[] { Keys.Right },
         false);
             jump = new InputAction(
-        new Buttons[] { Buttons.DPadUp, Buttons.LeftThumbstickUp },
+        new Buttons[] { Buttons.A },
         new Keys[] { Keys.Up },
         false);
             playerCombo = new InputAction(
-        new Buttons[] { Buttons.A },
+        new Buttons[] { Buttons.B },
         new Keys[] { Keys.Q },
         false);
             moveDown = new InputAction(
@@ -261,6 +263,8 @@ namespace Bearventure.Gameplay.Characters
 
             #endregion
         }
+
+        #region HandleInput
         public override void HandleInput(GameTime gameTime, InputState input)
         {
             PlayerIndex playerIndex;
@@ -327,6 +331,7 @@ namespace Bearventure.Gameplay.Characters
                 }
             }
         }
+        #endregion
 
         public override void Update(GameTime gameTime)
         {
@@ -334,88 +339,17 @@ namespace Bearventure.Gameplay.Characters
 
             jumpTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-          /*  #region oldLadderInput
-            if (state == Constants.CharacterState.Climbing && CharacterPhysics.OnLadder(this))
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                {
-                    velocity.X = walkSpeed;
-                }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                {
-                    velocity.X = -walkSpeed;
-                }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                {
-                    velocity.Y = -walkSpeed;
-                }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                {
-                    velocity.Y = walkSpeed;
-                }
-                else
-                    velocity = Vector2.Zero;
-            }
-            #endregion
-            */
             HandleAnimations();
 
             currentAnimation.Animate(gameTime);
 
-            // TODO: This can be done more smartly. See MenuScreen.cs
-         /*   #region oldInput
-            if (!IsDisabled && !CharacterPhysics.OnLadder(this))
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.Left))
-                {
-                    SetState(Constants.CharacterState.Walking);
-
-                    directionX = Constants.DirectionX.Left;
-                }
-
-                else if (Keyboard.GetState().IsKeyDown(Keys.Right))
-                {
-                    SetState(Constants.CharacterState.Walking);
-
-                    directionX = Constants.DirectionX.Right;
-                }
-                else
-                {
-                    SetState(Constants.CharacterState.Stopped);
-                }
-
-                if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                {
-                    if (CharacterPhysics.OnGround(this) && jumpTimer >= jumpFrequency)
-                    {
-                        SetState(Constants.CharacterState.Jumping);
-                        jumpTimer = 0;
-                    }
-                    else
-                        SetState(Constants.CharacterState.Falling);
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.Q))
-                {
-                    combo1.SetNextSkill();
-                    UseSkill(combo1.ActiveSkill);
-                }
-            }
-            else
-            {
-                if (Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.Down))
-                {
-                    SetState(Constants.CharacterState.Climbing);
-                }
-            }
-            #endregion
-            */
             combo1.Update(gameTime); 
 
             RegenerateHealth(gameTime);
 
             CleanActiveSkill();
         }
-
+        #region AnimationHandler
         private void HandleAnimations()
         {
             switch (state)
@@ -453,5 +387,6 @@ namespace Bearventure.Gameplay.Characters
                     break;
             }
         }
+        #endregion
     }
 }
