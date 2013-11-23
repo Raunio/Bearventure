@@ -105,7 +105,8 @@ namespace Bearventure
                 platforms.Add(plat);
 
                 ladders = new List<Ladder>();
-                ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(500, 4000)));
+                ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(500, 3900)));
+                ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(500, 4138)));
 
                 CombatManager.Instance.Initialize(_player, enemies);
                 hud = new HeadsUpDisplay();
@@ -299,6 +300,8 @@ namespace Bearventure
             foreach (Platform p in platforms)
             {
                 p.Draw(spriteBatch);
+                //testing
+                
             }
 
             VisualEffectManager.Instance.DrawEffects(spriteBatch);
