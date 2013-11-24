@@ -22,6 +22,8 @@ namespace Bearventure
         Action stop;
         Action defaultAction;
         Action attack;
+        Action flee;
+        Action cower;
         #endregion
         /// <summary>
         /// Initialization method for pre-determined actions.
@@ -43,6 +45,7 @@ namespace Bearventure
             chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.Vision));
             chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, subject.AttackRange));
             chase.AddCondition(new Condition(Constants.ConditionType.Blocked, false));
+            chase.AddCondition(new Condition(Constants.ConditionType.HealthHigherThan, subject.maxHealth / 4));
 
             preDeterminedActions.Add(chase);
 
@@ -52,10 +55,16 @@ namespace Bearventure
 
             preDeterminedActions.Add(stop);
 
-            attack = new Action(Constants.ActionType.Attack);
-            attack.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.AttackRange));
+            flee = new Action(Constants.ActionType.Flee, true);
+            flee.AddCondition(new Condition(Constants.ConditionType.HealthLowerThan, subject.maxHealth / 4));
 
-            preDeterminedActions.Add(attack);
+            preDeterminedActions.Add(flee);
+
+            cower = new Action(Constants.ActionType.Stop, true);
+            cower.AddCondition(new Condition(Constants.ConditionType.HealthLowerThan, subject.maxHealth / 4));
+            cower.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, subject.Vision));
+
+            preDeterminedActions.Add(cower);
         }
 
         private void InitAttackAndFlee()

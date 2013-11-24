@@ -232,7 +232,7 @@ namespace Bearventure.Gameplay.Characters
 
             skill3.SoundEffectAsset = Constants.KarhuHit3;
             skill3.Acceleration = 0.25f;
-            skill3.StartVelocity = new Vector2(2, -8);
+            skill3.StartVelocity = new Vector2(8, -9);
             skill3.UltimateVelocityX = 0;
 
             skill3.InflictForce = new Vector2(30, -20);
@@ -267,15 +267,15 @@ namespace Bearventure.Gameplay.Characters
 
             if (state == Constants.CharacterState.Climbing && CharacterPhysics.OnLadder(this))
             {
-                if (moveRight.Evaluate(input, ControllingPlayer, out playerIndex))
+                /*if (moveRight.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
                     velocity.X = walkSpeed;
                 }
                 else if (moveLeft.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
                     velocity.X = -walkSpeed;
-                }
-                else if (jump.Evaluate(input, ControllingPlayer, out playerIndex))
+                }*/
+                /*else*/ if (jump.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
                     velocity.Y = -walkSpeed;
                 }
@@ -309,6 +309,8 @@ namespace Bearventure.Gameplay.Characters
                     {
                         SetState(Constants.CharacterState.Jumping);
                         jumpTimer = 0;
+
+                        SoundEffectManager.Instance.KarhuJump();
                     }
                     else
                         SetState(Constants.CharacterState.Falling);
@@ -337,6 +339,8 @@ namespace Bearventure.Gameplay.Characters
             HandleAnimations();
 
             currentAnimation.Animate(gameTime);
+
+            PlayStepSoundEffects();
 
             combo1.Update(gameTime); 
 
@@ -373,13 +377,33 @@ namespace Bearventure.Gameplay.Characters
                     if (velocity.Y == 0)
                     {
                         currentAnimation = climbingStopped;
-                        climbingStopped.GoToFrame(currentAnimation.CurrentFrame);
+                        climbingStopped.GoToFrame(climbing.CurrentFrame);
                     }
                     else
                     {
                         currentAnimation = climbing;
                     }
                     break;
+            }
+        }
+
+        private void PlayStepSoundEffects()
+        {
+            if (currentAnimation == walkLeft)
+            {
+                if (currentAnimation.CurrentFrame == 2 || currentAnimation.CurrentFrame == 6)
+                {
+                    if (currentAnimation.IsNewFrame)
+                        SoundEffectManager.Instance.Step();
+                }
+            }
+            else if (currentAnimation == walkRight)
+            {
+                if (currentAnimation.CurrentFrame == 15 || currentAnimation.CurrentFrame == 19)
+                {
+                    if (currentAnimation.IsNewFrame)
+                        SoundEffectManager.Instance.Step();
+                }
             }
         }
     }

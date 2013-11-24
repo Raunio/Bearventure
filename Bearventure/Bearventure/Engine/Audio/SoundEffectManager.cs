@@ -12,6 +12,8 @@ namespace Bearventure
         private SoundEffect menuSelect;
         private SoundEffect menuIndexChange;
         private SoundEffect badgerAttack;
+        private SoundEffect step;
+        private SoundEffect karhuJump;
 
         private SoundEffectManager() { }
 
@@ -34,6 +36,8 @@ namespace Bearventure
             menuIndexChange = content.Load<SoundEffect>(Constants.MenuSelectedIndexChange);
             menuSelect = content.Load<SoundEffect>(Constants.MenuIndexSelected);
             badgerAttack = content.Load<SoundEffect>(Constants.BadgerAttack);
+            step = content.Load<SoundEffect>(Constants.Step);
+            karhuJump = content.Load<SoundEffect>(Constants.karhuJump);
             Console.WriteLine("SoundEffects loaded.");
         }
 
@@ -50,6 +54,16 @@ namespace Bearventure
         public void BadgerAttack()
         {
             if (Globals.SoundsEnabled) badgerAttack.Play();
+        }
+
+        public void Step()
+        {
+            if (Globals.SoundsEnabled) step.Play();
+        }
+
+        public void KarhuJump()
+        {
+            if (Globals.SoundsEnabled) karhuJump.Play();
         }
 
         public void PlaySound(string asset)

@@ -310,7 +310,7 @@ namespace Bearventure
                     subject.velocity.X /= 2;
                     collision.B.position.X += subject.velocity.X;
                 }
-                else if (collision.A.Mass == -1)
+                else if (collision.A.Mass == -1 && !Blocked((Character)subject, Constants.DirectionX.Right))
                 {
                     collision.B.position.X += subject.velocity.X;
                 }
@@ -430,6 +430,27 @@ namespace Bearventure
 
             if (collision != null && collision.B.TAG == "Ladder")
             {
+                float targetPosition = collision.B.BoundingBox.Left + collision.B.BoundingBox.Width / 2;
+
+                if (subject.position.X > targetPosition + subject.walkSpeed / 2)
+                {
+                    if (subject.velocity.X > -subject.walkSpeed)
+                        subject.velocity.X -= subject.acceleration;
+
+                    else if (subject.velocity.X < -subject.walkSpeed)
+                        subject.velocity.X = -subject.walkSpeed;
+                }
+                else if (subject.position.X < targetPosition - subject.walkSpeed / 2)
+                {
+                    if (subject.velocity.X < subject.walkSpeed)
+                        subject.velocity.X += subject.acceleration;
+
+                    else if (subject.velocity.X > subject.walkSpeed)
+                        subject.velocity.X = subject.walkSpeed;
+                }
+                else
+                    subject.velocity.X = 0;
+
                 return true;
             }
             return false;
@@ -456,6 +477,32 @@ namespace Bearventure
             if (RightCheck == subject.BoundingBox.Right)
                 return true;
             if (LeftCheck == subject.BoundingBox.Left)
+                return true;
+
+            return false;
+        }
+        /// <summary>
+        /// Checks if the character is blocked from the given direction
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <param name="direction"></param>
+        /// <returns></returns>
+        public static bool Blocked(Character subject, Constants.DirectionX direction)
+        {
+            int RightCheck = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(2, 0));
+            int LeftCheck = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(-2, 0));
+
+            if (RightCheck == subject.BoundingBox.Right && direction == Constants.DirectionX.Right)
+                return true;
+            if (LeftCheck == subject.BoundingBox.Left && direction == Constants.DirectionX.Left)
+                return true;
+
+            RightCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(2, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(1, 0)).CollisionLocation;
+            LeftCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(-2, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(1, 0)).CollisionLocation;
+
+            if (RightCheck == subject.BoundingBox.Right && direction == Constants.DirectionX.Right)
+                return true;
+            if (LeftCheck == subject.BoundingBox.Left && direction == Constants.DirectionX.Left)
                 return true;
 
             return false;

@@ -58,7 +58,7 @@ namespace Bearventure.Gameplay.GameObjects
             switch (type)
             {
                 case Constants.PlatformType.Basic:
-                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.BasicPlatform), 0, 100, 25, 0, 1, 25);
+                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.BasicPlatform), 0, 270, 31, 0, 0, 25);
                     break;
             }
         }

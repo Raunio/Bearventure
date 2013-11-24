@@ -215,7 +215,7 @@ namespace Bearventure.Gameplay.Characters
                     runSpeed = 7f;
                     acceleration = 1f;
                     decceleration = 0.5f;
-                    jumpStrenght = 5;
+                    jumpStrenght = 15;
                     Orientation = Constants.CharacterOrientation.Ground;
                     Vision = 300;
                     AttackRange = 120;
@@ -254,10 +254,17 @@ namespace Bearventure.Gameplay.Characters
             {
                 case Constants.EnemyType.BlackMetalBadger:
                     #region TESTING
-                    EnemySkill testSkill = new EnemySkill(this, new Animation(spriteSheet, 0, 93, 103, 0, 4, 20, false, false), 8000, 2, Constants.DamageType.Crushing);
+                    Animation testSkillAnimation = new Animation(spriteSheet, 0, 93, 103, 0, 4, 20, false, false);
+                    testSkillAnimation.FreezeFrames = new Animation.FrameFreezer
+                    {
+                        Frames = new List<int> { 3, 4 },
+                        Amount = 200
+                    };
+
+                    EnemySkill testSkill = new EnemySkill(this, testSkillAnimation, 8000, 2, Constants.DamageType.Crushing);
                     testSkill.Acceleration = 0.25f;
-                    testSkill.StartVelocity = new Vector2(20, 0);
-                    testSkill.UltimateVelocityX = 0;
+                    testSkill.StartVelocity = new Vector2(30, 0);
+                    testSkill.UltimateVelocityX = 90;
                     testSkill.SoundEffectAsset = Constants.BadgerSkill;
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, Vision));
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, AttackRange));
@@ -269,32 +276,22 @@ namespace Bearventure.Gameplay.Characters
                         2,
                         3,
                         4,
-                        5,
-                        6,
-                        7,
-                        8,
-                        9,
-                        10,
-                        11,
-                        12,
-                        13,
-                        14,
-                        15,
                     };
 
-                    for(int i = 0; i < 15; i++)
+                    for(int i = 0; i < 4; i++)
                         testSkill.HitBoxPositions[i] = new Vector2(40, -BoundingBox.Height / 2);
                    
                     testSkill.HitBoxHeight = BoundingBox.Height;
                     testSkill.HitBoxWidth = 20;
-                    testSkill.InflictForce = new Vector2(25, 0);
+                    testSkill.InflictForce = new Vector2(32, 0);
 
                     Animation attack_right = new Animation(spriteSheet, 1, 149, 105, 0, 5, 30, false, false);
                     Animation attack_left = new Animation(spriteSheet, 1, 149, 105, 0, 5, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
 
-                    Attack = new EnemySkill(this, attack_right, attack_left, 900, 2, Constants.DamageType.Crushing);
+                    Attack = new EnemySkill(this, attack_right, attack_left, 1400, 4, Constants.DamageType.Crushing);
                     Attack.StartVelocity = new Vector2(5, 0);
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
+                    Attack.Conditions.Add(new Condition(Constants.ConditionType.FacingPlayer, true));
                     Attack.SoundEffectAsset = Constants.BadgerAttack;
                     Attack.DamagingFrames = new List<int>
                     {

@@ -365,6 +365,21 @@ namespace Bearventure.Gameplay.Characters
             CurrentFrame = frame;
             Update();
         }
+        /// <summary>
+        /// Returns true if the current frame of the animation has just been set. (animation timer == 0)
+        /// </summary>
+        public bool IsNewFrame
+        {
+            get
+            {
+                if (animTimer == 0)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
 
         private void Update()
         {
