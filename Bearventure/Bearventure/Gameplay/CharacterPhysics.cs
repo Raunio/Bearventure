@@ -140,15 +140,16 @@ namespace Bearventure
                 if (subject.velocity.X < subject.runSpeed)
                     subject.velocity.X += subject.acceleration;
 
-                else if (subject.velocity.X > subject.runSpeed)
+                else if (subject.velocity.X > subject.walkSpeed)
                     subject.velocity.X = subject.runSpeed;
+
             }
             else if (subject.directionX == Constants.DirectionX.Left)
             {
                 if (subject.velocity.X > -subject.runSpeed)
                     subject.velocity.X -= subject.acceleration;
 
-                else if (subject.velocity.X < -subject.runSpeed)
+                else if (subject.velocity.X < -subject.walkSpeed)
                     subject.velocity.X = -subject.runSpeed;
             }
         }
@@ -159,7 +160,11 @@ namespace Bearventure
                 subject.velocity.Y -= subject.jumpStrenght;
                 subject.position.Y -= subject.jumpStrenght;
             }
-
+           /* if (!OnGround(subject)) double jump
+            {
+                subject.velocity.Y -= subject.jumpStrenght;
+                subject.position.Y -= subject.jumpStrenght;
+            }*/
             if(subject.velocity.Y > Gravity)
             {
                 subject.state = Constants.CharacterState.Falling;

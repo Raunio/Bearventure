@@ -148,6 +148,12 @@ namespace Bearventure.Gameplay.Characters
                     case Constants.CharacterState.Climbing:
                         state = newState;
                         break;
+                    case Constants.CharacterState.Running:
+                        if (CharacterPhysics.OnGround(this) || Orientation == Constants.CharacterOrientation.Air)
+                            state = newState;
+                        else
+                            return;
+                        break;
                 }
             }
         }

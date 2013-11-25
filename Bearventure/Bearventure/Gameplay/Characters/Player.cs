@@ -18,6 +18,8 @@ namespace Bearventure.Gameplay.Characters
         Animation jumpingLeft;
         Animation climbing;
         Animation climbingStopped;
+        Animation runRight;
+        Animation runLeft;
 
         Texture2D comboSheet;
         Texture2D jumpSheet;
@@ -28,9 +30,10 @@ namespace Bearventure.Gameplay.Characters
         InputAction moveLeft;
         InputAction moveRight;
         InputAction jump;
-        InputAction playerCombo;
+        InputAction playerAttack;
         InputAction moveDown;
         InputAction moveUp;
+        InputAction run;
 
         #endregion
 
@@ -78,18 +81,22 @@ namespace Bearventure.Gameplay.Characters
             jump = new InputAction(
         new Buttons[] { Buttons.A },
         new Keys[] { Keys.Up },
-        false);
+        true);
             moveUp = new InputAction(
         new Buttons[] { Buttons.DPadUp, Buttons.LeftThumbstickUp },
         new Keys[] { Keys.Up },
         false);
-            playerCombo = new InputAction(
-        new Buttons[] { Buttons.B },
+            playerAttack = new InputAction(
+        new Buttons[] { Buttons.X },
         new Keys[] { Keys.Q },
         true);
             moveDown = new InputAction(
         new Buttons[] { Buttons.DPadDown, Buttons.LeftThumbstickDown },
         new Keys[] { Keys.Down },
+        false);
+            run = new InputAction(
+        new Buttons[] { Buttons.B },
+        new Keys[] { Keys.LeftShift },
         false);
             #endregion
 
@@ -100,7 +107,7 @@ namespace Bearventure.Gameplay.Characters
             acceleration = 1.75f;
             decceleration = 1.75f;
             walkSpeed = 12f;
-            runSpeed = 17f;
+            runSpeed = 20f;
             jumpStrenght = 20;
 
             maxHealth = 50;
@@ -119,6 +126,8 @@ namespace Bearventure.Gameplay.Characters
             stoppedLeft = new Animation(spriteSheet, 0, 88, 121, 9, 9, 50);
             walkRight = new Animation(spriteSheet, 0, 88, 121, 13, 21, 50);
             walkLeft = new Animation(spriteSheet, 0, 88, 121, 0, 8, 50, true);
+            runRight = new Animation(spriteSheet, 0, 88, 121, 13, 21, 25);
+            runLeft = new Animation(spriteSheet, 0, 88, 121, 0, 8, 25, true);
 
             jumpingRight = new Animation(jumpSheet, 0, 106, 120, 0, 3, 40, false, false);
             jumpingLeft = new Animation(jumpSheet, 0, 106, 120, 0, 3, 40, false, false);
@@ -307,13 +316,29 @@ namespace Bearventure.Gameplay.Characters
             {
                 if (moveLeft.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
-                    SetState(Constants.CharacterState.Walking);
-                    directionX = Constants.DirectionX.Left;
+                    if (run.Evaluate(input, ControllingPlayer, out playerIndex) && moveLeft.Evaluate(input, ControllingPlayer, out playerIndex))
+                    {
+                        SetState(Constants.CharacterState.Running);
+                        directionX = Constants.DirectionX.Left;
+                    }
+                    else
+                    {
+                        SetState(Constants.CharacterState.Walking);
+                        directionX = Constants.DirectionX.Left;
+                    }
                 }
                 else if (moveRight.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
-                    SetState(Constants.CharacterState.Walking);
-                    directionX = Constants.DirectionX.Right;
+                    if (run.Evaluate(input, ControllingPlayer, out playerIndex) && moveRight.Evaluate(input, ControllingPlayer, out playerIndex))
+                    {
+                        SetState(Constants.CharacterState.Running);
+                        directionX = Constants.DirectionX.Right;
+                    }
+                    else
+                    {
+                        SetState(Constants.CharacterState.Walking);
+                        directionX = Constants.DirectionX.Right;
+                    }
                 }
                 else
                 {
@@ -331,7 +356,17 @@ namespace Bearventure.Gameplay.Characters
                     else
                         SetState(Constants.CharacterState.Falling);
                 }
-                if (playerCombo.Evaluate(input, ControllingPlayer, out playerIndex))
+                if (!CharacterPhysics.OnGround(this) && jump.Evaluate(input, ControllingPlayer, out playerIndex))
+                {
+                    SetState(Constants.CharacterState.Jumping);
+                    jumpTimer = 0;
+                    SoundEffectManager.Instance.KarhuJump();
+                }
+                else
+                {
+                    SetState(Constants.CharacterState.Falling);
+                }
+                if (playerAttack.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
                     combo1.SetNextSkill();
                     UseSkill(combo1.ActiveSkill);
@@ -381,6 +416,12 @@ namespace Bearventure.Gameplay.Characters
                     if (directionX == Constants.DirectionX.Left) { currentAnimation = walkLeft; }
                     else { currentAnimation = walkRight; }
                     break;
+                case Constants.CharacterState.Running:
+                    jumpingRight.Reset();
+                    jumpingLeft.Reset();
+                    if (directionX == Constants.DirectionX.Left) { currentAnimation = runLeft; }
+                    else { currentAnimation = runRight; }
+                    break;
                 case Constants.CharacterState.Jumping:
                     if (directionX == Constants.DirectionX.Left) { currentAnimation = jumpingLeft; }
                     else { currentAnimation = jumpingRight; }
@@ -405,7 +446,7 @@ namespace Bearventure.Gameplay.Characters
 
         private void PlayStepSoundEffects()
         {
-            if (currentAnimation == walkLeft)
+            if (currentAnimation == walkLeft || currentAnimation == runLeft)
             {
                 if (currentAnimation.CurrentFrame == 2 || currentAnimation.CurrentFrame == 6)
                 {
@@ -413,7 +454,7 @@ namespace Bearventure.Gameplay.Characters
                         SoundEffectManager.Instance.Step();
                 }
             }
-            else if (currentAnimation == walkRight)
+            else if (currentAnimation == walkRight || currentAnimation == runRight)
             {
                 if (currentAnimation.CurrentFrame == 15 || currentAnimation.CurrentFrame == 19)
                 {
