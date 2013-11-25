@@ -157,7 +157,7 @@ namespace Bearventure
             if (OnGround(subject) && !OnLadder(subject))
             {
                 subject.velocity.Y -= subject.jumpStrenght;
-                //subject.position.Y -= subject.jumpStrenght;
+                subject.position.Y -= subject.jumpStrenght;
             }
 
             if(subject.velocity.Y > Gravity)
