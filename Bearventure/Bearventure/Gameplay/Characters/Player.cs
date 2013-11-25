@@ -62,7 +62,7 @@ namespace Bearventure.Gameplay.Characters
             InitAnimations();
             InitSkills();
         }
-        #region ControlInitiation
+        #region ControlInitialization
         private void InitControls()
         {
             moveLeft = new InputAction(
