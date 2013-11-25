@@ -145,6 +145,19 @@ namespace Bearventure
                     if (PointY > 0)
                         UpdateAltitude(PointY);
                     break;
+                case Constants.ActionType.Jump:
+                    subject.SetState(Constants.CharacterState.Jumping);
+                    break;
+                case Constants.ActionType.Flee:
+                    if (subject.position.X < target.position.X && !CharacterPhysics.Blocked(subject))
+                    {
+                        GoTo((int)target.position.X - subject.Vision);
+                    }
+                    else if(subject.position.X > target.position.X && !CharacterPhysics.Blocked(subject))
+                    {
+                        GoTo((int)target.position.X + subject.Vision);
+                    }
+                    break;
             }
 
             ManageSkills();

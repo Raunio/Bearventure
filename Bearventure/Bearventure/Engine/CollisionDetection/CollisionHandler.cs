@@ -306,6 +306,8 @@ namespace Bearventure.Engine.CollisionDetection
                 Rectangle targetBox = new Rectangle(gameObjects[i].BoundingBox.X / resizeFactor, gameObjects[i].BoundingBox.Y / resizeFactor,
                     gameObjects[i].BoundingBox.Width / resizeFactor, gameObjects[i].BoundingBox.Height / resizeFactor);
 
+                Rectangle targetBoxScaled = gameObjects[i].BoundingBox;
+
                 if (Y.Intersects(targetBox))
                 {
                     if (Y.Y < targetBox.Y + targetBox.Height / 2)
@@ -321,12 +323,25 @@ namespace Bearventure.Engine.CollisionDetection
                 {
                     if (X.X < targetBox.X + targetBox.Width / 2)
                     {
-                        collision += subject.BoundingBox.Left;
+                        collision += subject.BoundingBox.Right;
                     }
                     else
                     {
-                        collision += subject.BoundingBox.Right;
+                        collision += subject.BoundingBox.Left;
                     }
+                }
+
+                if(subject.BoundingBox.Intersects(targetBoxScaled) && collision == 0)
+                {
+                    if (subject.BoundingBox.X < targetBox.X + targetBox.Width / 2)
+                        collision = subject.BoundingBox.Right;
+                    else
+                        collision = subject.BoundingBox.Left;
+
+                    if (subject.BoundingBox.Y < targetBox.Y + targetBox.Height / 2)
+                        collision = subject.BoundingBox.Bottom;
+                    else
+                        collision = subject.BoundingBox.Top;
                 }
 
 
@@ -344,7 +359,7 @@ namespace Bearventure.Engine.CollisionDetection
         /// </summary>
         /// <param name="subject"></param>
         /// <returns></returns>
-        public static int OverlapsCharacter(Character subject)
+        public static int OverlapsCharacter(GameplayObject subject)
         {
             int overlap = 0;
 
@@ -407,6 +422,22 @@ namespace Bearventure.Engine.CollisionDetection
                 return new Rectangle((int)(subject.BoundingBox.Right / resizeFactor + movement / resizeFactor),
                     subject.BoundingBox.Y / resizeFactor, 1, 
                     subject.BoundingBox.Height / resizeFactor);
+        }
+
+        public static void DrawCollisionRectangles(SpriteBatch spriteBatch, GameplayObject subject, Vector2 movement)
+        {
+            Rectangle xRect = CollisionAreaRectangleX(subject, movement.X);
+            Rectangle yRect = CollisionAreaRectangleY(subject, movement.Y);
+
+            xRect.X *= resizeFactor;
+            xRect.Y *= resizeFactor;
+            yRect.X *= resizeFactor;
+            yRect.Y *= resizeFactor;
+            xRect.Height *= resizeFactor;
+            yRect.Width *= resizeFactor;
+
+            spriteBatch.Draw(content.Load<Texture2D>("Sprites/tosi"), xRect, Color.White);
+            spriteBatch.Draw(content.Load<Texture2D>("Sprites/tosi"), yRect, Color.White);
         }
 
         /// <summary>

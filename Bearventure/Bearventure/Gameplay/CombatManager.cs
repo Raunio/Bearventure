@@ -162,11 +162,14 @@ namespace Bearventure.Gameplay
         {
             Vector2 mass = new Vector2(skill.InflictForce.X > 0 ? subject.Mass * 0.033f : 0, skill.InflictForce.Y != 0 ? subject.Mass * 0.033f : 0);
             Vector2 force = new Vector2(direction == Constants.DirectionX.Left ? -skill.InflictForce.X + mass.X : skill.InflictForce.X - mass.X, skill.InflictForce.Y + mass.Y);
-            subject.velocity += force;
+            subject.velocity = force;
             subject.position += force;
 
             if (subject.ActiveSkill != null && force.Length() >= subject.ActiveSkill.ForceInterruptTreshold)
+            {
                 subject.ActiveSkill.Cancel();
+                CombatLog.Add(subject.Name + " was interrupted!");
+            }
 
             if(force != Vector2.Zero)
                 subject.state = Constants.CharacterState.Knocked;

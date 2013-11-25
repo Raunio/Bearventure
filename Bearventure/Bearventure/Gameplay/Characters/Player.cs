@@ -10,7 +10,6 @@ namespace Bearventure.Gameplay.Characters
 {
     public class Player : Character
     {
-        #region Animation
         Animation stoppedRight;
         Animation stoppedLeft;
         Animation walkRight;
@@ -19,7 +18,6 @@ namespace Bearventure.Gameplay.Characters
         Animation jumpingLeft;
         Animation climbing;
         Animation climbingStopped;
-        #endregion
 
         Texture2D comboSheet;
         Texture2D jumpSheet;
@@ -62,9 +60,13 @@ namespace Bearventure.Gameplay.Characters
             InitAnimations();
             InitSkills();
         }
+<<<<<<< HEAD
         #region ControlInitialization
+=======
+>>>>>>> be19a1e9d577af88a79b0c0d1ef90178e0dada40
         private void InitControls()
         {
+            #region InputAction
             moveLeft = new InputAction(
         new Buttons[] { Buttons.DPadLeft, Buttons.LeftThumbstickLeft },
         new Keys[] { Keys.Left },
@@ -74,11 +76,11 @@ namespace Bearventure.Gameplay.Characters
         new Keys[] { Keys.Right },
         false);
             jump = new InputAction(
-        new Buttons[] { Buttons.A },
+        new Buttons[] { Buttons.DPadUp, Buttons.LeftThumbstickUp },
         new Keys[] { Keys.Up },
         false);
             playerCombo = new InputAction(
-        new Buttons[] { Buttons.B },
+        new Buttons[] { Buttons.A },
         new Keys[] { Keys.Q },
         false);
             moveDown = new InputAction(
@@ -102,7 +104,7 @@ namespace Bearventure.Gameplay.Characters
 
             mass = 150;
 
-            BoundingBoxOffset = 15;
+            BoundingBoxOffset = 12;
 
             ArmorType = Constants.ArmorType.Fur;
         }
@@ -234,7 +236,7 @@ namespace Bearventure.Gameplay.Characters
 
             skill3.SoundEffectAsset = Constants.KarhuHit3;
             skill3.Acceleration = 0.25f;
-            skill3.StartVelocity = new Vector2(2, -8);
+            skill3.StartVelocity = new Vector2(8, -9);
             skill3.UltimateVelocityX = 0;
 
             skill3.InflictForce = new Vector2(30, -20);
@@ -263,23 +265,21 @@ namespace Bearventure.Gameplay.Characters
 
             #endregion
         }
-
-        #region HandleInput
         public override void HandleInput(GameTime gameTime, InputState input)
         {
             PlayerIndex playerIndex;
 
             if (state == Constants.CharacterState.Climbing && CharacterPhysics.OnLadder(this))
             {
-                if (moveRight.Evaluate(input, ControllingPlayer, out playerIndex))
+                /*if (moveRight.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
                     velocity.X = walkSpeed;
                 }
                 else if (moveLeft.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
                     velocity.X = -walkSpeed;
-                }
-                else if (jump.Evaluate(input, ControllingPlayer, out playerIndex))
+                }*/
+                /*else*/ if (jump.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
                     velocity.Y = -walkSpeed;
                 }
@@ -289,6 +289,14 @@ namespace Bearventure.Gameplay.Characters
                 }
                 else
                     velocity = Vector2.Zero;
+            }
+            else if (state == Constants.CharacterState.Climbing && !CharacterPhysics.OnLadder(this))
+            {
+                if (jump.Evaluate(input, ControllingPlayer, out playerIndex))
+                {
+                    velocity.Y = -jumpStrenght;
+                    SetState(Constants.CharacterState.Jumping);
+                }
             }
 
             if (!IsDisabled && !CharacterPhysics.OnLadder(this))
@@ -313,6 +321,8 @@ namespace Bearventure.Gameplay.Characters
                     {
                         SetState(Constants.CharacterState.Jumping);
                         jumpTimer = 0;
+
+                        SoundEffectManager.Instance.KarhuJump();
                     }
                     else
                         SetState(Constants.CharacterState.Falling);
@@ -331,7 +341,6 @@ namespace Bearventure.Gameplay.Characters
                 }
             }
         }
-        #endregion
 
         public override void Update(GameTime gameTime)
         {
@@ -343,13 +352,15 @@ namespace Bearventure.Gameplay.Characters
 
             currentAnimation.Animate(gameTime);
 
+            PlayStepSoundEffects();
+
             combo1.Update(gameTime); 
 
             RegenerateHealth(gameTime);
 
             CleanActiveSkill();
         }
-        #region AnimationHandler
+
         private void HandleAnimations()
         {
             switch (state)
@@ -378,7 +389,7 @@ namespace Bearventure.Gameplay.Characters
                     if (velocity.Y == 0)
                     {
                         currentAnimation = climbingStopped;
-                        climbingStopped.GoToFrame(currentAnimation.CurrentFrame);
+                        climbingStopped.GoToFrame(climbing.CurrentFrame);
                     }
                     else
                     {
@@ -387,6 +398,25 @@ namespace Bearventure.Gameplay.Characters
                     break;
             }
         }
-        #endregion
+
+        private void PlayStepSoundEffects()
+        {
+            if (currentAnimation == walkLeft)
+            {
+                if (currentAnimation.CurrentFrame == 2 || currentAnimation.CurrentFrame == 6)
+                {
+                    if (currentAnimation.IsNewFrame)
+                        SoundEffectManager.Instance.Step();
+                }
+            }
+            else if (currentAnimation == walkRight)
+            {
+                if (currentAnimation.CurrentFrame == 15 || currentAnimation.CurrentFrame == 19)
+                {
+                    if (currentAnimation.IsNewFrame)
+                        SoundEffectManager.Instance.Step();
+                }
+            }
+        }
     }
 }

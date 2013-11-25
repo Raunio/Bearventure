@@ -21,6 +21,8 @@ namespace Bearventure
         {
             this.Type = type;
             this.Primary = primary;
+
+            conditions = new List<Condition>();
         }
 
         public Constants.ActionType Type

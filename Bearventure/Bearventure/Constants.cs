@@ -21,6 +21,8 @@ namespace Bearventure
         public const String Splat = "SoundEffects/splat";
         public const String Scratch = "SoundEffects/scratch1";
         public const String Crush = "SoundEffects/crush1";
+        public const String Step = "SoundEffects/step";
+        public const String karhuJump = "SoundEffects/hyppy";
         #endregion
         #region Music
         public const String Level1Music = "Music/Level1";
@@ -57,7 +59,7 @@ namespace Bearventure
 
         #region GameObjects
 
-        public const String BasicPlatform = "Sprites/taso";
+        public const String BasicPlatform = "Sprites/hover";
         public const String WoodenLadder = "Sprites/WoodenLadder";
 
         #endregion
@@ -128,6 +130,7 @@ namespace Bearventure
             Attack,
             Flee,
             Stop,
+            Jump,
         };
         public enum ConditionType
         {

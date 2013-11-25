@@ -327,7 +327,7 @@ namespace Bearventure.Gameplay.Characters.Skills
             if(leftAnimation != null)
                 leftAnimation.Reset();
 
-            subject.velocity += new Vector2(subject.directionX == Constants.DirectionX.Left ? -StartVelocity.X : StartVelocity.X, StartVelocity.Y);
+            subject.velocity = new Vector2(subject.directionX == Constants.DirectionX.Left ? -StartVelocity.X : StartVelocity.X, StartVelocity.Y);
             HasDamaged = false;
 
             if (subject.directionX == Constants.DirectionX.Left)
