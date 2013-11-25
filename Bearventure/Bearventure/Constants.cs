@@ -23,6 +23,7 @@ namespace Bearventure
         public const String Crush = "SoundEffects/crush1";
         public const String Step = "SoundEffects/step";
         public const String karhuJump = "SoundEffects/hyppy";
+        public const String quietStep = "SoundEffects/quietStep";
         #endregion
         #region Music
         public const String Level1Music = "Music/Level1";

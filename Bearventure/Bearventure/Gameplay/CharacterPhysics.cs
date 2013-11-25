@@ -242,7 +242,7 @@ namespace Bearventure
             {
                 subject.velocity.Y = 0;
 
-                if (CollisionHandler.HeightDifference < 10)
+                if (CollisionHandler.HeightDifference < subject.BoundingBox.Height / 10)
                     subject.position.Y -= CollisionHandler.HeightDifference;
 
                 subject.velocity.X = 0;
