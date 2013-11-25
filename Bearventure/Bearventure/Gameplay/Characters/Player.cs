@@ -286,6 +286,14 @@ namespace Bearventure.Gameplay.Characters
                 else
                     velocity = Vector2.Zero;
             }
+            else if (state == Constants.CharacterState.Climbing && !CharacterPhysics.OnLadder(this))
+            {
+                if (jump.Evaluate(input, ControllingPlayer, out playerIndex))
+                {
+                    velocity.Y = -jumpStrenght;
+                    SetState(Constants.CharacterState.Jumping);
+                }
+            }
 
             if (!IsDisabled && !CharacterPhysics.OnLadder(this))
             {

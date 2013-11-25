@@ -306,27 +306,42 @@ namespace Bearventure.Engine.CollisionDetection
                 Rectangle targetBox = new Rectangle(gameObjects[i].BoundingBox.X / resizeFactor, gameObjects[i].BoundingBox.Y / resizeFactor,
                     gameObjects[i].BoundingBox.Width / resizeFactor, gameObjects[i].BoundingBox.Height / resizeFactor);
 
+                Rectangle targetBoxScaled = gameObjects[i].BoundingBox;
+
                 if (Y.Intersects(targetBox))
                 {
                     if (Y.Y < targetBox.Y + targetBox.Height / 2)
                     {
-                        collision = subject.BoundingBox.Bottom;
+                        collision = subject.BoundingBox.Top;
                     }
                     else
                     {
-                        collision = subject.BoundingBox.Top;
+                        collision = subject.BoundingBox.Bottom;
                     }
                 }
                 if (X.Intersects(targetBox))
                 {
                     if (X.X < targetBox.X + targetBox.Width / 2)
                     {
-                        collision += subject.BoundingBox.Left;
+                        collision += subject.BoundingBox.Right;
                     }
                     else
                     {
-                        collision += subject.BoundingBox.Right;
+                        collision += subject.BoundingBox.Left;
                     }
+                }
+
+                if(subject.BoundingBox.Intersects(targetBoxScaled) && collision == 0)
+                {
+                    if (subject.BoundingBox.X < targetBox.X + targetBox.Width / 2)
+                        collision += subject.BoundingBox.Right;
+                    else
+                        collision += subject.BoundingBox.Left;
+
+                    if (subject.BoundingBox.Y < targetBox.Y + targetBox.Height / 2)
+                        collision += subject.BoundingBox.Top;
+                    else
+                        collision += subject.BoundingBox.Bottom;
                 }
 
 
