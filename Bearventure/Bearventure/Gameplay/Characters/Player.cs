@@ -30,6 +30,7 @@ namespace Bearventure.Gameplay.Characters
         InputAction jump;
         InputAction playerCombo;
         InputAction moveDown;
+        InputAction moveUp;
 
         #endregion
 
@@ -60,10 +61,9 @@ namespace Bearventure.Gameplay.Characters
             InitAnimations();
             InitSkills();
         }
-<<<<<<< HEAD
+
         #region ControlInitialization
-=======
->>>>>>> be19a1e9d577af88a79b0c0d1ef90178e0dada40
+
         private void InitControls()
         {
             #region InputAction
@@ -76,13 +76,17 @@ namespace Bearventure.Gameplay.Characters
         new Keys[] { Keys.Right },
         false);
             jump = new InputAction(
+        new Buttons[] { Buttons.A },
+        new Keys[] { Keys.Up },
+        false);
+            moveUp = new InputAction(
         new Buttons[] { Buttons.DPadUp, Buttons.LeftThumbstickUp },
         new Keys[] { Keys.Up },
         false);
             playerCombo = new InputAction(
-        new Buttons[] { Buttons.A },
+        new Buttons[] { Buttons.B },
         new Keys[] { Keys.Q },
-        false);
+        true);
             moveDown = new InputAction(
         new Buttons[] { Buttons.DPadDown, Buttons.LeftThumbstickDown },
         new Keys[] { Keys.Down },
@@ -90,7 +94,7 @@ namespace Bearventure.Gameplay.Characters
             #endregion
 
         }
-
+        #endregion
         private void InitStats()
         {
             acceleration = 1.75f;
@@ -279,7 +283,7 @@ namespace Bearventure.Gameplay.Characters
                 {
                     velocity.X = -walkSpeed;
                 }*/
-                /*else*/ if (jump.Evaluate(input, ControllingPlayer, out playerIndex))
+                /*else*/ if (moveUp.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
                     velocity.Y = -walkSpeed;
                 }
