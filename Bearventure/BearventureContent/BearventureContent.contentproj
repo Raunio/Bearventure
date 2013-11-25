@@ -453,48 +453,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_0.Png">
-      <Name>Testilevel2CollisionMap_0</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_1.Png">
-      <Name>Testilevel2CollisionMap_1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_2.Png">
-      <Name>Testilevel2CollisionMap_2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_3.Png">
-      <Name>Testilevel2CollisionMap_3</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_4.Png">
-      <Name>Testilevel2CollisionMap_4</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_5.Png">
-      <Name>Testilevel2CollisionMap_5</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_6.Png">
-      <Name>Testilevel2CollisionMap_6</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_7.Png">
-      <Name>Testilevel2CollisionMap_7</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Sprites\taso.png">
       <Name>taso</Name>
       <Importer>TextureImporter</Importer>
@@ -576,6 +534,28 @@
       <Name>hyppy</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_0.Png">
+      <Name>Testilevel2CollisionMap_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_1.Png">
+      <Name>Testilevel2CollisionMap_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_2.Png">
+      <Name>Testilevel2CollisionMap_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_3.Png">
+      <Name>Testilevel2CollisionMap_3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

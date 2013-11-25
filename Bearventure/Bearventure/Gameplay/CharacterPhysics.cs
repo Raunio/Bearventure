@@ -157,7 +157,7 @@ namespace Bearventure
             if (OnGround(subject) && !OnLadder(subject))
             {
                 subject.velocity.Y -= subject.jumpStrenght;
-                subject.position.Y -= subject.jumpStrenght;
+                //subject.position.Y -= subject.jumpStrenght;
             }
 
             if(subject.velocity.Y > Gravity)
@@ -200,7 +200,7 @@ namespace Bearventure
         }
         private static void Knock(Character subject)
         {
-            float decceleration = subject.Mass / 75; // Magic number
+            float decceleration = subject.Mass / 100; // Magic number
 
             if (subject.velocity.X == 0 && OnGround(subject))
                 subject.state = Constants.CharacterState.Stopped;
@@ -392,8 +392,6 @@ namespace Bearventure
             }
 
         }
-
-
         /// <summary>
         /// Checks if the character is currently standing on solid ground.
         /// </summary>

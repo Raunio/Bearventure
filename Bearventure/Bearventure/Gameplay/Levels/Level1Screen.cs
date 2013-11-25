@@ -118,7 +118,7 @@ namespace Bearventure
 
                 Texture2D[] collisionMap = new Texture2D[background.Fractions];
 
-                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 8, 8), enemies, _player, platforms, ladders, content);
+                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 4, 8), enemies, _player, platforms, ladders, content);
 
                 CharacterPhysics.Gravity = 1.5f;
 
