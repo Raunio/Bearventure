@@ -428,5 +428,30 @@ namespace Bearventure.Gameplay.Characters
 
             ChangeAnimation(Dying);
         }
+
+        public void PlayStepSounds()
+        {
+            switch (type)
+            {
+                case Constants.EnemyType.BlackMetalBadger:
+                    if (currentAnimation == WalkLeft)
+                    {
+                        if (currentAnimation.CurrentFrame == 3 || currentAnimation.CurrentFrame == 7)
+                        {
+                            if (currentAnimation.IsNewFrame)
+                                SoundEffectManager.Instance.QuietStep();
+                        }
+                    }
+                    else if (currentAnimation == WalkRight)
+                    {
+                        if (currentAnimation.CurrentFrame == 3 || currentAnimation.CurrentFrame == 7)
+                        {
+                            if (currentAnimation.IsNewFrame)
+                                SoundEffectManager.Instance.QuietStep();
+                        }
+                    }
+                    break;
+            }
+        }
     }
 }

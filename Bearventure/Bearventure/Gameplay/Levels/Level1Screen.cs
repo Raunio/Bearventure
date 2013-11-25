@@ -52,6 +52,8 @@ namespace Bearventure
         List<Ladder> ladders;
         Player _player;
 
+        int stepEffectDistance = 400;
+
         float pauseAlpha;
 
         InputAction pauseAction;
@@ -195,6 +197,11 @@ namespace Bearventure
                 foreach (Enemy enemy in enemies)
                 {
                     enemy.Update(gameTime);
+
+                    if (Vector2.Distance(enemy.position, _player.position) < stepEffectDistance)
+                    {
+                        enemy.PlayStepSounds();
+                    }
                 }
 
                 _player.Update(gameTime);
@@ -281,18 +288,16 @@ namespace Bearventure
             //CollisionHandler.Map.DrawMap(spriteBatch);
             //CollisionHandler.Map.DrawGrid(spriteBatch);
 
-            
+            foreach (Ladder l in ladders)
+            {
+                l.Draw(spriteBatch);
+            }
 
             foreach (Enemy enemy in enemies)
             {
                 enemy.Draw(spriteBatch);
                 //if (enemy.ActiveSkill != null)
-                    //enemy.ActiveSkill.DrawHitBox(spriteBatch, content.Load<Texture2D>("Sprites/player"));
-            }
-
-            foreach (Ladder l in ladders)
-            {
-                l.Draw(spriteBatch);
+                //enemy.ActiveSkill.DrawHitBox(spriteBatch, content.Load<Texture2D>("Sprites/player"));
             }
 
             _player.Draw(spriteBatch);

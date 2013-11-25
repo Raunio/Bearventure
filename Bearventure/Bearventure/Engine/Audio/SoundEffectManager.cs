@@ -14,6 +14,7 @@ namespace Bearventure
         private SoundEffect badgerAttack;
         private SoundEffect step;
         private SoundEffect karhuJump;
+        private SoundEffect quietStep;
 
         private SoundEffectManager() { }
 
@@ -38,6 +39,7 @@ namespace Bearventure
             badgerAttack = content.Load<SoundEffect>(Constants.BadgerAttack);
             step = content.Load<SoundEffect>(Constants.Step);
             karhuJump = content.Load<SoundEffect>(Constants.karhuJump);
+            quietStep = content.Load<SoundEffect>(Constants.quietStep);
             Console.WriteLine("SoundEffects loaded.");
         }
 
@@ -59,6 +61,11 @@ namespace Bearventure
         public void Step()
         {
             if (Globals.SoundsEnabled) step.Play();
+        }
+
+        public void QuietStep()
+        {
+            if (Globals.SoundsEnabled) quietStep.Play();
         }
 
         public void KarhuJump()
