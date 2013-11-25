@@ -58,5 +58,18 @@ namespace Bearventure.Engine.CollisionDetection
                 return a.TAG == "Player" ? true : false;
             }
         }
+
+        public bool IsZeroMassCollision
+        {
+            get
+            {
+                if (A.Mass == 0)
+                    return true;
+                else if (B.Mass == 0)
+                    return true;
+
+                return false;
+            }
+        }
     }
 }

@@ -55,6 +55,7 @@ namespace Bearventure
 
         public const String BlackMetalBadger = "Sprites/badger";
         public const String DelayOwl = "Sprites/paskapollofix";
+        public const String OscillatorWorm = "Sprites/mato";
 
         #endregion
 
@@ -107,6 +108,7 @@ namespace Bearventure
             BlackMetalBadger,
             DelayOwl,
             WahCat,
+            OscillatorWorm,
         };
 
         #endregion
@@ -116,7 +118,6 @@ namespace Bearventure
         {
             Default,
             AttackAndFlee,
-
         };
         public enum BehaviourType
         {

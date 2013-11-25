@@ -98,8 +98,10 @@ namespace Bearventure
                 enemies = XmlReader.EnemyList("Levels/Testilevel2/Items/Testilevel2_Enemies");
 
                 Enemy owl = new Enemy(Constants.EnemyType.DelayOwl, new Vector2(700, 3500), content.Load<Texture2D>(Constants.DelayOwl), _player);
+                Enemy worm = new Enemy(Constants.EnemyType.OscillatorWorm, new Vector2(1250, 3700), content.Load<Texture2D>(Constants.OscillatorWorm), _player);
 
-                //enemies.Add(owl);
+                enemies.Add(owl);
+                enemies.Add(worm);
 
                 platforms = new List<Platform>();
                 Platform plat = new Platform(content, Constants.PlatformType.Basic, new Vector2(5100, 5200));

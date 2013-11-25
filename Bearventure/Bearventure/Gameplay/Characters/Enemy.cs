@@ -173,6 +173,14 @@ namespace Bearventure.Gameplay.Characters
                     Jumping = new Animation(spriteSheet, 0, 128, 90, 0, 0, 70);
                     Dying = new Animation(spriteSheet, 0, 128, 90, 5, 5, 100, false, false);
                     break;
+                case Constants.EnemyType.OscillatorWorm:
+                    WalkRight = new Animation(spriteSheet, 0, 61, 19, 8, 11, 70);
+                    WalkLeft = new Animation(spriteSheet, 0, 61, 19, 0, 3, 70);
+                    WalkLeft.Effects = SpriteEffects.FlipHorizontally;
+                    Stopped = new Animation(spriteSheet, 0, 61, 19, 5, 5, 70);
+                    Jumping = new Animation(spriteSheet, 0, 62, 19, 0, 0, 70);
+                    Dying = new Animation(spriteSheet, 0, 62, 19, 5, 5, 100, false, false);
+                    break;
             }
 
             currentAnimation = Stopped;
@@ -196,6 +204,11 @@ namespace Bearventure.Gameplay.Characters
 
                 case Constants.EnemyType.DelayOwl:
                     combatBehaviour = Constants.CombatBehaviour.AttackAndFlee;
+                    behaviour = new Behaviour(this, player);
+                    behaviour.InitPassive();
+                    break;
+                case Constants.EnemyType.OscillatorWorm:
+                    combatBehaviour = Constants.CombatBehaviour.Default;
                     behaviour = new Behaviour(this, player);
                     behaviour.InitPassive();
                     break;
@@ -243,6 +256,22 @@ namespace Bearventure.Gameplay.Characters
                     mass = 0;
                     ArmorType = Constants.ArmorType.Feathers;
                     break;
+
+                case Constants.EnemyType.OscillatorWorm:
+                    walkSpeed = 7f;
+                    runSpeed = 9f;
+                    acceleration = 1f;
+                    decceleration = 0.5f;
+                    jumpStrenght = 17;
+                    Orientation = Constants.CharacterOrientation.Ground;
+                    Vision = 300;
+                    AttackRange = 75;
+                    health = 1;
+                    maxHealth = 1;
+                    healthRegen = 1;
+                    mass = 0;
+                    ArmorType = Constants.ArmorType.Skin;
+                    break;
             }
         }
         /// <summary>
@@ -264,7 +293,7 @@ namespace Bearventure.Gameplay.Characters
                     EnemySkill testSkill = new EnemySkill(this, testSkillAnimation, 8000, 2, Constants.DamageType.Crushing);
                     testSkill.Acceleration = 0.25f;
                     testSkill.StartVelocity = new Vector2(25, 0);
-                    testSkill.UltimateVelocityX = 90;
+                    testSkill.UltimateVelocityX = 0;
                     testSkill.SoundEffectAsset = Constants.BadgerSkill;
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, Vision));
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, AttackRange));
@@ -318,12 +347,69 @@ namespace Bearventure.Gameplay.Characters
                     Attack = new EnemySkill(this, new Animation(spriteSheet, 0, 126, 88, 8, 9, 100, false, false),
                         5000, 5, Constants.DamageType.Piercing);
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
-                    Attack.DamagingFrames = new List<int>();
+                    Attack.DamagingFrames = new List<int>
+                    {
+                        8,
+                        9,
+                    };
+
+                    Attack.HitBoxHeight = BoundingBox.Height + 10;
+                    Attack.HitBoxWidth = BoundingBox.Width + 10;
+
+                    Attack.HitBoxPositions[0] = new Vector2(0, 0);
+                    Attack.HitBoxPositions[1] = new Vector2(0, 0);
 
                     Skills = new List<EnemySkill>();
                     Skills.Add(Attack);
-                    break;
                     #endregion
+                    break;
+                case Constants.EnemyType.OscillatorWorm:
+                    #region TESTING
+                    Animation attackRight = new Animation(spriteSheet, 0, 63, 19, 0, 3, 100, false, false);
+                    Animation attackLeft = new Animation(spriteSheet, 0, 63, 19, 0, 3, 100, false, false);
+                    attackLeft.Effects = SpriteEffects.FlipHorizontally;
+
+                    Attack = new EnemySkill(this, attackRight, attackLeft, 1000, 1, Constants.DamageType.Piercing);
+                    Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
+                    Attack.DamagingFrames = new List<int>
+                    {
+                        0,
+                        1,
+                        2,
+                    };
+                    Attack.HitBoxPositions[0] = new Vector2(25, -2);
+                    Attack.HitBoxPositions[1] = new Vector2(25, -2);
+                    Attack.HitBoxPositions[2] = new Vector2(25, -2);
+
+                    Attack.HitBoxHeight = 25;
+                    Attack.HitBoxWidth = 25;
+
+                    EnemySkill pounce = new EnemySkill(this, attackRight, attackLeft, 5000, 2, Constants.DamageType.Piercing);
+                    pounce.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, Vision));
+                    pounce.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, Vision / 3));
+
+                    pounce.StartVelocity = new Vector2(jumpStrenght, -jumpStrenght);
+                    pounce.UltimateVelocityX = 0;
+
+                    pounce.DamagingFrames = new List<int>
+                    {
+                        0,
+                        1,
+                        2,
+                    };
+
+                    pounce.HitBoxHeight = 25;
+                    pounce.HitBoxWidth = 25;
+
+                    pounce.HitBoxPositions[0] = new Vector2(25, -2);
+                    pounce.HitBoxPositions[1] = new Vector2(25, -2);
+                    pounce.HitBoxPositions[2] = new Vector2(25, -2);
+
+                    Skills = new List<EnemySkill>();
+                    Skills.Add(Attack);
+                    Skills.Add(pounce);
+                    #endregion
+                    break;
             }
         }
 

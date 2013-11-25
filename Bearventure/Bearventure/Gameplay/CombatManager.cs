@@ -47,7 +47,7 @@ namespace Bearventure.Gameplay
         {
             for(int i = 0; i < enemies.Count; i++)
             {
-                if (player.state == Constants.CharacterState.UsingSkill && !player.ActiveSkill.HasDamaged && enemies[i].health > 0)
+                if (player.ActiveSkill != null && player.state == Constants.CharacterState.UsingSkill && !player.ActiveSkill.HasDamaged && enemies[i].health > 0)
                 {
                     if (player.ActiveSkill.HitsCharacter(enemies[i]))
                     {
@@ -63,7 +63,7 @@ namespace Bearventure.Gameplay
                     }
                 }
 
-                if (enemies[i].state == Constants.CharacterState.UsingSkill && !enemies[i].ActiveSkill.HasDamaged && player.health > 0)
+                if (enemies[i].ActiveSkill != null && enemies[i].state == Constants.CharacterState.UsingSkill && !enemies[i].ActiveSkill.HasDamaged && player.health > 0)
                 {
                     if(enemies[i].ActiveSkill.HitsCharacter(player))
                     {
@@ -160,19 +160,21 @@ namespace Bearventure.Gameplay
 
         private void InflictDebuffs(Character subject, CharacterSkill skill, Constants.DirectionX direction)
         {
-            Vector2 mass = new Vector2(skill.InflictForce.X > 0 ? subject.Mass * 0.033f : 0, skill.InflictForce.Y != 0 ? subject.Mass * 0.033f : 0);
-            Vector2 force = new Vector2(direction == Constants.DirectionX.Left ? -skill.InflictForce.X + mass.X : skill.InflictForce.X - mass.X, skill.InflictForce.Y + mass.Y);
-            subject.velocity = force;
-            subject.position += force;
-
-            if (subject.ActiveSkill != null && force.Length() >= subject.ActiveSkill.ForceInterruptTreshold)
+            if (skill.InflictForce != Vector2.Zero)
             {
-                subject.ActiveSkill.Cancel();
-                CombatLog.Add(subject.Name + " was interrupted!");
-            }
+                Vector2 mass = new Vector2(skill.InflictForce.X > 0 ? subject.Mass * 0.033f : 0, skill.InflictForce.Y != 0 ? subject.Mass * 0.033f : 0);
+                Vector2 force = new Vector2(direction == Constants.DirectionX.Left ? -skill.InflictForce.X + mass.X : skill.InflictForce.X - mass.X, skill.InflictForce.Y + mass.Y);
+                subject.velocity = force;
+                subject.position += force;
 
-            if(force != Vector2.Zero)
-                subject.state = Constants.CharacterState.Knocked;
+
+                if (subject.ActiveSkill != null && force.Length() > subject.ActiveSkill.ForceInterruptTreshold && subject.ActiveSkill.ForceInterruptTreshold != 0)
+                {
+                    subject.ActiveSkill.Cancel();
+                    CombatLog.Add(subject.Name + " was interrupted!");
+                }
+
+            }
         }
     }
 }

@@ -24,6 +24,7 @@ namespace Bearventure
         Action attack;
         Action flee;
         Action cower;
+        Action jump;
         #endregion
         /// <summary>
         /// Initialization method for pre-determined actions.

@@ -274,10 +274,10 @@ namespace Bearventure
 
             if (collision.CollisionLocation == Top)
             {
-                if(collision.B.TAG != "Ladder")
+                if(collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
                     subject.velocity.Y = 0;
             }
-            else if (collision.CollisionLocation == Bottom)
+            else if (collision.CollisionLocation == Bottom && !collision.IsZeroMassCollision)
             {
                 if (collision.B.TAG != "Ladder")
                 {
@@ -297,7 +297,7 @@ namespace Bearventure
                 {
                     collision.B.position.X += subject.velocity.X;
                 }
-                else if(collision.B.Mass != 0)
+                else if(!collision.IsZeroMassCollision)
                 {
                     subject.velocity.X = 0;
                 }
@@ -313,12 +313,12 @@ namespace Bearventure
                 {
                     collision.B.position.X += subject.velocity.X;
                 }
-                else if(collision.B.Mass != 0)
+                else if (!collision.IsZeroMassCollision)
                 {
                     subject.velocity.X = 0;
                 }
             }
-            else if (collision.CollisionLocation == Top + Left && collision.B.TAG != "Ladder")
+            else if (collision.CollisionLocation == Top + Left && collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
             {
                 subject.velocity.Y = 0;
 
@@ -331,12 +331,12 @@ namespace Bearventure
                 {
                     collision.B.position.X += subject.velocity.X;
                 }
-                else if (collision.B.Mass != 0)
+                else if (!collision.IsZeroMassCollision)
                 {
                     subject.velocity.X = 0;
                 }
             }
-            else if (collision.CollisionLocation == Bottom + Left && collision.B.TAG != "Ladder")
+            else if (collision.CollisionLocation == Bottom + Left && collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
             {
                 subject.velocity.Y = 0;
 
@@ -349,12 +349,12 @@ namespace Bearventure
                 {
                     collision.B.position.X += subject.velocity.X;
                 }
-                else if (collision.B.Mass != 0)
+                else if (!collision.IsZeroMassCollision)
                 {
                     subject.velocity.X = 0;
                 }
             }
-            else if (collision.CollisionLocation == Top + Right && collision.B.TAG != "Ladder")
+            else if (collision.CollisionLocation == Top + Right && collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
             {
                 subject.velocity.Y = 0;
 
@@ -367,12 +367,12 @@ namespace Bearventure
                 {
                     collision.B.position.X += subject.velocity.X;
                 }
-                else if (collision.B.Mass != 0)
+                else if (!collision.IsZeroMassCollision)
                 {
                     subject.velocity.X = 0;
                 }
             }
-            else if (collision.CollisionLocation == Bottom + Right && collision.B.TAG != "Ladder")
+            else if (collision.CollisionLocation == Bottom + Right && collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
             {
                 subject.velocity.Y = 0;
 
@@ -385,7 +385,7 @@ namespace Bearventure
                 {
                     collision.B.position.X += subject.velocity.X;
                 }
-                else if (collision.B.Mass != 0)
+                else if (!collision.IsZeroMassCollision)
                 {
                     subject.velocity.X = 0;
                 }
