@@ -66,8 +66,6 @@ namespace Bearventure
             HandleTerrainCollisions(subject);
             HandleObjectCollisions(subject);
 
-            FixOverlaps(subject);
-
             subject.position += subject.velocity;
         }
         /// <summary>
@@ -284,6 +282,7 @@ namespace Bearventure
                 if (collision.B.TAG != "Ladder")
                 {
                     subject.velocity.Y = 0;
+
                     subject.position.X += collision.A.TAG == "Player" ? collision.B.velocity.X : collision.A.velocity.X;
                 }
             }
@@ -471,8 +470,29 @@ namespace Bearventure
             if (LeftCheck == subject.BoundingBox.Left)
                 return true;
 
-            RightCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(2, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(1, 0)).CollisionLocation;
-            LeftCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(-2, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(1, 0)).CollisionLocation;
+            //RightCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(2, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(2, 0)).CollisionLocation;
+            //LeftCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(-2, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(-2, 0)).CollisionLocation;
+
+            ObjectCollisionEvent RightEvent = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(2, 0));
+            ObjectCollisionEvent LeftEvent = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(-2, 0));
+
+            if (RightEvent == null)
+            {
+                RightCheck = 0;
+            }
+            else
+            {
+                RightCheck = RightEvent.CollisionLocation;
+            }
+
+            if (LeftEvent == null)
+            {
+                LeftCheck = 0;
+            }
+            else
+            {
+                LeftCheck = LeftEvent.CollisionLocation;
+            }
 
             if (RightCheck == subject.BoundingBox.Right)
                 return true;
@@ -511,10 +531,9 @@ namespace Bearventure
         /// Can be called to fix overlaps when a character is stuck.
         /// </summary>
         /// <param name="subject"></param>
-        private static void FixOverlaps(Character subject)
+        public static void FixOverlaps(Character subject)
         {
-            //if(subject.IsDisabled)
-                //subject.position.X += CollisionHandler.OverlapsCharacter(subject);
+            subject.position.X += CollisionHandler.OverlapsCharacter(subject);
         }
         private static void UpdateAltitude(Character subject, GameTime gameTime)
         {

@@ -263,7 +263,7 @@ namespace Bearventure.Gameplay.Characters
 
                     EnemySkill testSkill = new EnemySkill(this, testSkillAnimation, 8000, 2, Constants.DamageType.Crushing);
                     testSkill.Acceleration = 0.25f;
-                    testSkill.StartVelocity = new Vector2(30, 0);
+                    testSkill.StartVelocity = new Vector2(25, 0);
                     testSkill.UltimateVelocityX = 90;
                     testSkill.SoundEffectAsset = Constants.BadgerSkill;
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, Vision));
@@ -283,7 +283,7 @@ namespace Bearventure.Gameplay.Characters
                    
                     testSkill.HitBoxHeight = BoundingBox.Height;
                     testSkill.HitBoxWidth = 20;
-                    testSkill.InflictForce = new Vector2(32, 0);
+                    testSkill.InflictForce = new Vector2(5, 0);
 
                     Animation attack_right = new Animation(spriteSheet, 1, 149, 105, 0, 5, 30, false, false);
                     Animation attack_left = new Animation(spriteSheet, 1, 149, 105, 0, 5, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);

@@ -312,11 +312,11 @@ namespace Bearventure.Engine.CollisionDetection
                 {
                     if (Y.Y < targetBox.Y + targetBox.Height / 2)
                     {
-                        collision = subject.BoundingBox.Top;
+                        collision = subject.BoundingBox.Bottom;
                     }
                     else
                     {
-                        collision = subject.BoundingBox.Bottom;
+                        collision = subject.BoundingBox.Top;
                     }
                 }
                 if (X.Intersects(targetBox))
@@ -334,14 +334,14 @@ namespace Bearventure.Engine.CollisionDetection
                 if(subject.BoundingBox.Intersects(targetBoxScaled) && collision == 0)
                 {
                     if (subject.BoundingBox.X < targetBox.X + targetBox.Width / 2)
-                        collision += subject.BoundingBox.Right;
+                        collision = subject.BoundingBox.Right;
                     else
-                        collision += subject.BoundingBox.Left;
+                        collision = subject.BoundingBox.Left;
 
                     if (subject.BoundingBox.Y < targetBox.Y + targetBox.Height / 2)
-                        collision += subject.BoundingBox.Top;
+                        collision = subject.BoundingBox.Bottom;
                     else
-                        collision += subject.BoundingBox.Bottom;
+                        collision = subject.BoundingBox.Top;
                 }
 
 
@@ -359,7 +359,7 @@ namespace Bearventure.Engine.CollisionDetection
         /// </summary>
         /// <param name="subject"></param>
         /// <returns></returns>
-        public static int OverlapsCharacter(Character subject)
+        public static int OverlapsCharacter(GameplayObject subject)
         {
             int overlap = 0;
 
