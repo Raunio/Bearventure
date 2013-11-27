@@ -50,6 +50,10 @@ namespace Bearventure
                     case "WahCat":
                         type = Constants.EnemyType.WahCat;
                         break;
+                    case "OscillatorWorm":
+                        type = Constants.EnemyType.OscillatorWorm;
+                        spriteSheet = mContent.Load<Texture2D>(Constants.OscillatorWorm);
+                        break;
                 }
 
                 Enemy e = new Enemy(type, xEnemy.X, xEnemy.Y, spriteSheet, mPlayer, xEnemy.PatrolPoint_A, xEnemy.PatrolPoint_B);

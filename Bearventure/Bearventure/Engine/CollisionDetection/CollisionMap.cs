@@ -42,7 +42,6 @@ namespace Bearventure.Engine.CollisionDetection
             get;
             private set;
         }
-
         private Texture2D edgeTexture;
 
         /// <summary>

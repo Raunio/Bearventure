@@ -168,7 +168,7 @@ namespace Bearventure.Gameplay.Characters
 
             CharacterSkill skill1 = new CharacterSkill(this, StraightPunch_R, StraightPunch_L, 300, 3, Constants.DamageType.Crushing);
 
-            skill1.SoundEffectAsset = Constants.KarhuHit1;
+            skill1.SkillSoundEffect = SoundEffectManager.Instance.KarhuCombo1;
             skill1.Acceleration = 0.25f;
             skill1.StartVelocity = new Vector2(4, 0);
             skill1.UltimateVelocityX = 0;
@@ -207,7 +207,7 @@ namespace Bearventure.Gameplay.Characters
             };
             CharacterSkill skill2 = new CharacterSkill(this, SweepingPunch_R, SweepingPunch_L, 300, 4, Constants.DamageType.Crushing);
 
-            skill2.SoundEffectAsset = Constants.KarhuHit2;
+            skill2.SkillSoundEffect = SoundEffectManager.Instance.KarhuCombo2;
             skill2.Acceleration = 0.25f;
             skill2.StartVelocity = new Vector2(3, 0);
             skill2.InflictForce = new Vector2(7, -5);
@@ -247,7 +247,7 @@ namespace Bearventure.Gameplay.Characters
             };
             CharacterSkill skill3 = new CharacterSkill(this, UpperCut_R, UpperCut_L, 300, 10, Constants.DamageType.Crushing);
 
-            skill3.SoundEffectAsset = Constants.KarhuHit3;
+            skill3.SkillSoundEffect = SoundEffectManager.Instance.KarhuCombo3;
             skill3.Acceleration = 0.25f;
             skill3.StartVelocity = new Vector2(8, -9);
             skill3.UltimateVelocityX = 0;
@@ -284,15 +284,7 @@ namespace Bearventure.Gameplay.Characters
 
             if (state == Constants.CharacterState.Climbing && CharacterPhysics.OnLadder(this))
             {
-                /*if (moveRight.Evaluate(input, ControllingPlayer, out playerIndex))
-                {
-                    velocity.X = walkSpeed;
-                }
-                else if (moveLeft.Evaluate(input, ControllingPlayer, out playerIndex))
-                {
-                    velocity.X = -walkSpeed;
-                }*/
-                /*else*/ if (moveUp.Evaluate(input, ControllingPlayer, out playerIndex))
+                if (moveUp.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
                     velocity.Y = -walkSpeed;
                 }
@@ -351,7 +343,7 @@ namespace Bearventure.Gameplay.Characters
                         SetState(Constants.CharacterState.Jumping);
                         jumpTimer = 0;
 
-                        SoundEffectManager.Instance.KarhuJump();
+                        SoundEffectManager.Instance.PlayKarhuJump();
                     }
                     else
                         SetState(Constants.CharacterState.Falling);
@@ -360,7 +352,7 @@ namespace Bearventure.Gameplay.Characters
                 {
                     SetState(Constants.CharacterState.Jumping);
                     jumpTimer = 0;
-                    SoundEffectManager.Instance.KarhuJump();
+                    SoundEffectManager.Instance.PlayKarhuJump();
                 }
                 else
                 {
@@ -451,7 +443,7 @@ namespace Bearventure.Gameplay.Characters
                 if (currentAnimation.CurrentFrame == 2 || currentAnimation.CurrentFrame == 6)
                 {
                     if (currentAnimation.IsNewFrame)
-                        SoundEffectManager.Instance.Step();
+                        SoundEffectManager.Instance.PlayStep();
                 }
             }
             else if (currentAnimation == walkRight || currentAnimation == runRight)
@@ -459,7 +451,7 @@ namespace Bearventure.Gameplay.Characters
                 if (currentAnimation.CurrentFrame == 15 || currentAnimation.CurrentFrame == 19)
                 {
                     if (currentAnimation.IsNewFrame)
-                        SoundEffectManager.Instance.Step();
+                        SoundEffectManager.Instance.PlayStep();
                 }
             }
         }

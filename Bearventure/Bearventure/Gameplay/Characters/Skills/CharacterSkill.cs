@@ -3,6 +3,7 @@ using Bearventure.Engine.Effects;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Bearventure.Gameplay.Characters.Skills
 {
@@ -84,6 +85,30 @@ namespace Bearventure.Gameplay.Characters.Skills
             set;
         }
         /// <summary>
+        /// Gets or sets the initial rotation of the character who activates this skill.
+        /// </summary>
+        public float StartRotation
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the ultimate rotation of the character who activates this skill.
+        /// </summary>
+        public float UltimateRotation
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the speed used for rotating the character who activates this skill.
+        /// </summary>
+        public float RotationVelocity
+        {
+            get;
+            set;
+        }
+        /// <summary>
         /// Gets or sets the ultimate velocity of the character who activates this skill.
         /// </summary>
         public float UltimateVelocityX
@@ -102,7 +127,7 @@ namespace Bearventure.Gameplay.Characters.Skills
         /// <summary>
         /// Do not initialize if no sound effect should be played upon activation of this skill.
         /// </summary>
-        public string SoundEffectAsset
+        public SoundEffect SkillSoundEffect
         {
             get;
             set;
@@ -111,6 +136,14 @@ namespace Bearventure.Gameplay.Characters.Skills
         /// Gets or sets the name of the skill.
         /// </summary>
         public string Name
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets or sets the lifetime of the visual effects activated by this skill (milliseconds).
+        /// </summary>
+        public int VisualEffectLifetime
         {
             get;
             set;
@@ -282,6 +315,15 @@ namespace Bearventure.Gameplay.Characters.Skills
                 else
                     subject.velocity.X = UltimateVelocityX;
 
+                float targetRotation = subject.directionX == Constants.DirectionX.Left ? -UltimateRotation : UltimateRotation;
+
+                if (subject.SpriteRotation < targetRotation + RotationVelocity)
+                    subject.SpriteRotation += RotationVelocity;
+                else if (subject.SpriteRotation > targetRotation - RotationVelocity)
+                    subject.SpriteRotation -= RotationVelocity;
+                else
+                    subject.SpriteRotation = UltimateRotation;
+
                 for (int i = 0; i < DamagingFrames.Count; i++)
                 {
                     if (currentAnimation.CurrentFrame == DamagingFrames[i])
@@ -344,14 +386,15 @@ namespace Bearventure.Gameplay.Characters.Skills
 
             subject.currentAnimation = currentAnimation;
 
+            subject.SpriteRotation = subject.directionX == Constants.DirectionX.Left ? -StartRotation : StartRotation;
 
             for (int i = 0; i < effects.Count; i++)
             {
-                VisualEffectManager.Instance.CreateEffect(effects[i], subject.position + effectPositionOffsets[i], 500);
+                VisualEffectManager.Instance.CreateEffect(effects[i], subject.position + effectPositionOffsets[i], VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
             }
 
-            if(SoundEffectAsset != null)
-                SoundEffectManager.Instance.PlaySound(SoundEffectAsset);
+            if (SkillSoundEffect != null)
+                subject.PlaySound(SkillSoundEffect);
         }
 
         public void AddEffect(string asset, Vector2 positionOffset)

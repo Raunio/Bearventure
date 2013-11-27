@@ -23,7 +23,7 @@ namespace Bearventure.Gameplay
         public Camera(Viewport ViewPort, Vector2 levelSize)
         {
             zoom = 1f;
-            Rotation = 0.0f;
+            Rotation = 0f;
             Position = Vector2.Zero;
             Origin = new Vector2(ViewPort.Width / 2.0f, ViewPort.Height / 2.0f);
             this.levelSize = levelSize;

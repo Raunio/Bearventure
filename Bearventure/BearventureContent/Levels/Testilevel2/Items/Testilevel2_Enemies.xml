@@ -4,21 +4,21 @@
     <Item>
       <Index>0</Index>
       <Position>
-        <X>948</X>
-        <Y>3682</Y>
+        <X>766</X>
+        <Y>4335</Y>
       </Position>
       <Type>BlackmetalBadger</Type>
       <Rectangle>
         <Location>
-          <X>948</X>
-          <Y>3682</Y>
+          <X>766</X>
+          <Y>4335</Y>
         </Location>
         <Size>
           <Width>50</Width>
           <Height>50</Height>
         </Size>
-        <X>948</X>
-        <Y>3682</Y>
+        <X>766</X>
+        <Y>4335</Y>
         <Width>50</Width>
         <Height>50</Height>
       </Rectangle>
@@ -36,31 +36,31 @@
       <AttackDamage>0</AttackDamage>
       <behaviour>FixedPatrol</behaviour>
       <combatBehaviour>Default</combatBehaviour>
-      <PatrolPoint_A>634</PatrolPoint_A>
-      <PatrolPoint_B>1425</PatrolPoint_B>
+      <PatrolPoint_A>475</PatrolPoint_A>
+      <PatrolPoint_B>1353</PatrolPoint_B>
     </Item>
     <Item>
       <Index>1</Index>
       <Position>
-        <X>1321</X>
-        <Y>3678</Y>
+        <X>1077</X>
+        <Y>3528</Y>
       </Position>
-      <Type>BlackmetalBadger</Type>
+      <Type>DelayOwl</Type>
       <Rectangle>
         <Location>
-          <X>1321</X>
-          <Y>3678</Y>
+          <X>1077</X>
+          <Y>3528</Y>
         </Location>
         <Size>
           <Width>50</Width>
           <Height>50</Height>
         </Size>
-        <X>1321</X>
-        <Y>3678</Y>
+        <X>1077</X>
+        <Y>3528</Y>
         <Width>50</Width>
         <Height>50</Height>
       </Rectangle>
-      <Name>BlackmetalBadger_1</Name>
+      <Name>DelayOwl_1</Name>
       <Health>0</Health>
       <WalkSpeed>0</WalkSpeed>
       <RunSpeed>0</RunSpeed>
@@ -72,33 +72,33 @@
       <JumpStrength>0</JumpStrength>
       <Vision>0</Vision>
       <AttackDamage>0</AttackDamage>
-      <behaviour>FixedPatrol</behaviour>
+      <behaviour>Default</behaviour>
       <combatBehaviour>Default</combatBehaviour>
-      <PatrolPoint_A>810</PatrolPoint_A>
-      <PatrolPoint_B>1419</PatrolPoint_B>
+      <PatrolPoint_A>1077</PatrolPoint_A>
+      <PatrolPoint_B>1077</PatrolPoint_B>
     </Item>
     <Item>
       <Index>2</Index>
       <Position>
-        <X>1013</X>
-        <Y>4340</Y>
+        <X>5299</X>
+        <Y>5373</Y>
       </Position>
-      <Type>BlackmetalBadger</Type>
+      <Type>OscillatorWorm</Type>
       <Rectangle>
         <Location>
-          <X>1013</X>
-          <Y>4340</Y>
+          <X>5299</X>
+          <Y>5373</Y>
         </Location>
         <Size>
           <Width>50</Width>
           <Height>50</Height>
         </Size>
-        <X>1013</X>
-        <Y>4340</Y>
+        <X>5299</X>
+        <Y>5373</Y>
         <Width>50</Width>
         <Height>50</Height>
       </Rectangle>
-      <Name>BlackmetalBadger_2</Name>
+      <Name>OscillatorWorm_2</Name>
       <Health>0</Health>
       <WalkSpeed>0</WalkSpeed>
       <RunSpeed>0</RunSpeed>
@@ -110,33 +110,33 @@
       <JumpStrength>0</JumpStrength>
       <Vision>0</Vision>
       <AttackDamage>0</AttackDamage>
-      <behaviour>FixedPatrol</behaviour>
+      <behaviour>Default</behaviour>
       <combatBehaviour>Default</combatBehaviour>
-      <PatrolPoint_A>485</PatrolPoint_A>
-      <PatrolPoint_B>1387</PatrolPoint_B>
+      <PatrolPoint_A>5299</PatrolPoint_A>
+      <PatrolPoint_B>5299</PatrolPoint_B>
     </Item>
     <Item>
       <Index>3</Index>
       <Position>
-        <X>723</X>
-        <Y>4358</Y>
+        <X>5179</X>
+        <Y>5414</Y>
       </Position>
-      <Type>BlackmetalBadger</Type>
+      <Type>OscillatorWorm</Type>
       <Rectangle>
         <Location>
-          <X>723</X>
-          <Y>4358</Y>
+          <X>5178</X>
+          <Y>5413</Y>
         </Location>
         <Size>
           <Width>50</Width>
           <Height>50</Height>
         </Size>
-        <X>723</X>
-        <Y>4358</Y>
+        <X>5178</X>
+        <Y>5413</Y>
         <Width>50</Width>
         <Height>50</Height>
       </Rectangle>
-      <Name>BlackmetalBadger_3</Name>
+      <Name>OscillatorWorm_3</Name>
       <Health>0</Health>
       <WalkSpeed>0</WalkSpeed>
       <RunSpeed>0</RunSpeed>
@@ -148,33 +148,451 @@
       <JumpStrength>0</JumpStrength>
       <Vision>0</Vision>
       <AttackDamage>0</AttackDamage>
-      <behaviour>FixedPatrol</behaviour>
+      <behaviour>Default</behaviour>
       <combatBehaviour>Default</combatBehaviour>
-      <PatrolPoint_A>184</PatrolPoint_A>
-      <PatrolPoint_B>723</PatrolPoint_B>
+      <PatrolPoint_A>5178</PatrolPoint_A>
+      <PatrolPoint_B>5178</PatrolPoint_B>
     </Item>
     <Item>
       <Index>4</Index>
       <Position>
-        <X>3028</X>
-        <Y>4495</Y>
+        <X>5410</X>
+        <Y>5422</Y>
       </Position>
-      <Type>BlackmetalBadger</Type>
+      <Type>OscillatorWorm</Type>
       <Rectangle>
         <Location>
-          <X>3029</X>
-          <Y>4497</Y>
+          <X>5410</X>
+          <Y>5422</Y>
         </Location>
         <Size>
           <Width>50</Width>
           <Height>50</Height>
         </Size>
-        <X>3029</X>
-        <Y>4497</Y>
+        <X>5410</X>
+        <Y>5422</Y>
         <Width>50</Width>
         <Height>50</Height>
       </Rectangle>
-      <Name>BlackmetalBadger_4</Name>
+      <Name>OscillatorWorm_4</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>Default</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>5410</PatrolPoint_A>
+      <PatrolPoint_B>5410</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>5</Index>
+      <Position>
+        <X>5575</X>
+        <Y>5406</Y>
+      </Position>
+      <Type>OscillatorWorm</Type>
+      <Rectangle>
+        <Location>
+          <X>5575</X>
+          <Y>5406</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>5575</X>
+        <Y>5406</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>OscillatorWorm_5</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>Default</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>5575</PatrolPoint_A>
+      <PatrolPoint_B>5575</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>6</Index>
+      <Position>
+        <X>5694</X>
+        <Y>5375</Y>
+      </Position>
+      <Type>OscillatorWorm</Type>
+      <Rectangle>
+        <Location>
+          <X>5694</X>
+          <Y>5375</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>5694</X>
+        <Y>5375</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>OscillatorWorm_6</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>Default</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>5694</PatrolPoint_A>
+      <PatrolPoint_B>5694</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>7</Index>
+      <Position>
+        <X>5824</X>
+        <Y>5398</Y>
+      </Position>
+      <Type>OscillatorWorm</Type>
+      <Rectangle>
+        <Location>
+          <X>5824</X>
+          <Y>5398</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>5824</X>
+        <Y>5398</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>OscillatorWorm_7</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>Default</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>5824</PatrolPoint_A>
+      <PatrolPoint_B>5824</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>8</Index>
+      <Position>
+        <X>5480</X>
+        <Y>5364</Y>
+      </Position>
+      <Type>OscillatorWorm</Type>
+      <Rectangle>
+        <Location>
+          <X>5480</X>
+          <Y>5364</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>5480</X>
+        <Y>5364</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>OscillatorWorm_8</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>Default</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>5480</PatrolPoint_A>
+      <PatrolPoint_B>5480</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>9</Index>
+      <Position>
+        <X>5203</X>
+        <Y>5315</Y>
+      </Position>
+      <Type>OscillatorWorm</Type>
+      <Rectangle>
+        <Location>
+          <X>5203</X>
+          <Y>5315</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>5203</X>
+        <Y>5315</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>OscillatorWorm_9</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>Default</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>5203</PatrolPoint_A>
+      <PatrolPoint_B>5203</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>10</Index>
+      <Position>
+        <X>5095</X>
+        <Y>5385</Y>
+      </Position>
+      <Type>OscillatorWorm</Type>
+      <Rectangle>
+        <Location>
+          <X>5095</X>
+          <Y>5385</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>5095</X>
+        <Y>5385</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>OscillatorWorm_10</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>Default</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>5095</PatrolPoint_A>
+      <PatrolPoint_B>5095</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>11</Index>
+      <Position>
+        <X>5685</X>
+        <Y>5468</Y>
+      </Position>
+      <Type>OscillatorWorm</Type>
+      <Rectangle>
+        <Location>
+          <X>5685</X>
+          <Y>5468</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>5685</X>
+        <Y>5468</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>OscillatorWorm_11</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>Default</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>5685</PatrolPoint_A>
+      <PatrolPoint_B>5685</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>12</Index>
+      <Position>
+        <X>5860</X>
+        <Y>5265</Y>
+      </Position>
+      <Type>OscillatorWorm</Type>
+      <Rectangle>
+        <Location>
+          <X>5860</X>
+          <Y>5264</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>5860</X>
+        <Y>5264</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>OscillatorWorm_12</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>Default</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>5860</PatrolPoint_A>
+      <PatrolPoint_B>5860</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>13</Index>
+      <Position>
+        <X>3122</X>
+        <Y>3406</Y>
+      </Position>
+      <Type>OscillatorWorm</Type>
+      <Rectangle>
+        <Location>
+          <X>3122</X>
+          <Y>3406</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>3122</X>
+        <Y>3406</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>OscillatorWorm_13</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>Default</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>3122</PatrolPoint_A>
+      <PatrolPoint_B>3122</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>14</Index>
+      <Position>
+        <X>2074</X>
+        <Y>5600</Y>
+      </Position>
+      <Type>BlackmetalBadger</Type>
+      <Rectangle>
+        <Location>
+          <X>2074</X>
+          <Y>5600</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>2074</X>
+        <Y>5600</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>BlackmetalBadger_14</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>FreePatrol</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>1815</PatrolPoint_A>
+      <PatrolPoint_B>2414</PatrolPoint_B>
+    </Item>
+    <Item>
+      <Index>15</Index>
+      <Position>
+        <X>3447</X>
+        <Y>5401</Y>
+      </Position>
+      <Type>BlackmetalBadger</Type>
+      <Rectangle>
+        <Location>
+          <X>3447</X>
+          <Y>5401</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>3447</X>
+        <Y>5401</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>BlackmetalBadger_15</Name>
       <Health>0</Health>
       <WalkSpeed>0</WalkSpeed>
       <RunSpeed>0</RunSpeed>
@@ -188,8 +606,8 @@
       <AttackDamage>0</AttackDamage>
       <behaviour>FixedPatrol</behaviour>
       <combatBehaviour>Default</combatBehaviour>
-      <PatrolPoint_A>2556</PatrolPoint_A>
-      <PatrolPoint_B>3486</PatrolPoint_B>
+      <PatrolPoint_A>2808</PatrolPoint_A>
+      <PatrolPoint_B>3846</PatrolPoint_B>
     </Item>
   </Asset>
 </XnaContent>

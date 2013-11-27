@@ -15,6 +15,20 @@ namespace Bearventure.Gameplay
             get;
             protected set;
         }
+        /// <summary>
+        /// Gets or sets the rotation for the current spritesheet.
+        /// </summary>
+        public float SpriteRotation
+        {
+            get
+            {
+                return currentAnimation.Rotation;
+            }
+            set
+            {
+                currentAnimation.Rotation = value;
+            }
+        }
         protected int mass;
         protected int BoundingBoxOffset;
         protected Texture2D spriteSheet;

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Bearventure.Engine.Effects;
 using System.Collections.Generic;
 using Bearventure.Gameplay.Characters.Skills;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Bearventure.Gameplay.Characters
 {
@@ -174,12 +175,12 @@ namespace Bearventure.Gameplay.Characters
                     Dying = new Animation(spriteSheet, 0, 128, 90, 5, 5, 100, false, false);
                     break;
                 case Constants.EnemyType.OscillatorWorm:
-                    WalkRight = new Animation(spriteSheet, 0, 61, 19, 8, 11, 70);
-                    WalkLeft = new Animation(spriteSheet, 0, 61, 19, 0, 3, 70);
+                    WalkRight = new Animation(spriteSheet, 0, 61, 19, 0, 13, 45);
+                    WalkLeft = new Animation(spriteSheet, 0, 61, 19, 0, 13, 45);
                     WalkLeft.Effects = SpriteEffects.FlipHorizontally;
-                    Stopped = new Animation(spriteSheet, 0, 61, 19, 5, 5, 70);
-                    Jumping = new Animation(spriteSheet, 0, 62, 19, 0, 0, 70);
-                    Dying = new Animation(spriteSheet, 0, 62, 19, 5, 5, 100, false, false);
+                    Stopped = new Animation(spriteSheet, 0, 61, 19, 5, 5, 45);
+                    Jumping = new Animation(spriteSheet, 0, 61, 19, 0, 0, 45);
+                    Dying = new Animation(spriteSheet, 0, 61, 19, 5, 5, 45, false, false);
                     break;
             }
 
@@ -294,7 +295,7 @@ namespace Bearventure.Gameplay.Characters
                     testSkill.Acceleration = 0.25f;
                     testSkill.StartVelocity = new Vector2(25, 0);
                     testSkill.UltimateVelocityX = 0;
-                    testSkill.SoundEffectAsset = Constants.BadgerSkill;
+                    testSkill.SkillSoundEffect = SoundEffectManager.Instance.BadgerSkill;
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, Vision));
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, AttackRange));
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.FacingPlayer, true));
@@ -321,7 +322,7 @@ namespace Bearventure.Gameplay.Characters
                     Attack.StartVelocity = new Vector2(5, 0);
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.FacingPlayer, true));
-                    Attack.SoundEffectAsset = Constants.BadgerAttack;
+                    Attack.SkillSoundEffect = SoundEffectManager.Instance.BadgerAttack;
                     Attack.DamagingFrames = new List<int>
                     {
                         2,
@@ -365,11 +366,11 @@ namespace Bearventure.Gameplay.Characters
                     break;
                 case Constants.EnemyType.OscillatorWorm:
                     #region TESTING
-                    Animation attackRight = new Animation(spriteSheet, 0, 63, 19, 0, 3, 100, false, false);
-                    Animation attackLeft = new Animation(spriteSheet, 0, 63, 19, 0, 3, 100, false, false);
+                    Animation attackRight = new Animation(spriteSheet, 0, 61, 19, 0, 13, 5, false, false);
+                    Animation attackLeft = new Animation(spriteSheet, 0, 61, 19, 0, 13, 5, false, false);
                     attackLeft.Effects = SpriteEffects.FlipHorizontally;
 
-                    Attack = new EnemySkill(this, attackRight, attackLeft, 1000, 1, Constants.DamageType.Piercing);
+                    Attack = new EnemySkill(this, attackRight, attackLeft, 200, 1, Constants.DamageType.Piercing);
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
                     Attack.DamagingFrames = new List<int>
                     {
@@ -388,8 +389,12 @@ namespace Bearventure.Gameplay.Characters
                     pounce.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, Vision));
                     pounce.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, Vision / 3));
 
+                    pounce.SkillSoundEffect = SoundEffectManager.Instance.MatoTest;
+
                     pounce.StartVelocity = new Vector2(jumpStrenght, -jumpStrenght);
                     pounce.UltimateVelocityX = 0;
+                    pounce.UltimateRotation = -0.75f;
+                    pounce.RotationVelocity = 0.05f;
 
                     pounce.DamagingFrames = new List<int>
                     {
@@ -525,7 +530,9 @@ namespace Bearventure.Gameplay.Characters
                         if (currentAnimation.CurrentFrame == 3 || currentAnimation.CurrentFrame == 7)
                         {
                             if (currentAnimation.IsNewFrame)
-                                SoundEffectManager.Instance.QuietStep();
+                            {
+                                PlaySound(SoundEffectManager.Instance.QuietStep);
+                            }
                         }
                     }
                     else if (currentAnimation == WalkRight)
@@ -533,11 +540,14 @@ namespace Bearventure.Gameplay.Characters
                         if (currentAnimation.CurrentFrame == 3 || currentAnimation.CurrentFrame == 7)
                         {
                             if (currentAnimation.IsNewFrame)
-                                SoundEffectManager.Instance.QuietStep();
+                            {
+                                PlaySound(SoundEffectManager.Instance.QuietStep);
+                            }
                         }
                     }
                     break;
             }
         }
+
     }
 }

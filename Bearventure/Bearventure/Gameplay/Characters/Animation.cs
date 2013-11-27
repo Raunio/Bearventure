@@ -154,7 +154,7 @@ namespace Bearventure.Gameplay.Characters
         public float Rotation
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>

@@ -52,7 +52,7 @@ namespace Bearventure
         List<Ladder> ladders;
         Player _player;
 
-        int stepEffectDistance = 400;
+        int MaxSoundEffectDistance = 600;
 
         float pauseAlpha;
 
@@ -100,8 +100,11 @@ namespace Bearventure
                 Enemy owl = new Enemy(Constants.EnemyType.DelayOwl, new Vector2(700, 3500), content.Load<Texture2D>(Constants.DelayOwl), _player);
                 Enemy worm = new Enemy(Constants.EnemyType.OscillatorWorm, new Vector2(1250, 3700), content.Load<Texture2D>(Constants.OscillatorWorm), _player);
 
-                enemies.Add(owl);
-                enemies.Add(worm);
+                //enemies.Add(owl);
+                //enemies.Add(worm);
+
+                for (int i = 0; i < enemies.Count; i++)
+                    enemies[i].MaxSoundEffectDistance = MaxSoundEffectDistance;
 
                 platforms = new List<Platform>();
                 Platform plat = new Platform(content, Constants.PlatformType.Basic, new Vector2(5100, 5200));
@@ -129,7 +132,7 @@ namespace Bearventure
                 MusicManager.Instance.LoadContent(content);
                 camera = new Camera(ScreenManager.GraphicsDevice.Viewport, new Vector2(background.Width, background.Height));
                 
-                MusicManager.Instance.PlayLevel1Music();
+                //MusicManager.Instance.PlayLevel1Music();
                 VisualEffectManager.Instance.Initialize(content, ResolutionManager.graphicsDevice);
                 VisualEffectManager.Instance.InitializeTerrainEffects(_player, enemies);
                 // once the load has finished, we use ResetElapsedTime to tell the game's
@@ -200,10 +203,9 @@ namespace Bearventure
                 {
                     enemy.Update(gameTime);
 
-                    if (Vector2.Distance(enemy.position, _player.position) < stepEffectDistance)
-                    {
-                        enemy.PlayStepSounds();
-                    }
+                    enemy.DistanceToPlayer = enemy.position.X - _player.position.X;
+
+                    enemy.PlayStepSounds();
                 }
 
                 _player.Update(gameTime);

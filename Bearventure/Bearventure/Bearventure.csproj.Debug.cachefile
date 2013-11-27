@@ -70,7 +70,6 @@ Content\Levels\Testilevel2\Items\Testilevel2_StartPoint.xnb
 Content\VisualEffects\blood2.xnb
 Content\VisualEffects\hitTest.xnb
 Content\Levels\Testilevel2\Items\Testilevel2_Enemies.xnb
-Content\Levels\Testilevel2\Testilevel2LevelInfo.xnb
 Content\Sprites\hyppyfix.xnb
 Content\Sprites\kavelyfixed.xnb
 Content\Sprites\WoodenLadder.xnb
@@ -78,12 +77,14 @@ Content\Sprites\paskapollofix.xnb
 Content\Sprites\badgerattack.xnb
 Content\Sprites\badger.xnb
 Content\Sprites\hover.xnb
-Content\Sprites\karhuclimb2.xnb
 Content\Sprites\tosi.xnb
+Content\Sprites\karhuclimb2.xnb
 Content\SoundEffects\step.xnb
 Content\SoundEffects\hyppy.xnb
 Content\SoundEffects\quietStep.xnb
 Content\Sprites\mato.xnb
+Content\Levels\Testilevel2\Testilevel2LevelInfo.xnb
+Content\SoundEffects\matotest.xnb
 Content\Music\Intro.wma
 Content\Music\Level1.wma
 Content\Music\Splash.wma

@@ -13,7 +13,7 @@ namespace Bearventure
             set
             {
                 soundsEnabled = value;
-                if (soundsEnabled) SoundEffectManager.Instance.IndexSelect();
+                if (soundsEnabled) SoundEffectManager.Instance.PlayIndexSelect();
                 else MusicManager.Instance.StopMusic(); 
             }
         }

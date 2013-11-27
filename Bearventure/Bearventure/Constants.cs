@@ -24,6 +24,7 @@ namespace Bearventure
         public const String Step = "SoundEffects/step";
         public const String karhuJump = "SoundEffects/hyppy";
         public const String quietStep = "SoundEffects/quietStep";
+        public const String matoTest = "SoundEffects/matotest";
         #endregion
         #region Music
         public const String Level1Music = "Music/Level1";
@@ -82,6 +83,7 @@ namespace Bearventure
             Knocked,
             Stunned,
             Climbing,
+            LatchedToObject,
         };
         public enum DirectionX
         {

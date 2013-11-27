@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Bearventure.Gameplay.Characters.Skills;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Bearventure.Gameplay.Characters
 {
@@ -27,6 +28,22 @@ namespace Bearventure.Gameplay.Characters
         {
             protected set;
             get;
+        }
+        /// <summary>
+        /// Gets the distance to player.
+        /// </summary>
+        public float DistanceToPlayer
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// The maximum distance from where the characters sound effects can be heard relative to player.
+        /// </summary>
+        public float MaxSoundEffectDistance
+        {
+            get;
+            set;
         }
         /// <summary>
         /// Character current health.
@@ -179,6 +196,34 @@ namespace Bearventure.Gameplay.Characters
                     ActiveSkill.Cancel();
                     ActiveSkill = null;
                 }
+        }
+
+        /// <summary>
+        /// Plays a sound effect and calculates pan & volume values for it relative to player. 
+        /// If the character is the player, then calculations will be ignored and volume and pan are set to 1.
+        /// </summary>
+        /// <param name="sound">The soundeffect</param>
+        /// <param name="distance">distance to player</param>
+        /// <param name="maxDistance">the maximum distance from where the sound can be heard</param>
+        public void PlaySound(SoundEffect sound)
+        {
+            float normDistance = DistanceToPlayer < 0 ? -DistanceToPlayer : DistanceToPlayer;
+
+            if (this.TAG != "Player" && normDistance < MaxSoundEffectDistance)
+            {
+                float pan = DistanceToPlayer / MaxSoundEffectDistance;
+                float volume = 1 - normDistance / MaxSoundEffectDistance;
+
+                SoundEffectInstance soundInstance = sound.CreateInstance();
+                soundInstance.Pan = pan;
+                soundInstance.Volume = volume;
+
+                SoundEffectManager.Instance.PlaySound(soundInstance);
+            }
+            else if(this.TAG == "Player")
+            {
+                SoundEffectManager.Instance.PlaySound(sound);
+            }
         }
 
         #endregion
