@@ -191,7 +191,6 @@ namespace Bearventure
                 {
                     subject.velocity.Y -= subject.jumpStrenght;
                     subject.position.Y -= subject.jumpStrenght;
-                    subject.state = Constants.CharacterState.Falling;
                     subject.jumpTime++;
                 }
             }
