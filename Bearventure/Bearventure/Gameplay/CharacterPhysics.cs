@@ -183,7 +183,7 @@ namespace Bearventure
                     subject.velocity.X -= subject.acceleration;
             }
         }
-        private static void DoubleJump(Character subject)
+        private static void DoubleJump(Character subject) //double jump method
         {
             if (subject.state == Constants.CharacterState.DoubleJump && !OnLadder(subject))
             {
