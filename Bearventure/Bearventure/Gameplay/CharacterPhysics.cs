@@ -60,6 +60,9 @@ namespace Bearventure
                 case Constants.CharacterState.Knocked:
                     Knock(subject);
                     break;
+                case Constants.CharacterState.DoubleJump:
+                    DoubleJump(subject);
+                    break;
 
             }
 
@@ -155,17 +158,44 @@ namespace Bearventure
         }
         private static void Jump(Character subject)
         {
+            subject.jumpTime = 0;
+
             if (OnGround(subject) && !OnLadder(subject))
             {
                 subject.velocity.Y -= subject.jumpStrenght;
                 subject.position.Y -= subject.jumpStrenght;
             }
-           /* if (!OnGround(subject)) double jump
-            {
-                subject.velocity.Y -= subject.jumpStrenght;
-                subject.position.Y -= subject.jumpStrenght;
-            }*/
             if(subject.velocity.Y > Gravity)
+            {
+                subject.state = Constants.CharacterState.Falling;
+                return;
+            }
+
+            if (subject.directionX == Constants.DirectionX.Right)
+            {
+                if (subject.velocity.X < subject.walkSpeed / 2)
+                    subject.velocity.X += subject.acceleration;
+
+            }
+            else if (subject.directionX == Constants.DirectionX.Left)
+            {
+                if (subject.velocity.X > -subject.walkSpeed / 2)
+                    subject.velocity.X -= subject.acceleration;
+            }
+        }
+        private static void DoubleJump(Character subject)
+        {
+            if (subject.state == Constants.CharacterState.DoubleJump && !OnLadder(subject))
+            {
+                if (subject.jumpTime == 0)
+                {
+                    subject.velocity.Y -= subject.jumpStrenght;
+                    subject.position.Y -= subject.jumpStrenght;
+                    subject.state = Constants.CharacterState.Falling;
+                    subject.jumpTime++;
+                }
+            }
+            if (subject.velocity.Y > Gravity)
             {
                 subject.state = Constants.CharacterState.Falling;
                 return;

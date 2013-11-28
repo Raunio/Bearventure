@@ -41,6 +41,10 @@ namespace Bearventure.Gameplay
         /// </summary>
         public Vector2 velocity;
         /// <summary>
+        /// Character jump times.
+        /// </summary>
+        public int jumpTime;
+        /// <summary>
         /// Current animation of character
         /// </summary>
         public Animation currentAnimation;

@@ -84,6 +84,7 @@ namespace Bearventure
             Stunned,
             Climbing,
             LatchedToObject,
+            DoubleJump,
         };
         public enum DirectionX
         {

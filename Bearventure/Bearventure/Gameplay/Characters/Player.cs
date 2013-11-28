@@ -348,11 +348,12 @@ namespace Bearventure.Gameplay.Characters
                     else
                         SetState(Constants.CharacterState.Falling);
                 }
-                if (!CharacterPhysics.OnGround(this) && jump.Evaluate(input, ControllingPlayer, out playerIndex))
+                if (!CharacterPhysics.OnGround(this) && jump.Evaluate(input, ControllingPlayer, out playerIndex) && state == Constants.CharacterState.Jumping)
                 {
-                    SetState(Constants.CharacterState.Jumping);
+                    SetState(Constants.CharacterState.DoubleJump);
                     jumpTimer = 0;
                     SoundEffectManager.Instance.PlayKarhuJump();
+                    
                 }
                 else
                 {
