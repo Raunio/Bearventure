@@ -42,7 +42,7 @@ namespace Bearventure.Gameplay.Characters
 
 
         float jumpTimer = 0;
-        float jumpFrequency = 500;
+        float jumpFrequency = 200;
 
         CharacterSkillCombo combo1 = new CharacterSkillCombo();
         CharacterSkill puukotus;
@@ -97,7 +97,7 @@ namespace Bearventure.Gameplay.Characters
         new Keys[] { Keys.Up },
         false);
             playerAttack = new InputAction(
-        new Buttons[] { Buttons.X },
+        new Buttons[] { Buttons.B },
         new Keys[] { Keys.Q },
         true);
             moveDown = new InputAction(
@@ -105,13 +105,13 @@ namespace Bearventure.Gameplay.Characters
         new Keys[] { Keys.Down },
         false);
             run = new InputAction(
-        new Buttons[] { Buttons.B },
+        new Buttons[] { Buttons.X },
         new Keys[] { Keys.LeftShift },
         false);
             stab = new InputAction(
-                new Buttons[] { Buttons.Y },
-                new Keys[] { Keys.W },
-                true);
+         new Buttons[] { Buttons.LeftShoulder },
+         new Keys[] { Keys.W },
+         true);
             #endregion
 
         }
@@ -419,7 +419,7 @@ namespace Bearventure.Gameplay.Characters
                     else
                         SetState(Constants.CharacterState.Falling);
                 }
-                if (!CharacterPhysics.OnGround(this) && jump.Evaluate(input, ControllingPlayer, out playerIndex) && state == Constants.CharacterState.Jumping)
+                if (!CharacterPhysics.OnGround(this) && jump.Evaluate(input, ControllingPlayer, out playerIndex) && state == Constants.CharacterState.Jumping && jumpTimer >= jumpFrequency)
                 {
                     SetState(Constants.CharacterState.DoubleJump);
                     jumpTimer = 0;
