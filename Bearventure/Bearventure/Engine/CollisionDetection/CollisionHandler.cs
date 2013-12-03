@@ -20,6 +20,8 @@ namespace Bearventure.Engine.CollisionDetection
         
         private static int zone_width;
         private static int zone_height;
+        private static int map_width;
+        private static int map_height;
 
         private static List<GameplayObject> gameObjects = new List<GameplayObject>();
 
@@ -51,7 +53,10 @@ namespace Bearventure.Engine.CollisionDetection
             Map.LoadAllTextureData();
 
             zone_height = Map.CropSize.Y;
-            zone_width = Map.CropSize.X;        
+            zone_width = Map.CropSize.X;
+
+            map_width = Map.CropSize.X * Map.Fractions / 2;
+            map_height = Map.CropSize.Y * 2;
         }
         #endregion
         /// <summary>
@@ -150,6 +155,11 @@ namespace Bearventure.Engine.CollisionDetection
         /// <returns></returns>
         public static int CollisionOccursWithMap(Character subject, Vector2 movement)
         {
+            if (CollisionAreaRectangleY(subject, movement.Y).Bottom >= map_height || CollisionAreaRectangleY(subject, movement.Y).Top <= 0 || CollisionAreaRectangleX(subject,movement.X).Left <= 0 || CollisionAreaRectangleX(subject,movement.X).Right >= map_width)
+            {
+                return -1;
+            }
+
             int collision_y = 0;
             int collision_x = 0; 
 
@@ -438,6 +448,12 @@ namespace Bearventure.Engine.CollisionDetection
 
             spriteBatch.Draw(content.Load<Texture2D>("Sprites/tosi"), xRect, Color.White);
             spriteBatch.Draw(content.Load<Texture2D>("Sprites/tosi"), yRect, Color.White);
+        }
+
+        public static void ClearData()
+        {
+            gameObjects.Clear();
+            Map = null;
         }
 
         /// <summary>

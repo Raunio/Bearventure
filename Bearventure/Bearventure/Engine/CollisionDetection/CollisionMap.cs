@@ -42,6 +42,12 @@ namespace Bearventure.Engine.CollisionDetection
             get;
             private set;
         }
+
+        public Point MapSize
+        {
+            get;
+            private set;
+        }
         private Texture2D edgeTexture;
 
         /// <summary>
@@ -60,6 +66,7 @@ namespace Bearventure.Engine.CollisionDetection
 
             for (int i = 0; i < crops; i++)
                 CroppedTextures[i] = new CollisionMapTextureFraction(asset, i);
+
             
         }
 
