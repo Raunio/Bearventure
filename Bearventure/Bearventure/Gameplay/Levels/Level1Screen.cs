@@ -77,6 +77,12 @@ namespace Bearventure
                 true);
         }
 
+        public void DestroyScreen()
+        {
+            
+
+            ScreenManager.RemoveScreen(this);
+        }
 
         /// <summary>
         /// Load graphics content for the game.
@@ -159,6 +165,7 @@ namespace Bearventure
 #endif
 
             base.Deactivate();
+
         }
 
 
@@ -167,7 +174,13 @@ namespace Bearventure
         /// </summary>
         public override void Unload()
         {
+            enemies.Clear();
+            ladders.Clear();
+            platforms.Clear();
+            _player = null;
+            CollisionHandler.ClearData();
             content.Unload();
+            
 
 #if WINDOWS_PHONE
             Microsoft.Phone.Shell.PhoneApplicationService.Current.State.Remove("PlayerPosition");
@@ -201,22 +214,28 @@ namespace Bearventure
             {
                 foreach (Enemy enemy in enemies)
                 {
-                    enemy.Update(gameTime);
+                    if (enemy.IsActive)
+                    {
+                        enemy.Update(gameTime);
 
-                    enemy.DistanceToPlayer = enemy.position.X - _player.position.X;
+                        enemy.DistanceToPlayer = enemy.position.X - _player.position.X;
 
-                    enemy.PlayStepSounds();
+                        enemy.PlayStepSounds();
+                    }
                 }
 
+                if(_player.IsActive)
                 _player.Update(gameTime);
 
                 foreach (Platform p in platforms)
                 {
+                    if(p.IsActive)
                     p.Update(gameTime);
                 }
 
                 foreach (Ladder l in ladders)
                 {
+                    if(l.IsActive)
                     l.Update(gameTime);
                 }
              
@@ -225,6 +244,7 @@ namespace Bearventure
                 camera.LookAt(cameraController.Position);
                 VisualEffectManager.Instance.UpdateEffects(gameTime);
                 hud.Update(gameTime, camera.Position);
+                
             }
 
             
@@ -261,7 +281,10 @@ namespace Bearventure
 #if WINDOWS_PHONE
                 ScreenManager.AddScreen(new PhonePauseScreen(), ControllingPlayer);
 #else
-                ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
+                ScreenManager.GetScreens();
+                //ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
+                ScreenManager.AddScreen(new DeathScreen(), ControllingPlayer);
+                //DestroyScreen();
 #endif
             }
             else

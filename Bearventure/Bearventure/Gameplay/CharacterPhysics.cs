@@ -252,8 +252,14 @@ namespace Bearventure
 
         private static void HandleTerrainCollisions(Character subject)
         {
+
+
             int collision = CollisionHandler.CollisionOccursWithMap(subject, subject.velocity);
 
+            if (collision == -1)
+            {
+                subject.Deactivate();
+            }
             int Top = subject.BoundingBox.Top;
             int Bottom = subject.BoundingBox.Bottom;
             int Left = subject.BoundingBox.Left;

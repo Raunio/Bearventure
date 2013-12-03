@@ -127,5 +127,10 @@ namespace Bearventure.Gameplay
         }
 
         public abstract void Update(GameTime gameTime);
+
+        public void Deactivate()
+        {
+            IsActive = false;
+        }
     }
 }

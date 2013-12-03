@@ -9,6 +9,7 @@ namespace Bearventure
         #region MenuTexts
         public const String MenuExitPromptText = "Are you sure you want to exit?";
         public const String PauseExitPromptText = "Are you sure you want to end game?";
+        public const String RestartPromptText = "Are you sure you want to restart?";
         #endregion
         #region SoundEffects
         public const String MenuSelectedIndexChange = "SoundEffects/IndexChange";

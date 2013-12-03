@@ -257,6 +257,7 @@ namespace Bearventure
             if (isInitialized)
             {
                 screen.Activate(false);
+                
             }
 
             screens.Add(screen);
