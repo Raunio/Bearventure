@@ -16,6 +16,8 @@ namespace Bearventure.Gameplay.Characters
         private bool backwards;
         private bool looping;
         private float freezeTimer;
+        private int loopCounter;
+        private bool hasReversed;
 
         #endregion
 
@@ -101,6 +103,14 @@ namespace Bearventure.Gameplay.Characters
         {
             get;
             private set;
+        }
+        /// <summary>
+        /// Gets or sets the animation to reverse-play itself after finishing.
+        /// </summary>
+        public bool ReverseAtEnd
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -220,6 +230,13 @@ namespace Bearventure.Gameplay.Characters
             public float Amount;
         };
 
+        public struct FrameLooper
+        {
+            public int startFrame;
+            public int endFrame;
+            public int loopAmount;
+        };
+
         private bool IsCurrentFrameFreezable
         {
             get
@@ -237,6 +254,14 @@ namespace Bearventure.Gameplay.Characters
         /// Gets and sets the frames that the animation will freeze to for a time euqal to Amount in milliseconds.
         /// </summary>
         public FrameFreezer FreezeFrames
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets and sets the frames that the animation will loop through.
+        /// </summary>
+        public FrameLooper LoopFrames
         {
             get;
             set;
@@ -329,15 +354,56 @@ namespace Bearventure.Gameplay.Characters
         private void NextFrame()
         {
             if (CurrentFrame < EndFrame)
+            {
                 CurrentFrame++;
-            else
+
+                if (LoopFrames.loopAmount != 0 && CurrentFrame == LoopFrames.endFrame && loopCounter < LoopFrames.loopAmount)
+                {
+                    CurrentFrame = LoopFrames.startFrame;
+                    loopCounter++;
+                }
+            }
+            else if(CurrentFrame >= EndFrame || ReverseAtEnd)
             {
                 if (looping == true)
-                    CurrentFrame = StartFrame;
+                {
+                    if (!ReverseAtEnd)
+                        CurrentFrame = StartFrame;
+                    else
+                    {
+                        if (!hasReversed)
+                        {
+                            backwards = !backwards;
+                            hasReversed = true;
+                        }
+                        else
+                            CurrentFrame = StartFrame;
+                    }
+
+
+                    loopCounter = 0;
+                }
 
                 else if (HasFinished == false)
                 {
-                    HasFinished = true;
+                    if (!ReverseAtEnd)
+                        HasFinished = true;
+                    else
+                    {
+                        backwards = !backwards;
+
+                        if (!hasReversed)
+                        {      
+                            hasReversed = true;
+                        }
+                        else
+                        {
+                            HasFinished = true;
+                            hasReversed = false;
+                        }
+                    }
+
+                    loopCounter = 0;
                 }
             }
         }
@@ -345,15 +411,59 @@ namespace Bearventure.Gameplay.Characters
         private void PreviousFrame()
         {
             if (CurrentFrame > StartFrame)
+            {
                 CurrentFrame--;
-            else
+
+                if (LoopFrames.loopAmount != 0 && CurrentFrame == LoopFrames.startFrame && loopCounter < LoopFrames.loopAmount)
+                {
+                    CurrentFrame = LoopFrames.endFrame;
+                    loopCounter++;
+                }
+            }
+            else if (CurrentFrame <= StartFrame || ReverseAtEnd)
             {
                 if (looping == true)
-                    CurrentFrame = EndFrame;
+                {
+                    if (!ReverseAtEnd)
+                        CurrentFrame = EndFrame;
+                    else
+                    {
+                        if (!hasReversed)
+                        {
+                            backwards = !backwards;
+                            hasReversed = true;
+                        }
+                        else
+                        {
+                            backwards = !backwards;
+                            CurrentFrame = EndFrame;
+                        }
+                    }
+
+
+                    loopCounter = 0;
+                }
 
                 else if (HasFinished == false)
                 {
-                    HasFinished = true;
+                    if (!ReverseAtEnd)
+                        HasFinished = true;
+                    else
+                    {
+                        backwards = !backwards;
+
+                        if (!hasReversed)
+                        { 
+                            hasReversed = true;
+                        }
+                        else
+                        {
+                            HasFinished = true;
+                            hasReversed = false;
+                        }
+                    }
+
+                    loopCounter = 0;
                 }
             }
         }

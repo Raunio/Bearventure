@@ -24,6 +24,7 @@ namespace Bearventure.Gameplay.Characters
         Texture2D comboSheet;
         Texture2D jumpSheet;
         Texture2D climbSheet;
+        Texture2D puukkoSheet;
 
         #region InputActions
 
@@ -34,6 +35,7 @@ namespace Bearventure.Gameplay.Characters
         InputAction moveDown;
         InputAction moveUp;
         InputAction run;
+        InputAction stab;
 
         #endregion
 
@@ -43,6 +45,7 @@ namespace Bearventure.Gameplay.Characters
         float jumpFrequency = 500;
 
         CharacterSkillCombo combo1 = new CharacterSkillCombo();
+        CharacterSkill puukotus;
 
         public Player(ContentManager content)
         {
@@ -53,10 +56,17 @@ namespace Bearventure.Gameplay.Characters
             comboSheet = content.Load<Texture2D>("Sprites/karhukombo1");
             jumpSheet = content.Load<Texture2D>("Sprites/hyppyfix");
             climbSheet = content.Load<Texture2D>("Sprites/karhuclimb2");
+            puukkoSheet = content.Load<Texture2D>("Sprites/puukkorage");
             IsActive = true;
 
             this.position = position;
             directionX = Constants.DirectionX.Right;
+
+            AttachmentPoints = new Vector2[]
+            {
+                new Vector2(40, 40),
+                new Vector2(20, 60),
+            };
 
 
             InitControls();
@@ -98,6 +108,10 @@ namespace Bearventure.Gameplay.Characters
         new Buttons[] { Buttons.B },
         new Keys[] { Keys.LeftShift },
         false);
+            stab = new InputAction(
+                new Buttons[] { Buttons.Y },
+                new Keys[] { Keys.W },
+                true);
             #endregion
 
         }
@@ -277,6 +291,63 @@ namespace Bearventure.Gameplay.Characters
             combo1.Description = "A basic 3-strike combo with the final strike causing a medium force knockback";
 
             #endregion
+
+            #region Puukko initialization
+
+            Animation puukko_R = new Animation(puukkoSheet, 0, 156, 121, 0, 7, 25, false, false);
+            Animation puukko_L = new Animation(puukkoSheet, 0, 156, 121, 0, 7, 25, false, false);
+            puukko_L.Effects = SpriteEffects.FlipHorizontally;
+
+            puukko_L.LoopFrames = new Animation.FrameLooper
+            {
+                startFrame = 4,
+                endFrame = 7,
+                loopAmount = 4,
+            };
+
+            puukko_R.LoopFrames = new Animation.FrameLooper
+            {
+                startFrame = 4,
+                endFrame = 7,
+                loopAmount = 4,
+            };
+
+            puukko_L.FreezeFrames = new Animation.FrameFreezer()
+            {
+                Frames = new List<int>()
+                {
+                    2,
+                    3,
+                },
+
+                Amount = 120,
+            };
+
+            puukko_R.FreezeFrames = new Animation.FrameFreezer()
+            {
+                Frames = new List<int>()
+                {
+                    2,
+                    3,
+                },
+
+                Amount = 120,
+            };
+
+            puukko_R.ReverseAtEnd = true;
+            puukko_L.ReverseAtEnd = true;
+
+            puukotus = new CharacterSkill(this, puukko_R, puukko_L, 1000, -5);
+            puukotus.StartVelocity = new Vector2(0, 0);
+            puukotus.DamagingFrames = new List<int>()
+            {
+                4,
+            };
+            puukotus.AddEffect("VisualEffects/blood2", new Vector2(20, -40), 4);
+            puukotus.VisualEffectLifetime = 150;
+            
+
+            #endregion
         }
         public override void HandleInput(GameTime gameTime, InputState input)
         {
@@ -364,6 +435,10 @@ namespace Bearventure.Gameplay.Characters
                     combo1.SetNextSkill();
                     UseSkill(combo1.ActiveSkill);
                 }
+                else if (stab.Evaluate(input, ControllingPlayer, out playerIndex))
+                {
+                    UseSkill(puukotus);
+                }
             }
             else
             {
@@ -386,7 +461,9 @@ namespace Bearventure.Gameplay.Characters
 
             PlayStepSoundEffects();
 
-            combo1.Update(gameTime); 
+            combo1.Update(gameTime);
+
+            puukotus.Update(gameTime);
 
             RegenerateHealth(gameTime);
 

@@ -29,6 +29,15 @@ namespace Bearventure.Gameplay
                 currentAnimation.Rotation = value;
             }
         }
+        /// <summary>
+        /// Gets or sets an array of attachment points for the character. Attachemnt point positions are relative to character BoundingBox and
+        /// are used by other game objects when they attach to the game object.
+        /// </summary>
+        public Vector2[] AttachmentPoints
+        {
+            get;
+            set;
+        }
         protected int mass;
         protected int BoundingBoxOffset;
         protected Texture2D spriteSheet;
