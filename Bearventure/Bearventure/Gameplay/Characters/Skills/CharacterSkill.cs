@@ -386,7 +386,10 @@ namespace Bearventure.Gameplay.Characters.Skills
                     for(int i = 0; i < effectCreationFrames.Count; i++)
                         if (currentAnimation.CurrentFrame == effectCreationFrames[i])
                         {
-                            VisualEffectManager.Instance.CreateEffect(effects[i], subject.position + effectPositionOffsets[i], VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
+                            if(subject.directionX == Constants.DirectionX.Right)
+                                VisualEffectManager.Instance.CreateEffect(effects[i], subject.position + effectPositionOffsets[i], VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
+                            else
+                                VisualEffectManager.Instance.CreateEffect(effects[i], subject.position + new Vector2(-effectPositionOffsets[i].X, effectPositionOffsets[i].Y), VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
                             frameOfActivation = currentAnimation.CurrentFrame;
                         
 
