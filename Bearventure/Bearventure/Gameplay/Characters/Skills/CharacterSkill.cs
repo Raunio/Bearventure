@@ -414,7 +414,26 @@ namespace Bearventure.Gameplay.Characters.Skills
             if(leftAnimation != null)
                 leftAnimation.Reset();
 
-            subject.velocity = new Vector2(subject.directionX == Constants.DirectionX.Left ? -StartVelocity.X : StartVelocity.X, StartVelocity.Y);
+            if (subject.directionX == Constants.DirectionX.Left && subject.velocity.X > -subject.walkSpeed + StartVelocity.X)
+            {
+                subject.velocity.X -= StartVelocity.X;
+            }
+            else if(subject.directionX == Constants.DirectionX.Right && subject.velocity.X < subject.walkSpeed - StartVelocity.X)
+            {
+                subject.velocity.X += StartVelocity.X;
+            }
+            if (StartVelocity.Y < 0)
+            {
+                if (subject.velocity.Y > -subject.jumpStrenght - StartVelocity.Y)
+                {
+                    subject.velocity.Y += StartVelocity.Y;
+                }
+            }
+            else
+            {
+                subject.velocity.Y += StartVelocity.Y;
+            }
+
             HasDamaged = false;
 
             if (subject.directionX == Constants.DirectionX.Left)
