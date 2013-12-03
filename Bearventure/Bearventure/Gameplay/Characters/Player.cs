@@ -343,7 +343,7 @@ namespace Bearventure.Gameplay.Characters
             {
                 4,
             };
-            puukotus.AddEffect("VisualEffects/blood2", new Vector2(20, -40), 4);
+            puukotus.AddEffect("VisualEffects/blood2", new Vector2(17, -37), 4);
             puukotus.VisualEffectLifetime = 150;
             
 

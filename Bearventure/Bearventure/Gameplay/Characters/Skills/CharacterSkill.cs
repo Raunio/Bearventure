@@ -386,7 +386,10 @@ namespace Bearventure.Gameplay.Characters.Skills
                     for(int i = 0; i < effectCreationFrames.Count; i++)
                         if (currentAnimation.CurrentFrame == effectCreationFrames[i])
                         {
-                            VisualEffectManager.Instance.CreateEffect(effects[i], subject.position + effectPositionOffsets[i], VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
+                            if(subject.directionX == Constants.DirectionX.Right)
+                                VisualEffectManager.Instance.CreateEffect(effects[i], subject.position + effectPositionOffsets[i], VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
+                            else
+                                VisualEffectManager.Instance.CreateEffect(effects[i], subject.position + new Vector2(-effectPositionOffsets[i].X, effectPositionOffsets[i].Y), VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
                             frameOfActivation = currentAnimation.CurrentFrame;
                         
 
@@ -414,7 +417,26 @@ namespace Bearventure.Gameplay.Characters.Skills
             if(leftAnimation != null)
                 leftAnimation.Reset();
 
-            subject.velocity = new Vector2(subject.directionX == Constants.DirectionX.Left ? -StartVelocity.X : StartVelocity.X, StartVelocity.Y);
+            if (subject.directionX == Constants.DirectionX.Left && subject.velocity.X > -subject.walkSpeed + StartVelocity.X)
+            {
+                subject.velocity.X -= StartVelocity.X;
+            }
+            else if(subject.directionX == Constants.DirectionX.Right && subject.velocity.X < subject.walkSpeed - StartVelocity.X)
+            {
+                subject.velocity.X += StartVelocity.X;
+            }
+            if (StartVelocity.Y < 0)
+            {
+                if (subject.velocity.Y > -subject.jumpStrenght - StartVelocity.Y)
+                {
+                    subject.velocity.Y += StartVelocity.Y;
+                }
+            }
+            else
+            {
+                subject.velocity.Y += StartVelocity.Y;
+            }
+
             HasDamaged = false;
 
             if (subject.directionX == Constants.DirectionX.Left)
