@@ -132,7 +132,8 @@ namespace Bearventure
                 MusicManager.Instance.LoadContent(content);
                 camera = new Camera(ScreenManager.GraphicsDevice.Viewport, new Vector2(background.Width, background.Height));
                 
-                MusicManager.Instance.PlayLevel1Music();
+                //MusicManager.Instance.PlayLevel1Music();
+                MusicManager.Instance.StopMusic();
                 VisualEffectManager.Instance.Initialize(content, ResolutionManager.graphicsDevice);
                 VisualEffectManager.Instance.InitializeTerrainEffects(_player, enemies);
                 // once the load has finished, we use ResetElapsedTime to tell the game's

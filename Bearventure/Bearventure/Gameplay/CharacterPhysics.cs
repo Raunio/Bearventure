@@ -327,7 +327,7 @@ namespace Bearventure
                     subject.velocity.X /= 2;
                     collision.B.position.X += subject.velocity.X;
                 }
-                else if (collision.A.Mass == -1)
+                else if (collision.A.Mass == -1 && !Blocked((Character)collision.B, Constants.DirectionX.Left))
                 {
                     collision.B.position.X += subject.velocity.X;
                 }
@@ -343,7 +343,7 @@ namespace Bearventure
                     subject.velocity.X /= 2;
                     collision.B.position.X += subject.velocity.X;
                 }
-                else if (collision.A.Mass == -1 && !Blocked((Character)subject, Constants.DirectionX.Right))
+                else if (collision.A.Mass == -1 && !Blocked((Character)collision.B, Constants.DirectionX.Right))
                 {
                     collision.B.position.X += subject.velocity.X;
                 }

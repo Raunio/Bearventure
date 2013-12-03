@@ -20,11 +20,15 @@ namespace Bearventure.Gameplay.Characters.Skills
         private List<string> effects = new List<string>();
         private List<Vector2> effectPositions = new List<Vector2>();
         private List<Vector2> effectPositionOffsets = new List<Vector2>();
+        private List<int> effectCreationFrames = new List<int>();
 
         private int hitBoxWidth;
         private int hitBoxHeight;
 
         private List<int> damagingFrames;
+
+        private bool effectsHaveActivated;
+        private int frameOfActivation;
 
         #endregion
         #region Gets & Sets
@@ -56,6 +60,14 @@ namespace Bearventure.Gameplay.Characters.Skills
         /// Gets the damage of the skill.
         /// </summary>
         public int Damage
+        {
+            private set;
+            get;
+        }
+        /// <summary>
+        /// Gets the healing amount of the skill.
+        /// </summary>
+        public int Healing
         {
             private set;
             get;
@@ -170,6 +182,14 @@ namespace Bearventure.Gameplay.Characters.Skills
                 damagingFrames = value;
                 HitBoxPositions = new Vector2[damagingFrames.Count];
             }
+        }
+        /// <summary>
+        /// Gets or sets the frames of the animtaion of this skill that create given effects.
+        /// </summary>
+        public List<int> EffectActivationFrames
+        {
+            get;
+            set;
         }
         
         /// <summary>
@@ -286,6 +306,16 @@ namespace Bearventure.Gameplay.Characters.Skills
             this.IsReady = true;
             this.DamageType = DamageType;
         }
+        public CharacterSkill(Character subject, Animation right, Animation left, int cooldown, int healing)
+        {
+            this.subject = subject;
+            this.rightAnimation = right;
+            this.leftAnimation = left;
+            this.Cooldown = cooldown;
+            this.Healing = healing;
+            this.IsReady = true;
+            this.DamageType = DamageType;
+        }
         /// <summary>
         /// Returns true if the skills hitbox hits the characters BoundingBox.
         /// </summary>
@@ -324,29 +354,44 @@ namespace Bearventure.Gameplay.Characters.Skills
                 else
                     subject.SpriteRotation = UltimateRotation;
 
-                for (int i = 0; i < DamagingFrames.Count; i++)
-                {
-                    if (currentAnimation.CurrentFrame == DamagingFrames[i])
+                if(DamagingFrames != null)
+                    for (int i = 0; i < DamagingFrames.Count; i++)
                     {
-                        if (subject.directionX == Constants.DirectionX.Left)
+                        if (currentAnimation.CurrentFrame == DamagingFrames[i])
                         {
-                            HitBox = new Rectangle((int)subject.position.X - ((int)HitBoxPositions[i].X + HitBoxWidth),
-                                (int)subject.position.Y + (int)HitBoxPositions[i].Y, HitBoxWidth, HitBoxHeight);
+                            if (subject.directionX == Constants.DirectionX.Left)
+                            {
+                                HitBox = new Rectangle((int)subject.position.X - ((int)HitBoxPositions[i].X + HitBoxWidth),
+                                    (int)subject.position.Y + (int)HitBoxPositions[i].Y, HitBoxWidth, HitBoxHeight);
+                            }
+                            else
+                            {
+                                HitBox = new Rectangle((int)subject.position.X + (int)HitBoxPositions[i].X,
+                                    (int)subject.position.Y + (int)HitBoxPositions[i].Y, HitBoxWidth, HitBoxHeight);
+                            }
+
+                            CombatManager.Instance.Update();
+
+                            break;
                         }
+
                         else
-                        {
-                            HitBox = new Rectangle((int)subject.position.X + (int)HitBoxPositions[i].X,
-                                (int)subject.position.Y + (int)HitBoxPositions[i].Y, HitBoxWidth, HitBoxHeight);
-                        }
-
-                        CombatManager.Instance.Update();
-
-                        break;
+                            HitBox = new Rectangle(-1, -1, 1, 1);
                     }
 
-                    else
-                        HitBox = new Rectangle(-1, -1, 1, 1);
-                }
+                if (currentAnimation.CurrentFrame != frameOfActivation)
+                    effectsHaveActivated = false;
+
+                if(!effectsHaveActivated)
+                    for(int i = 0; i < effectCreationFrames.Count; i++)
+                        if (currentAnimation.CurrentFrame == effectCreationFrames[i])
+                        {
+                            VisualEffectManager.Instance.CreateEffect(effects[i], subject.position + effectPositionOffsets[i], VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
+                            frameOfActivation = currentAnimation.CurrentFrame;
+                        
+
+                            effectsHaveActivated = true;
+                        }
 
                 if (currentAnimation.HasFinished)
                 {
@@ -388,18 +433,14 @@ namespace Bearventure.Gameplay.Characters.Skills
 
             subject.SpriteRotation = subject.directionX == Constants.DirectionX.Left ? -StartRotation : StartRotation;
 
-            for (int i = 0; i < effects.Count; i++)
-            {
-                VisualEffectManager.Instance.CreateEffect(effects[i], subject.position + effectPositionOffsets[i], VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
-            }
-
             if (SkillSoundEffect != null)
                 subject.PlaySound(SkillSoundEffect);
         }
 
-        public void AddEffect(string asset, Vector2 positionOffset)
+        public void AddEffect(string asset, Vector2 positionOffset, int creationFrame)
         {
             effectPositionOffsets.Add(positionOffset);
+            effectCreationFrames.Add(creationFrame);
             effects.Add(asset);          
         }
         /// <summary>
