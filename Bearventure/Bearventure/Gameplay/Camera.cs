@@ -50,14 +50,18 @@ namespace Bearventure.Gameplay
 
         public Vector2 Pos
         {
-            get { return Position; }
-            set { Position = value; }
+            get 
+            { 
+                return new Vector2(Position.X - viewPort.Width / 2, Position.Y - viewPort.Height / 2);
+            }
         }
 
-        public void LookAt(Vector2 position)
+        public void LookAt(Vector2 position, Vector2 levelSize)
         {
             if (position.X < viewPort.Width / 2)
                 position.X = viewPort.Width / 2;
+            else if (position.X > levelSize.X - viewPort.Width / 2)
+                position.X = levelSize.X - viewPort.Width / 2;
             
             Position = position;
         }

@@ -43,6 +43,7 @@ namespace Bearventure
         SpriteFont gameFont;
 
         LevelBackground background;
+        LayeredLevelBackground layeredBackground;
         Camera camera;
         CameraController cameraController;
         HeadsUpDisplay hud;
@@ -96,7 +97,26 @@ namespace Bearventure
                 
                 _player = new Player(content);
                 XmlReader.Initialize(content, _player);
-                background = new LevelBackground(XmlReader.LevelInformation("Levels/Testilevel2/Testilevel2LevelInfo"), content);
+
+                #region Layered Background TESTING
+
+                layeredBackground = new LayeredLevelBackground();
+
+                LevelBackground platformLayer = new LevelBackground("Testilevel2/Background/Platform", "Testilevel2Platform", 4, content);
+                LevelBackground tree1Layer = new LevelBackground("Testilevel2/Background/Trees1", "Testilevel2Trees1", 4, content);
+                LevelBackground tree1_1Layer = new LevelBackground("Testilevel2/Background/Trees1-1", "Testilevel2Trees1-1", 4, content);
+                LevelBackground skyLayer = new LevelBackground("Testilevel2/Background/Sky", "Testilevel2Sky", 4, content);
+
+                layeredBackground.AddLayer(platformLayer, 0, new Vector2(0, 0));
+                layeredBackground.AddLayer(tree1Layer, 1, new Vector2(0.1f, 0));
+                layeredBackground.AddLayer(tree1_1Layer, 2, new Vector2(0.2f, 0));
+                layeredBackground.AddLayer(skyLayer, 3, new Vector2(1f, 0));
+
+                layeredBackground.Initialize();
+
+                #endregion
+
+
                 _player.position = XmlReader.StartPoint("Levels/Testilevel2/Items/Testilevel2_StartPoint");
               
                 gameFont = content.Load<SpriteFont>(Constants.GameFont);
@@ -129,14 +149,14 @@ namespace Bearventure
 
                 
 
-                Texture2D[] collisionMap = new Texture2D[background.Fractions];
+                Texture2D[] collisionMap = new Texture2D[layeredBackground.Fractions];
 
                 CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 4, 8), enemies, _player, platforms, ladders, content);
 
                 CharacterPhysics.Gravity = 1.5f;
 
                 MusicManager.Instance.LoadContent(content);
-                camera = new Camera(ScreenManager.GraphicsDevice.Viewport, new Vector2(background.Width, background.Height));
+                camera = new Camera(ScreenManager.GraphicsDevice.Viewport, new Vector2(layeredBackground.LevelWidth, layeredBackground.LevelHeight));
                 
                 //MusicManager.Instance.PlayLevel1Music();
                 MusicManager.Instance.StopMusic();
@@ -242,9 +262,11 @@ namespace Bearventure
              
                 cameraController.Update(gameTime);
                 
-                camera.LookAt(cameraController.Position);
+                camera.LookAt(cameraController.Position, new Vector2(layeredBackground.LevelWidth, layeredBackground.LevelHeight));
                 VisualEffectManager.Instance.UpdateEffects(gameTime);
                 hud.Update(gameTime, camera.Position);
+
+                layeredBackground.Update(camera.Pos);
                 
             }
 
@@ -308,9 +330,9 @@ namespace Bearventure
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None,
                     RasterizerState.CullNone, null, camera.GetTransformation(ResolutionManager.graphicsDevice.GraphicsDevice));
-            
 
-            background.Draw(spriteBatch);
+            layeredBackground.Draw(spriteBatch);
+            //background.Draw(spriteBatch);
             //background.DrawGrid(spriteBatch);
             
             //CollisionHandler.Map.DrawMap(spriteBatch);

@@ -66,6 +66,19 @@ namespace Bearventure.Gameplay.Levels
             LoadMap(content);
         }
 
+        public LevelBackground(string path, string asset, int fractions, ContentManager content)
+        {
+            this.asset = asset;
+            Fractions = fractions;
+            this.path = path;
+
+            Backgrounds = new Texture2D[Fractions / 2, 2];
+            edgeTexture = new Texture2D(ResolutionManager.graphicsDevice.GraphicsDevice, 1, 1);
+            edgeTexture.SetData(new[] { Color.Yellow });
+
+            LoadMap(content);
+        }
+
         private void LoadMap(ContentManager content)
         {
             int counter = 0;
@@ -73,7 +86,7 @@ namespace Bearventure.Gameplay.Levels
             for (int x = 0; x < Fractions / 2; x++)
                 for (int y = 0; y < 2; y++)
                 {
-                    Backgrounds[x, y] = content.Load<Texture2D>(path + "/Background/" + asset + "_" + (counter));
+                    Backgrounds[x, y] = content.Load<Texture2D>("Levels/" + path + "/" + asset + "_" + (counter));
                     counter++;
                 }
 
@@ -83,7 +96,6 @@ namespace Bearventure.Gameplay.Levels
             zone_width = Backgrounds[0, 0].Width * resizeFactor;
             zone_height = Backgrounds[0, 0].Height * resizeFactor;
         }
-
         public void Draw(SpriteBatch spriteBatch)
         {
             for (int x = 0; x < Fractions / 2; x++)
@@ -91,6 +103,15 @@ namespace Bearventure.Gameplay.Levels
                     spriteBatch.Draw(Backgrounds[x, y],
                         new Vector2(x * Backgrounds[x, y].Width * resizeFactor,
                             y * Backgrounds[x, y].Height * resizeFactor), null, Color.White,
+                            0f, Vector2.Zero, resizeFactor, SpriteEffects.None, 0f);
+        }
+        public void Draw(SpriteBatch spriteBatch, Vector2 positionOffset)
+        {
+            for (int x = 0; x < Fractions / 2; x++)
+                for (int y = 0; y < 2; y++)
+                    spriteBatch.Draw(Backgrounds[x, y],
+                        new Vector2(positionOffset.X + x * Backgrounds[x, y].Width * resizeFactor,
+                            positionOffset.Y + y * Backgrounds[x, y].Height * resizeFactor), null, Color.White,
                             0f, Vector2.Zero, resizeFactor, SpriteEffects.None, 0f);
         }
         /// <summary>
