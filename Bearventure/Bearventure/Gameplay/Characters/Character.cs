@@ -174,6 +174,9 @@ namespace Bearventure.Gameplay.Characters
                     case Constants.CharacterState.DoubleJump:
                         state = newState;
                         break;
+                    case Constants.CharacterState.LatchedToObject:
+                        state = newState;
+                        break;
                 }
             }
         }

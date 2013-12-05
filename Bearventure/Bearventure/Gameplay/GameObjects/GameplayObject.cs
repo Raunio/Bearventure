@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Bearventure.Gameplay.Characters;
+using Bearventure.Gameplay.GameObjects;
 
 namespace Bearventure.Gameplay
 {
@@ -33,7 +34,7 @@ namespace Bearventure.Gameplay
         /// Gets or sets an array of attachment points for the character. Attachemnt point positions are relative to character BoundingBox and
         /// are used by other game objects when they attach to the game object.
         /// </summary>
-        public Vector2[] AttachmentPoints
+        public AttachmentPoint[] AttachmentPoints
         {
             get;
             set;

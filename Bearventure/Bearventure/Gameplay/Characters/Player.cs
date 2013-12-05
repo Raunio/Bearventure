@@ -5,6 +5,7 @@ using Bearventure.Engine.Effects;
 using Bearventure.Gameplay.Characters.Skills;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Content;
+using Bearventure.Gameplay.GameObjects;
 
 namespace Bearventure.Gameplay.Characters
 {
@@ -62,10 +63,13 @@ namespace Bearventure.Gameplay.Characters
             this.position = position;
             directionX = Constants.DirectionX.Right;
 
-            AttachmentPoints = new Vector2[]
+            AttachmentPoints = new AttachmentPoint[]
             {
-                new Vector2(40, 40),
-                new Vector2(20, 60),
+                new AttachmentPoint(new Vector2(20, 20)),
+                new AttachmentPoint(new Vector2(20, 30)),
+                new AttachmentPoint(new Vector2(20, 40)),
+                new AttachmentPoint(new Vector2(20, 50)),
+                new AttachmentPoint(new Vector2(20, 60)),
             };
 
 

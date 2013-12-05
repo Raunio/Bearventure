@@ -158,6 +158,9 @@ namespace Bearventure
                         GoTo((int)target.position.X + subject.Vision);
                     }
                     break;
+                case Constants.ActionType.Latch:
+                    subject.SetState(Constants.CharacterState.LatchedToObject);
+                    break;
             }
 
             ManageSkills();

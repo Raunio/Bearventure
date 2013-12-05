@@ -2,6 +2,7 @@
 using Bearventure.Gameplay.Characters;
 using Bearventure.Engine.CollisionDetection;
 using Bearventure.Gameplay;
+using Bearventure.Gameplay.GameObjects;
 
 namespace Bearventure
 {
@@ -63,6 +64,9 @@ namespace Bearventure
                 case Constants.CharacterState.DoubleJump:
                     DoubleJump(subject);
                     break;
+                case Constants.CharacterState.LatchedToObject:
+                    LatchToObject(subject);
+                    break;
 
             }
 
@@ -91,6 +95,31 @@ namespace Bearventure
 
             return CollisionHandler.TerrainType;
 
+        }
+
+        private static void LatchToObject(Character subject)
+        {
+            ObjectCollisionEvent collision = CollisionHandler.CollisionOccursWithObject(subject, subject.velocity);
+
+            if (collision != null && collision.B.AttachmentPoints != null)
+            {
+                foreach (AttachmentPoint aPoint in collision.B.AttachmentPoints)
+                {
+                    if (aPoint.Subject == subject)
+                    {
+                        subject.position = new Vector2(collision.B.BoundingBox.X, collision.B.BoundingBox.Y) + aPoint.Location;
+                        subject.velocity = Vector2.Zero;
+                        break;
+                    }
+                    else if (!aPoint.IsOccupied)
+                    {
+                        aPoint.Attach(subject);
+                        break;
+                    }
+                }
+            }
+            else
+                subject.SetState(Constants.CharacterState.Stopped);
         }
 
         private static void Stop(Character subject)

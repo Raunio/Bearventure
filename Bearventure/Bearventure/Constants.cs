@@ -137,6 +137,7 @@ namespace Bearventure
             Flee,
             Stop,
             Jump,
+            Latch,
         };
         public enum ConditionType
         {
@@ -157,6 +158,7 @@ namespace Bearventure
             AttackReady,
             Blocked,
             FacingPlayer,
+            CollidesWithPlayer,
         };
 
         #endregion

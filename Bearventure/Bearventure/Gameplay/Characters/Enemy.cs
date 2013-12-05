@@ -51,6 +51,14 @@ namespace Bearventure.Gameplay.Characters
             get;
         }
 
+        public Constants.EnemyType Type
+        {
+            get
+            {
+                return type;
+            }
+        }
+
         /// <summary>
         /// Range of vision.
         /// </summary>
@@ -411,7 +419,7 @@ namespace Bearventure.Gameplay.Characters
                     pounce.HitBoxPositions[2] = new Vector2(25, -2);
 
                     Skills = new List<EnemySkill>();
-                    Skills.Add(Attack);
+                    //Skills.Add(Attack);
                     Skills.Add(pounce);
                     #endregion
                     break;

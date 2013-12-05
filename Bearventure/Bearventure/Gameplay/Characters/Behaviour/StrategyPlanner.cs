@@ -25,6 +25,7 @@ namespace Bearventure
         Action flee;
         Action cower;
         Action jump;
+        Action latch;
         #endregion
         /// <summary>
         /// Initialization method for pre-determined actions.
@@ -35,6 +36,9 @@ namespace Bearventure
                 InitDefaultCombat();
             else if (subject.combatBehaviour == Constants.CombatBehaviour.AttackAndFlee)
                 InitAttackAndFlee();
+
+            if (subject.Type == Constants.EnemyType.OscillatorWorm)
+                InitWormLatching();
         }
         private void InitDefaultCombat()
         {
@@ -87,6 +91,15 @@ namespace Bearventure
             attack.AddCondition(new Condition(Constants.ConditionType.AttackReady, true));
 
             preDeterminedActions.Add(attack);
+        }
+
+        private void InitWormLatching()
+        {
+            latch = new Action(Constants.ActionType.Latch, true);
+            latch.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.AttackRange));
+            latch.AddCondition(new Condition(Constants.ConditionType.CollidesWithPlayer, true));
+
+            preDeterminedActions.Add(latch);
         }
 
         public StrategyPlanner(Enemy subject, Character player)

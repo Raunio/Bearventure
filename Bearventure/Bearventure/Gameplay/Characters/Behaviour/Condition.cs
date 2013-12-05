@@ -93,6 +93,9 @@ namespace Bearventure
                         return subject.directionX == Constants.DirectionX.Right ? true : false;
                     }
                     break;
+                case Constants.ConditionType.CollidesWithPlayer:
+                    if(subject.BoundingBox.Intersects(player.BoundingBox) == (bool)Value) { return true; }
+                    break;
                 default:
                     return false;
             }
