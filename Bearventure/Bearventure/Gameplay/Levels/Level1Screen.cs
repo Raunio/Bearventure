@@ -158,8 +158,8 @@ namespace Bearventure
                 MusicManager.Instance.LoadContent(content);
                 camera = new Camera(ScreenManager.GraphicsDevice.Viewport, new Vector2(layeredBackground.LevelWidth, layeredBackground.LevelHeight));
                 
-                //MusicManager.Instance.PlayLevel1Music();
-                MusicManager.Instance.StopMusic();
+                MusicManager.Instance.PlayLevel1Music();
+
                 VisualEffectManager.Instance.Initialize(content, ResolutionManager.graphicsDevice);
                 VisualEffectManager.Instance.InitializeTerrainEffects(_player, enemies);
                 // once the load has finished, we use ResetElapsedTime to tell the game's
@@ -239,7 +239,7 @@ namespace Bearventure
                     {
                         enemy.Update(gameTime);
 
-                        enemy.DistanceToPlayer = enemy.position.X - _player.position.X;
+                        enemy.DistanceToPlayer = enemy.position - _player.position;
 
                         enemy.PlayStepSounds();
                     }

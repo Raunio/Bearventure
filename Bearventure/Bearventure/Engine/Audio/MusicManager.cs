@@ -25,6 +25,12 @@ namespace Bearventure
             }
         }
 
+        public float Volume
+        {
+            get;
+            set;
+        }
+
         public void LoadContent(ContentManager content)
         {
             level1Song = content.Load<Song>(Constants.Level1Music);
@@ -35,7 +41,7 @@ namespace Bearventure
         {
             if (Globals.SoundsEnabled)
             {
-                MediaPlayer.Volume = 1f;
+                MediaPlayer.Volume = Volume;
                 MediaPlayer.Play(level1Song);
                 MediaPlayer.IsRepeating = true;
             }
@@ -44,7 +50,7 @@ namespace Bearventure
         {
             if (Globals.SoundsEnabled)
             {
-                MediaPlayer.Volume = 1f;
+                MediaPlayer.Volume = Volume;
                 MediaPlayer.Play(menuMusic);
                 MediaPlayer.IsRepeating = true;
             }

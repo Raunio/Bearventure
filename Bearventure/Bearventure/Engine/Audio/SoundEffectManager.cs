@@ -20,12 +20,21 @@ namespace Bearventure
         private SoundEffect karhuCombo2;
         private SoundEffect karhuCombo3;
         private SoundEffect badgerSkill;
+        private SoundEffect puukotus;
 
         public SoundEffect BadgerAttack
         {
             get
             {
                 return badgerAttack;
+            }
+        }
+
+        public SoundEffect Puukotus
+        {
+            get
+            {
+                return puukotus;
             }
         }
 
@@ -106,6 +115,7 @@ namespace Bearventure
             karhuCombo2 = content.Load<SoundEffect>(Constants.KarhuHit2);
             karhuCombo3 = content.Load<SoundEffect>(Constants.KarhuHit3);
             badgerSkill = content.Load<SoundEffect>(Constants.BadgerSkill);
+            puukotus = content.Load<SoundEffect>(Constants.puukkoSound);
             Console.WriteLine("SoundEffects loaded.");
         }
 

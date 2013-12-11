@@ -274,7 +274,7 @@ namespace Bearventure.Gameplay.Characters
                     jumpStrenght = 17;
                     Orientation = Constants.CharacterOrientation.Ground;
                     Vision = 300;
-                    AttackRange = 75;
+                    AttackRange = 110;
                     health = 1;
                     maxHealth = 1;
                     healthRegen = 1;

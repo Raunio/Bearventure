@@ -191,6 +191,14 @@ namespace Bearventure.Gameplay.Characters.Skills
             get;
             set;
         }
+        /// <summary>
+        /// Gets or sets the targeting type of this skill.
+        /// </summary>
+        public Constants.SkillTarget TargetingType
+        {
+            get;
+            set;
+        }
         
         /// <summary>
         /// Gets or sets the force inflicted to the target of this skill upon hit.
@@ -323,10 +331,28 @@ namespace Bearventure.Gameplay.Characters.Skills
         /// <returns></returns>
         public bool HitsCharacter(Character character)
         {
-            if (HitBox.Intersects(character.BoundingBox))
-                HasDamaged = true;
+            if (character != subject && (TargetingType == Constants.SkillTarget.Enemy || TargetingType == Constants.SkillTarget.Both))
+            {
+                if (HitBox.Intersects(character.BoundingBox))
+                    HasDamaged = true;
 
-            return HitBox.Intersects(character.BoundingBox);
+                return HitBox.Intersects(character.BoundingBox);
+            }
+            else if (character == subject && (TargetingType == Constants.SkillTarget.Self || TargetingType == Constants.SkillTarget.Both))
+            {
+                if(DamagingFrames != null)
+                    for (int i = 0; i < DamagingFrames.Count; i++)
+                    {
+                        if (currentAnimation.CurrentFrame == DamagingFrames[i])
+                        {
+                            HasDamaged = true;
+
+                            return true;
+                        }
+                    }
+            }
+
+            return false;
         }
 
         public void Update(GameTime gameTime)

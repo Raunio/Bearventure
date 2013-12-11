@@ -61,6 +61,7 @@ namespace Bearventure.Gameplay
                         if(enemies[i].health <= 0)
                             CombatLog.Add(enemies[i].Name + " has died.");
                     }
+
                 }
 
                 if (enemies[i].ActiveSkill != null && enemies[i].state == Constants.CharacterState.UsingSkill && !enemies[i].ActiveSkill.HasDamaged && player.health > 0)
@@ -76,11 +77,21 @@ namespace Bearventure.Gameplay
                 }
 
             }
+
+            if(player.ActiveSkill != null)
+                if (player.ActiveSkill.HitsCharacter(player))
+                {
+                    InflictDamage(player, player.ActiveSkill);
+                    InflictDebuffs(player, player.ActiveSkill, player.directionX);
+
+                    PlayHitEffects(new Vector2(player.ActiveSkill.HitBox.X + player.ActiveSkill.HitBox.Width / 2,
+                            player.ActiveSkill.HitBox.Y + player.ActiveSkill.HitBox.Height / 2), player.ActiveSkill.DamageType, player.ArmorType);
+                }
         }
 
         private void PlayHitEffects(Vector2 position, Constants.DamageType damageType, Constants.ArmorType armorType)
         {
-            VisualEffectManager.Instance.CreateEffect("VisualEffects/hitTest", position, 100);
+            //VisualEffectManager.Instance.CreateEffect("VisualEffects/hitTest", position, 100);
 
             if (Globals.GoreEnabled)
             {

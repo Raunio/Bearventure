@@ -32,7 +32,7 @@ namespace Bearventure.Gameplay.Characters
         /// <summary>
         /// Gets the distance to player.
         /// </summary>
-        public float DistanceToPlayer
+        public Vector2 DistanceToPlayer
         {
             get;
             set;
@@ -213,12 +213,13 @@ namespace Bearventure.Gameplay.Characters
         /// <param name="maxDistance">the maximum distance from where the sound can be heard</param>
         public void PlaySound(SoundEffect sound)
         {
-            float normDistance = DistanceToPlayer < 0 ? -DistanceToPlayer : DistanceToPlayer;
+            //float normDistance = DistanceToPlayer < 0 ? -DistanceToPlayer : DistanceToPlayer;
+            float dist = DistanceToPlayer.Length() < 0 ? -DistanceToPlayer.Length() : DistanceToPlayer.Length();
 
-            if (this.TAG != "Player" && normDistance < MaxSoundEffectDistance)
+            if (this.TAG != "Player" && dist < MaxSoundEffectDistance)
             {
-                float pan = DistanceToPlayer / MaxSoundEffectDistance;
-                float volume = 1 - normDistance / MaxSoundEffectDistance;
+                float pan = DistanceToPlayer.X / MaxSoundEffectDistance;
+                float volume = 1 - dist / MaxSoundEffectDistance;
 
                 SoundEffectInstance soundInstance = sound.CreateInstance();
                 soundInstance.Pan = pan;

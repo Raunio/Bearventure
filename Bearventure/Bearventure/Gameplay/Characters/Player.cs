@@ -341,14 +341,22 @@ namespace Bearventure.Gameplay.Characters
             puukko_R.ReverseAtEnd = true;
             puukko_L.ReverseAtEnd = true;
 
-            puukotus = new CharacterSkill(this, puukko_R, puukko_L, 1000, -5);
+            puukotus = new CharacterSkill(this, puukko_R, puukko_L, 1000, 5, Constants.DamageType.Piercing);
             puukotus.StartVelocity = new Vector2(0, 0);
             puukotus.DamagingFrames = new List<int>()
             {
                 4,
             };
+            puukotus.HitBoxPositions[0] = new Vector2(17, -37);
+            
             puukotus.AddEffect("VisualEffects/blood2", new Vector2(17, -37), 4);
             puukotus.VisualEffectLifetime = 150;
+
+            puukotus.SkillSoundEffect = SoundEffectManager.Instance.Puukotus;
+
+            puukotus.TargetingType = Constants.SkillTarget.Self;
+
+            puukotus.UltimateVelocityX = 0f;
             
 
             #endregion

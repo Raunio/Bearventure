@@ -26,6 +26,7 @@ namespace Bearventure
         public const String karhuJump = "SoundEffects/hyppy";
         public const String quietStep = "SoundEffects/quietStep";
         public const String matoTest = "SoundEffects/matotest";
+        public const String puukkoSound = "SoundEffects/puukotus";
         #endregion
         #region Music
         public const String Level1Music = "Music/Level1";
@@ -138,6 +139,7 @@ namespace Bearventure
             Stop,
             Jump,
             Latch,
+            CancelSkill,
         };
         public enum ConditionType
         {
@@ -173,6 +175,13 @@ namespace Bearventure
             Energy,
             NegativeEnergy,
             Force,
+        };
+
+        public enum SkillTarget
+        {
+            Enemy,
+            Self,
+            Both,
         };
 
         public enum ArmorType

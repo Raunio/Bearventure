@@ -200,7 +200,7 @@ namespace Bearventure.Engine.CollisionDetection
                             if (CollisionAreaRectangleY(subject, movement.Y).Y >= subject.BoundingBox.Bottom / resizeFactor)
                             {
                                 collision_y = subject.BoundingBox.Bottom;
-                                //CalculateDistanceToTerrain(zone, x, y, subject.BoundingBox.Bottom);    
+                                CalculateDistanceToTerrain(zone, x, y, Bottom);    
                             }
                             // If the conditions above do not meet, assume that the top of the BoundingBox collides with terrain.
                             else
@@ -279,13 +279,13 @@ namespace Bearventure.Engine.CollisionDetection
 
         private static void CalculateDistanceToTerrain(int zone, int x, int y, int bottom)
         {
-            for (int i = x; i < 0; i--)
+            for (int i = x; i > 0; i--)
             {
-                for (int j = y; j < 0; j--)
+                for (int j = y; j > 0; j--)
                 {
                     if (Map.CroppedTextures[zone].Data[i, j] == Color.Transparent || Map.CroppedTextures[zone].Data[i, j].A != 255)
                     {
-                        DistanceToTerrain = (int)(j * resizeFactor - bottom);
+                        DistanceToTerrain = (int)(j - bottom);
                         return;
                     }
                 }

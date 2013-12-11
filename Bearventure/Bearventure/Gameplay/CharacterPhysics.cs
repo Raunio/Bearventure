@@ -114,6 +114,8 @@ namespace Bearventure
                     else if (!aPoint.IsOccupied)
                     {
                         aPoint.Attach(subject);
+                        subject.position = new Vector2(collision.B.BoundingBox.X, collision.B.BoundingBox.Y) + aPoint.Location;
+                        subject.velocity = Vector2.Zero;
                         break;
                     }
                 }
@@ -281,8 +283,6 @@ namespace Bearventure
 
         private static void HandleTerrainCollisions(Character subject)
         {
-
-
             int collision = CollisionHandler.CollisionOccursWithMap(subject, subject.velocity);
 
             if (collision == -1)
@@ -297,6 +297,8 @@ namespace Bearventure
             if ((collision == Bottom || collision == Top) && CollisionHandler.TerrainType == Constants.Solid)
             {
                 subject.velocity.Y = 0;
+                if (collision == Bottom && CollisionHandler.DistanceToTerrain > 0)
+                    subject.position.Y += CollisionHandler.DistanceToTerrain;
             }
             else if (collision == Right && CollisionHandler.TerrainType == Constants.Solid)
             {
