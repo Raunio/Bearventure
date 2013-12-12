@@ -102,15 +102,21 @@ namespace Bearventure
 
                 layeredBackground = new LayeredLevelBackground();
 
-                LevelBackground platformLayer = new LevelBackground("Testilevel2/Background/Platform", "Testilevel2Platform", 4, content);
-                LevelBackground tree1Layer = new LevelBackground("Testilevel2/Background/Trees1", "Testilevel2Trees1", 4, content);
-                LevelBackground tree1_1Layer = new LevelBackground("Testilevel2/Background/Trees1-1", "Testilevel2Trees1-1", 4, content);
-                LevelBackground skyLayer = new LevelBackground("Testilevel2/Background/Sky", "Testilevel2Sky", 4, content);
+                LevelBackground platformLayer = new LevelBackground("Testilevel2/Background/Platform", "Testilevel2Platform", 8, content);
+                LevelBackground static1Layer = new LevelBackground("Testilevel2/Background/Static1", "Testilevel2Static1", 8, content);
+                LevelBackground static2Layer = new LevelBackground("Testilevel2/Background/Static1Takana", "Testilevel2Static1Takana", 8, content);
+                LevelBackground Layer2 = new LevelBackground("Testilevel2/Background/2", "Testilevel2-2", 8, content);
+                LevelBackground Layer3 = new LevelBackground("Testilevel2/Background/3", "Testilevel2-3", 8, content);
+                LevelBackground Layer4 = new LevelBackground("Testilevel2/Background/4", "Testilevel2-4", 8, content);
+                LevelBackground skyLayer = new LevelBackground("Testilevel2/Background/Sky", "Testilevel2Sky", 8, content);
 
                 layeredBackground.AddLayer(platformLayer, 0, new Vector2(0, 0));
-                layeredBackground.AddLayer(tree1Layer, 1, new Vector2(0.1f, 0));
-                layeredBackground.AddLayer(tree1_1Layer, 2, new Vector2(0.2f, 0));
-                layeredBackground.AddLayer(skyLayer, 3, new Vector2(1f, 0));
+                layeredBackground.AddLayer(static2Layer, 1, new Vector2(0, 0));
+                layeredBackground.AddLayer(static1Layer, 2, new Vector2(0, 0)); 
+                layeredBackground.AddLayer(Layer2, 3, new Vector2(0.2f, 0));
+                layeredBackground.AddLayer(Layer3, 4, new Vector2(0.3f, 0));
+                layeredBackground.AddLayer(Layer4, 5, new Vector2(0.55f, 0));           
+                layeredBackground.AddLayer(skyLayer, 6, new Vector2(1f, 0));
 
                 layeredBackground.Initialize();
 
