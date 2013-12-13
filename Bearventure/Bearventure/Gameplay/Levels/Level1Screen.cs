@@ -334,7 +334,7 @@ namespace Bearventure
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None,
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
                     RasterizerState.CullNone, null, camera.GetTransformation(ResolutionManager.graphicsDevice.GraphicsDevice));
 
             layeredBackground.Draw(spriteBatch);

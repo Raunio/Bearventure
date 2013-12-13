@@ -17,7 +17,7 @@ namespace Bearventure.Gameplay.Levels
         private Texture2D edgeTexture;
         private int zone_height;
         private int zone_width;
-        private int resizeFactor = 1;
+        private int resizeFactor = 2;
 
         /// <summary>
         /// Gets the amount of fractions the background object has.
@@ -90,8 +90,8 @@ namespace Bearventure.Gameplay.Levels
                     counter++;
                 }
 
-            Width = Backgrounds[0, 0].Width * Fractions / 2;
-            Height = Backgrounds[0, 0].Height * 2;
+            Width = Backgrounds[0, 0].Width * Fractions / 2 * resizeFactor;
+            Height = Backgrounds[0, 0].Height * 2 * resizeFactor;
 
             zone_width = Backgrounds[0, 0].Width * resizeFactor;
             zone_height = Backgrounds[0, 0].Height * resizeFactor;
