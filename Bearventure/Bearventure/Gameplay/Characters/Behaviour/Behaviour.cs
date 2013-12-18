@@ -16,6 +16,8 @@ namespace Bearventure
         private StrategyPlanner strategyPlanner;
         private float waitTimer = 0f;
 
+        private int startPoint;
+
         private float blockCheckFrequency = 50f;
         private float blockCheckTimer = 0f;
         private bool TimeOut
@@ -65,6 +67,7 @@ namespace Bearventure
         public void InitPassive()
         {
             behaviourType = Constants.BehaviourType.Passive;
+            startPoint = (int)subject.position.X;
         }
         /// <summary>
         /// Set up patrol behaviour with no fixed points. The subject starts patrolling to its direction and turns back when a collision happens. This method can be called upon at any time to switch from a previously initialized behaviour type.
@@ -124,8 +127,16 @@ namespace Bearventure
             {
                 case Constants.ActionType.Default:
                     if (behaviourType == Constants.BehaviourType.FixedPatrol)
+                    {
                         if (CharacterPhysics.OnGround(subject) || subject.Orientation == Constants.CharacterOrientation.Air)
                             UpdateFixedPatrol(gameTime);
+                    }
+                    else if (behaviourType == Constants.BehaviourType.Passive)
+                    {
+                        if (CharacterPhysics.OnGround(subject) || subject.Orientation == Constants.CharacterOrientation.Air)
+                            UpdatePassive(gameTime);
+                    }
+                        
                     if (PointY > 0)
                         UpdateAltitude(PointY);
                     break;
@@ -257,6 +268,17 @@ namespace Bearventure
                 GoTo(nextPoint);
             }
 
+        }
+        private void UpdatePassive(GameTime gameTime)
+        {
+            float brakepoint = (subject.walkSpeed / subject.decceleration) * 2;
+
+            if (DistanceBetween((int)subject.position.X, startPoint) <= brakepoint)
+            {
+                subject.SetState(Constants.CharacterState.Stopped);
+            }
+            else
+                GoTo(startPoint);
         }
         private void UpdateAltitude(int point)
         {

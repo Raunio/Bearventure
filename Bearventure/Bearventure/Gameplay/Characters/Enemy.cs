@@ -251,13 +251,13 @@ namespace Bearventure.Gameplay.Characters
                     break;
 
                 case Constants.EnemyType.DelayOwl:
-                    walkSpeed = 7f;
+                    walkSpeed = 14f;
                     runSpeed = 9f;
-                    acceleration = 0.25f;
-                    decceleration = 0.25f;
+                    acceleration =2f;
+                    decceleration = 2f;
                     jumpStrenght = 1;
                     Orientation = Constants.CharacterOrientation.Air;
-                    Vision = 700;
+                    Vision = 300;
                     AttackRange = 110;
                     health = 1;
                     maxHealth = 1;

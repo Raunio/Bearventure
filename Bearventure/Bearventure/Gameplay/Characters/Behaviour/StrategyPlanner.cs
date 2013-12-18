@@ -75,9 +75,14 @@ namespace Bearventure
         private void InitAttackAndFlee()
         {
             defaultAction = new Action(Constants.ActionType.Default);
-            defaultAction.AddCondition(new Condition(Constants.ConditionType.AttackReady, false));
+            defaultAction.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, subject.Vision));
 
             preDeterminedActions.Add(defaultAction);
+
+            flee = new Action(Constants.ActionType.Default);
+            flee.AddCondition(new Condition(Constants.ConditionType.AttackReady, false));
+
+            preDeterminedActions.Add(flee);
 
             chase = new Action(Constants.ActionType.Chase);
             chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.Vision));
