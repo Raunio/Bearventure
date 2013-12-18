@@ -148,7 +148,7 @@
     <Compile Include="Gameplay\GameObjects\Platform.cs" />
     <Compile Include="Gameplay\GameObjects\GameplayObject.cs" />
     <Compile Include="Gameplay\HUD\HeadsUpDisplay.cs" />
-    <Compile Include="Gameplay\HUD\HealthBar.cs" />
+    <Compile Include="Gameplay\HUD\StatusBar.cs" />
     <Compile Include="Gameplay\Levels\LayeredLevelBackground.cs" />
     <Compile Include="Gameplay\Levels\LevelBackground.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

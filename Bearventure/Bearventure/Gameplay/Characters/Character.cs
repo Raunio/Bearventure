@@ -63,6 +63,17 @@ namespace Bearventure.Gameplay.Characters
         public int healthRegen;
         private float regenTimer;
         private float damageTimer;
+
+        public int CurrentSkillResource
+        {
+            get;
+            set;
+        }
+        public int MaxSkillResource
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// Gets or sets the name of the character.
         /// </summary>

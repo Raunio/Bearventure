@@ -135,6 +135,8 @@ namespace Bearventure.Gameplay.Characters
 
             BoundingBoxOffset = 12;
 
+            MaxSkillResource = 100;
+
             ArmorType = Constants.ArmorType.Fur;
         }
 
@@ -357,6 +359,7 @@ namespace Bearventure.Gameplay.Characters
             puukotus.TargetingType = Constants.SkillTarget.Self;
 
             puukotus.UltimateVelocityX = 0f;
+            puukotus.Cost = -25;
             
 
             #endregion
