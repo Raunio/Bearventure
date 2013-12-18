@@ -9,35 +9,23 @@ using Microsoft.Xna.Framework.Content;
 
 namespace Bearventure.Gameplay.HUD
 {
-    public class HealthBar
+    public class StatusBar
     {
         #region Members
 
         private GraphicsDeviceManager graphics;
         private SpriteFont font;
 
-        private Character subject;
-
         private int currentValue;
+        private int targetValue;
+        private int minValue;
 
         private float animTimer;
-
-        private bool fixedPosition;
 
         private float updateSpeed = 25;
 
         #endregion
         #region Gets and Sets
-        /// <summary>
-        /// Gets wether the bar has a fixes location on the viewport.
-        /// </summary>
-        public bool FixedPosition
-        {
-            get
-            {
-                return fixedPosition;
-            }
-        }
         /// <summary>
         /// Gets and sets the position of the health bar.
         /// </summary>
@@ -176,7 +164,7 @@ namespace Bearventure.Gameplay.HUD
         /// <summary>
         /// Gets the current value of the bar.
         /// </summary>
-        public int CurrentValue
+        public int CurrentValueDraw
         {
             get;
             private set;
@@ -213,19 +201,20 @@ namespace Bearventure.Gameplay.HUD
         /// rectangle defines the rectangular shape and size of the health bar.
         /// </summary>
         /// <param name="rectangle"></param>
-        public HealthBar(Rectangle rectangle, Character subject, Vector2 screenOffset, bool fixedPosition)
+        public StatusBar(Rectangle rectangle)
         {
             this.Base = rectangle;
-            this.subject = subject;
-            this.Offset = screenOffset;
             EdgeColor = Color.Black;
-            currentValue = subject.health;
-            this.fixedPosition = fixedPosition;
+
+            targetValue = 1;
+            MaximumValue = 1;
+            minValue = 1;
         }
 
         #endregion
 
-        public void Update(GameTime gameTime, Vector2 cameraPosition)
+
+        public void Update(GameTime gameTime, Vector2 Position, int minVal, int maxVal, int currentVal)
         {
             animTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
@@ -234,27 +223,26 @@ namespace Bearventure.Gameplay.HUD
                 UpdateHealthBar();
                 animTimer = 0;
             }
-            if (fixedPosition)
-                this.Position = cameraPosition - new Vector2(ResolutionManager.GetVirtualResolution().X / 2, ResolutionManager.GetVirtualResolution().Y / 2) + Offset;
-            else
-                this.Position = subject.position + Offset;
 
-            CurrentValue = subject.health;
+            this.Position = Position;
 
-            MaximumValue = subject.maxHealth;
+            CurrentValueDraw = currentVal;
+            MaximumValue = maxVal;
+            minValue = minVal;
+            targetValue = currentVal;
         }
 
         private void UpdateHealthBar()
         {
-            if (currentValue < subject.health)
+            if (currentValue < targetValue)
                 currentValue++;
-            else if (currentValue > subject.health)
+            else if (currentValue > targetValue)
                 currentValue--;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            int unit = Base.Width / subject.maxHealth;
+            int unit = Base.Width / MaximumValue;
 
             int current = unit * currentValue;
 
@@ -286,7 +274,7 @@ namespace Bearventure.Gameplay.HUD
         private void DrawText(SpriteBatch spriteBatch)
         {
 
-            spriteBatch.DrawString(font, CurrentValue.ToString() + "/" + MaximumValue, new Vector2(Position.X, Position.Y - 15), TextColor);
+            spriteBatch.DrawString(font, CurrentValueDraw.ToString() + "/" + MaximumValue, new Vector2(Position.X, Position.Y - 15), TextColor);
         }
     }
 }

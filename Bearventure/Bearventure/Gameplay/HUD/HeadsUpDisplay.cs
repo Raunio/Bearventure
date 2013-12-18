@@ -17,6 +17,8 @@ namespace Bearventure.Gameplay.HUD
         private Vector2 logPosition;
         private List<Enemy> enemies;
         private Player player;
+        private GraphicsDeviceManager graphics;
+        private Vector2 origin;
 
         private int frameCounter;
         private double fpsTimer;
@@ -26,7 +28,9 @@ namespace Bearventure.Gameplay.HUD
 
         private const int DrawDistance = 350;
 
-        private List<HealthBar> healthBars = new List<HealthBar>();
+        private List<StatusBar> enemyHealthBars = new List<StatusBar>();
+        private StatusBar playerHealthBar;
+        private StatusBar playerRageBar;
 
         public void Initialize(ContentManager content, GraphicsDeviceManager graphics, List<Enemy> enemies, Player player)
         {
@@ -35,27 +39,36 @@ namespace Bearventure.Gameplay.HUD
             this.fpsCounterPositionOffset = new Vector2(-graphics.GraphicsDevice.Viewport.Width / 2 + 250, -graphics.GraphicsDevice.Viewport.Height / 2 + 250);
             this.enemies = enemies;
             this.player = player;
+            this.graphics = graphics;
 
             foreach (Enemy e in enemies)
             {
-                HealthBar hb = new HealthBar(new Rectangle(0, 0, 100, 8), e, new Vector2(0, -e.BoundingBox.Height), false);
+                StatusBar hb = new StatusBar(new Rectangle(0, 0, 100, 8));
                 hb.Initialize(graphics, content);
                 hb.EdgeColor = Color.Black;
                 hb.ShowEdges = true;               
                 hb.BarColor = Color.DarkRed;
                 hb.EdgeThickness = 1;
-                healthBars.Add(hb);
+                enemyHealthBars.Add(hb);
             }
 
-            HealthBar playerBar = new HealthBar(new Rectangle(0, 0, 210, 15), player, new Vector2(135, 15), true);
-            playerBar.Initialize(graphics, content);
-            playerBar.EdgeColor = Color.Black;
-            playerBar.ShowEdges = true;
-            playerBar.BarColor = Color.DarkRed;
-            playerBar.EdgeThickness = 1;
-            playerBar.ShowText = true;
-            playerBar.TextColor = Color.Yellow;
-            healthBars.Add(playerBar);
+            playerHealthBar = new StatusBar(new Rectangle(0, 0, 210, 15));
+            playerHealthBar.Initialize(graphics, content);
+            playerHealthBar.EdgeColor = Color.Black;
+            playerHealthBar.ShowEdges = true;
+            playerHealthBar.BarColor = Color.DarkRed;
+            playerHealthBar.EdgeThickness = 1;
+            playerHealthBar.ShowText = true;
+            playerHealthBar.TextColor = Color.Yellow;
+
+            playerRageBar = new StatusBar(new Rectangle(0, 0, 210, 15));
+            playerRageBar.Initialize(graphics, content);
+            playerRageBar.EdgeColor = Color.Black;
+            playerRageBar.ShowEdges = true;
+            playerRageBar.BarColor = Color.Yellow;
+            playerRageBar.EdgeThickness = 1;
+            playerRageBar.ShowText = true;
+            playerRageBar.TextColor = Color.Black;
         }
 
         public void Update(GameTime gameTime, Vector2 cameraPosition)
@@ -63,8 +76,15 @@ namespace Bearventure.Gameplay.HUD
             logPosition = cameraPosition + logOffset;
             fpsCounterPosition = cameraPosition + fpsCounterPositionOffset;
 
-            foreach (HealthBar hb in healthBars)
-                hb.Update(gameTime, cameraPosition);
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                enemyHealthBars[i].Update(gameTime, enemies[i].position, 0, enemies[i].maxHealth, enemies[i].health);
+            }
+
+            origin = new Vector2(cameraPosition.X - graphics.GraphicsDevice.Viewport.Width / 2, cameraPosition.Y - graphics.GraphicsDevice.Viewport.Height / 2);
+
+            playerHealthBar.Update(gameTime, origin + new Vector2(450, 200), 0, player.maxHealth, player.health);
+            playerRageBar.Update(gameTime, origin + new Vector2(450, 230), 0, player.MaxSkillResource, player.CurrentSkillResource);
 
             UpdateFPS(gameTime);
         }
@@ -80,6 +100,8 @@ namespace Bearventure.Gameplay.HUD
             DrawCombatLog(spriteBatch);
 
             DrawFps(spriteBatch);
+            playerHealthBar.Draw(spriteBatch);
+            playerRageBar.Draw(spriteBatch);
         }
 
         private void DrawCombatLog(SpriteBatch spriteBatch)
@@ -116,14 +138,9 @@ namespace Bearventure.Gameplay.HUD
 
         private void DrawHealthBars(SpriteBatch spriteBatch)
         {
-            foreach (HealthBar hb in healthBars)
+            foreach (StatusBar hb in enemyHealthBars)
             {
-                if (!hb.FixedPosition)
-                {
-                    if (hb.CurrentValue > 0 && Vector2.Distance(player.position, hb.Position) < DrawDistance)
-                        hb.Draw(spriteBatch);
-                }
-                else
+                if (hb.CurrentValueDraw > 0 && Vector2.Distance(player.position, hb.Position) < DrawDistance)
                     hb.Draw(spriteBatch);
             } 
         }

@@ -53,7 +53,7 @@ namespace Bearventure.Gameplay.Characters.Skills
         /// </summary>
         public int Cost
         {
-            private set;
+            set;
             get;
         }
         /// <summary>

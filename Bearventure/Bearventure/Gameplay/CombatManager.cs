@@ -79,8 +79,9 @@ namespace Bearventure.Gameplay
             }
 
             if(player.ActiveSkill != null)
-                if (player.ActiveSkill.HitsCharacter(player))
+                if (!player.ActiveSkill.HasDamaged && player.ActiveSkill.HitsCharacter(player))
                 {
+                    AdjustResources(player, player.ActiveSkill);
                     InflictDamage(player, player.ActiveSkill);
                     InflictDebuffs(player, player.ActiveSkill, player.directionX);
 
@@ -109,6 +110,11 @@ namespace Bearventure.Gameplay
                     SoundEffectManager.Instance.PlaySound(Constants.Crush);
                 }
             }
+        }
+
+        private void AdjustResources(Character subject, CharacterSkill skill)
+        {
+            subject.CurrentSkillResource -= player.ActiveSkill.Cost;
         }
 
         private void InflictDamage(Character subject, CharacterSkill skill)

@@ -80,8 +80,6 @@ namespace Bearventure
 
         public void DestroyScreen()
         {
-            
-
             ScreenManager.RemoveScreen(this);
         }
 
