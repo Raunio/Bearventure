@@ -133,7 +133,7 @@ namespace Bearventure.Gameplay.Characters
 
             mass = 150;
 
-            BoundingBoxOffset = 12;
+            BoundingBoxOffset = 8;
 
             MaxSkillResource = 100;
 
@@ -359,6 +359,7 @@ namespace Bearventure.Gameplay.Characters
             puukotus.TargetingType = Constants.SkillTarget.Self;
 
             puukotus.UltimateVelocityX = 0f;
+            puukotus.Acceleration = 1f;
             puukotus.Cost = -25;
             
 

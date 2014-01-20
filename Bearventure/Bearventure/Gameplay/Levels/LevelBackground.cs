@@ -114,6 +114,17 @@ namespace Bearventure.Gameplay.Levels
                             positionOffset.Y + y * Backgrounds[x, y].Height * resizeFactor), null, Color.White,
                             0f, Vector2.Zero, resizeFactor, SpriteEffects.None, 0f);
         }
+        public void Draw(SpriteBatch spriteBatch, Vector2 positionOffset, List<int> zones)
+        {
+            foreach(int i in zones)
+                for (int x = 0; x < Fractions / 2; x++)
+                    for (int y = 0; y < 2; y++)
+                        if(i == x * 2 + y)
+                            spriteBatch.Draw(Backgrounds[x, y],
+                                new Vector2(positionOffset.X + x * Backgrounds[x, y].Width * resizeFactor,
+                                    positionOffset.Y + y * Backgrounds[x, y].Height * resizeFactor), null, Color.White,
+                                    0f, Vector2.Zero, resizeFactor, SpriteEffects.None, 0f);
+        }
         /// <summary>
         /// Method used for testing
         /// </summary>
@@ -128,35 +139,6 @@ namespace Bearventure.Gameplay.Levels
                     spriteBatch.Draw(edgeTexture, new Rectangle(Backgrounds[x, y].Width * x * resizeFactor,
                         Backgrounds[x, y].Height * y * resizeFactor, 1, Backgrounds[x, y].Height * resizeFactor), Color.White);
                 }
-        }
-        /// <summary>
-        /// Returns the zone the rectangle is on.
-        /// </summary>
-        /// <param name="rectangle"></param>
-        /// <returns></returns>
-        public int OnZone(Rectangle rectangle)
-        {
-            int zone = 0;
-
-            for (int i = 0; i < Fractions / 2; i++)
-            {
-                if (rectangle.X > zone_width * i)
-                {
-                    if (rectangle.X < zone_width * (i + 1))
-                    {
-                        if (rectangle.Y > zone_height)
-                        {
-                            zone = i * resizeFactor + 1;
-                        }
-                        else
-                        {
-                            zone = i * resizeFactor;
-                        }
-                    }
-                }
-            }
-
-            return zone;
         }
 
     }

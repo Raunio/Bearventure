@@ -101,7 +101,6 @@ namespace Bearventure
         private void InitWormLatching()
         {
             latch = new Action(Constants.ActionType.Latch, true);
-            latch.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.AttackRange));
             latch.AddCondition(new Condition(Constants.ConditionType.CollidesWithPlayer, true));
 
             preDeterminedActions.Add(latch);

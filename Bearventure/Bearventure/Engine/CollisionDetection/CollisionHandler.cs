@@ -116,6 +116,59 @@ namespace Bearventure.Engine.CollisionDetection
 
             return on_zones;
         }
+
+        public static List<int> OnAdjustedZones(Rectangle rectangle)
+        {
+            List<int> on_zones = new List<int>();
+            List<int> zones_x = new List<int>();
+            List<int> zones_y = new List<int>();
+
+            int Left = rectangle.X / resizeFactor;
+            int Right = rectangle.Right / resizeFactor;
+            int Top = rectangle.Top / resizeFactor;
+            int Bottom = rectangle.Bottom / resizeFactor;
+
+            if (Bottom >= zone_height)
+            {
+                if (Top < zone_height)
+                    zones_y.Add(0);
+
+                zones_y.Add(1);
+            }
+            else
+            {
+                zones_y.Add(0);
+            }
+
+            for (int i = 0; i < Map.Fractions / 2; i++)
+            {
+                if (Right >= zone_width * i)
+                {
+                    if (Right <= zone_width * (i + 1))
+                    {
+                        if (Left < zone_width * i)
+                        {
+                            zones_x.Add(i - 1);
+                        }
+
+                        zones_x.Add(i);
+                    }
+                }
+
+            }
+
+            foreach (int y in zones_y)
+            {
+                foreach (int x in zones_x)
+                {
+                    if (!on_zones.Contains(x * 2 + y))
+                        on_zones.Add(x * 2 + y);
+                }
+            }
+
+
+            return on_zones;
+        }
         /// <summary>
         /// Adjusts a rectangles bounds so that they do not exceed the bounds of an individual zone.
         /// </summary>
@@ -200,7 +253,9 @@ namespace Bearventure.Engine.CollisionDetection
                             if (CollisionAreaRectangleY(subject, movement.Y).Y >= subject.BoundingBox.Bottom / resizeFactor)
                             {
                                 collision_y = subject.BoundingBox.Bottom;
-                                CalculateDistanceToTerrain(zone, x, y, Bottom);    
+
+                                CalculateDistanceToTerrain(zone, x, y, subject.BoundingBox.Bottom / resizeFactor);
+
                             }
                             // If the conditions above do not meet, assume that the top of the BoundingBox collides with terrain.
                             else
@@ -271,7 +326,7 @@ namespace Bearventure.Engine.CollisionDetection
                     }  
                 }
 
-                HeightDifference = obstacle_height;
+                HeightDifference = obstacle_height * resizeFactor;
             }          
 
             return collision_x + collision_y;
@@ -279,15 +334,17 @@ namespace Bearventure.Engine.CollisionDetection
 
         private static void CalculateDistanceToTerrain(int zone, int x, int y, int bottom)
         {
-            for (int i = x; i > 0; i--)
+            for (int j = y; j > -zone_height; j--)
             {
-                for (int j = y; j > 0; j--)
+                if (Map.CroppedTextures[zone].Data[x, j] == Color.Transparent || Map.CroppedTextures[zone].Data[x, j].A != 255)
                 {
-                    if (Map.CroppedTextures[zone].Data[i, j] == Color.Transparent || Map.CroppedTextures[zone].Data[i, j].A != 255)
+                    if (bottom > j && j < zone_height / 2 && bottom > zone_height / 2)
                     {
-                        DistanceToTerrain = (int)(j - bottom);
-                        return;
+                        DistanceToTerrain = (j + zone_height - bottom) * resizeFactor;
                     }
+                    else
+                        DistanceToTerrain = (j - bottom) * resizeFactor;
+                    return;
                 }
             }
         }

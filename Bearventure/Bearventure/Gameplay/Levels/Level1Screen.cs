@@ -155,7 +155,7 @@ namespace Bearventure
 
                 Texture2D[] collisionMap = new Texture2D[layeredBackground.Fractions];
 
-                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 4, 8), enemies, _player, platforms, ladders, content);
+                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 8, 2), enemies, _player, platforms, ladders, content);
 
                 CharacterPhysics.Gravity = 1.5f;
 
@@ -263,6 +263,15 @@ namespace Bearventure
                     if(l.IsActive)
                     l.Update(gameTime);
                 }
+
+                if (Keyboard.GetState().IsKeyDown(Keys.OemMinus))
+                {
+                    camera.Zoom -= 0.1f;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.OemPlus))
+                {
+                    camera.Zoom += 0.1f;
+                }
              
                 cameraController.Update(gameTime);
                 
@@ -336,11 +345,11 @@ namespace Bearventure
                     RasterizerState.CullNone, null, camera.GetTransformation(ResolutionManager.graphicsDevice.GraphicsDevice));
 
             layeredBackground.Draw(spriteBatch);
-            //background.Draw(spriteBatch);
-            //background.DrawGrid(spriteBatch);
+            //layeredBackground.DrawGrid(spriteBatch);
             
             //CollisionHandler.Map.DrawMap(spriteBatch);
-            //CollisionHandler.Map.DrawGrid(spriteBatch);
+            CollisionHandler.Map.DrawGrid(spriteBatch);
+            //CollisionHandler.DrawCollisionRectangles(spriteBatch, _player, _player.velocity);
 
             foreach (Ladder l in ladders)
             {

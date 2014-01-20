@@ -109,14 +109,14 @@ namespace Bearventure
                     {
                         subject.position = new Vector2(collision.B.BoundingBox.X, collision.B.BoundingBox.Y) + aPoint.Location;
                         subject.velocity = Vector2.Zero;
-                        break;
+                        return;
                     }
                     else if (!aPoint.IsOccupied)
                     {
                         aPoint.Attach(subject);
                         subject.position = new Vector2(collision.B.BoundingBox.X, collision.B.BoundingBox.Y) + aPoint.Location;
                         subject.velocity = Vector2.Zero;
-                        break;
+                        return;
                     }
                 }
             }
@@ -137,7 +137,7 @@ namespace Bearventure
         }
         private static void Walk(Character subject)
         {
-            if (!OnGround(subject) && subject.Orientation == Constants.CharacterOrientation.Ground && !OnLadder(subject))
+            if (!OnGround(subject) && subject.Orientation == Constants.CharacterOrientation.Ground && !OnLadder(subject) && subject.velocity.Y > Gravity * 2)
             {
                 subject.state = Constants.CharacterState.Falling;
                 return;
@@ -196,7 +196,7 @@ namespace Bearventure
                 subject.velocity.Y -= subject.jumpStrenght;
                 subject.position.Y -= subject.jumpStrenght;
             }
-            if(subject.velocity.Y > Gravity)
+            if(subject.velocity.Y > Gravity * 2)
             {
                 subject.state = Constants.CharacterState.Falling;
                 return;
@@ -225,7 +225,7 @@ namespace Bearventure
                     subject.jumpTime++;
                 }
             }
-            if (subject.velocity.Y > Gravity)
+            if (subject.velocity.Y > Gravity * 2)
             {
                 subject.state = Constants.CharacterState.Falling;
                 return;
@@ -300,22 +300,26 @@ namespace Bearventure
                 if (collision == Bottom && CollisionHandler.DistanceToTerrain > 0)
                     subject.position.Y += CollisionHandler.DistanceToTerrain;
             }
+
+            else if ((collision == Bottom + Left || collision == Bottom + Right) && CollisionHandler.TerrainType == Constants.Solid)
+            {
+                subject.velocity.Y = 0;
+
+                if (CollisionHandler.HeightDifference < subject.BoundingBox.Height / 5)
+                {
+                    subject.position.Y -= CollisionHandler.HeightDifference;
+                    return;
+                }
+
+                subject.velocity.X = 0;
+            }
+
             else if (collision == Right && CollisionHandler.TerrainType == Constants.Solid)
             {
                 subject.velocity.X = 0;
             }
             else if (collision == Left && CollisionHandler.TerrainType == Constants.Solid)
             {
-                subject.velocity.X = 0;
-            }
-
-            else if ((collision == Bottom + Left || collision == Bottom + Right) && CollisionHandler.TerrainType == Constants.Solid)
-            {
-                subject.velocity.Y = 0;
-
-                if (CollisionHandler.HeightDifference < subject.BoundingBox.Height / 10)
-                    subject.position.Y -= CollisionHandler.HeightDifference;
-
                 subject.velocity.X = 0;
             }
 

@@ -1,6 +1,7 @@
 ﻿
 using Bearventure.Gameplay.Characters;
 using Microsoft.Xna.Framework;
+using Bearventure.Engine.CollisionDetection;
 namespace Bearventure
 {
     /// <summary>
@@ -94,7 +95,10 @@ namespace Bearventure
                     }
                     break;
                 case Constants.ConditionType.CollidesWithPlayer:
-                    if(subject.BoundingBox.Intersects(player.BoundingBox) == (bool)Value) { return true; }
+                    if(subject.BoundingBox.Intersects(player.BoundingBox) == (bool)Value) 
+                    { 
+                        return true; 
+                    }
                     break;
                 default:
                     return false;

@@ -364,9 +364,9 @@ namespace Bearventure.Gameplay.Characters.Skills
 
             if (IsActive)
             {
-                if (subject.velocity.X < UltimateVelocityX + Acceleration)
+                if (subject.velocity.X < UltimateVelocityX - Acceleration)
                     subject.velocity.X += Acceleration;
-                else if (subject.velocity.X > UltimateVelocityX - Acceleration)
+                else if (subject.velocity.X > UltimateVelocityX + Acceleration)
                     subject.velocity.X -= Acceleration;
                 else
                     subject.velocity.X = UltimateVelocityX;
