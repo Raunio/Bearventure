@@ -1,6 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <XnaContent xmlns:Generic="System.Collections.Generic">
   <Asset Type="Generic:List[XmlItems.XmlEnemy]">
-   
+    <Item>
+      <Index>2</Index>
+      <Position>
+        <X>5298</X>
+        <Y>4260</Y>
+      </Position>
+      <Type>BlackmetalBadger</Type>
+      <Rectangle>
+        <Location>
+          <X>3648</X>
+          <Y>4660</Y>
+        </Location>
+        <Size>
+          <Width>50</Width>
+          <Height>50</Height>
+        </Size>
+        <X>3648</X>
+        <Y>2333</Y>
+        <Width>50</Width>
+        <Height>50</Height>
+      </Rectangle>
+      <Name>BlackmetalBadger_2</Name>
+      <Health>0</Health>
+      <WalkSpeed>0</WalkSpeed>
+      <RunSpeed>0</RunSpeed>
+      <Scale>1</Scale>
+      <Acceleration>0</Acceleration>
+      <Deacceleration>0</Deacceleration>
+      <AttackSpeed>0</AttackSpeed>
+      <Mass>0</Mass>
+      <JumpStrength>0</JumpStrength>
+      <Vision>0</Vision>
+      <AttackDamage>0</AttackDamage>
+      <behaviour>FixedPatrol</behaviour>
+      <combatBehaviour>Default</combatBehaviour>
+      <PatrolPoint_A>1100</PatrolPoint_A>
+      <PatrolPoint_B>6100</PatrolPoint_B>
+    </Item>
   </Asset>
 </XnaContent>

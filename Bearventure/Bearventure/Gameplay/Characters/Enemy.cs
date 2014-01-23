@@ -130,22 +130,7 @@ namespace Bearventure.Gameplay.Characters
         #endregion
 
         #region Initialization
-
-        public Enemy(Constants.EnemyType type, Vector2 position, Texture2D spriteSheet, Player player)
-        {
-            TAG = "Enemy";
-            this.type = type;
-            this.position = position;
-            this.spriteSheet = spriteSheet;
-
-            InitAnimations();
-            InitStats();
-            InitSkills();
-            this.player = player;
-            InitBehaviour(player, 0, 0);
-        }
-
-        public Enemy(Constants.EnemyType type, int x, int y, Texture2D spriteSheet, Player player, int patrol_A, int patrol_B)
+        public Enemy(Constants.EnemyType type, Constants.BehaviourType behaviourType, int x, int y, Texture2D spriteSheet, Player player, int patrol_A, int patrol_B, int waitTime)
         {
             TAG = "Enemy";
             this.type = type;
@@ -155,7 +140,10 @@ namespace Bearventure.Gameplay.Characters
             InitAnimations();
             InitStats();
             InitSkills();
-            InitBehaviour(player, patrol_A, patrol_B);
+            if (behaviourType == Constants.BehaviourType.Default)
+                InitDefaultBehaviour(player, patrol_A, patrol_B);
+            else
+                InitCustomBehaviour(behaviourType, player, patrol_A, patrol_B, waitTime);
         }
         /// <summary>
         /// Initialize all the animations.
@@ -200,25 +188,59 @@ namespace Bearventure.Gameplay.Characters
         /// <param name="player">Pointer to player required for AI Initialization</param>
         /// <param name="pointA">Patrol point A</param>
         /// <param name="pointB">PAtrol point B</param>
-        private void InitBehaviour(Player player, int pointA, int pointB)
+        private void InitDefaultBehaviour(Player player, int pointA, int pointB)
         {
+            InitDefaultCombatBehaviour();
+            behaviour = new Behaviour(this, player);
+
             switch (type)
             {
-                case Constants.EnemyType.BlackMetalBadger:
-                    combatBehaviour = Constants.CombatBehaviour.Default;
-                    behaviour = new Behaviour(this, player);
+                case Constants.EnemyType.BlackMetalBadger: 
                     behaviour.InitFixedPatrol(pointA, pointB);
                     behaviour.WaitTime = 2000;
                     break;
 
                 case Constants.EnemyType.DelayOwl:
-                    combatBehaviour = Constants.CombatBehaviour.AttackAndFlee;
-                    behaviour = new Behaviour(this, player);
                     behaviour.InitPassive();
                     break;
                 case Constants.EnemyType.OscillatorWorm:
+                    behaviour.InitPassive();
+                    break;
+            }
+        }
+
+        private void InitDefaultCombatBehaviour()
+        {
+            switch (type)
+            {
+                case Constants.EnemyType.BlackMetalBadger:
                     combatBehaviour = Constants.CombatBehaviour.Default;
-                    behaviour = new Behaviour(this, player);
+                    break;
+
+                case Constants.EnemyType.DelayOwl:
+                    combatBehaviour = Constants.CombatBehaviour.AttackAndFlee;
+                    break;
+                case Constants.EnemyType.OscillatorWorm:
+                    combatBehaviour = Constants.CombatBehaviour.Default;
+                    break;
+            }
+        }
+
+        private void InitCustomBehaviour(Constants.BehaviourType behaviourType, Player player, int pointA, int pointB, int waitTime)
+        {
+            InitDefaultCombatBehaviour();
+            behaviour = new Behaviour(this, player);
+
+            switch (behaviourType)
+            {
+                case Constants.BehaviourType.FixedPatrol:
+                    behaviour.InitFixedPatrol(pointA, pointB);
+                    behaviour.WaitTime = waitTime;
+                    break;
+                case Constants.BehaviourType.FreePatrol:
+                    behaviour.InitFreePatrol();
+                    break;
+                case Constants.BehaviourType.Passive:
                     behaviour.InitPassive();
                     break;
             }

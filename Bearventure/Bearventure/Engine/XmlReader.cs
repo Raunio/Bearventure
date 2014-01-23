@@ -35,6 +35,7 @@ namespace Bearventure
             foreach (XmlEnemy xEnemy in xEnemies)
             {
                 Bearventure.Constants.EnemyType type = Bearventure.Constants.EnemyType.BlackMetalBadger;
+                Bearventure.Constants.BehaviourType behaviourType = Constants.BehaviourType.Default;
                 Texture2D spriteSheet = null;
 
                 switch (xEnemy.Type)
@@ -56,7 +57,23 @@ namespace Bearventure
                         break;
                 }
 
-                Enemy e = new Enemy(type, xEnemy.X, xEnemy.Y, spriteSheet, mPlayer, xEnemy.PatrolPoint_A, xEnemy.PatrolPoint_B);
+                switch (xEnemy.behaviour)
+                {
+                    case XmlEnemy.Behaviour.Default:
+                        behaviourType = Constants.BehaviourType.Default;
+                        break;
+                    case XmlEnemy.Behaviour.FixedPatrol:
+                        behaviourType = Constants.BehaviourType.FixedPatrol;
+                        break;
+                    case XmlEnemy.Behaviour.FreePatrol:
+                        behaviourType = Constants.BehaviourType.FreePatrol;
+                        break;
+                    case XmlEnemy.Behaviour.Passive:
+                        behaviourType = Constants.BehaviourType.Passive;
+                        break;
+                }
+
+                Enemy e = new Enemy(type, behaviourType, xEnemy.X, xEnemy.Y, spriteSheet, mPlayer, xEnemy.PatrolPoint_A, xEnemy.PatrolPoint_B, 2000);
                 e.Name = xEnemy.Name;
 
                 enemies.Add(e);

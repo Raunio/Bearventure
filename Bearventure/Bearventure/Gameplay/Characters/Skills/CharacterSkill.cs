@@ -502,6 +502,7 @@ namespace Bearventure.Gameplay.Characters.Skills
         public void Cancel()
         {
             IsActive = false;
+            subject.state = Constants.CharacterState.Stopped;
         }
     }
 }

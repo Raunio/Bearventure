@@ -134,7 +134,7 @@
     <Compile Include="Gameplay\Characters\Behaviour\Behaviour.cs" />
     <Compile Include="Gameplay\CharacterPhysics.cs" />
     <Compile Include="Gameplay\Characters\Behaviour\Condition.cs" />
-    <Compile Include="Gameplay\Characters\Behaviour\StrategyPlanner.cs" />
+    <Compile Include="Gameplay\Characters\Behaviour\ActionManager.cs" />
     <Compile Include="Gameplay\Characters\Character.cs" />
     <Compile Include="Gameplay\Characters\Skills\CharacterSkill.cs" />
     <Compile Include="Gameplay\Characters\Skills\CharacterSkillCombo.cs" />

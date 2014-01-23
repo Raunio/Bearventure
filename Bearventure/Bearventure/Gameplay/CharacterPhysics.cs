@@ -365,8 +365,13 @@ namespace Bearventure
             {
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {
-                    subject.velocity.X /= 2;
-                    collision.B.position.X += subject.velocity.X;
+                    if (!Blocked((Character)collision.B))
+                    {
+                        subject.velocity.X /= 2;
+                        collision.B.position.X += subject.velocity.X;
+                    }
+                    else
+                        subject.velocity.X = 0;
                 }
                 else if (collision.A.Mass == -1 && !Blocked((Character)collision.B, Constants.DirectionX.Left))
                 {
@@ -380,9 +385,14 @@ namespace Bearventure
             else if (collision.CollisionLocation == Right && collision.B.TAG != "Ladder")
             {
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
-                {
-                    subject.velocity.X /= 2;
-                    collision.B.position.X += subject.velocity.X;
+                {   
+                    if (!Blocked((Character)collision.B))
+                    {
+                        subject.velocity.X /= 2;
+                        collision.B.position.X += subject.velocity.X;
+                    }
+                    else
+                        subject.velocity.X = 0;
                 }
                 else if (collision.A.Mass == -1 && !Blocked((Character)collision.B, Constants.DirectionX.Right))
                 {
@@ -535,16 +545,13 @@ namespace Bearventure
         /// <returns></returns>
         public static bool Blocked(Character subject)
         {
-            int RightCheck = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(2, 0));
+            int RightCheck = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(2, -0));
             int LeftCheck = CollisionHandler.CollisionOccursWithMap(subject, new Vector2(-2, 0));
 
-            if (RightCheck == subject.BoundingBox.Right)
+            if (RightCheck == subject.BoundingBox.Right && subject.directionX == Constants.DirectionX.Right)
                 return true;
-            if (LeftCheck == subject.BoundingBox.Left)
+            if (LeftCheck == subject.BoundingBox.Left && subject.directionX == Constants.DirectionX.Left)
                 return true;
-
-            //RightCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(2, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(2, 0)).CollisionLocation;
-            //LeftCheck = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(-2, 0)) == null ? 0 : CollisionHandler.CollisionOccursWithObject(subject, new Vector2(-2, 0)).CollisionLocation;
 
             ObjectCollisionEvent RightEvent = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(2, 0));
             ObjectCollisionEvent LeftEvent = CollisionHandler.CollisionOccursWithObject(subject, new Vector2(-2, 0));
@@ -553,7 +560,7 @@ namespace Bearventure
             {
                 RightCheck = 0;
             }
-            else
+            else if(subject.directionX == Constants.DirectionX.Right)
             {
                 RightCheck = RightEvent.CollisionLocation;
             }
@@ -562,7 +569,7 @@ namespace Bearventure
             {
                 LeftCheck = 0;
             }
-            else
+            else if(subject.directionX == Constants.DirectionX.Left)
             {
                 LeftCheck = LeftEvent.CollisionLocation;
             }

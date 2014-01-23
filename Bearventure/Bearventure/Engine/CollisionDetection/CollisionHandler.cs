@@ -311,7 +311,7 @@ namespace Bearventure.Engine.CollisionDetection
 
                         if ((Map.CroppedTextures[zone].Data[x, y] != Color.Transparent && Map.CroppedTextures[zone].Data[x, y] != Color.White) && Map.CroppedTextures[zone].Data[x, y].A == 255)
                         {
-                            if (Left <= subject.BoundingBox.Left / resizeFactor)
+                            if (CollisionAreaRectangleX(subject, movement.X).Left <= subject.BoundingBox.Left / resizeFactor)
                             {
                                 collision_x = subject.BoundingBox.Left;
                             }

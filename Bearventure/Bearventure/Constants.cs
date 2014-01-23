@@ -126,6 +126,7 @@ namespace Bearventure
         };
         public enum BehaviourType
         {
+            Default,
             Passive,
             FreePatrol,
             FixedPatrol,

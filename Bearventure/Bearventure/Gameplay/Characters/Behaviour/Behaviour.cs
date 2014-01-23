@@ -13,12 +13,12 @@ namespace Bearventure
         private Enemy subject;
         private Character target;
         private Constants.BehaviourType behaviourType;
-        private StrategyPlanner strategyPlanner;
+        private ActionManager actionManager;
         private float waitTimer = 0f;
 
         private int startPoint;
 
-        private float blockCheckFrequency = 50f;
+        private float blockCheckFrequency = 250f;
         private float blockCheckTimer = 0f;
         private bool TimeOut
         {
@@ -58,7 +58,7 @@ namespace Bearventure
             this.subject = subject;
             subject.state = Constants.CharacterState.Stopped;
             target = player;
-            strategyPlanner = new StrategyPlanner(subject, target);
+            actionManager = new ActionManager(subject, target);
             PointY = subject.Orientation == Constants.CharacterOrientation.Air ? (int)subject.position.Y : 0;
         }
         /// <summary>
@@ -75,6 +75,9 @@ namespace Bearventure
         public void InitFreePatrol()
         {
             behaviourType = Constants.BehaviourType.FreePatrol;
+            this.pointA = 0;
+            this.pointB = 99999;
+            nextPoint = pointA;
         }
         /// <summary>
         /// Set up patrol behaviour with fixed points. The subject continuously patrols from point_A to point_B. Starting direction does not matter, the subject starts heading towards point_A automaticly. This method can be called upon at any time to switch from a previously initialized behaviour type.
@@ -121,9 +124,9 @@ namespace Bearventure
         {
             blockCheckTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            strategyPlanner.Plan(gameTime);
+            actionManager.Plan(gameTime);
 
-            switch (strategyPlanner.CurrentAction())
+            switch (actionManager.CurrentAction())
             {
                 case Constants.ActionType.Default:
                     if (behaviourType == Constants.BehaviourType.FixedPatrol)
@@ -135,6 +138,11 @@ namespace Bearventure
                     {
                         if (CharacterPhysics.OnGround(subject) || subject.Orientation == Constants.CharacterOrientation.Air)
                             UpdatePassive(gameTime);
+                    }
+                    else if (behaviourType == Constants.BehaviourType.FreePatrol)
+                    {
+                        if (CharacterPhysics.OnGround(subject) || subject.Orientation == Constants.CharacterOrientation.Air)
+                            UpdateFreePatrol(gameTime);
                     }
                         
                     if (PointY > 0)
@@ -210,9 +218,17 @@ namespace Bearventure
 
             }
         }
-        private void UpdateFreePatrol()
+        private void UpdateFreePatrol(GameTime gameTime)
         {
+            GoTo(nextPoint);
 
+            if (CharacterPhysics.Blocked(subject))
+            {
+                if (nextPoint == pointA)
+                    nextPoint = pointB;
+                else
+                    nextPoint = pointA;
+            }
         }
         private void UpdateFixedPatrol(GameTime gameTime)
         {
