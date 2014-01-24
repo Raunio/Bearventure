@@ -95,6 +95,11 @@ namespace Bearventure.Gameplay.Characters
         #endregion
 
         #region Gets & Sets
+        public int CustomFrameRowPosition
+        {
+            get;
+            set;
+        }
         public Texture2D spriteSheet
         {
             get;
@@ -500,7 +505,7 @@ namespace Bearventure.Gameplay.Characters
         private void Update()
         {
             frameRectangle.X = CurrentFrame * FrameWidth;
-            frameRectangle.Y = spriteSheetRow * FrameHeight;
+            frameRectangle.Y = CustomFrameRowPosition != 0 ? CustomFrameRowPosition : spriteSheetRow * FrameHeight;
             frameRectangle.Width = FrameWidth;
             frameRectangle.Height = FrameHeight;
         }

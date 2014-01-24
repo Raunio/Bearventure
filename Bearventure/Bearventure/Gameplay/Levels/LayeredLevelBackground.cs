@@ -137,10 +137,10 @@ namespace Bearventure.Gameplay.Levels
 
         public List<int> OnZones(Rectangle rectangle)
         {
-            int Left = rectangle.X;
-            int Right = rectangle.Right;
-            int Top = rectangle.Top;
-            int Bottom = rectangle.Bottom;
+            int Left = rectangle.X / 2;
+            int Right = rectangle.Right / 2;
+            int Top = rectangle.Top / 2;
+            int Bottom = rectangle.Bottom / 2;
 
             int zone_height = layersInDrawingOrder.Last().background.Height / 2;
             int zone_width = layersInDrawingOrder.Last().background.Width / layersInDrawingOrder[0].background.Fractions / 2;

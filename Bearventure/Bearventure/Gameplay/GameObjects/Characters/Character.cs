@@ -38,6 +38,14 @@ namespace Bearventure.Gameplay.Characters
             set;
         }
         /// <summary>
+        /// Sets and gets the amount of force needed to knockback the character.
+        /// </summary>
+        public int KnockBackTreshold
+        {
+            get;
+            protected set;
+        }
+        /// <summary>
         /// The maximum distance from where the characters sound effects can be heard relative to player.
         /// </summary>
         public float MaxSoundEffectDistance

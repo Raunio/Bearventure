@@ -100,13 +100,13 @@ namespace Bearventure
 
                 layeredBackground = new LayeredLevelBackground();
 
-                LevelBackground platformLayer = new LevelBackground("Testilevel2/Background/Platform", "Testilevel2Platform", 8, content);
-                LevelBackground static1Layer = new LevelBackground("Testilevel2/Background/Static1", "Testilevel2Static1", 8, content);
-                LevelBackground static2Layer = new LevelBackground("Testilevel2/Background/Static1Takana", "Testilevel2Static1Takana", 8, content);
-                LevelBackground Layer2 = new LevelBackground("Testilevel2/Background/2", "Testilevel2-2", 8, content);
-                LevelBackground Layer3 = new LevelBackground("Testilevel2/Background/3", "Testilevel2-3", 8, content);
-                LevelBackground Layer4 = new LevelBackground("Testilevel2/Background/4", "Testilevel2-4", 8, content);
-                LevelBackground skyLayer = new LevelBackground("Testilevel2/Background/Sky", "Testilevel2Sky", 8, content);
+                LevelBackground platformLayer = new LevelBackground("Testilevel2/Background/Platform", "Testilevel2Platform", 32, content);
+                LevelBackground static1Layer = new LevelBackground("Testilevel2/Background/Static1", "Testilevel2Static1", 32, content);
+                LevelBackground static2Layer = new LevelBackground("Testilevel2/Background/Static1Takana", "Testilevel2Static1Takana", 32, content);
+                LevelBackground Layer2 = new LevelBackground("Testilevel2/Background/2", "Testilevel2-2", 32, content);
+                LevelBackground Layer3 = new LevelBackground("Testilevel2/Background/3", "Testilevel2-3", 32, content);
+                LevelBackground Layer4 = new LevelBackground("Testilevel2/Background/4", "Testilevel2-4", 32, content);
+                LevelBackground skyLayer = new LevelBackground("Testilevel2/Background/Sky", "Testilevel2Sky", 32, content);
 
                 layeredBackground.AddLayer(platformLayer, 0, new Vector2(0, 0));
                 layeredBackground.AddLayer(static2Layer, 1, new Vector2(0, 0));
@@ -132,7 +132,7 @@ namespace Bearventure
 
                 platforms = new List<Platform>();
                 Platform plat = new Platform(content, Constants.PlatformType.MovingGrassPlatform, new Vector2(5100, 5200));
-                plat.InitPatrol(5100, 5900, 200f);
+                plat.InitPatrol(5, 0.2f, 5100, 5900, 200f);
                 platforms.Add(plat);
 
                 ladders = new List<Ladder>();
@@ -339,11 +339,11 @@ namespace Bearventure
                     RasterizerState.CullNone, null, camera.GetTransformation(ResolutionManager.graphicsDevice.GraphicsDevice));
 
             layeredBackground.Draw(spriteBatch);
-            //layeredBackground.DrawGrid(spriteBatch);
+            layeredBackground.DrawGrid(spriteBatch);
             
-            CollisionHandler.Map.DrawMap(spriteBatch);
-            CollisionHandler.Map.DrawGrid(spriteBatch);
-            CollisionHandler.DrawCollisionRectangles(spriteBatch, _player, _player.velocity);
+            //CollisionHandler.Map.DrawMap(spriteBatch);
+            //CollisionHandler.Map.DrawGrid(spriteBatch);
+            //CollisionHandler.DrawCollisionRectangles(spriteBatch, _player, _player.velocity);
 
             foreach (Ladder l in ladders)
             {

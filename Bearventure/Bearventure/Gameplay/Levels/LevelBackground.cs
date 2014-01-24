@@ -53,6 +53,14 @@ namespace Bearventure.Gameplay.Levels
             private set;
         }
 
+        public int ResizeFactor
+        {
+            get
+            {
+                return resizeFactor;
+            }
+        }
+
         public LevelBackground(LevelInfo levelInfo, ContentManager content)
         {
             asset = levelInfo.BackgroundAssetName;

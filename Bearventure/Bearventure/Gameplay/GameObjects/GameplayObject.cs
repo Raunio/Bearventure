@@ -17,6 +17,28 @@ namespace Bearventure.Gameplay
             protected set;
         }
         /// <summary>
+        /// Some complex-shaped objects might want to use per pixel collision instead of rectangular collision detection.
+        /// </summary>
+        public Texture2D CollisionMap
+        {
+            get
+            {
+                return collisionMap;
+            }
+            protected set
+            {
+                collisionMap = value;
+                Color[] data = new Color[collisionMap.Width * collisionMap.Height];
+                collisionMap.GetData(data);
+                CollisionMapData = TextureData2D(collisionMap, data);
+            }
+        }
+        public Color[,] CollisionMapData
+        {
+            get;
+            private set;
+        }
+        /// <summary>
         /// Gets or sets the rotation for the current spritesheet.
         /// </summary>
         public float SpriteRotation
@@ -39,6 +61,7 @@ namespace Bearventure.Gameplay
             get;
             set;
         }
+        private Texture2D collisionMap;
         protected int mass;
         protected int BoundingBoxOffset;
         protected Texture2D spriteSheet;
@@ -141,6 +164,16 @@ namespace Bearventure.Gameplay
         public void Deactivate()
         {
             IsActive = false;
+        }
+
+        private Color[,] TextureData2D(Texture2D texture, Color[] data)
+        {
+            Color[,] colors2D = new Color[texture.Width, texture.Height];
+            for (int x = 0; x < texture.Width; x++)
+                for (int y = 0; y < texture.Height; y++)
+                    colors2D[x, y] = data[x + y * texture.Width];
+
+            return colors2D;
         }
     }
 }

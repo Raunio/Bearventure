@@ -378,12 +378,14 @@ namespace Bearventure.Engine.CollisionDetection
                 if (subject == gameObjects[i] || !gameObjects[i].IsActive)
                     continue;
 
-                Rectangle targetBox = new Rectangle(gameObjects[i].BoundingBox.X / resizeFactor, gameObjects[i].BoundingBox.Y / resizeFactor,
-                    gameObjects[i].BoundingBox.Width / resizeFactor, gameObjects[i].BoundingBox.Height / resizeFactor);
+            Rectangle targetBox = new Rectangle(gameObjects[i].BoundingBox.X / resizeFactor, gameObjects[i].BoundingBox.Y / resizeFactor,
+                gameObjects[i].BoundingBox.Width / resizeFactor, gameObjects[i].BoundingBox.Height / resizeFactor);
 
-                Rectangle targetBoxScaled = gameObjects[i].BoundingBox;
+            Rectangle targetBoxScaled = gameObjects[i].BoundingBox;
 
-                if (Y.Intersects(targetBox))
+            if (Y.Intersects(targetBox))
+            {
+                if (gameObjects[i].CollisionMap == null)
                 {
                     if (Y.Y < targetBox.Y + targetBox.Height / 2)
                     {
@@ -394,7 +396,27 @@ namespace Bearventure.Engine.CollisionDetection
                         collision = subject.BoundingBox.Top;
                     }
                 }
-                if (X.Intersects(targetBox))
+                else
+                {
+                    int x = X.X * resizeFactor - targetBoxScaled.X;
+                    int y = Y.Y * resizeFactor - targetBoxScaled.Y;
+
+                    if (gameObjects[i].CollisionMapData[x, y] != Color.Transparent && gameObjects[i].CollisionMapData[x, y].A == 255)
+                    {
+                        if (Y.Y * resizeFactor < subject.BoundingBox.Y)
+                        {
+                            collision = subject.BoundingBox.Top;
+                        }
+                        else
+                        {
+                            collision = subject.BoundingBox.Bottom;
+                        }
+                    }
+                }
+            }
+            if (X.Intersects(targetBox))
+            {
+                if (gameObjects[i].CollisionMap == null)
                 {
                     if (X.X < targetBox.X + targetBox.Width / 2)
                     {
@@ -405,20 +427,25 @@ namespace Bearventure.Engine.CollisionDetection
                         collision += subject.BoundingBox.Left;
                     }
                 }
-
-                if(subject.BoundingBox.Intersects(targetBoxScaled) && collision == 0)
+                else
                 {
-                    if (subject.BoundingBox.X < targetBox.X + targetBox.Width / 2)
-                        collision = subject.BoundingBox.Right;
-                    else
-                        collision = subject.BoundingBox.Left;
 
-                    if (subject.BoundingBox.Y < targetBox.Y + targetBox.Height / 2)
-                        collision = subject.BoundingBox.Bottom;
-                    else
-                        collision = subject.BoundingBox.Top;
                 }
+            }
 
+            if (gameObjects[i].CollisionMap == null && subject.BoundingBox.Intersects(targetBoxScaled) && collision == 0)
+            {
+                if (subject.BoundingBox.X < targetBox.X + targetBox.Width / 2)
+                    collision = subject.BoundingBox.Right;
+                else
+                    collision = subject.BoundingBox.Left;
+
+                if (subject.BoundingBox.Y < targetBox.Y + targetBox.Height / 2)
+                    collision = subject.BoundingBox.Bottom;
+                else
+                    collision = subject.BoundingBox.Top;
+            }
+                
 
                 if (collision != 0)
                 {

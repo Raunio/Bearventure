@@ -117,6 +117,11 @@ namespace Bearventure.Gameplay.Characters
             private set;
             get;
         }
+        public Animation KnockBack
+        {
+            private set;
+            get;
+        }
         /// <summary>
         /// Must not be a looping animation.
         /// </summary>
@@ -160,6 +165,8 @@ namespace Bearventure.Gameplay.Characters
                     Stopped = new Animation(spriteSheet, 0, 93, 103, 4, 4, 60);
                     Jumping = new Animation(spriteSheet, 0, 93, 103, 5, 6, 100);
                     Dying = new Animation(spriteSheet, 0, 93, 103, 7, 7, 80, false, false);
+                    KnockBack = new Animation(spriteSheet, 2, 96, 121, 0, 0, 25);
+                    KnockBack.CustomFrameRowPosition = 208;
                     break;
                 case Constants.EnemyType.DelayOwl:
                     WalkRight = new Animation(spriteSheet, 0, 128, 90, 8, 11, 70);
@@ -263,13 +270,14 @@ namespace Bearventure.Gameplay.Characters
                     Orientation = Constants.CharacterOrientation.Ground;
                     Vision = 300;
                     AttackRange = 120;
-                    health = 50;
-                    maxHealth = 50;
+                    health = 500;
+                    maxHealth = 500;
                     healthRegen = 2;
                     BoundingBoxOffset = 10;
                     ReactSpeed = 250f;
                     mass = 100;
                     ArmorType = Constants.ArmorType.Fur;
+                    KnockBackTreshold = 30;
                     break;
 
                 case Constants.EnemyType.DelayOwl:
@@ -348,7 +356,7 @@ namespace Bearventure.Gameplay.Characters
                     Animation attack_right = new Animation(spriteSheet, 1, 149, 105, 0, 5, 30, false, false);
                     Animation attack_left = new Animation(spriteSheet, 1, 149, 105, 0, 5, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
 
-                    Attack = new EnemySkill(this, attack_right, attack_left, 1400, 4, Constants.DamageType.Crushing);
+                    Attack = new EnemySkill(this, attack_right, attack_left, 11400, 4, Constants.DamageType.Crushing);
                     Attack.StartVelocity = new Vector2(5, 0);
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.FacingPlayer, true));
@@ -523,6 +531,14 @@ namespace Bearventure.Gameplay.Characters
 
                 case Constants.CharacterState.Jumping:
                     ChangeAnimation(Jumping);
+                    break;
+                case Constants.CharacterState.Knocked:
+                    if (directionX == Constants.DirectionX.Right)
+                        KnockBack.Effects = SpriteEffects.None;
+                    else
+                        KnockBack.Effects = SpriteEffects.FlipHorizontally;
+                    
+                    ChangeAnimation(KnockBack);
                     break;
             }
 

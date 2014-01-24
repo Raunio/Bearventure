@@ -184,6 +184,10 @@ namespace Bearventure.Gameplay
                 subject.velocity = force;
                 subject.position.Y += force.Y;
 
+                if (skill.InflictForce.Length() >= subject.KnockBackTreshold)
+                {
+                    subject.state = Constants.CharacterState.Knocked;
+                }
 
                 if (subject.ActiveSkill != null && force.Length() > subject.ActiveSkill.ForceInterruptTreshold && subject.ActiveSkill.ForceInterruptTreshold != 0)
                 {

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Bearventure.Gameplay.Characters;
 using Microsoft.Xna.Framework.Content;
+using Bearventure.Engine.CollisionDetection;
 
 namespace Bearventure.Gameplay.GameObjects
 {
@@ -24,8 +25,15 @@ namespace Bearventure.Gameplay.GameObjects
         private float waitTime;
 
         private bool isPatrolling;
+        private bool isCollapsing;
 
-        private float speed = 5f;
+        private bool hasTriggered;
+
+        private bool hasBeenTouched;
+
+        private float speed;
+
+        private Vector2 tempVector = new Vector2();
 
         public Platform(ContentManager content, Constants.PlatformType type, Vector2 position)
         {
@@ -39,7 +47,7 @@ namespace Bearventure.Gameplay.GameObjects
             Initialize(content);
         }
 
-        public void InitPatrol(int pointA, int pointB, float waitTime)
+        public void InitPatrol(float speed, float acceleration, int pointA, int pointB, float waitTime)
         {
             isPatrolling = true;
 
@@ -48,9 +56,16 @@ namespace Bearventure.Gameplay.GameObjects
 
             nextPoint = pointA;
 
-            acceleration = 0.5f;
+            this.acceleration = acceleration;
+            this.speed = speed;
 
             this.waitTime = waitTime;
+        }
+
+        public void InitCollapse(float delay)
+        {
+            isCollapsing = true;
+            waitTime = delay;
         }
 
         private void Initialize(ContentManager content)
@@ -93,41 +108,45 @@ namespace Bearventure.Gameplay.GameObjects
             CharacterPhysics.HandleObjectCollisions(this);
 
             if (isPatrolling)
-            {
-                UpdateFixedPatrol(gameTime);
-
-                if (state == Constants.PlatformState.Moving)
-                {
-                    if (direction == Constants.DirectionX.Left)
-                    {
-                        if (velocity.X > -speed)
-                            velocity.X -= acceleration;
-                        else
-                            velocity.X = -speed;
-                    }
-                    else
-                    {
-                        if (velocity.X < speed)
-                            velocity.X += acceleration;
-                        else
-                            velocity.X = speed;
-                    }
-                }
-                else
-                {
-                    if (velocity.X > acceleration)
-                        velocity.X -= acceleration;
-                    else if (velocity.X < -acceleration)
-                        velocity.X += acceleration;
-                    else
-                        velocity.X = 0;
-                }
-            }
+                UpdatePatrols(gameTime);
+            if (isCollapsing)
+                UpdateCollapsing(gameTime);
 
             if (state == Constants.PlatformState.Falling)
                 CharacterPhysics.ApplyGravity(this);
         }
 
+        private void UpdatePatrols(GameTime gameTime)
+        {
+            UpdateFixedPatrol(gameTime);
+
+            if (state == Constants.PlatformState.Moving)
+            {
+                if (direction == Constants.DirectionX.Left)
+                {
+                    if (velocity.X > -speed)
+                        velocity.X -= acceleration;
+                    else
+                        velocity.X = -speed;
+                }
+                else
+                {
+                    if (velocity.X < speed)
+                        velocity.X += acceleration;
+                    else
+                        velocity.X = speed;
+                }
+            }
+            else
+            {
+                if (velocity.X > acceleration)
+                    velocity.X -= acceleration;
+                else if (velocity.X < -acceleration)
+                    velocity.X += acceleration;
+                else
+                    velocity.X = 0;
+            }
+        }
         private void UpdateFixedPatrol(GameTime gameTime)
         {
             waitTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -166,7 +185,6 @@ namespace Bearventure.Gameplay.GameObjects
             }
 
         }
-
         private void GoTo(int point)
         {
             int position = (int)this.position.X;
@@ -182,11 +200,38 @@ namespace Bearventure.Gameplay.GameObjects
                 state = Constants.PlatformState.Moving;
             }
         }
-
         private int DistanceBetween(int a, int b)
         {
             int distance = a - b;
             return (distance < 0) ? distance * -1 : distance;
+        }
+
+        private void UpdateCollapsing(GameTime gameTime)
+        {
+            if (hasTriggered && state != Constants.PlatformState.Falling)
+            {
+                state = Constants.PlatformState.Falling;
+            }
+            else
+            {
+                tempVector.X = 0;
+                tempVector.Y = -2;
+
+                if (CollisionMap == null)
+                {
+                    ObjectCollisionEvent e = CollisionHandler.CollisionOccursWithObject(this, tempVector);
+                }
+                else
+                {
+
+                }
+
+                if(hasBeenTouched)
+                    waitTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                if (waitTimer > waitTime)
+                    hasTriggered = true;
+            }
         }
     }
 }
