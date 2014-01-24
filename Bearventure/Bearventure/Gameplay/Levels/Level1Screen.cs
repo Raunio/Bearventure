@@ -131,7 +131,7 @@ namespace Bearventure
                     enemies[i].MaxSoundEffectDistance = MaxSoundEffectDistance;
 
                 platforms = new List<Platform>();
-                Platform plat = new Platform(content, Constants.PlatformType.Basic, new Vector2(5100, 5200));
+                Platform plat = new Platform(content, Constants.PlatformType.MovingGrassPlatform, new Vector2(5100, 5200));
                 plat.InitPatrol(5100, 5900, 200f);
                 platforms.Add(plat);
 
@@ -341,9 +341,9 @@ namespace Bearventure
             layeredBackground.Draw(spriteBatch);
             //layeredBackground.DrawGrid(spriteBatch);
             
-            //CollisionHandler.Map.DrawMap(spriteBatch);
+            CollisionHandler.Map.DrawMap(spriteBatch);
             CollisionHandler.Map.DrawGrid(spriteBatch);
-            //CollisionHandler.DrawCollisionRectangles(spriteBatch, _player, _player.velocity);
+            CollisionHandler.DrawCollisionRectangles(spriteBatch, _player, _player.velocity);
 
             foreach (Ladder l in ladders)
             {

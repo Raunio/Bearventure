@@ -129,20 +129,20 @@
     <Compile Include="Engine\XmlReader.cs" />
     <Compile Include="Gameplay\Camera.cs" />
     <Compile Include="Gameplay\CameraController.cs" />
-    <Compile Include="Gameplay\Characters\Animation.cs" />
-    <Compile Include="Gameplay\Characters\Behaviour\Action.cs" />
-    <Compile Include="Gameplay\Characters\Behaviour\Behaviour.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Animation.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Behaviour\Action.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Behaviour\Behaviour.cs" />
     <Compile Include="Gameplay\CharacterPhysics.cs" />
-    <Compile Include="Gameplay\Characters\Behaviour\Condition.cs" />
-    <Compile Include="Gameplay\Characters\Behaviour\ActionManager.cs" />
-    <Compile Include="Gameplay\Characters\Character.cs" />
-    <Compile Include="Gameplay\Characters\Skills\CharacterSkill.cs" />
-    <Compile Include="Gameplay\Characters\Skills\CharacterSkillCombo.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Behaviour\Condition.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Behaviour\ActionManager.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Character.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Skills\CharacterSkill.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Skills\CharacterSkillCombo.cs" />
     <Compile Include="Gameplay\CombatManager.cs" />
-    <Compile Include="Gameplay\Characters\Skills\EnemySkill.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Skills\EnemySkill.cs" />
     <Compile Include="Engine\CollisionDetection\CollisionHandler.cs" />
-    <Compile Include="Gameplay\Characters\Enemy.cs" />
-    <Compile Include="Gameplay\Characters\Player.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Enemy.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Player.cs" />
     <Compile Include="Gameplay\GameObjects\AttachmentPoint.cs" />
     <Compile Include="Gameplay\GameObjects\Ladder.cs" />
     <Compile Include="Gameplay\GameObjects\Platform.cs" />
@@ -212,7 +212,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Gameplay\Characters\Behaviour\Bosses\" />
+    <Folder Include="Gameplay\GameObjects\Characters\Behaviour\Bosses\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

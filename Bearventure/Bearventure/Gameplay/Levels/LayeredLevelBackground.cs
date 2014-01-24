@@ -12,6 +12,10 @@ namespace Bearventure.Gameplay.Levels
         private List<BackgroundLayer> layers;
         private BackgroundLayer[] layersInDrawingOrder;
 
+        private List<int> on_zones = new List<int>();
+        private List<int> zones_x = new List<int>();
+        private List<int> zones_y = new List<int>();
+
         private struct BackgroundLayer
         {
             public LevelBackground background;
@@ -133,10 +137,6 @@ namespace Bearventure.Gameplay.Levels
 
         public List<int> OnZones(Rectangle rectangle)
         {
-            List<int> on_zones = new List<int>();
-            List<int> zones_x = new List<int>();
-            List<int> zones_y = new List<int>();
-
             int Left = rectangle.X;
             int Right = rectangle.Right;
             int Top = rectangle.Top;
