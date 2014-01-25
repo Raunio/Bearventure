@@ -30,7 +30,8 @@ namespace Bearventure
             new Point(1280,720),
             new Point(720,480),
             new Point(640,360),
-            new Point(320,240)
+            new Point(320,240),
+            new Point(1680,1050)
         });
 
 
@@ -114,6 +115,10 @@ namespace Bearventure
             return new Point(virtualWidth, virtualHeight);
         }
 
+        static public Point GetResolution()
+        {
+            return new Point(width, height);
+        }
         static public void SetVirtualResolution(Constants.ScreenMode screenMode)
         {
             CurrentScreenMode = screenMode;

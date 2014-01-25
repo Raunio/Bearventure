@@ -83,8 +83,8 @@ namespace Bearventure.Gameplay.HUD
 
             origin = new Vector2(cameraPosition.X - graphics.GraphicsDevice.Viewport.Width / 2, cameraPosition.Y - graphics.GraphicsDevice.Viewport.Height / 2);
 
-            playerHealthBar.Update(gameTime, origin + new Vector2(450, 200), 0, player.maxHealth, player.health);
-            playerRageBar.Update(gameTime, origin + new Vector2(450, 230), 0, player.MaxSkillResource, player.CurrentSkillResource);
+            playerHealthBar.Update(gameTime, origin + new Vector2(ResolutionManager.GetResolution().X *0.1f , ResolutionManager.GetResolution().Y *0.05f), 0, player.maxHealth, player.health);
+            playerRageBar.Update(gameTime, origin + new Vector2(ResolutionManager.GetResolution().X * 0.1f, ResolutionManager.GetResolution().Y * 0.1f), 0, player.MaxSkillResource, player.CurrentSkillResource);
 
             UpdateFPS(gameTime);
         }
