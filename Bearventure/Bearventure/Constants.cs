@@ -64,8 +64,15 @@ namespace Bearventure
 
         #region GameObjects
 
-        public const String BasicPlatform = "Sprites/hover";
+        public const String MovingGrassPlatform = "Sprites/hover";
         public const String WoodenLadder = "Sprites/WoodenLadder";
+        public const String PassiveTreeBranchLeft = "Sprites/TreeBranches/oksa";
+        public const String PassiveTreeBranchLeft2 = "Sprites/TreeBranches/oksa1";
+        public const String PassiveTreeBranchRight = "Sprites/TreeBranches/oksa2";
+        public const String TriggeredTreeBranchLeft = "Sprites/TreeBranches/oksak2";
+        public const String TriggeredTreeBranchLeft2 = "Sprites/TreeBranches/oksak4";
+        public const String TriggeredTreeBranchRight = "Sprites/TreeBranches/oksak1";
+        public const String TriggeredTreeBranchRight2 = "Sprites/TreeBranches/oksa3";
 
         #endregion
 
@@ -126,6 +133,7 @@ namespace Bearventure
         };
         public enum BehaviourType
         {
+            Default,
             Passive,
             FreePatrol,
             FixedPatrol,
@@ -209,7 +217,15 @@ namespace Bearventure
 
         public enum PlatformType
         {
-            Basic,
+            MovingGrassPlatform,
+            PassiveTreeBranchLeft,
+            PassiveTreeBranchLeft2,
+            PassiveTreeBranchRight,
+            TriggeredTreeBranchLeft,
+            TriggeredTreeBranchLeft2,
+            TriggeredTreeBranchRight,
+            TriggeredTreeBranchRight2,
+
         }
 
         public enum LadderType
@@ -221,6 +237,7 @@ namespace Bearventure
         {
             Stopped,
             Moving,
+            Falling,
         }
 
         #endregion

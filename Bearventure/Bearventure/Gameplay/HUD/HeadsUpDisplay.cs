@@ -7,6 +7,7 @@ using Bearventure.Gameplay.Characters.Skills;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Bearventure.Gameplay.Characters;
+using Bearventure.Engine.CollisionDetection;
 
 namespace Bearventure.Gameplay.HUD
 {
@@ -25,6 +26,12 @@ namespace Bearventure.Gameplay.HUD
         private int framesPerSecond;
         private Vector2 fpsCounterPosition;
         private Vector2 fpsCounterPositionOffset;
+        private Vector2 playerLocation;
+        private Vector2 playerLocationOffset;
+        private Vector2 playerZonesLocation;
+        private Vector2 playerZonesLocationOffset;
+        private Vector2 cameraZonesLocation;
+        private Vector2 cameraZonesOffset;
 
         private const int DrawDistance = 350;
 
@@ -37,6 +44,9 @@ namespace Bearventure.Gameplay.HUD
             this.content = content;
             this.logOffset = new Vector2(-graphics.GraphicsDevice.Viewport.Width / 2 + 300, graphics.GraphicsDevice.Viewport.Height / 2 - 250);
             this.fpsCounterPositionOffset = new Vector2(-graphics.GraphicsDevice.Viewport.Width / 2 + 250, -graphics.GraphicsDevice.Viewport.Height / 2 + 250);
+            this.playerLocationOffset = new Vector2(-graphics.GraphicsDevice.Viewport.Width / 2 + 250, -graphics.GraphicsDevice.Viewport.Height / 2 + 300);
+            this.playerZonesLocationOffset = new Vector2(-graphics.GraphicsDevice.Viewport.Width / 2 + 250, -graphics.GraphicsDevice.Viewport.Height / 2 + 350);
+            this.cameraZonesOffset = new Vector2(-graphics.GraphicsDevice.Viewport.Width / 2 + 250, -graphics.GraphicsDevice.Viewport.Height / 2 + 400);
             this.enemies = enemies;
             this.player = player;
             this.graphics = graphics;
@@ -75,6 +85,9 @@ namespace Bearventure.Gameplay.HUD
         {
             logPosition = cameraPosition + logOffset;
             fpsCounterPosition = cameraPosition + fpsCounterPositionOffset;
+            playerLocation = cameraPosition + playerLocationOffset;
+            playerZonesLocation = cameraPosition + playerZonesLocationOffset;
+            cameraZonesLocation = cameraPosition + cameraZonesOffset;
 
             for (int i = 0; i < enemies.Count; i++)
             {
@@ -99,7 +112,7 @@ namespace Bearventure.Gameplay.HUD
 
             DrawCombatLog(spriteBatch);
 
-            DrawFps(spriteBatch);
+            DrawDebugInfo(spriteBatch);
             playerHealthBar.Draw(spriteBatch);
             playerRageBar.Draw(spriteBatch);
         }
@@ -145,9 +158,33 @@ namespace Bearventure.Gameplay.HUD
             } 
         }
 
-        private void DrawFps(SpriteBatch spriteBatch)
+        private void DrawDebugInfo(SpriteBatch spriteBatch)
         {
+            string playerZones = "null";
+            string cameraZones = "null";
+
+            Rectangle cameraBox = new Rectangle((int)origin.X,
+                (int)origin.Y,
+                ResolutionManager.graphicsDevice.GraphicsDevice.Viewport.Width,
+                ResolutionManager.graphicsDevice.GraphicsDevice.Viewport.Height);
+
             spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), "Fps: " + framesPerSecond, fpsCounterPosition, Color.Yellow);
+            spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), "Player position: " + player.position, playerLocation, Color.Yellow);
+
+            if(CollisionHandler.OnAdjustedZones(player.BoundingBox).Count == 1)
+                playerZones = CollisionHandler.OnAdjustedZones(player.BoundingBox)[0].ToString();
+            else if (CollisionHandler.OnAdjustedZones(player.BoundingBox).Count > 1)
+                playerZones = CollisionHandler.OnAdjustedZones(player.BoundingBox)[0] + ", " + CollisionHandler.OnAdjustedZones(player.BoundingBox)[1];
+
+
+            spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), "Player on zones: " + playerZones, playerZonesLocation, Color.Yellow);
+
+            if (CollisionHandler.OnAdjustedZones(cameraBox).Count == 1)
+                cameraZones = CollisionHandler.OnAdjustedZones(cameraBox)[0].ToString();
+            else if (CollisionHandler.OnAdjustedZones(cameraBox).Count > 1)
+                cameraZones = CollisionHandler.OnAdjustedZones(cameraBox)[0] + ", " + CollisionHandler.OnAdjustedZones(cameraBox)[1];
+
+            spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), "Camera on zones: " + cameraZones, cameraZonesLocation, Color.Yellow);
         }
 
         private void UpdateFPS(GameTime gameTime)

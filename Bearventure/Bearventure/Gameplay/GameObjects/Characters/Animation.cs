@@ -1,0 +1,516 @@
+﻿#region Using-statements
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+#endregion
+
+namespace Bearventure.Gameplay.Characters
+{
+    public class Animation
+    {
+        #region Members
+
+        private int spriteSheetRow;
+        private float animTimer;
+        private float interval;
+        private bool backwards;
+        private bool looping;
+        private float freezeTimer;
+        private int loopCounter;
+        private bool hasReversed;
+
+        private Rectangle frameRectangle;
+
+        #endregion
+
+        #region Initialization
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="spriteSheet">Spritesheet used by the animation.</param>
+        /// <param name="spriteSheetRow">The row in which the frames are placed in the sheet. 0 means the first, uppermost row.</param>
+        /// <param name="frameWidth">The width of a individual frame.</param>
+        /// <param name="frameHeight">The height of a individual frame.</param>
+        /// <param name="startFrame">The first frame of the animation.</param>
+        /// <param name="endFrame">The last frame of the animation.</param>
+        /// <param name="speed">Animation speed. Lower value = faster animation</param>
+        /// <param name="backwards">True to animate from right to left.</param>
+        /// <param name="looping">True to loop animation</param>
+        public Animation(Texture2D spriteSheet, int spriteSheetRow, int frameWidth, int frameHeight, int startFrame, int endFrame, float speed, bool backwards = false, bool looping = true)
+        {
+            this.spriteSheet = spriteSheet;
+            this.spriteSheetRow = spriteSheetRow;
+            this.FrameWidth = frameWidth;
+            this.FrameHeight = frameHeight;
+            this.Effects = SpriteEffects.None;
+            this.LayerDepth = 0f;
+            this.StartFrame = startFrame;
+            this.EndFrame = endFrame;
+            animTimer = 0f;
+            CurrentFrame = startFrame;
+            this.Origin = new Vector2(frameWidth / 2, frameHeight / 2);
+            this.Rotation = 0;
+            interval = speed;
+            this.backwards = backwards;
+            this.looping = looping;
+            HasFinished = false;
+            frameRectangle = new Rectangle();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="spriteSheet">Spritesheet used by the animation.</param>
+        /// <param name="spriteSheetRow">The row in which the frames are placed in the sheet. 0 means the first, uppermost row.</param>
+        /// <param name="frameWidth">The width of a individual frame.</param>
+        /// <param name="frameHeight">The height of a individual frame.</param>
+        /// <param name="startFrame">The first frame of the animation.</param>
+        /// <param name="endFrame">The last frame of the animation.</param>
+        /// <param name="spriteEffects">Sprite effects used for the animation</param>
+        /// <param name="layerDepth">Layer depth for the animation</param>
+        /// <param name="rotation">Spritesheet rotation</param>
+        /// <param name="speed">Animation speed. Lower value = faster animation.</param>
+        /// <param name="backwards">True to animate from right to left.</param>
+        /// <param name="looping">True to loop animation</param>
+        public Animation(Texture2D spriteSheet, int spriteSheetRow, int frameWidth, int frameHeight, int startFrame, int endFrame, float speed, SpriteEffects spriteEffects, float layerDepth, float rotation, bool backwards = false, bool looping = true)
+        {
+            this.spriteSheet = spriteSheet;
+            this.spriteSheetRow = spriteSheetRow;
+            this.FrameWidth = frameWidth;
+            this.FrameHeight = frameHeight;
+            this.Effects = spriteEffects;
+            this.LayerDepth = layerDepth;
+            this.StartFrame = startFrame;
+            this.EndFrame = endFrame;
+            animTimer = 0f;
+            CurrentFrame = startFrame;
+            this.Origin = new Vector2(frameWidth / 2, frameHeight / 2);
+            this.Rotation = rotation;
+            interval = speed;
+            this.backwards = backwards;
+            this.looping = looping;
+            HasFinished = false;
+            frameRectangle = new Rectangle();
+        }
+        #endregion
+
+        #region Gets & Sets
+        public int CustomFrameRowPosition
+        {
+            get;
+            set;
+        }
+        public Texture2D spriteSheet
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Frame Origin.
+        /// </summary>
+        public Vector2 Origin
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Gets or sets the animation to reverse-play itself after finishing.
+        /// </summary>
+        public bool ReverseAtEnd
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Rectangle that picks individual frames from the animation spritesheet.
+        /// </summary>
+        public Rectangle FrameRectangle
+        {
+            get
+            {
+                return frameRectangle;
+            }
+        }
+
+        /// <summary>
+        /// The starting frame of the animation.
+        /// </summary>
+        public int StartFrame
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The final frame of the animation.
+        /// </summary>
+        public int EndFrame
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The width of a individual frame.
+        /// </summary>
+        public int FrameWidth
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The height of a individual frame.
+        /// </summary>
+        public int FrameHeight
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Spritesheet rotation.
+        /// </summary>
+        public float Rotation
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// SpriteEffects used for the animation.
+        /// </summary>
+        public SpriteEffects Effects
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Layer-depth used for the animation
+        /// </summary>
+        public float LayerDepth
+        {
+            get;
+            private set;
+        }
+
+        public int CurrentFrame
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// True if animation has reached its end.
+        /// </summary>
+        public bool HasFinished
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// Returns Texture2D object of current frame
+        /// </summary>
+        public Texture2D FrameTexture
+        {
+            get
+            {
+                GraphicsDevice graph = spriteSheet.GraphicsDevice;
+                RenderTarget2D render = new RenderTarget2D(graph, FrameWidth, FrameHeight);
+                SpriteBatch spriteBatch = new SpriteBatch(graph);
+
+                graph.SetRenderTarget(render);
+                graph.Clear(new Color(0, 0, 0, 0));
+
+                spriteBatch.Begin();
+
+                spriteBatch.Draw(spriteSheet, Vector2.Zero, FrameRectangle, Color.White);
+
+                spriteBatch.End();
+
+                graph.SetRenderTarget(null);
+
+                return (Texture2D)render;
+            }
+        }
+        
+        public struct FrameFreezer
+        {
+            public List<int> Frames;
+            public float Amount;
+        };
+
+        public struct FrameLooper
+        {
+            public int startFrame;
+            public int endFrame;
+            public int loopAmount;
+        };
+
+        private bool IsCurrentFrameFreezable
+        {
+            get
+            {
+                foreach (int i in FreezeFrames.Frames)
+                {
+                    if (CurrentFrame == i)
+                        return true;
+                }
+
+                return false;
+            }
+        }
+        /// <summary>
+        /// Gets and sets the frames that the animation will freeze to for a time euqal to Amount in milliseconds.
+        /// </summary>
+        public FrameFreezer FreezeFrames
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Gets and sets the frames that the animation will loop through.
+        /// </summary>
+        public FrameLooper LoopFrames
+        {
+            get;
+            set;
+        }
+
+        #endregion
+        #region Methods
+        /// <summary>
+        /// Main animation method. Should be called in the update of a character.
+        /// </summary>
+        /// <param name="gameTime"></param>
+        public void Animate(GameTime gameTime)
+        {
+            switch (backwards)
+            {
+                case true:
+                    AnimateBackward(gameTime);
+                    break;
+                case false:
+                    AnimateForward(gameTime);
+                    break;
+            }
+        }
+        /// <summary>
+        /// Resets the animation to its starting frame.
+        /// </summary>
+        public void Reset()
+        {
+            HasFinished = false;
+            if (backwards == true)
+                CurrentFrame = EndFrame;
+            else
+                CurrentFrame = StartFrame;
+        }
+
+        private void AnimateForward(GameTime gameTime)
+        {
+            Update();
+
+            animTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (animTimer >= interval)
+            {
+                if (FreezeFrames.Frames != null && IsCurrentFrameFreezable)
+                {
+                    freezeTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    if (freezeTimer >= FreezeFrames.Amount + interval)
+                    {
+                        freezeTimer = 0;
+                        animTimer = 0;
+                        NextFrame();
+                    }
+                }
+                else
+                {
+                    animTimer = 0;
+                    NextFrame();
+                }
+            }
+        }
+
+        private void AnimateBackward(GameTime gameTime)
+        {
+            Update();
+
+            animTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (animTimer >= interval)
+            {
+                if (FreezeFrames.Frames != null && IsCurrentFrameFreezable)
+                {
+                    freezeTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                    if (freezeTimer >= FreezeFrames.Amount)
+                    {
+                        freezeTimer = 0;
+                        animTimer = 0;
+                        PreviousFrame();
+                    }
+                }
+                else
+                {
+                    animTimer = 0;
+                    PreviousFrame();
+                }
+            }
+        }
+
+        private void NextFrame()
+        {
+            if (CurrentFrame < EndFrame)
+            {
+                CurrentFrame++;
+
+                if (LoopFrames.loopAmount != 0 && CurrentFrame == LoopFrames.endFrame && loopCounter < LoopFrames.loopAmount)
+                {
+                    CurrentFrame = LoopFrames.startFrame;
+                    loopCounter++;
+                }
+            }
+            else if(CurrentFrame >= EndFrame || ReverseAtEnd)
+            {
+                if (looping == true)
+                {
+                    if (!ReverseAtEnd)
+                        CurrentFrame = StartFrame;
+                    else
+                    {
+                        if (!hasReversed)
+                        {
+                            backwards = !backwards;
+                            hasReversed = true;
+                        }
+                        else
+                            CurrentFrame = StartFrame;
+                    }
+
+
+                    loopCounter = 0;
+                }
+
+                else if (HasFinished == false)
+                {
+                    if (!ReverseAtEnd)
+                        HasFinished = true;
+                    else
+                    {
+                        backwards = !backwards;
+
+                        if (!hasReversed)
+                        {      
+                            hasReversed = true;
+                        }
+                        else
+                        {
+                            HasFinished = true;
+                            hasReversed = false;
+                        }
+                    }
+
+                    loopCounter = 0;
+                }
+            }
+        }
+
+        private void PreviousFrame()
+        {
+            if (CurrentFrame > StartFrame)
+            {
+                CurrentFrame--;
+
+                if (LoopFrames.loopAmount != 0 && CurrentFrame == LoopFrames.startFrame && loopCounter < LoopFrames.loopAmount)
+                {
+                    CurrentFrame = LoopFrames.endFrame;
+                    loopCounter++;
+                }
+            }
+            else if (CurrentFrame <= StartFrame || ReverseAtEnd)
+            {
+                if (looping == true)
+                {
+                    if (!ReverseAtEnd)
+                        CurrentFrame = EndFrame;
+                    else
+                    {
+                        if (!hasReversed)
+                        {
+                            backwards = !backwards;
+                            hasReversed = true;
+                        }
+                        else
+                        {
+                            backwards = !backwards;
+                            CurrentFrame = EndFrame;
+                        }
+                    }
+
+
+                    loopCounter = 0;
+                }
+
+                else if (HasFinished == false)
+                {
+                    if (!ReverseAtEnd)
+                        HasFinished = true;
+                    else
+                    {
+                        backwards = !backwards;
+
+                        if (!hasReversed)
+                        { 
+                            hasReversed = true;
+                        }
+                        else
+                        {
+                            HasFinished = true;
+                            hasReversed = false;
+                        }
+                    }
+
+                    loopCounter = 0;
+                }
+            }
+        }
+        /// <summary>
+        /// Jump to frame
+        /// </summary>
+        public void GoToFrame(int frame)
+        {
+            CurrentFrame = frame;
+            Update();
+        }
+        /// <summary>
+        /// Returns true if the current frame of the animation has just been set. (animation timer == 0)
+        /// </summary>
+        public bool IsNewFrame
+        {
+            get
+            {
+                if (animTimer == 0)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        private void Update()
+        {
+            frameRectangle.X = CurrentFrame * FrameWidth;
+            frameRectangle.Y = CustomFrameRowPosition != 0 ? CustomFrameRowPosition : spriteSheetRow * FrameHeight;
+            frameRectangle.Width = FrameWidth;
+            frameRectangle.Height = FrameHeight;
+        }
+
+
+        #endregion
+    }
+}

@@ -27,6 +27,13 @@ namespace Bearventure.Engine.CollisionDetection
 
         private static ContentManager content;
 
+        private static Rectangle collisionAreaRecrangleX = new Rectangle();
+        private static Rectangle collisionAreaRectangleY = new Rectangle();
+
+        private static List<int> on_zones = new List<int>();
+        private static List<int> zones_x = new List<int>();
+        private static List<int> zones_y = new List<int>();
+
         #endregion
         #region Initialization
         /// <summary>
@@ -109,6 +116,59 @@ namespace Bearventure.Engine.CollisionDetection
                 foreach (int x in zones_x)
                 {
                     if(!on_zones.Contains(x * 2 + y))
+                        on_zones.Add(x * 2 + y);
+                }
+            }
+
+
+            return on_zones;
+        }
+
+        public static List<int> OnAdjustedZones(Rectangle rectangle)
+        {
+            List<int> on_zones = new List<int>();
+            List<int> zones_x = new List<int>();
+            List<int> zones_y = new List<int>();
+
+            int Left = rectangle.X / resizeFactor;
+            int Right = rectangle.Right / resizeFactor;
+            int Top = rectangle.Top / resizeFactor;
+            int Bottom = rectangle.Bottom / resizeFactor;
+
+            if (Bottom >= zone_height)
+            {
+                if (Top < zone_height)
+                    zones_y.Add(0);
+
+                zones_y.Add(1);
+            }
+            else
+            {
+                zones_y.Add(0);
+            }
+
+            for (int i = 0; i < Map.Fractions / 2; i++)
+            {
+                if (Right >= zone_width * i)
+                {
+                    if (Right <= zone_width * (i + 1))
+                    {
+                        if (Left < zone_width * i)
+                        {
+                            zones_x.Add(i - 1);
+                        }
+
+                        zones_x.Add(i);
+                    }
+                }
+
+            }
+
+            foreach (int y in zones_y)
+            {
+                foreach (int x in zones_x)
+                {
+                    if (!on_zones.Contains(x * 2 + y))
                         on_zones.Add(x * 2 + y);
                 }
             }
@@ -200,7 +260,9 @@ namespace Bearventure.Engine.CollisionDetection
                             if (CollisionAreaRectangleY(subject, movement.Y).Y >= subject.BoundingBox.Bottom / resizeFactor)
                             {
                                 collision_y = subject.BoundingBox.Bottom;
-                                CalculateDistanceToTerrain(zone, x, y, Bottom);    
+
+                                CalculateDistanceToTerrain(zone, x, y, subject.BoundingBox.Bottom / resizeFactor);
+
                             }
                             // If the conditions above do not meet, assume that the top of the BoundingBox collides with terrain.
                             else
@@ -256,7 +318,7 @@ namespace Bearventure.Engine.CollisionDetection
 
                         if ((Map.CroppedTextures[zone].Data[x, y] != Color.Transparent && Map.CroppedTextures[zone].Data[x, y] != Color.White) && Map.CroppedTextures[zone].Data[x, y].A == 255)
                         {
-                            if (Left <= subject.BoundingBox.Left / resizeFactor)
+                            if (CollisionAreaRectangleX(subject, movement.X).Left <= subject.BoundingBox.Left / resizeFactor)
                             {
                                 collision_x = subject.BoundingBox.Left;
                             }
@@ -271,7 +333,7 @@ namespace Bearventure.Engine.CollisionDetection
                     }  
                 }
 
-                HeightDifference = obstacle_height;
+                HeightDifference = obstacle_height * resizeFactor;
             }          
 
             return collision_x + collision_y;
@@ -279,15 +341,18 @@ namespace Bearventure.Engine.CollisionDetection
 
         private static void CalculateDistanceToTerrain(int zone, int x, int y, int bottom)
         {
-            for (int i = x; i > 0; i--)
+            for (int j = y; j > -zone_height; j--)
             {
-                for (int j = y; j > 0; j--)
+                if (Map.CroppedTextures[zone].Data[x, j] == Color.Transparent || Map.CroppedTextures[zone].Data[x, j].A != 255)
                 {
-                    if (Map.CroppedTextures[zone].Data[i, j] == Color.Transparent || Map.CroppedTextures[zone].Data[i, j].A != 255)
+                    if (zone % 2 == 0 || zone == 0)
                     {
-                        DistanceToTerrain = (int)(j - bottom);
-                        return;
+                        DistanceToTerrain = (j - bottom) * resizeFactor;
+                        
                     }
+                    else
+                        DistanceToTerrain = (j + zone_height - bottom) * resizeFactor;
+                    return;
                 }
             }
         }
@@ -313,12 +378,14 @@ namespace Bearventure.Engine.CollisionDetection
                 if (subject == gameObjects[i] || !gameObjects[i].IsActive)
                     continue;
 
-                Rectangle targetBox = new Rectangle(gameObjects[i].BoundingBox.X / resizeFactor, gameObjects[i].BoundingBox.Y / resizeFactor,
-                    gameObjects[i].BoundingBox.Width / resizeFactor, gameObjects[i].BoundingBox.Height / resizeFactor);
+            Rectangle targetBox = new Rectangle(gameObjects[i].BoundingBox.X / resizeFactor, gameObjects[i].BoundingBox.Y / resizeFactor,
+                gameObjects[i].BoundingBox.Width / resizeFactor, gameObjects[i].BoundingBox.Height / resizeFactor);
 
-                Rectangle targetBoxScaled = gameObjects[i].BoundingBox;
+            Rectangle targetBoxScaled = gameObjects[i].BoundingBox;
 
-                if (Y.Intersects(targetBox))
+            if (Y.Intersects(targetBox))
+            {
+                if (gameObjects[i].CollisionMap == null)
                 {
                     if (Y.Y < targetBox.Y + targetBox.Height / 2)
                     {
@@ -329,7 +396,27 @@ namespace Bearventure.Engine.CollisionDetection
                         collision = subject.BoundingBox.Top;
                     }
                 }
-                if (X.Intersects(targetBox))
+                else
+                {
+                    int x = X.X * resizeFactor - targetBoxScaled.X;
+                    int y = Y.Y * resizeFactor - targetBoxScaled.Y;
+
+                    if (gameObjects[i].CollisionMapData[x, y] != Color.Transparent && gameObjects[i].CollisionMapData[x, y].A == 255)
+                    {
+                        if (Y.Y * resizeFactor < subject.BoundingBox.Y)
+                        {
+                            collision = subject.BoundingBox.Top;
+                        }
+                        else
+                        {
+                            collision = subject.BoundingBox.Bottom;
+                        }
+                    }
+                }
+            }
+            if (X.Intersects(targetBox))
+            {
+                if (gameObjects[i].CollisionMap == null)
                 {
                     if (X.X < targetBox.X + targetBox.Width / 2)
                     {
@@ -340,20 +427,25 @@ namespace Bearventure.Engine.CollisionDetection
                         collision += subject.BoundingBox.Left;
                     }
                 }
-
-                if(subject.BoundingBox.Intersects(targetBoxScaled) && collision == 0)
+                else
                 {
-                    if (subject.BoundingBox.X < targetBox.X + targetBox.Width / 2)
-                        collision = subject.BoundingBox.Right;
-                    else
-                        collision = subject.BoundingBox.Left;
 
-                    if (subject.BoundingBox.Y < targetBox.Y + targetBox.Height / 2)
-                        collision = subject.BoundingBox.Bottom;
-                    else
-                        collision = subject.BoundingBox.Top;
                 }
+            }
 
+            if (gameObjects[i].CollisionMap == null && subject.BoundingBox.Intersects(targetBoxScaled) && collision == 0)
+            {
+                if (subject.BoundingBox.X < targetBox.X + targetBox.Width / 2)
+                    collision = subject.BoundingBox.Right;
+                else
+                    collision = subject.BoundingBox.Left;
+
+                if (subject.BoundingBox.Y < targetBox.Y + targetBox.Height / 2)
+                    collision = subject.BoundingBox.Bottom;
+                else
+                    collision = subject.BoundingBox.Top;
+            }
+                
 
                 if (collision != 0)
                 {
@@ -406,15 +498,23 @@ namespace Bearventure.Engine.CollisionDetection
         /// <param name="movement">Characters y-scale movement</param>
         /// <returns></returns>
         private static Rectangle CollisionAreaRectangleY(GameplayObject subject, float movement)
-        {          
+        {
             if (movement < 0)
-                return new Rectangle(subject.BoundingBox.X / resizeFactor,
-                    (int)(subject.BoundingBox.Top / resizeFactor + movement / resizeFactor), 
-                    subject.BoundingBox.Width / resizeFactor, 1);
+            {
+                collisionAreaRectangleY.X = subject.BoundingBox.X / resizeFactor;
+                collisionAreaRectangleY.Y = (int)(subject.BoundingBox.Top / resizeFactor + movement / resizeFactor);
+                collisionAreaRectangleY.Width = subject.BoundingBox.Width / resizeFactor;
+                collisionAreaRectangleY.Height = 1;
+            }
             else
-                return new Rectangle(subject.BoundingBox.X / resizeFactor, 
-                    (int)(subject.BoundingBox.Bottom / resizeFactor + movement / resizeFactor),
-                    subject.BoundingBox.Width / resizeFactor, 1);
+            {
+                collisionAreaRectangleY.X = subject.BoundingBox.X / resizeFactor;
+                collisionAreaRectangleY.Y = (int)(subject.BoundingBox.Bottom / resizeFactor);
+                collisionAreaRectangleY.Width = subject.BoundingBox.Width / resizeFactor;
+                collisionAreaRectangleY.Height = 1 + (int)movement / resizeFactor;
+            }
+
+            return collisionAreaRectangleY;
         }
         /// <summary>
         /// A rectangle which is positioned in relation to the characters BoundingBox and velocity.X
@@ -425,13 +525,21 @@ namespace Bearventure.Engine.CollisionDetection
         private static Rectangle CollisionAreaRectangleX(GameplayObject subject, float movement)
         {
             if (movement < 0)
-                return new Rectangle((int)(subject.BoundingBox.Left / resizeFactor + movement / resizeFactor),
-                    subject.BoundingBox.Y / resizeFactor, 1, 
-                    subject.BoundingBox.Height / resizeFactor);
+            {
+                collisionAreaRecrangleX.X = (int)(subject.BoundingBox.Left / resizeFactor + movement / resizeFactor);
+                collisionAreaRecrangleX.Y = subject.BoundingBox.Y / resizeFactor;
+                collisionAreaRecrangleX.Width = 1;
+                collisionAreaRecrangleX.Height = subject.BoundingBox.Height / resizeFactor;
+            }
             else
-                return new Rectangle((int)(subject.BoundingBox.Right / resizeFactor + movement / resizeFactor),
-                    subject.BoundingBox.Y / resizeFactor, 1, 
-                    subject.BoundingBox.Height / resizeFactor);
+            {
+                collisionAreaRecrangleX.X = (int)(subject.BoundingBox.Right / resizeFactor + movement / resizeFactor);
+                collisionAreaRecrangleX.Y = subject.BoundingBox.Y / resizeFactor;
+                collisionAreaRecrangleX.Width = 1;
+                collisionAreaRecrangleX.Height = subject.BoundingBox.Height / resizeFactor;
+            }
+
+            return collisionAreaRecrangleX;
         }
 
         public static void DrawCollisionRectangles(SpriteBatch spriteBatch, GameplayObject subject, Vector2 movement)

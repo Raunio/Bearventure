@@ -3,21 +3,21 @@
   <Asset Type="XmlItems.XmlStartPoint">
     <Index>0</Index>
     <Position>
-      <X>267</X>
-      <Y>3600</Y>
+      <X>3411</X>
+      <Y>3333</Y>
     </Position>
     <Type Null="true" />
     <Rectangle>
       <Location>
-        <X>267</X>
-        <Y>3600</Y>
+        <X>3611</X>
+        <Y>3433</Y>
       </Location>
       <Size>
         <Width>50</Width>
         <Height>50</Height>
       </Size>
-      <X>267</X>
-      <Y>3600</Y>
+      <X>3611</X>
+      <Y>3433</Y>
       <Width>50</Width>
       <Height>50</Height>
     </Rectangle>

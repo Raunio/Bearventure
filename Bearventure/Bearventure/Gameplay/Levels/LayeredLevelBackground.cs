@@ -12,6 +12,10 @@ namespace Bearventure.Gameplay.Levels
         private List<BackgroundLayer> layers;
         private BackgroundLayer[] layersInDrawingOrder;
 
+        private List<int> on_zones = new List<int>();
+        private List<int> zones_x = new List<int>();
+        private List<int> zones_y = new List<int>();
+
         private struct BackgroundLayer
         {
             public LevelBackground background;
@@ -117,5 +121,71 @@ namespace Bearventure.Gameplay.Levels
                 layer.background.Draw(spriteBatch, layer.position);
             }
         }
+
+        public void Draw(SpriteBatch spriteBatch, Camera camera)
+        {
+            foreach (BackgroundLayer layer in layersInDrawingOrder)
+            {
+                layer.background.Draw(spriteBatch, layer.position, OnZones(camera.ViewPortRectangle));
+            }
+        }
+
+        public void DrawGrid(SpriteBatch spriteBatch)
+        {
+            layersInDrawingOrder[0].background.DrawGrid(spriteBatch);
+        }
+
+        public List<int> OnZones(Rectangle rectangle)
+        {
+            int Left = rectangle.X / 2;
+            int Right = rectangle.Right / 2;
+            int Top = rectangle.Top / 2;
+            int Bottom = rectangle.Bottom / 2;
+
+            int zone_height = layersInDrawingOrder.Last().background.Height / 2;
+            int zone_width = layersInDrawingOrder.Last().background.Width / layersInDrawingOrder[0].background.Fractions / 2;
+
+            if (Bottom >= zone_height)
+            {
+                if (Top < zone_height)
+                    zones_y.Add(0);
+
+                zones_y.Add(1);
+            }
+            else
+            {
+                zones_y.Add(0);
+            }
+
+            for (int i = 0; i < layersInDrawingOrder.Last().background.Fractions / 2; i++)
+            {
+                if (Right >= zone_width * i)
+                {
+                    if (Right <= zone_width * (i + 1))
+                    {
+                        if (Left < zone_width * i)
+                        {
+                            zones_x.Add(i - 1);
+                        }
+
+                        zones_x.Add(i);
+                    }
+                }
+
+            }
+
+            foreach (int y in zones_y)
+            {
+                foreach (int x in zones_x)
+                {
+                    if (!on_zones.Contains(x * 2 + y))
+                        on_zones.Add(x * 2 + y);
+                }
+            }
+
+
+            return on_zones;
+        }
+
     }
 }

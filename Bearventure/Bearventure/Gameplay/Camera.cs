@@ -28,6 +28,14 @@ namespace Bearventure.Gameplay
             Origin = new Vector2(ViewPort.Width / 2.0f, ViewPort.Height / 2.0f);
             this.levelSize = levelSize;
             viewPort = ViewPort;
+
+            ViewPortRectangle = new Rectangle(0, 0, ViewPort.Width, ViewPort.Height);
+        }
+
+        public Rectangle ViewPortRectangle
+        {
+            get;
+            private set;
         }
 
         public float Zoom
@@ -64,6 +72,8 @@ namespace Bearventure.Gameplay
                 position.X = levelSize.X - viewPort.Width / 2;
             
             Position = position;
+
+            ViewPortRectangle = new Rectangle((int)Pos.X, (int)Pos.Y, ViewPortRectangle.Width, ViewPortRectangle.Height);
         }
 
         public Matrix GetTransformation(GraphicsDevice graphicsDevice)

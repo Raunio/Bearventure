@@ -101,13 +101,13 @@ namespace Bearventure
 
                 layeredBackground = new LayeredLevelBackground();
 
-                LevelBackground platformLayer = new LevelBackground("Testilevel2/Background/Platform", "Testilevel2Platform", 8, content);
-                LevelBackground static1Layer = new LevelBackground("Testilevel2/Background/Static1", "Testilevel2Static1", 8, content);
-                LevelBackground static2Layer = new LevelBackground("Testilevel2/Background/Static1Takana", "Testilevel2Static1Takana", 8, content);
-                LevelBackground Layer2 = new LevelBackground("Testilevel2/Background/2", "Testilevel2-2", 8, content);
-                LevelBackground Layer3 = new LevelBackground("Testilevel2/Background/3", "Testilevel2-3", 8, content);
-                LevelBackground Layer4 = new LevelBackground("Testilevel2/Background/4", "Testilevel2-4", 8, content);
-                LevelBackground skyLayer = new LevelBackground("Testilevel2/Background/Sky", "Testilevel2Sky", 8, content);
+                LevelBackground platformLayer = new LevelBackground("Testilevel2/Background/Platform", "Testilevel2Platform", 32, content);
+                LevelBackground static1Layer = new LevelBackground("Testilevel2/Background/Static1", "Testilevel2Static1", 32, content);
+                LevelBackground static2Layer = new LevelBackground("Testilevel2/Background/Static1Takana", "Testilevel2Static1Takana", 32, content);
+                LevelBackground Layer2 = new LevelBackground("Testilevel2/Background/2", "Testilevel2-2", 32, content);
+                LevelBackground Layer3 = new LevelBackground("Testilevel2/Background/3", "Testilevel2-3", 32, content);
+                LevelBackground Layer4 = new LevelBackground("Testilevel2/Background/4", "Testilevel2-4", 32, content);
+                LevelBackground skyLayer = new LevelBackground("Testilevel2/Background/Sky", "Testilevel2Sky", 32, content);
 
                 layeredBackground.AddLayer(platformLayer, 0, new Vector2(0, 0));
                 layeredBackground.AddLayer(static2Layer, 1, new Vector2(0, 0));
@@ -128,18 +128,12 @@ namespace Bearventure
                 
                 enemies = XmlReader.EnemyList("Levels/Testilevel2/Items/Testilevel2_Enemies");
 
-                Enemy owl = new Enemy(Constants.EnemyType.DelayOwl, new Vector2(700, 3500), content.Load<Texture2D>(Constants.DelayOwl), _player);
-                Enemy worm = new Enemy(Constants.EnemyType.OscillatorWorm, new Vector2(1250, 3700), content.Load<Texture2D>(Constants.OscillatorWorm), _player);
-
-                //enemies.Add(owl);
-                //enemies.Add(worm);
-
                 for (int i = 0; i < enemies.Count; i++)
                     enemies[i].MaxSoundEffectDistance = MaxSoundEffectDistance;
 
                 platforms = new List<Platform>();
-                Platform plat = new Platform(content, Constants.PlatformType.Basic, new Vector2(5100, 5200));
-                plat.InitPatrol(5100, 5900, 200f);
+                Platform plat = new Platform(content, Constants.PlatformType.MovingGrassPlatform, new Vector2(5100, 5200));
+                plat.InitPatrol(5, 0.2f, 5100, 5900, 200f);
                 platforms.Add(plat);
 
                 ladders = new List<Ladder>();
@@ -156,7 +150,7 @@ namespace Bearventure
 
                 Texture2D[] collisionMap = new Texture2D[layeredBackground.Fractions];
 
-                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 4, 8), enemies, _player, platforms, ladders, content);
+                CollisionHandler.Initialize(new CollisionMap("Levels/Testilevel2/CollisionMap/Testilevel2CollisionMap_", 8, 2), enemies, _player, platforms, ladders, content);
 
                 CharacterPhysics.Gravity = 1.5f;
 
@@ -264,6 +258,15 @@ namespace Bearventure
                     if(l.IsActive)
                     l.Update(gameTime);
                 }
+
+                if (Keyboard.GetState().IsKeyDown(Keys.OemMinus))
+                {
+                    camera.Zoom -= 0.1f;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.OemPlus))
+                {
+                    camera.Zoom += 0.1f;
+                }
              
                 cameraController.Update(gameTime);
                 
@@ -337,11 +340,11 @@ namespace Bearventure
                     RasterizerState.CullNone, null, camera.GetTransformation(ResolutionManager.graphicsDevice.GraphicsDevice));
 
             layeredBackground.Draw(spriteBatch);
-            //background.Draw(spriteBatch);
-            //background.DrawGrid(spriteBatch);
+            layeredBackground.DrawGrid(spriteBatch);
             
             //CollisionHandler.Map.DrawMap(spriteBatch);
             //CollisionHandler.Map.DrawGrid(spriteBatch);
+            //CollisionHandler.DrawCollisionRectangles(spriteBatch, _player, _player.velocity);
 
             foreach (Ladder l in ladders)
             {
