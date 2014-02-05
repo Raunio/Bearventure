@@ -9,6 +9,7 @@ using XmlItems;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Bearventure.Gameplay.Characters;
+using Bearventure.Gameplay.GameObjects;
 
 namespace Bearventure
 {
@@ -101,6 +102,11 @@ namespace Bearventure
             XmlStartPoint xSp = mContent.Load<XmlStartPoint>(XmlPath);
 
             return new Vector2(xSp.X, xSp.Y);
+        }
+
+        public static List<CharacterAnimation.AnatomicInfo> LoadAnatomicInfo(string XmlPath)
+        {
+            return mContent.Load<List<CharacterAnimation.AnatomicInfo>>(XmlPath);
         }
     }
 }

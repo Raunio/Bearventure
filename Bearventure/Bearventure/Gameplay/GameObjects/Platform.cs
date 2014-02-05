@@ -73,35 +73,38 @@ namespace Bearventure.Gameplay.GameObjects
             switch (type)
             {
                 case Constants.PlatformType.MovingGrassPlatform:
-                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.MovingGrassPlatform), 0, 270, 31, 0, 0, 25);
+                    CurrentAnimation = new Animation(content.Load<Texture2D>(Constants.MovingGrassPlatform), 0, 270, 31, 0, 0, 25);
                     break;
-                case Constants.PlatformType.PassiveTreeBranchLeft:
-                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.PassiveTreeBranchLeft), 0, 319, 399, 0, 1, 25);
+                case Constants.PlatformType.FallingPlatform:
+                    CurrentAnimation = new Animation(content.Load<Texture2D>("Sprites/tosi"), 0, 200, 20, 0, 0, 25);
+                    break;
+                /*case Constants.PlatformType.PassiveTreeBranchLeft:
+                    CurrentAnimation = new Animation(content.Load<Texture2D>(Constants.PassiveTreeBranchLeft), 0, 319, 399, 0, 1, 25);
                     break;
                 case Constants.PlatformType.PassiveTreeBranchLeft2:
-                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.PassiveTreeBranchLeft2), 0, 295, 412, 0, 1, 25);
+                    CurrentAnimation = new Animation(content.Load<Texture2D>(Constants.PassiveTreeBranchLeft2), 0, 295, 412, 0, 1, 25);
                     break;
                 case Constants.PlatformType.PassiveTreeBranchRight:
-                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.PassiveTreeBranchRight), 0, 387, 343, 0, 1, 25);
+                    CurrentAnimation = new Animation(content.Load<Texture2D>(Constants.PassiveTreeBranchRight), 0, 387, 343, 0, 1, 25);
                     break;
                 case Constants.PlatformType.TriggeredTreeBranchLeft:
-                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.TriggeredTreeBranchLeft), 0, 290, 402, 0, 1, 25);
+                    CurrentAnimation = new Animation(content.Load<Texture2D>(Constants.TriggeredTreeBranchLeft), 0, 290, 402, 0, 1, 25);
                     break;
                 case Constants.PlatformType.TriggeredTreeBranchLeft2:
-                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.TriggeredTreeBranchLeft2), 0, 248, 446, 0, 1, 25);
+                    CurrentAnimation = new Animation(content.Load<Texture2D>(Constants.TriggeredTreeBranchLeft2), 0, 248, 446, 0, 1, 25);
                     break;
                 case Constants.PlatformType.TriggeredTreeBranchRight:
-                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.TriggeredTreeBranchRight), 0, 377, 350, 0, 1, 25);
+                    CurrentAnimation = new Animation(content.Load<Texture2D>(Constants.TriggeredTreeBranchRight), 0, 377, 350, 0, 1, 25);
                     break;
                 case Constants.PlatformType.TriggeredTreeBranchRight2:
-                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.TriggeredTreeBranchRight2), 0, 312, 389, 0, 1, 25);
-                    break;
+                    CurrentAnimation = new Animation(content.Load<Texture2D>(Constants.TriggeredTreeBranchRight2), 0, 312, 389, 0, 1, 25);
+                    break;*/
             }
         }
 
         public override void Update(GameTime gameTime)
         {
-            currentAnimation.Animate(gameTime);
+            CurrentAnimation.Animate(gameTime);
 
             this.position += velocity;
 
@@ -208,18 +211,20 @@ namespace Bearventure.Gameplay.GameObjects
 
         private void UpdateCollapsing(GameTime gameTime)
         {
-            if (hasTriggered && state != Constants.PlatformState.Falling)
+            if (hasTriggered)
             {
                 state = Constants.PlatformState.Falling;
             }
             else
             {
                 tempVector.X = 0;
-                tempVector.Y = -2;
+                tempVector.Y = -4;
 
                 if (CollisionMap == null)
                 {
                     ObjectCollisionEvent e = CollisionHandler.CollisionOccursWithObject(this, tempVector);
+                    if (e != null)
+                        hasBeenTouched = true;
                 }
                 else
                 {

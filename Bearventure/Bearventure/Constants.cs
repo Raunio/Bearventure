@@ -62,6 +62,11 @@ namespace Bearventure
 
         #endregion
 
+        #region Character anatomy files
+        public const String BadgerAttackAnatomy = "Content/CharacterAnatomy/BadgerAttackAnatomy.txt";
+        public const String KarhuPuukkoAnatomy = "Content/CharacterAnatomy/PlayerPuukkoAnatomy.txt";
+        #endregion
+
         #region GameObjects
 
         public const String MovingGrassPlatform = "Sprites/hover";
@@ -98,6 +103,7 @@ namespace Bearventure
         public enum DirectionX
         {
             Left,
+            None,
             Right
         };
         public enum DirectionY
@@ -110,6 +116,19 @@ namespace Bearventure
         {
             Ground,
             Air,
+        };
+        public enum CharacterBodyPart
+        {
+            None,
+            Mouth,
+            LeftEye,
+            RightEye,
+            LeftHand,
+            RightHand,
+            LeftFoot,
+            RightFoot,
+            Belly,
+            Groin,
         };
 
         #endregion
@@ -218,14 +237,7 @@ namespace Bearventure
         public enum PlatformType
         {
             MovingGrassPlatform,
-            PassiveTreeBranchLeft,
-            PassiveTreeBranchLeft2,
-            PassiveTreeBranchRight,
-            TriggeredTreeBranchLeft,
-            TriggeredTreeBranchLeft2,
-            TriggeredTreeBranchRight,
-            TriggeredTreeBranchRight2,
-
+            FallingPlatform,
         }
 
         public enum LadderType

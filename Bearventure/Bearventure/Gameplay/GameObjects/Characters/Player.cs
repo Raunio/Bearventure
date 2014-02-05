@@ -1,26 +1,26 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Bearventure.Engine.Effects;
 using Bearventure.Gameplay.Characters.Skills;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Content;
 using Bearventure.Gameplay.GameObjects;
+using Microsoft.Xna.Framework;
 
 namespace Bearventure.Gameplay.Characters
 {
     public class Player : Character
     {
-        Animation stoppedRight;
-        Animation stoppedLeft;
-        Animation walkRight;
-        Animation walkLeft;
-        Animation jumpingRight;
-        Animation jumpingLeft;
-        Animation climbing;
-        Animation climbingStopped;
-        Animation runRight;
-        Animation runLeft;
+        CharacterAnimation stoppedRight;
+        CharacterAnimation stoppedLeft;
+        CharacterAnimation walkRight;
+        CharacterAnimation walkLeft;
+        CharacterAnimation jumpingRight;
+        CharacterAnimation jumpingLeft;
+        CharacterAnimation climbing;
+        CharacterAnimation climbingStopped;
+        CharacterAnimation runRight;
+        CharacterAnimation runLeft;
 
         Texture2D comboSheet;
         Texture2D jumpSheet;
@@ -73,10 +73,12 @@ namespace Bearventure.Gameplay.Characters
             };
 
 
-            InitControls();
-            InitStats();
+            InitControls(); 
             InitAnimations();
+            InitStats();
             InitSkills();
+
+            BoundingBoxSize = new Point(stoppedRight.FrameWidth, stoppedLeft.FrameHeight);
         }
 
         #region ControlInitialization
@@ -133,7 +135,9 @@ namespace Bearventure.Gameplay.Characters
 
             mass = 150;
 
-            BoundingBoxOffset = 8;
+            //BoundingBoxOffset = 8;
+
+            BoundingBoxSize = new Point(stoppedRight.FrameWidth, stoppedLeft.FrameHeight);
 
             MaxSkillResource = 100;
 
@@ -142,21 +146,20 @@ namespace Bearventure.Gameplay.Characters
 
         private void InitAnimations()
         {
-            stoppedRight = new Animation(spriteSheet, 0, 88, 121, 12, 12, 50);
-            stoppedLeft = new Animation(spriteSheet, 0, 88, 121, 9, 9, 50);
-            walkRight = new Animation(spriteSheet, 0, 88, 121, 13, 21, 50);
-            walkLeft = new Animation(spriteSheet, 0, 88, 121, 0, 8, 50, true);
-            runRight = new Animation(spriteSheet, 0, 88, 121, 13, 21, 25);
-            runLeft = new Animation(spriteSheet, 0, 88, 121, 0, 8, 25, true);
+            stoppedRight = new CharacterAnimation(spriteSheet, 0, 88, 121, 12, 12, 50, SpriteEffects.None, 0f, 0f, false, true);
+            stoppedLeft = new CharacterAnimation(spriteSheet, 0, 88, 121, 9, 9, 50, SpriteEffects.None, 0f, 0f, false, true);
+            walkRight = new CharacterAnimation(spriteSheet, 0, 88, 121, 13, 21, 50, SpriteEffects.None, 0f, 0f, false, true);
+            walkLeft = new CharacterAnimation(spriteSheet, 0, 88, 121, 0, 8, 50, SpriteEffects.None, 0f, 0f, true, true);
+            runRight = new CharacterAnimation(spriteSheet, 0, 88, 121, 13, 21, 25, SpriteEffects.None, 0f, 0f, false, true);
+            runLeft = new CharacterAnimation(spriteSheet, 0, 88, 121, 0, 8, 25, SpriteEffects.None, 0f, 0f, true, true);
 
-            jumpingRight = new Animation(jumpSheet, 0, 106, 120, 0, 3, 40, false, false);
-            jumpingLeft = new Animation(jumpSheet, 0, 106, 120, 0, 3, 40, false, false);
-            jumpingLeft.Effects = SpriteEffects.FlipHorizontally;
+            jumpingRight = new CharacterAnimation(jumpSheet, 0, 106, 120, 0, 3, 40, SpriteEffects.None, 0f, 0f, false, false);
+            jumpingLeft = new CharacterAnimation(jumpSheet, 0, 106, 120, 0, 3, 40, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
 
-            climbing = new Animation(climbSheet, 0, 90, 135, 0, 4, 70);
-            climbingStopped = new Animation(climbSheet, 0, 90, 135, 0, 4, 70, false, false);
+            climbing = new CharacterAnimation(climbSheet, 0, 90, 135, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, true);
+            climbingStopped = new CharacterAnimation(climbSheet, 0, 90, 135, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, false);
 
-            currentAnimation = stoppedRight;
+            ChangeAnimation(stoppedRight);
         }
 
         private void InitSkills()
@@ -164,7 +167,7 @@ namespace Bearventure.Gameplay.Characters
             #region Combo1 Initialization
             #region ComboSkill 1 Initialization
 
-            Animation StraightPunch_R = new Animation(comboSheet, 0, 118, 120, 0, 3, 30, false, false);
+            CharacterAnimation StraightPunch_R = new CharacterAnimation(comboSheet, 0, 118, 120, 0, 3, 30, SpriteEffects.None, 0f, 0f, false, false);
             StraightPunch_R.FreezeFrames = new Animation.FrameFreezer
             {
                 Frames = new List<int>
@@ -175,7 +178,9 @@ namespace Bearventure.Gameplay.Characters
                 Amount = 150,
             };
 
-            Animation StraightPunch_L = new Animation(comboSheet, 0, 118, 120, 0, 3, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+            StraightPunch_R.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
+
+            CharacterAnimation StraightPunch_L = new CharacterAnimation(comboSheet, 0, 118, 120, 0, 3, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
             StraightPunch_L.FreezeFrames = new Animation.FrameFreezer
             {
                 Frames = new List<int>
@@ -185,6 +190,8 @@ namespace Bearventure.Gameplay.Characters
 
                 Amount = 150,
             };
+
+            StraightPunch_L.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Left);
 
             CharacterSkill skill1 = new CharacterSkill(this, StraightPunch_R, StraightPunch_L, 300, 3, Constants.DamageType.Crushing);
 
@@ -203,7 +210,7 @@ namespace Bearventure.Gameplay.Characters
 
             #endregion
             #region ComboSkill 2 Initialization
-            Animation SweepingPunch_R = new Animation(comboSheet, 1, 118, 120, 0, 5, 30, false, false);
+            CharacterAnimation SweepingPunch_R = new CharacterAnimation(comboSheet, 1, 118, 120, 0, 5, 30, SpriteEffects.None, 0f, 0f, false, false);
             SweepingPunch_R.FreezeFrames = new Animation.FrameFreezer
             {
                 Frames = new List<int>
@@ -214,7 +221,10 @@ namespace Bearventure.Gameplay.Characters
 
                 Amount = 70,
             };
-            Animation SweepingPunch_L = new Animation(comboSheet, 1, 118, 120, 0, 5, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+
+            SweepingPunch_R.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
+
+            CharacterAnimation SweepingPunch_L = new CharacterAnimation(comboSheet, 1, 118, 120, 0, 5, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
             SweepingPunch_L.FreezeFrames = new Animation.FrameFreezer
             {
                 Frames = new List<int>
@@ -225,6 +235,9 @@ namespace Bearventure.Gameplay.Characters
 
                 Amount = 70,
             };
+
+            SweepingPunch_L.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Left);
+
             CharacterSkill skill2 = new CharacterSkill(this, SweepingPunch_R, SweepingPunch_L, 300, 4, Constants.DamageType.Crushing);
 
             skill2.SkillSoundEffect = SoundEffectManager.Instance.KarhuCombo2;
@@ -245,7 +258,7 @@ namespace Bearventure.Gameplay.Characters
             #endregion
             #region ComboSkill 3 Initialization
 
-            Animation UpperCut_R = new Animation(comboSheet, 2, 118, 120, 3, 7, 25, false, false);
+            CharacterAnimation UpperCut_R = new CharacterAnimation(comboSheet, 2, 118, 120, 3, 7, 25, SpriteEffects.None, 0f, 0f, false, false);
             UpperCut_R.FreezeFrames = new Animation.FrameFreezer
             {
                 Frames = new List<int>
@@ -255,7 +268,10 @@ namespace Bearventure.Gameplay.Characters
 
                 Amount = 150,
             };
-            Animation UpperCut_L = new Animation(comboSheet, 2, 118, 120, 2, 7, 25, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+            CharacterAnimation UpperCut_L = new CharacterAnimation(comboSheet, 2, 118, 120, 2, 7, 25, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+
+            UpperCut_L.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Left);
+
             UpperCut_L.FreezeFrames = new Animation.FrameFreezer
             {
                 Frames = new List<int>
@@ -265,6 +281,9 @@ namespace Bearventure.Gameplay.Characters
 
                 Amount = 150,
             };
+
+            UpperCut_R.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
+
             CharacterSkill skill3 = new CharacterSkill(this, UpperCut_R, UpperCut_L, 300, 10, Constants.DamageType.Crushing);
 
             skill3.SkillSoundEffect = SoundEffectManager.Instance.KarhuCombo3;
@@ -300,8 +319,14 @@ namespace Bearventure.Gameplay.Characters
 
             #region Puukko initialization
 
-            Animation puukko_R = new Animation(puukkoSheet, 0, 156, 121, 0, 7, 25, false, false);
-            Animation puukko_L = new Animation(puukkoSheet, 0, 156, 121, 0, 7, 25, false, false);
+            CharacterAnimation puukko_R = new CharacterAnimation(puukkoSheet, 0, 156, 121, 0, 7, 25, SpriteEffects.None, 0f, 0f, false, false);
+            puukko_R.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
+            puukko_R.SetAnatomicInfo(Constants.KarhuPuukkoAnatomy, SpriteEffects.None);
+
+            CharacterAnimation puukko_L = new CharacterAnimation(puukkoSheet, 0, 156, 121, 0, 7, 25, SpriteEffects.None, 0f, 0f, false, false);
+            puukko_L.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Left);
+            puukko_L.SetAnatomicInfo(Constants.KarhuPuukkoAnatomy, SpriteEffects.FlipHorizontally);
+
             puukko_L.Effects = SpriteEffects.FlipHorizontally;
 
             puukko_L.LoopFrames = new Animation.FrameLooper
@@ -351,7 +376,8 @@ namespace Bearventure.Gameplay.Characters
             };
             puukotus.HitBoxPositions[0] = new Vector2(17, -37);
             
-            puukotus.AddEffect("VisualEffects/blood2", new Vector2(17, -37), 4);
+            //puukotus.AddEffect("VisualEffects/blood2", new Vector2(17, -37), 4);
+            puukotus.AddEffect("VisualEffects/blood2", Constants.CharacterBodyPart.LeftEye, 4);
             puukotus.VisualEffectLifetime = 150;
 
             puukotus.SkillSoundEffect = SoundEffectManager.Instance.Puukotus;
@@ -473,7 +499,7 @@ namespace Bearventure.Gameplay.Characters
 
             HandleAnimations();
 
-            currentAnimation.Animate(gameTime);
+            CurrentAnimation.Animate(gameTime);
 
             PlayStepSoundEffects();
 
@@ -491,60 +517,56 @@ namespace Bearventure.Gameplay.Characters
             switch (state)
             {
                 case Constants.CharacterState.Stopped:
-                    jumpingRight.Reset();
-                    jumpingLeft.Reset();
-                    if (directionX == Constants.DirectionX.Left) { currentAnimation = stoppedLeft; }
-                    else { currentAnimation = stoppedRight; }
+                    if (directionX == Constants.DirectionX.Left) { ChangeAnimation(stoppedLeft); }
+                    else { ChangeAnimation(stoppedRight); }
                     break;
                 case Constants.CharacterState.Walking:
-                    jumpingRight.Reset();
-                    jumpingLeft.Reset();
-                    if (directionX == Constants.DirectionX.Left) { currentAnimation = walkLeft; }
-                    else { currentAnimation = walkRight; }
+                    if (directionX == Constants.DirectionX.Left) { ChangeAnimation(walkLeft); }
+                    else { ChangeAnimation(walkRight); }
                     break;
                 case Constants.CharacterState.Running:
-                    jumpingRight.Reset();
-                    jumpingLeft.Reset();
-                    if (directionX == Constants.DirectionX.Left) { currentAnimation = runLeft; }
-                    else { currentAnimation = runRight; }
+                    if (directionX == Constants.DirectionX.Left) { ChangeAnimation(runLeft); }
+                    else { ChangeAnimation(runRight); }
                     break;
                 case Constants.CharacterState.Jumping:
-                    if (directionX == Constants.DirectionX.Left) { currentAnimation = jumpingLeft; }
-                    else { currentAnimation = jumpingRight; }
+                    if (directionX == Constants.DirectionX.Left) { ChangeAnimation(jumpingLeft); }
+                    else { ChangeAnimation(jumpingRight); }
                     break;
                 case Constants.CharacterState.Falling:
-                    if (directionX == Constants.DirectionX.Left) { currentAnimation = jumpingLeft; }
-                    else { currentAnimation = jumpingRight; }
+                    if (directionX == Constants.DirectionX.Left) { ChangeAnimation(jumpingLeft); }
+                    else { ChangeAnimation(jumpingRight); }
                     break;
                 case Constants.CharacterState.Climbing:
                     if (velocity.Y == 0)
                     {
-                        currentAnimation = climbingStopped;
+                        ChangeAnimation(climbingStopped);
                         climbingStopped.GoToFrame(climbing.CurrentFrame);
                     }
                     else
                     {
-                        currentAnimation = climbing;
+                        ChangeAnimation(climbing);
                     }
                     break;
             }
+
+            BoundingBoxAnimationOffset = CurrentCharacterAnimation.BoundingBoxOffset;
         }
 
         private void PlayStepSoundEffects()
         {
-            if (currentAnimation == walkLeft || currentAnimation == runLeft)
+            if (CurrentAnimation == walkLeft || CurrentAnimation == runLeft)
             {
-                if (currentAnimation.CurrentFrame == 2 || currentAnimation.CurrentFrame == 6)
+                if (CurrentAnimation.CurrentFrame == 2 || CurrentAnimation.CurrentFrame == 6)
                 {
-                    if (currentAnimation.IsNewFrame)
+                    if (CurrentAnimation.IsNewFrame)
                         SoundEffectManager.Instance.PlayStep();
                 }
             }
-            else if (currentAnimation == walkRight || currentAnimation == runRight)
+            else if (CurrentAnimation == walkRight || CurrentAnimation == runRight)
             {
-                if (currentAnimation.CurrentFrame == 15 || currentAnimation.CurrentFrame == 19)
+                if (CurrentAnimation.CurrentFrame == 15 || CurrentAnimation.CurrentFrame == 19)
                 {
-                    if (currentAnimation.IsNewFrame)
+                    if (CurrentAnimation.IsNewFrame)
                         SoundEffectManager.Instance.PlayStep();
                 }
             }

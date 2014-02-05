@@ -110,7 +110,7 @@ namespace Bearventure
                     {
                         subject.position.X = collision.B.BoundingBox.X + aPoint.Location.X;
                         subject.position.Y = collision.B.BoundingBox.Y + aPoint.Location.Y;
-                        subject.velocity = Vector2.Zero;
+                        subject.ChangeVelocity(0, 0, "Latch to object");
                         return;
                     }
                     else if (!aPoint.IsOccupied)
@@ -118,7 +118,7 @@ namespace Bearventure
                         aPoint.Attach(subject);
                         subject.position.X = collision.B.BoundingBox.X + aPoint.Location.X;
                         subject.position.Y = collision.B.BoundingBox.Y + aPoint.Location.Y;
-                        subject.velocity = Vector2.Zero;
+                        subject.ChangeVelocity(0, 0, "Latch to object");
                         return;
                     }
                 }
@@ -268,7 +268,7 @@ namespace Bearventure
         }
         private static void Knock(Character subject)
         {
-            float decceleration = subject.Mass / 100; // Magic number
+            float decceleration = subject.decceleration; // Magic number
 
             if (subject.velocity.X == 0 && OnGround(subject))
                 subject.state = Constants.CharacterState.Stopped;
@@ -299,37 +299,36 @@ namespace Bearventure
 
             if ((collision == Bottom || collision == Top) && CollisionHandler.TerrainType == Constants.Solid)
             {
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(subject.velocity.X, 0);
+
                 if (collision == Bottom && CollisionHandler.DistanceToTerrain > 0)
                     subject.position.Y += CollisionHandler.DistanceToTerrain;
             }
 
             else if ((collision == Bottom + Left || collision == Bottom + Right) && CollisionHandler.TerrainType == Constants.Solid)
             {
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(subject.velocity.X, 0);
 
                 if (CollisionHandler.HeightDifference < subject.BoundingBox.Height / 5)
                 {
                     subject.position.Y -= CollisionHandler.HeightDifference;
                     return;
                 }
-
-                subject.velocity.X = 0;
+                subject.ChangeVelocity(0, subject.velocity.Y);
             }
 
             else if (collision == Right && CollisionHandler.TerrainType == Constants.Solid)
             {
-                subject.velocity.X = 0;
+                subject.ChangeVelocity(0, subject.velocity.Y);
             }
             else if (collision == Left && CollisionHandler.TerrainType == Constants.Solid)
             {
-                subject.velocity.X = 0;
+                subject.ChangeVelocity(0, subject.velocity.Y);
             }
 
             else if ((collision == Top + Left || collision == Top + Right) && CollisionHandler.TerrainType == Constants.Solid)
             {
-                subject.velocity.X = 0;
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(0, 0);
             }
         }
         public static void HandleObjectCollisions(GameplayObject subject)
@@ -347,13 +346,13 @@ namespace Bearventure
             if (collision.CollisionLocation == Top)
             {
                 if(collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
-                    subject.velocity.Y = 0;
+                    subject.ChangeVelocity(subject.velocity.X, 0, "Object collision TOP");
             }
             else if (collision.CollisionLocation == Bottom && !collision.IsZeroMassCollision)
             {
                 if (collision.B.TAG != "Ladder")
                 {
-                    subject.velocity.Y = 0;
+                    subject.ChangeVelocity(subject.velocity.X, 0, "Object collision Bottom");
 
                     subject.position.X += collision.A.TAG == "Player" ? collision.B.velocity.X : collision.A.velocity.X;
                 }
@@ -362,7 +361,7 @@ namespace Bearventure
             {
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {
-                    if (!Blocked((Character)collision.B))
+                    if (!Blocked((Character)collision.B, Constants.DirectionX.Left))
                     {
                         subject.velocity.X /= 2;
                         collision.B.position.X += subject.velocity.X;
@@ -383,7 +382,7 @@ namespace Bearventure
             {
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {   
-                    if (!Blocked((Character)collision.B))
+                    if (!Blocked((Character)collision.B, Constants.DirectionX.Right))
                     {
                         subject.velocity.X /= 2;
                         collision.B.position.X += subject.velocity.X;
@@ -402,7 +401,7 @@ namespace Bearventure
             }
             else if (collision.CollisionLocation == Top + Left && collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
             {
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(subject.velocity.X, 0, "Object collision TOP + LEFT");
 
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {
@@ -420,7 +419,7 @@ namespace Bearventure
             }
             else if (collision.CollisionLocation == Bottom + Left && collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
             {
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(subject.velocity.X, 0, "Object collision BOTTOM + LEFT");
 
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {
@@ -438,7 +437,7 @@ namespace Bearventure
             }
             else if (collision.CollisionLocation == Top + Right && collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
             {
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(subject.velocity.X, 0, "Object collision TOP + RIGHT");
 
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {
@@ -456,7 +455,7 @@ namespace Bearventure
             }
             else if (collision.CollisionLocation == Bottom + Right && collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
             {
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(subject.velocity.X, 0, "Object collision BOTTOM + RIGHT");
 
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {

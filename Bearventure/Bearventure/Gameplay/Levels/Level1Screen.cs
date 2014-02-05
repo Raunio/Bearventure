@@ -42,7 +42,9 @@ namespace Bearventure
         ContentManager content;
         SpriteFont gameFont;
 
-        LevelBackground background;
+        Texture2D yellow;
+        Texture2D red;
+
         LayeredLevelBackground layeredBackground;
         Camera camera;
         CameraController cameraController;
@@ -120,6 +122,8 @@ namespace Bearventure
 
                 #endregion
 
+                yellow = content.Load<Texture2D>("Sprites/tosi");
+                red = content.Load<Texture2D>("Sprites/red");
 
                 _player.position = XmlReader.StartPoint("Levels/Testilevel2/Items/Testilevel2_StartPoint");
               
@@ -132,8 +136,11 @@ namespace Bearventure
 
                 platforms = new List<Platform>();
                 Platform plat = new Platform(content, Constants.PlatformType.MovingGrassPlatform, new Vector2(5100, 5200));
+                Platform fallingPlat = new Platform(content, Constants.PlatformType.FallingPlatform, new Vector2(3400, 3200));
+                fallingPlat.InitCollapse(1000);
                 plat.InitPatrol(5, 0.2f, 5100, 5900, 200f);
-                platforms.Add(plat);
+                //platforms.Add(plat);
+                platforms.Add(fallingPlat);
 
                 ladders = new List<Ladder>();
                 ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(500, 3900)));
@@ -343,7 +350,14 @@ namespace Bearventure
             
             //CollisionHandler.Map.DrawMap(spriteBatch);
             //CollisionHandler.Map.DrawGrid(spriteBatch);
-            //CollisionHandler.DrawCollisionRectangles(spriteBatch, _player, _player.velocity);
+            CollisionHandler.DrawCollisionRectangles(spriteBatch, yellow, _player, _player.velocity);
+            _player.DrawBoundingBox(spriteBatch, red);
+
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                CollisionHandler.DrawCollisionRectangles(spriteBatch, yellow, enemies[i], enemies[i].velocity);
+                enemies[i].DrawBoundingBox(spriteBatch, red);
+            }
 
             foreach (Ladder l in ladders)
             {
@@ -353,8 +367,7 @@ namespace Bearventure
             foreach (Enemy enemy in enemies)
             {
                 enemy.Draw(spriteBatch);
-                //if (enemy.ActiveSkill != null)
-                //enemy.ActiveSkill.DrawHitBox(spriteBatch, content.Load<Texture2D>("Sprites/player"));
+                enemy.DrawAnatomicPoints(spriteBatch, red);
             }
 
             _player.Draw(spriteBatch);

@@ -13,7 +13,7 @@ namespace Bearventure.Gameplay.Characters
         private int spriteSheetRow;
         private float animTimer;
         private float interval;
-        private bool backwards;
+        protected bool backwards;
         private bool looping;
         private float freezeTimer;
         private int loopCounter;
@@ -120,6 +120,14 @@ namespace Bearventure.Gameplay.Characters
         {
             get;
             set;
+        }
+
+        public int FrameCount
+        {
+            get
+            {
+                return EndFrame - StartFrame + 1;
+            }
         }
 
         /// <summary>
@@ -284,7 +292,7 @@ namespace Bearventure.Gameplay.Characters
         /// Main animation method. Should be called in the update of a character.
         /// </summary>
         /// <param name="gameTime"></param>
-        public void Animate(GameTime gameTime)
+        public virtual void Animate(GameTime gameTime)
         {
             switch (backwards)
             {
@@ -308,7 +316,7 @@ namespace Bearventure.Gameplay.Characters
                 CurrentFrame = StartFrame;
         }
 
-        private void AnimateForward(GameTime gameTime)
+        protected void AnimateForward(GameTime gameTime)
         {
             Update();
 
@@ -335,7 +343,7 @@ namespace Bearventure.Gameplay.Characters
             }
         }
 
-        private void AnimateBackward(GameTime gameTime)
+        protected void AnimateBackward(GameTime gameTime)
         {
             Update();
 

@@ -6,11 +6,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Bearventure.Gameplay.Characters;
 using Bearventure.Gameplay.GameObjects;
+using System.Diagnostics;
 
 namespace Bearventure.Gameplay
 {
     public abstract class GameplayObject
     {
+        private int trueBBOffset;
+
         public String TAG
         {
             get;
@@ -45,11 +48,11 @@ namespace Bearventure.Gameplay
         {
             get
             {
-                return currentAnimation.Rotation;
+                return CurrentAnimation.Rotation;
             }
             set
             {
-                currentAnimation.Rotation = value;
+                CurrentAnimation.Rotation = value;
             }
         }
         /// <summary>
@@ -63,7 +66,16 @@ namespace Bearventure.Gameplay
         }
         private Texture2D collisionMap;
         protected int mass;
-        protected int BoundingBoxOffset;
+        protected int BoundingBoxOffset
+        {
+            get;
+            set;
+        }
+        protected int BoundingBoxAnimationOffset
+        {
+            get;
+            set;
+        }
         protected Texture2D spriteSheet;
         /// <summary>
         /// Character position.
@@ -80,7 +92,11 @@ namespace Bearventure.Gameplay
         /// <summary>
         /// Current animation of character
         /// </summary>
-        public Animation currentAnimation;
+        public Animation CurrentAnimation
+        {
+            get;
+            set;
+        }
         protected float scale = 1f;
         /// <summary>
         /// Character walking speed.
@@ -105,8 +121,8 @@ namespace Bearventure.Gameplay
         {
             get
             {
-                Color[] td = new Color[currentAnimation.FrameWidth * currentAnimation.FrameHeight];
-                currentAnimation.FrameTexture.GetData(td);
+                Color[] td = new Color[CurrentAnimation.FrameWidth * CurrentAnimation.FrameHeight];
+                CurrentAnimation.FrameTexture.GetData(td);
 
                 return td;
             }
@@ -116,6 +132,22 @@ namespace Bearventure.Gameplay
             get;
             protected set;
         }
+        private Point boundingBoxSize;
+        public Point BoundingBoxSize
+        {
+            get
+            {
+                if (boundingBoxSize == Point.Zero)
+                    boundingBoxSize = new Point(CurrentAnimation.FrameWidth, CurrentAnimation.FrameHeight);
+
+                return boundingBoxSize;
+
+            }
+            protected set
+            {
+                boundingBoxSize = value;
+            }
+        }
         /// <summary>
         /// Rectangle used primarily for collision detection.
         /// </summary>
@@ -123,10 +155,10 @@ namespace Bearventure.Gameplay
         {
             get
             {
-                int x = (int)(position.X - (currentAnimation.Origin.X * scale)) + BoundingBoxOffset;
-                int y = (int)(position.Y - (currentAnimation.Origin.Y * scale)) + BoundingBoxOffset;
-                int width = (int)(currentAnimation.FrameWidth * scale) - BoundingBoxOffset * 2;
-                int height = (int)(currentAnimation.FrameHeight * scale) - BoundingBoxOffset;
+                int x = (int)(position.X - (CurrentAnimation.Origin.X * scale)) + BoundingBoxOffset + BoundingBoxAnimationOffset;
+                int y = (int)(position.Y - (CurrentAnimation.Origin.Y * scale)) + BoundingBoxOffset;
+                int width = (int)(BoundingBoxSize.X * scale) - BoundingBoxOffset * 2;
+                int height = (int)(BoundingBoxSize.Y * scale) - BoundingBoxOffset;
 
                 return new Rectangle(x, y, width, height);
             }
@@ -156,7 +188,7 @@ namespace Bearventure.Gameplay
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             // TODO: Chop this too -Huemac
-            spriteBatch.Draw(currentAnimation.spriteSheet, position, currentAnimation.FrameRectangle, Color.White, currentAnimation.Rotation, currentAnimation.Origin, scale, currentAnimation.Effects, currentAnimation.LayerDepth);
+            spriteBatch.Draw(CurrentAnimation.spriteSheet, position, CurrentAnimation.FrameRectangle, Color.White, CurrentAnimation.Rotation, CurrentAnimation.Origin, scale, CurrentAnimation.Effects, CurrentAnimation.LayerDepth);
         }
 
         public abstract void Update(GameTime gameTime);
@@ -174,6 +206,22 @@ namespace Bearventure.Gameplay
                     colors2D[x, y] = data[x + y * texture.Width];
 
             return colors2D;
+        }
+
+        public void ChangeVelocity(float x, float y)
+        {
+            velocity.X = x;
+            velocity.Y = y;
+        }
+
+        public void ChangeVelocity(float x, float y, string message)
+        {
+            velocity.X = x;
+            velocity.Y = y;
+
+            Debug.Write("Velocity changed to: " + x + "." + y + " " + message);
+
+            CombatManager.Instance.CombatLog.Add("Velocity changed to: " + x + "." + y + " " + message);
         }
     }
 }

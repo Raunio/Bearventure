@@ -8,6 +8,11 @@ namespace Bearventure.Gameplay.Characters
     public abstract class Character : GameplayObject
     {
         #region Members
+        public CharacterAnimation CurrentCharacterAnimation
+        {
+            get;
+            protected set;
+        }
         /// <summary>
         /// Represents the state of the character
         /// </summary>
@@ -125,6 +130,22 @@ namespace Bearventure.Gameplay.Characters
             }
         }
 
+        public void ChangeAnimation(CharacterAnimation animation)
+        {
+            if (CurrentAnimation != animation)
+            {
+                if(CurrentAnimation != null)
+                    CurrentAnimation.Reset();
+
+                CurrentAnimation = animation;
+
+                if(CurrentCharacterAnimation != null)
+                    CurrentCharacterAnimation.Reset();
+
+                CurrentCharacterAnimation = animation;
+            }
+        }
+
         protected void RegenerateHealth(GameTime gameTime)
         {
             regenTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -221,6 +242,19 @@ namespace Bearventure.Gameplay.Characters
                     ActiveSkill.Cancel();
                     ActiveSkill = null;
                 }
+        }
+
+        public void DrawBoundingBox(SpriteBatch spriteBatch, Texture2D texture)
+        {
+            Rectangle Top = new Rectangle(BoundingBox.X, BoundingBox.Y, BoundingBox.Width, 1);
+            Rectangle Left = new Rectangle(BoundingBox.X, BoundingBox.Y, 1, BoundingBox.Height);
+            Rectangle Right = new Rectangle(BoundingBox.Right, BoundingBox.Y, 1, BoundingBox.Height);
+            Rectangle Bottom = new Rectangle(BoundingBox.X, BoundingBox.Bottom, BoundingBox.Width, 1);
+
+            spriteBatch.Draw(texture, Top, Color.White);
+            spriteBatch.Draw(texture, Bottom, Color.White);
+            spriteBatch.Draw(texture, Right, Color.White);
+            spriteBatch.Draw(texture, Left, Color.White);
         }
 
         /// <summary>

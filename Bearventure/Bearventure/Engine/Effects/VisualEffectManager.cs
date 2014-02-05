@@ -128,6 +128,11 @@ namespace Bearventure.Engine.Effects
             e.Lifetime = Lifetime;
             Effects.Add(e);
         }
+
+        public VisualEffect GetTopEffect()
+        {
+            return Effects.Last();
+        }
         
     }
 }

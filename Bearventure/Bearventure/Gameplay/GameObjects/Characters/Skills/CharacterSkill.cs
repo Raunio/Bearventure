@@ -12,15 +12,22 @@ namespace Bearventure.Gameplay.Characters.Skills
         #region Members
         // TODO: Invent a more descriptive name
         private float cdTimer;
-        private Animation rightAnimation;
-        private Animation leftAnimation;
-        private Animation currentAnimation;
+        private CharacterAnimation rightAnimation;
+        private CharacterAnimation leftAnimation;
+        private CharacterAnimation currentAnimation;
         private Character subject;
 
-        private List<string> effects = new List<string>();
-        private List<Vector2> effectPositions = new List<Vector2>();
-        private List<Vector2> effectPositionOffsets = new List<Vector2>();
-        private List<int> effectCreationFrames = new List<int>();
+        private List<CharacterSkillEffect> Effects = new List<CharacterSkillEffect>();
+        private VisualEffect[] effectPointers;
+
+        private struct CharacterSkillEffect
+        {
+            public string asset;
+            public Vector2 positionOffset;
+            public Constants.CharacterBodyPart bodyPartTarget;
+            public int creationFrame;
+        };
+
 
         private int hitBoxWidth;
         private int hitBoxHeight;
@@ -294,7 +301,7 @@ namespace Bearventure.Gameplay.Characters.Skills
         /// <param name="cooldown"></param>
         /// <param name="damage"></param>
         /// <param name="DamageType"></param>
-        public CharacterSkill(Character subject, Animation animation, int cooldown, int damage, Constants.DamageType DamageType)
+        public CharacterSkill(Character subject, CharacterAnimation animation, int cooldown, int damage, Constants.DamageType DamageType)
         {
             this.subject = subject;
             this.rightAnimation = animation;
@@ -312,7 +319,7 @@ namespace Bearventure.Gameplay.Characters.Skills
         /// <param name="cooldown"></param>
         /// <param name="damage"></param>
         /// <param name="DamageType"></param>
-        public CharacterSkill(Character subject, Animation right, Animation left, int cooldown, int damage, Constants.DamageType DamageType)
+        public CharacterSkill(Character subject, CharacterAnimation right, CharacterAnimation left, int cooldown, int damage, Constants.DamageType DamageType)
         {
             this.subject = subject;
             this.rightAnimation = right;
@@ -323,7 +330,7 @@ namespace Bearventure.Gameplay.Characters.Skills
             this.DamageType = DamageType;
             hitBox = new Rectangle(-1, -1, 1, 1);
         }
-        public CharacterSkill(Character subject, Animation right, Animation left, int cooldown, int healing)
+        public CharacterSkill(Character subject, CharacterAnimation right, CharacterAnimation left, int cooldown, int healing)
         {
             this.subject = subject;
             this.rightAnimation = right;
@@ -427,25 +434,39 @@ namespace Bearventure.Gameplay.Characters.Skills
                 if (currentAnimation.CurrentFrame != frameOfActivation)
                     effectsHaveActivated = false;
 
-                if(!effectsHaveActivated)
-                    for(int i = 0; i < effectCreationFrames.Count; i++)
-                        if (currentAnimation.CurrentFrame == effectCreationFrames[i])
+                if (!effectsHaveActivated)
+                {
+                    for (int i = 0; i < Effects.Count; i++)
+                        if (currentAnimation.CurrentFrame == Effects[i].creationFrame)
                         {
-                            if(subject.directionX == Constants.DirectionX.Right)
-                                VisualEffectManager.Instance.CreateEffect(effects[i], subject.position + effectPositionOffsets[i], VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
+                            Vector2 origin = new Vector2(subject.BoundingBox.X, subject.BoundingBox.Y);
+                            Vector2 offset = Effects[i].positionOffset;
+
+                            if (subject.directionX == Constants.DirectionX.Right)
+                            {
+                                VisualEffectManager.Instance.CreateEffect(Effects[i].asset, subject.position + offset, VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
+                                effectPointers[i] = VisualEffectManager.Instance.GetTopEffect();
+                            }
                             else
-                                VisualEffectManager.Instance.CreateEffect(effects[i], subject.position + new Vector2(-effectPositionOffsets[i].X, effectPositionOffsets[i].Y), VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
+                            {
+                                VisualEffectManager.Instance.CreateEffect(Effects[i].asset, subject.position + new Vector2(-offset.X, offset.Y), VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
+                                effectPointers[i] = VisualEffectManager.Instance.GetTopEffect();
+                            }
+
                             frameOfActivation = currentAnimation.CurrentFrame;
-                        
+
 
                             effectsHaveActivated = true;
                         }
+                }
 
                 if (currentAnimation.HasFinished)
                 {
                     IsActive = false;
                     subject.state = Constants.CharacterState.Stopped;
                 }
+
+                UpdateEffectOffsets();
                 
             }
         }
@@ -458,6 +479,9 @@ namespace Bearventure.Gameplay.Characters.Skills
             IsReady = false;
             IsActive = true;
             rightAnimation.Reset();
+
+            if (effectPointers == null)
+                effectPointers = new VisualEffect[Effects.Count];
 
             if(leftAnimation != null)
                 leftAnimation.Reset();
@@ -494,7 +518,7 @@ namespace Bearventure.Gameplay.Characters.Skills
             else
                 currentAnimation = rightAnimation;
 
-            subject.currentAnimation = currentAnimation;
+            subject.ChangeAnimation(currentAnimation);
 
             subject.SpriteRotation = subject.directionX == Constants.DirectionX.Left ? -StartRotation : StartRotation;
 
@@ -504,9 +528,66 @@ namespace Bearventure.Gameplay.Characters.Skills
 
         public void AddEffect(string asset, Vector2 positionOffset, int creationFrame)
         {
-            effectPositionOffsets.Add(positionOffset);
-            effectCreationFrames.Add(creationFrame);
-            effects.Add(asset);          
+            CharacterSkillEffect effect = new CharacterSkillEffect();
+            effect.asset = asset;
+            effect.positionOffset = positionOffset;
+            effect.creationFrame = creationFrame;
+
+            Effects.Add(effect);
+
+        }
+        public void AddEffect(string asset, Constants.CharacterBodyPart bodyPart, int creationFrame)
+        {
+            CharacterSkillEffect effect = new CharacterSkillEffect();
+            effect.asset = asset;
+            effect.bodyPartTarget = bodyPart;
+            effect.creationFrame = creationFrame;
+
+            Effects.Add(effect);
+        }
+
+        private void UpdateEffectOffsets()
+        {
+            for (int i = 0; i < effectPointers.Length; i++)
+            {
+                Vector2 target = Vector2.Zero;
+                if(effectPointers[i] != null)
+                    switch (Effects[i].bodyPartTarget)
+                    {
+                        case Constants.CharacterBodyPart.Belly:
+                            target = currentAnimation.GetAnatomicInfo().Belly;
+                            break;
+                        case Constants.CharacterBodyPart.Groin:
+                            target = currentAnimation.GetAnatomicInfo().Groin;
+                            break;
+                        case Constants.CharacterBodyPart.LeftEye:
+                            target = currentAnimation.GetAnatomicInfo().LeftEye;
+                            break;
+                        case Constants.CharacterBodyPart.LeftFoot:
+                            target = currentAnimation.GetAnatomicInfo().LeftFoot;
+                            break;
+                        case Constants.CharacterBodyPart.LeftHand:
+                            target = currentAnimation.GetAnatomicInfo().LeftHand;
+                            break;
+                        case Constants.CharacterBodyPart.Mouth:
+                            target = currentAnimation.GetAnatomicInfo().Mouth;
+                            break;
+                        case Constants.CharacterBodyPart.RightEye:
+                            target = currentAnimation.GetAnatomicInfo().RightEye;
+                            break;
+                        case Constants.CharacterBodyPart.RightFoot:
+                            target = currentAnimation.GetAnatomicInfo().RightFoot;
+                            break;
+                        case Constants.CharacterBodyPart.RightHand:
+                            target = currentAnimation.GetAnatomicInfo().RightHand;
+                            break;
+                    }
+
+                if (target != Vector2.Zero)
+                {
+                    effectPointers[i].Position = new Vector2(subject.position.X - currentAnimation.Origin.X + target.X, subject.position.Y - currentAnimation.Origin.Y + target.Y);
+                }
+            }
         }
         /// <summary>
         /// Draw hitbox. Used for testing.
@@ -515,7 +596,7 @@ namespace Bearventure.Gameplay.Characters.Skills
         /// <param name="color"></param>
         public void DrawHitBox(SpriteBatch spriteBatch, Texture2D texture)
         {
-                spriteBatch.Draw(texture, HitBox, Color.White);
+            spriteBatch.Draw(texture, HitBox, Color.White);
         }
 
         public void Cancel()
