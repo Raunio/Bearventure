@@ -27,11 +27,12 @@ namespace Bearventure
             new ReadOnlyCollection<Point>(new[]
         {
             new Point(1920,1080),
+            new Point(1680,1050),
             new Point(1280,720),
             new Point(720,480),
             new Point(640,360),
-            new Point(320,240),
-            new Point(1680,1050)
+            new Point(320,240)
+            
         });
 
 
@@ -49,8 +50,8 @@ namespace Bearventure
 
         static private int width = 800;
         static private int height = 600;
-        static private int virtualWidth = 1024;
-        static private int virtualHeight = 768;
+        static private int virtualWidth = 1280;
+        static private int virtualHeight = 720;
         static private Matrix scaleMatrix;
         static private bool isFullScreen = false;
         static private bool isDirtyMatrix = true;

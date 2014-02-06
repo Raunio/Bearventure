@@ -250,7 +250,6 @@ namespace Bearventure
             v480p60, // 720x480
             v360p,   // 640x360
             v240p,    // 320x240
-            kakka   //kakka
         }
         #endregion
     }

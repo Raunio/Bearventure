@@ -97,7 +97,7 @@ namespace Bearventure
         {
             ResolutionManager.BeginDraw();
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-            //Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
+            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
             Rectangle fullscreen = new Rectangle(0, 0, ResolutionManager.GetVirtualResolution().X, ResolutionManager.GetVirtualResolution().Y);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.LinearClamp, DepthStencilState.None,

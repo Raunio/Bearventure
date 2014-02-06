@@ -274,7 +274,7 @@ namespace Bearventure.Gameplay.HUD
         private void DrawText(SpriteBatch spriteBatch)
         {
 
-            spriteBatch.DrawString(font, CurrentValueDraw.ToString() + "/" + MaximumValue, new Vector2(Position.X, Position.Y - 15), TextColor);
+            spriteBatch.DrawString(font, CurrentValueDraw.ToString() + "/" + MaximumValue, new Vector2(Position.X - 20, Position.Y - 15), TextColor);
         }
     }
 }
