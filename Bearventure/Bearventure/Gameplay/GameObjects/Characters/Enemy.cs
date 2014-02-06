@@ -4,6 +4,8 @@ using Bearventure.Engine.Effects;
 using System.Collections.Generic;
 using Bearventure.Gameplay.Characters.Skills;
 using Microsoft.Xna.Framework.Audio;
+using Bearventure.Gameplay.GameObjects;
+using Microsoft.Xna.Framework.Content;
 
 namespace Bearventure.Gameplay.Characters
 {
@@ -14,6 +16,7 @@ namespace Bearventure.Gameplay.Characters
 
         private Character player;
         private Constants.EnemyType type;
+        private ContentManager content;
 
         #endregion
 
@@ -87,37 +90,37 @@ namespace Bearventure.Gameplay.Characters
 
         #region Animations
 
-        public Animation WalkLeft
+        public CharacterAnimation WalkLeft
         {
             private set;
             get;
         }
-        public Animation WalkRight
+        public CharacterAnimation WalkRight
         {
             private set;
             get;
         }
-        public Animation Stopped
+        public CharacterAnimation Stopped
         {
             private set;
             get;
         }
-        public Animation Jumping
+        public CharacterAnimation Jumping
         {
             private set;
             get;
         }
-        public Animation RunLeft
+        public CharacterAnimation RunLeft
         {
             private set;
             get;
         }
-        public Animation RunRight
+        public CharacterAnimation RunRight
         {
             private set;
             get;
         }
-        public Animation KnockBack
+        public CharacterAnimation KnockBack
         {
             private set;
             get;
@@ -125,7 +128,12 @@ namespace Bearventure.Gameplay.Characters
         /// <summary>
         /// Must not be a looping animation.
         /// </summary>
-        public Animation Dying
+        public CharacterAnimation Dying
+        {
+            get;
+            private set;
+        }
+        public CharacterAnimation SpawnAnimation
         {
             get;
             private set;
@@ -135,14 +143,15 @@ namespace Bearventure.Gameplay.Characters
         #endregion
 
         #region Initialization
-        public Enemy(Constants.EnemyType type, Constants.BehaviourType behaviourType, int x, int y, Texture2D spriteSheet, Player player, int patrol_A, int patrol_B, int waitTime)
+        public Enemy(Constants.EnemyType type, Constants.BehaviourType behaviourType, int x, int y, Player player, int patrol_A, int patrol_B, int waitTime, ContentManager content)
         {
             TAG = "Enemy";
             this.type = type;
             this.position = new Vector2(x, y);
-            this.spriteSheet = spriteSheet;
+            this.content = content;
             this.player = player;
             InitAnimations();
+            InitAnatomicInfos();
             InitStats();
             InitSkills();
             if (behaviourType == Constants.BehaviourType.Default)
@@ -158,36 +167,48 @@ namespace Bearventure.Gameplay.Characters
             switch (type)
             {
                 case Constants.EnemyType.BlackMetalBadger:
-                    WalkRight = new Animation(spriteSheet, 0, 93, 103, 0, 7, 60);
-                    WalkLeft = new Animation(spriteSheet, 0, 93, 103, 0, 7, 60, true, true);
-                    RunRight = new Animation(spriteSheet, 0, 93, 103, 0, 7, 40);
-                    RunLeft = new Animation(spriteSheet, 0, 93, 103, 0, 7, 40);
-                    Stopped = new Animation(spriteSheet, 0, 93, 103, 4, 4, 60);
-                    Jumping = new Animation(spriteSheet, 0, 93, 103, 5, 6, 100);
-                    Dying = new Animation(spriteSheet, 0, 93, 103, 7, 7, 80, false, false);
-                    KnockBack = new Animation(spriteSheet, 2, 96, 121, 0, 0, 25);
+                    spriteSheet = content.Load<Texture2D>(Constants.BlackMetalBadger);
+                    WalkRight = new CharacterAnimation(spriteSheet, 0, 93, 103, 0, 7, 60, SpriteEffects.None, 0f, 0f, false, true);
+                    WalkLeft = new CharacterAnimation(spriteSheet, 0, 93, 103, 0, 7, 60, SpriteEffects.None, 0f, 0f, true, true);
+                    RunRight = new CharacterAnimation(spriteSheet, 0, 93, 103, 0, 7, 40, SpriteEffects.None, 0f, 0f, false, true);
+                    RunLeft = new CharacterAnimation(spriteSheet, 0, 93, 103, 0, 7, 40, SpriteEffects.None, 0f, 0f, false, true);
+                    Stopped = new CharacterAnimation(spriteSheet, 0, 93, 103, 4, 4, 60, SpriteEffects.None, 0f, 0f, false, true);
+                    Jumping = new CharacterAnimation(spriteSheet, 0, 93, 103, 5, 6, 100, SpriteEffects.None, 0f, 0f, false, true);
+                    Dying = new CharacterAnimation(spriteSheet, 0, 93, 103, 7, 7, 80, SpriteEffects.None, 0f, 0f, false, false);
+                    KnockBack = new CharacterAnimation(spriteSheet, 2, 96, 121, 0, 0, 25, SpriteEffects.None, 0f, 0f, false, true);
                     KnockBack.CustomFrameRowPosition = 208;
+                    SpawnAnimation = new CharacterAnimation(spriteSheet, 0, 93, 103, 4, 4, 60, SpriteEffects.None, 0f, 0f, false, true);
                     break;
                 case Constants.EnemyType.DelayOwl:
-                    WalkRight = new Animation(spriteSheet, 0, 128, 90, 8, 11, 70);
-                    WalkLeft = new Animation(spriteSheet, 0, 128, 90, 0, 3, 70, true, true);
-                    RunRight = new Animation(spriteSheet, 0, 128, 90, 8, 11, 50);
-                    RunLeft = new Animation(spriteSheet, 0, 128, 90, 0, 3, 50, true, true);
-                    Stopped = new Animation(spriteSheet, 0, 128, 90, 5, 5, 70);
-                    Jumping = new Animation(spriteSheet, 0, 128, 90, 0, 0, 70);
-                    Dying = new Animation(spriteSheet, 0, 128, 90, 5, 5, 100, false, false);
+                    spriteSheet = content.Load<Texture2D>(Constants.DelayOwl);
+                    WalkRight = new CharacterAnimation(spriteSheet, 0, 128, 90, 8, 11, 70, SpriteEffects.None, 0f, 0f, false, true);
+                    WalkLeft = new CharacterAnimation(spriteSheet, 0, 128, 90, 0, 3, 70, SpriteEffects.None, 0f, 0f, true, true);
+                    RunRight = new CharacterAnimation(spriteSheet, 0, 128, 90, 8, 11, 50, SpriteEffects.None, 0f, 0f, false, true);
+                    RunLeft = new CharacterAnimation(spriteSheet, 0, 128, 90, 0, 3, 50, SpriteEffects.None, 0f, 0f, true, true);
+                    Stopped = new CharacterAnimation(spriteSheet, 0, 128, 90, 5, 5, 70, SpriteEffects.None, 0f, 0f, false, true);
+                    Jumping = new CharacterAnimation(spriteSheet, 0, 128, 90, 0, 0, 70, SpriteEffects.None, 0f, 0f, false, true);
+                    Dying = new CharacterAnimation(spriteSheet, 0, 128, 90, 5, 5, 100, SpriteEffects.None, 0f, 0f, false, false);
                     break;
                 case Constants.EnemyType.OscillatorWorm:
-                    WalkRight = new Animation(spriteSheet, 0, 61, 19, 0, 13, 45);
-                    WalkLeft = new Animation(spriteSheet, 0, 61, 19, 0, 13, 45);
-                    WalkLeft.Effects = SpriteEffects.FlipHorizontally;
-                    Stopped = new Animation(spriteSheet, 0, 61, 19, 5, 5, 45);
-                    Jumping = new Animation(spriteSheet, 0, 61, 19, 0, 0, 45);
-                    Dying = new Animation(spriteSheet, 0, 61, 19, 5, 5, 45, false, false);
+                    spriteSheet = content.Load<Texture2D>(Constants.OscillatorWorm);
+                    WalkRight = new CharacterAnimation(spriteSheet, 0, 61, 19, 0, 13, 45, SpriteEffects.None, 0f, 0f, false, true);
+                    WalkLeft = new CharacterAnimation(spriteSheet, 0, 61, 19, 0, 13, 45, SpriteEffects.FlipHorizontally, 0f, 0f, false, true);
+                    Stopped = new CharacterAnimation(spriteSheet, 0, 61, 19, 5, 5, 45, SpriteEffects.None, 0f, 0f, false, true);
+                    Jumping = new CharacterAnimation(spriteSheet, 0, 61, 19, 0, 0, 45, SpriteEffects.None, 0f, 0f, false, true);
+                    Dying = new CharacterAnimation(spriteSheet, 0, 61, 19, 5, 5, 45, SpriteEffects.None, 0f, 0f, false, false);
                     break;
             }
 
-            currentAnimation = Stopped;
+            ChangeAnimation(Stopped);
+        }
+        private void InitAnatomicInfos()
+        {
+            switch (type)
+            {
+                case Constants.EnemyType.BlackMetalBadger:
+
+                    break;
+            }
         }
         /// <summary>
         /// Initialize "AI"
@@ -202,9 +223,16 @@ namespace Bearventure.Gameplay.Characters
 
             switch (type)
             {
-                case Constants.EnemyType.BlackMetalBadger: 
-                    behaviour.InitFixedPatrol(pointA, pointB);
-                    behaviour.WaitTime = 2000;
+                case Constants.EnemyType.BlackMetalBadger:
+                    if (pointA != 0 && pointB != 0)
+                    {
+                        behaviour.InitFixedPatrol(pointA, pointB);
+                        behaviour.WaitTime = 2000;
+                    }
+                    else
+                    {
+                        behaviour.InitFreePatrol();
+                    }
                     break;
 
                 case Constants.EnemyType.DelayOwl:
@@ -278,6 +306,7 @@ namespace Bearventure.Gameplay.Characters
                     mass = 100;
                     ArmorType = Constants.ArmorType.Fur;
                     KnockBackTreshold = 30;
+                    BoundingBoxSize = new Point(Stopped.FrameWidth, Stopped.FrameHeight);
                     break;
 
                 case Constants.EnemyType.DelayOwl:
@@ -322,7 +351,7 @@ namespace Bearventure.Gameplay.Characters
             {
                 case Constants.EnemyType.BlackMetalBadger:
                     #region TESTING
-                    Animation testSkillAnimation = new Animation(spriteSheet, 0, 93, 103, 0, 4, 20, false, false);
+                    CharacterAnimation testSkillAnimation = new CharacterAnimation(spriteSheet, 0, 93, 103, 0, 4, 20, SpriteEffects.None, 0f, 0f, false, false);
                     testSkillAnimation.FreezeFrames = new Animation.FrameFreezer
                     {
                         Frames = new List<int> { 3, 4 },
@@ -337,6 +366,7 @@ namespace Bearventure.Gameplay.Characters
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, Vision));
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, AttackRange));
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.FacingPlayer, true));
+                    testSkill.Conditions.Add(new Condition(Constants.ConditionType.OnGround, true));
                     testSkill.DamagingFrames = new List<int>
                     {
                         0,
@@ -351,12 +381,18 @@ namespace Bearventure.Gameplay.Characters
                    
                     testSkill.HitBoxHeight = BoundingBox.Height;
                     testSkill.HitBoxWidth = 20;
-                    testSkill.InflictForce = new Vector2(5, 0);
+                    testSkill.InflictForce = new Vector2(35, 0);
 
-                    Animation attack_right = new Animation(spriteSheet, 1, 149, 105, 0, 5, 30, false, false);
-                    Animation attack_left = new Animation(spriteSheet, 1, 149, 105, 0, 5, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+                    CharacterAnimation attack_right = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 30, SpriteEffects.None, 0f, 0f, false, false);
+                    CharacterAnimation attack_left = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
 
-                    Attack = new EnemySkill(this, attack_right, attack_left, 11400, 4, Constants.DamageType.Crushing);
+                    attack_left.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Left);
+                    attack_right.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
+
+                    attack_right.SetAnatomicInfo(Constants.BadgerAttackAnatomy, SpriteEffects.None);
+                    attack_left.SetAnatomicInfo(Constants.BadgerAttackAnatomy, SpriteEffects.FlipHorizontally);
+
+                    Attack = new EnemySkill(this, attack_right, attack_left, 1400, 4, Constants.DamageType.Crushing);
                     Attack.StartVelocity = new Vector2(5, 0);
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.FacingPlayer, true));
@@ -383,7 +419,7 @@ namespace Bearventure.Gameplay.Characters
                     break;
                 case Constants.EnemyType.DelayOwl:
                     #region TESTING
-                    Attack = new EnemySkill(this, new Animation(spriteSheet, 0, 126, 88, 8, 9, 100, false, false),
+                    Attack = new EnemySkill(this, new CharacterAnimation(spriteSheet, 0, 126, 88, 8, 9, 100, SpriteEffects.None, 0f, 0f, false, false),
                         5000, 5, Constants.DamageType.Piercing);
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
                     Attack.DamagingFrames = new List<int>
@@ -404,8 +440,8 @@ namespace Bearventure.Gameplay.Characters
                     break;
                 case Constants.EnemyType.OscillatorWorm:
                     #region TESTING
-                    Animation attackRight = new Animation(spriteSheet, 0, 61, 19, 0, 13, 5, false, false);
-                    Animation attackLeft = new Animation(spriteSheet, 0, 61, 19, 0, 13, 5, false, false);
+                    CharacterAnimation attackRight = new CharacterAnimation(spriteSheet, 0, 61, 19, 0, 13, 5, SpriteEffects.None, 0f, 0f, false, false);
+                    CharacterAnimation attackLeft = new CharacterAnimation(spriteSheet, 0, 61, 19, 0, 13, 5, SpriteEffects.None, 0f, 0f, false, false);
                     attackLeft.Effects = SpriteEffects.FlipHorizontally;
 
                     Attack = new EnemySkill(this, attackRight, attackLeft, 200, 1, Constants.DamageType.Piercing);
@@ -494,9 +530,9 @@ namespace Bearventure.Gameplay.Characters
 
             if (state == Constants.CharacterState.Disabled)
             {
-                if (currentAnimation == Dying)
+                if (CurrentAnimation == Dying)
                 {
-                    if (currentAnimation.HasFinished)
+                    if (CurrentAnimation.HasFinished)
                     {
                         velocity.X = 0;
                         state = Constants.CharacterState.Dead;
@@ -542,19 +578,12 @@ namespace Bearventure.Gameplay.Characters
                     break;
             }
 
-            currentAnimation.Animate(gameTime);
+            CurrentAnimation.Animate(gameTime);
+            BoundingBoxAnimationOffset = CurrentCharacterAnimation.BoundingBoxOffset;
+
         }
 
         #endregion
-
-        private void ChangeAnimation(Animation animation)
-        {
-            if (currentAnimation != animation)
-            {
-                currentAnimation.Reset();
-                currentAnimation = animation;
-            }
-        }
         /// <summary>
         /// Kill the enemy.
         /// </summary>
@@ -571,23 +600,23 @@ namespace Bearventure.Gameplay.Characters
             switch (type)
             {
                 case Constants.EnemyType.BlackMetalBadger:
-                    if (currentAnimation == WalkLeft)
+                    if (CurrentAnimation == WalkLeft)
                     {
-                        if (currentAnimation.CurrentFrame == 3 || currentAnimation.CurrentFrame == 7)
+                        if (CurrentAnimation.CurrentFrame == 3 || CurrentAnimation.CurrentFrame == 7)
                         {
-                            if (currentAnimation.IsNewFrame)
+                            if (CurrentAnimation.IsNewFrame)
                             {
-                                PlaySound(SoundEffectManager.Instance.QuietStep);
+                                SoundEffectManager.Instance.PlaySoundFromPosition(this.Position, SoundEffectManager.Instance.QuietStep);
                             }
                         }
                     }
-                    else if (currentAnimation == WalkRight)
+                    else if (CurrentAnimation == WalkRight)
                     {
-                        if (currentAnimation.CurrentFrame == 3 || currentAnimation.CurrentFrame == 7)
+                        if (CurrentAnimation.CurrentFrame == 3 || CurrentAnimation.CurrentFrame == 7)
                         {
-                            if (currentAnimation.IsNewFrame)
+                            if (CurrentAnimation.IsNewFrame)
                             {
-                                PlaySound(SoundEffectManager.Instance.QuietStep);
+                                SoundEffectManager.Instance.PlaySoundFromPosition(this.Position, SoundEffectManager.Instance.QuietStep);
                             }
                         }
                     }

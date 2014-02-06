@@ -9,6 +9,7 @@ using XmlItems;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Bearventure.Gameplay.Characters;
+using Bearventure.Gameplay.GameObjects;
 
 namespace Bearventure
 {
@@ -73,7 +74,7 @@ namespace Bearventure
                         break;
                 }
 
-                Enemy e = new Enemy(type, behaviourType, xEnemy.X, xEnemy.Y, spriteSheet, mPlayer, xEnemy.PatrolPoint_A, xEnemy.PatrolPoint_B, 2000);
+                Enemy e = new Enemy(type, behaviourType, xEnemy.X, xEnemy.Y, mPlayer, xEnemy.PatrolPoint_A, xEnemy.PatrolPoint_B, 2000, mContent);
                 e.Name = xEnemy.Name;
 
                 enemies.Add(e);
@@ -101,6 +102,11 @@ namespace Bearventure
             XmlStartPoint xSp = mContent.Load<XmlStartPoint>(XmlPath);
 
             return new Vector2(xSp.X, xSp.Y);
+        }
+
+        public static List<CharacterAnimation.AnatomicInfo> LoadAnatomicInfo(string XmlPath)
+        {
+            return mContent.Load<List<CharacterAnimation.AnatomicInfo>>(XmlPath);
         }
     }
 }

@@ -11,6 +11,9 @@ namespace Bearventure.Gameplay
 {
     public class CombatManager
     {
+        private Vector2 mass;
+        private Vector2 force;
+
         public static CombatManager Instance
         {
             get
@@ -39,6 +42,9 @@ namespace Bearventure.Gameplay
         {
             this.player = player;
             this.enemies = enemies;
+
+            mass = new Vector2();
+            force = new Vector2();
 
             CombatLog = new List<string>();
         }
@@ -98,7 +104,7 @@ namespace Bearventure.Gameplay
             {
                 if (armorType == Constants.ArmorType.Fur || armorType == Constants.ArmorType.Feathers || armorType == Constants.ArmorType.Skin)
                 {
-                    VisualEffectManager.Instance.CreateEffect("VisualEffects/blood2", position, 200);
+                    //VisualEffectManager.Instance.CreateEffect("VisualEffects/blood2", position, 200);
                     SoundEffectManager.Instance.PlaySound(Constants.Splat);
                 }
             }
@@ -179,10 +185,14 @@ namespace Bearventure.Gameplay
         {
             if (skill.InflictForce != Vector2.Zero)
             {
-                Vector2 mass = new Vector2(skill.InflictForce.X > 0 ? subject.Mass * 0.033f : 0, skill.InflictForce.Y != 0 ? subject.Mass * 0.033f : 0);
-                Vector2 force = new Vector2(direction == Constants.DirectionX.Left ? -skill.InflictForce.X + mass.X : skill.InflictForce.X - mass.X, skill.InflictForce.Y + mass.Y);
-                subject.velocity = force;
-                subject.position.Y += force.Y;
+                mass.X = skill.InflictForce.X > 0 ? subject.Mass * 0.033f : 0;
+                mass.Y = skill.InflictForce.Y != 0 ? subject.Mass * 0.033f : 0;
+
+                force.X = direction == Constants.DirectionX.Left ? -skill.InflictForce.X + mass.X : skill.InflictForce.X - mass.X;
+                force.Y = skill.InflictForce.Y + mass.Y;
+
+                subject.ChangeVelocity(force.X, force.Y, "Character Skill Force");
+                //subject.position.Y += force.Y;
 
                 if (skill.InflictForce.Length() >= subject.KnockBackTreshold)
                 {

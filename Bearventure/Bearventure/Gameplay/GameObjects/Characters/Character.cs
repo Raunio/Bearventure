@@ -8,6 +8,11 @@ namespace Bearventure.Gameplay.Characters
     public abstract class Character : GameplayObject
     {
         #region Members
+        public CharacterAnimation CurrentCharacterAnimation
+        {
+            get;
+            protected set;
+        }
         /// <summary>
         /// Represents the state of the character
         /// </summary>
@@ -30,28 +35,12 @@ namespace Bearventure.Gameplay.Characters
             get;
         }
         /// <summary>
-        /// Gets the distance to player.
-        /// </summary>
-        public Vector2 DistanceToPlayer
-        {
-            get;
-            set;
-        }
-        /// <summary>
         /// Sets and gets the amount of force needed to knockback the character.
         /// </summary>
         public int KnockBackTreshold
         {
             get;
             protected set;
-        }
-        /// <summary>
-        /// The maximum distance from where the characters sound effects can be heard relative to player.
-        /// </summary>
-        public float MaxSoundEffectDistance
-        {
-            get;
-            set;
         }
         /// <summary>
         /// Character current health.
@@ -122,6 +111,22 @@ namespace Bearventure.Gameplay.Characters
                     return true;
                 else
                     return false;
+            }
+        }
+
+        public void ChangeAnimation(CharacterAnimation animation)
+        {
+            if (CurrentAnimation != animation)
+            {
+                if(CurrentAnimation != null)
+                    CurrentAnimation.Reset();
+
+                CurrentAnimation = animation;
+
+                if(CurrentCharacterAnimation != null)
+                    CurrentCharacterAnimation.Reset();
+
+                CurrentCharacterAnimation = animation;
             }
         }
 
@@ -223,33 +228,17 @@ namespace Bearventure.Gameplay.Characters
                 }
         }
 
-        /// <summary>
-        /// Plays a sound effect and calculates pan & volume values for it relative to player. 
-        /// If the character is the player, then calculations will be ignored and volume and pan are set to 1.
-        /// </summary>
-        /// <param name="sound">The soundeffect</param>
-        /// <param name="distance">distance to player</param>
-        /// <param name="maxDistance">the maximum distance from where the sound can be heard</param>
-        public void PlaySound(SoundEffect sound)
+        public void DrawBoundingBox(SpriteBatch spriteBatch, Texture2D texture)
         {
-            //float normDistance = DistanceToPlayer < 0 ? -DistanceToPlayer : DistanceToPlayer;
-            float dist = DistanceToPlayer.Length() < 0 ? -DistanceToPlayer.Length() : DistanceToPlayer.Length();
+            Rectangle Top = new Rectangle(BoundingBox.X, BoundingBox.Y, BoundingBox.Width, 1);
+            Rectangle Left = new Rectangle(BoundingBox.X, BoundingBox.Y, 1, BoundingBox.Height);
+            Rectangle Right = new Rectangle(BoundingBox.Right, BoundingBox.Y, 1, BoundingBox.Height);
+            Rectangle Bottom = new Rectangle(BoundingBox.X, BoundingBox.Bottom, BoundingBox.Width, 1);
 
-            if (this.TAG != "Player" && dist < MaxSoundEffectDistance)
-            {
-                float pan = DistanceToPlayer.X / MaxSoundEffectDistance;
-                float volume = 1 - dist / MaxSoundEffectDistance;
-
-                SoundEffectInstance soundInstance = sound.CreateInstance();
-                soundInstance.Pan = pan;
-                soundInstance.Volume = volume;
-
-                SoundEffectManager.Instance.PlaySound(soundInstance);
-            }
-            else if(this.TAG == "Player")
-            {
-                SoundEffectManager.Instance.PlaySound(sound);
-            }
+            spriteBatch.Draw(texture, Top, Color.White);
+            spriteBatch.Draw(texture, Bottom, Color.White);
+            spriteBatch.Draw(texture, Right, Color.White);
+            spriteBatch.Draw(texture, Left, Color.White);
         }
 
         #endregion

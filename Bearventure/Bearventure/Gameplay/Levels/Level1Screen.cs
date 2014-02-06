@@ -42,7 +42,9 @@ namespace Bearventure
         ContentManager content;
         SpriteFont gameFont;
 
-        LevelBackground background;
+        Texture2D yellow;
+        Texture2D red;
+
         LayeredLevelBackground layeredBackground;
         Camera camera;
         CameraController cameraController;
@@ -53,7 +55,7 @@ namespace Bearventure
         List<Ladder> ladders;
         Player _player;
 
-        int MaxSoundEffectDistance = 600;
+        List<GameObjectSpawner> spawners;
 
         float pauseAlpha;
 
@@ -121,24 +123,36 @@ namespace Bearventure
 
                 #endregion
 
+                yellow = content.Load<Texture2D>("Sprites/tosi");
+                red = content.Load<Texture2D>("Sprites/red");
 
-                _player.position = XmlReader.StartPoint("Levels/Testilevel2/Items/Testilevel2_StartPoint");
+                _player.ChangePosition(XmlReader.StartPoint("Levels/Testilevel2/Items/Testilevel2_StartPoint"));
               
                 gameFont = content.Load<SpriteFont>(Constants.GameFont);
                 
                 enemies = XmlReader.EnemyList("Levels/Testilevel2/Items/Testilevel2_Enemies");
 
-                for (int i = 0; i < enemies.Count; i++)
-                    enemies[i].MaxSoundEffectDistance = MaxSoundEffectDistance;
+                SoundEffectManager.Instance.MaxSoundEffectDistance = 750;
 
                 platforms = new List<Platform>();
                 Platform plat = new Platform(content, Constants.PlatformType.MovingGrassPlatform, new Vector2(5100, 5200));
+                Platform fallingPlat = new Platform(content, Constants.PlatformType.FallingPlatform, new Vector2(3400, 3200));
+                fallingPlat.InitCollapse(1000);
                 plat.InitPatrol(5, 0.2f, 5100, 5900, 200f);
-                platforms.Add(plat);
+                //platforms.Add(plat);
+                //platforms.Add(fallingPlat);
+
+                spawners = new List<GameObjectSpawner>();
+                GameObjectSpawner badgerSpawner = new GameObjectSpawner(null, new Vector2(3400, 3400), enemies, 3000f, _player, content);
+                badgerSpawner.AddEffect(new VisualEffect("VisualEffects/spawnTest"));
+                badgerSpawner.AddSoundEffect(SoundEffectManager.Instance.SpawnerSound);
+                spawners.Add(badgerSpawner);
+
+                spawners[0].AddObject(Constants.EnemyType.BlackMetalBadger, 5, new Vector2(0, -8));
 
                 ladders = new List<Ladder>();
-                ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(500, 3900)));
-                ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(500, 4138)));
+                //ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(3050, 3600)));
+                //ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(3050, 3838)));
 
                 CombatManager.Instance.Initialize(_player, enemies);
                 hud = new HeadsUpDisplay();
@@ -232,13 +246,16 @@ namespace Bearventure
 
             if (IsActive)
             {
+                foreach (GameObjectSpawner spawner in spawners)
+                {
+                    spawner.Update(gameTime);
+                }
+
                 foreach (Enemy enemy in enemies)
                 {
                     if (enemy.IsActive)
                     {
                         enemy.Update(gameTime);
-
-                        enemy.DistanceToPlayer = enemy.position - _player.position;
 
                         enemy.PlayStepSounds();
                     }
@@ -275,6 +292,8 @@ namespace Bearventure
                 hud.Update(gameTime, camera.Position);
 
                 layeredBackground.Update(camera.Pos);
+
+                SoundEffectManager.Instance.UpdatePlayerPosition(_player.Position);
                 
             }
 
@@ -344,7 +363,19 @@ namespace Bearventure
             
             //CollisionHandler.Map.DrawMap(spriteBatch);
             //CollisionHandler.Map.DrawGrid(spriteBatch);
-            //CollisionHandler.DrawCollisionRectangles(spriteBatch, _player, _player.velocity);
+            //CollisionHandler.DrawCollisionRectangles(spriteBatch, yellow, _player, _player.velocity);
+            //_player.DrawBoundingBox(spriteBatch, red);
+
+            foreach (GameObjectSpawner spawner in spawners)
+            {
+                spawner.Draw(spriteBatch);
+            }
+
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                //CollisionHandler.DrawCollisionRectangles(spriteBatch, yellow, enemies[i], enemies[i].velocity);
+                //enemies[i].DrawBoundingBox(spriteBatch, red);
+            }
 
             foreach (Ladder l in ladders)
             {
@@ -354,8 +385,6 @@ namespace Bearventure
             foreach (Enemy enemy in enemies)
             {
                 enemy.Draw(spriteBatch);
-                //if (enemy.ActiveSkill != null)
-                //enemy.ActiveSkill.DrawHitBox(spriteBatch, content.Load<Texture2D>("Sprites/player"));
             }
 
             _player.Draw(spriteBatch);

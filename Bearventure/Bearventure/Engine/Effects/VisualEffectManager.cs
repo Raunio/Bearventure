@@ -73,31 +73,7 @@ namespace Bearventure.Engine.Effects
                 e.Update(gameTime);
             }
 
-            UpdateTerrainEffects(gameTime);
             CleanEffects();
-        }
-        /// <summary>
-        /// Update all terrain effects.
-        /// </summary>
-        /// <param name="gameTime"></param>
-        private void UpdateTerrainEffects(GameTime gameTime)
-        {
-            if (CharacterPhysics.OnTerrain(player) == Constants.Solid && player.state == Constants.CharacterState.Walking)
-            {
-                terrainEffects[0].Position = new Vector2(player.position.X, player.BoundingBox.Bottom);
-                terrainEffects[0].Trigger(gameTime);
-            }
-
-            for (int i = 0; i < enemies.Count; i++)
-                if (CharacterPhysics.OnTerrain(enemies[i]) == Constants.Solid && enemies[i].state == Constants.CharacterState.Walking)
-                {
-                    terrainEffects[i + 1].Position = new Vector2(enemies[i].position.X, enemies[i].BoundingBox.Bottom - 5);
-                    terrainEffects[i + 1].Trigger(gameTime);
-                }
-
-            for (int i = 0; i < terrainEffects.Length; i++)
-                terrainEffects[i].Update(gameTime);
-            
         }
         /// <summary>
         /// Draws all effetcs.
@@ -127,6 +103,11 @@ namespace Bearventure.Engine.Effects
             e.Position = position;
             e.Lifetime = Lifetime;
             Effects.Add(e);
+        }
+
+        public VisualEffect GetTopEffect()
+        {
+            return Effects.Last();
         }
         
     }

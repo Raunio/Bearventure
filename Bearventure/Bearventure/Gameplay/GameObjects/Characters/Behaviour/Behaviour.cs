@@ -59,7 +59,7 @@ namespace Bearventure
             subject.state = Constants.CharacterState.Stopped;
             target = player;
             actionManager = new ActionManager(subject, target);
-            PointY = subject.Orientation == Constants.CharacterOrientation.Air ? (int)subject.position.Y : 0;
+            PointY = subject.Orientation == Constants.CharacterOrientation.Air ? (int)subject.Position.Y : 0;
         }
         /// <summary>
         /// Set up passive behaviour. A passive subject stands still until the player reaches its line of sight. This method can be called upon at any time to switch from a previously initialized behaviour type.
@@ -67,7 +67,7 @@ namespace Bearventure
         public void InitPassive()
         {
             behaviourType = Constants.BehaviourType.Passive;
-            startPoint = (int)subject.position.X;
+            startPoint = (int)subject.Position.X;
         }
         /// <summary>
         /// Set up patrol behaviour with no fixed points. The subject starts patrolling to its direction and turns back when a collision happens. This method can be called upon at any time to switch from a previously initialized behaviour type.
@@ -150,7 +150,7 @@ namespace Bearventure
                     break;
                 case Constants.ActionType.Chase:
                     if (CharacterPhysics.OnGround(subject) || subject.Orientation == Constants.CharacterOrientation.Air)
-                        GoTo((int)target.position.X);
+                        GoTo((int)target.Position.X);
                     if (PointY > 0)
                         UpdateAltitude((int)target.BoundingBox.Y);
                     break;
@@ -168,13 +168,13 @@ namespace Bearventure
                     subject.SetState(Constants.CharacterState.Jumping);
                     break;
                 case Constants.ActionType.Flee:
-                    if (subject.position.X < target.position.X && !CharacterPhysics.Blocked(subject))
+                    if (subject.Position.X < target.Position.X && !CharacterPhysics.Blocked(subject))
                     {
-                        GoTo((int)target.position.X - subject.Vision);
+                        GoTo((int)target.Position.X - subject.Vision);
                     }
-                    else if(subject.position.X > target.position.X && !CharacterPhysics.Blocked(subject))
+                    else if(subject.Position.X > target.Position.X && !CharacterPhysics.Blocked(subject))
                     {
-                        GoTo((int)target.position.X + subject.Vision);
+                        GoTo((int)target.Position.X + subject.Vision);
                     }
                     break;
                 case Constants.ActionType.Latch:
@@ -236,7 +236,7 @@ namespace Bearventure
 
             float brakepoint = (subject.walkSpeed / subject.decceleration) * 2;
 
-            if (DistanceBetween((int)subject.position.X, pointA) <= brakepoint)
+            if (DistanceBetween((int)subject.Position.X, pointA) <= brakepoint)
             {
                 if (previousPoint != pointA)
                 {
@@ -248,7 +248,7 @@ namespace Bearventure
                 subject.SetState(Constants.CharacterState.Stopped);
             }
 
-            else if (DistanceBetween((int)subject.position.X, pointB) <= brakepoint)
+            else if (DistanceBetween((int)subject.Position.X, pointB) <= brakepoint)
             {
                 if (previousPoint != pointB)
                 {
@@ -289,7 +289,7 @@ namespace Bearventure
         {
             float brakepoint = (subject.walkSpeed / subject.decceleration) * 2;
 
-            if (DistanceBetween((int)subject.position.X, startPoint) <= brakepoint)
+            if (DistanceBetween((int)subject.Position.X, startPoint) <= brakepoint)
             {
                 subject.SetState(Constants.CharacterState.Stopped);
             }
@@ -300,7 +300,7 @@ namespace Bearventure
         {
             float brakepoint = (subject.walkSpeed / subject.decceleration) * 2;
 
-            int position = (int)subject.position.Y;
+            int position = (int)subject.Position.Y;
 
             if (DistanceBetween(position, point) > brakepoint)
             {
@@ -317,7 +317,7 @@ namespace Bearventure
         {
             get
             {
-                return DistanceBetween((int)subject.position.X, pointA) < DistanceBetween((int)subject.position.X, pointB) ? pointA : pointB;
+                return DistanceBetween((int)subject.Position.X, pointA) < DistanceBetween((int)subject.Position.X, pointB) ? pointA : pointB;
             }
         }
         private int DistanceBetween(int a, int b)
@@ -327,7 +327,7 @@ namespace Bearventure
         }
         private void GoTo(int point)
         {
-            int position = (int)subject.position.X;
+            int position = (int)subject.Position.X;
 
             if (position < point)
             {

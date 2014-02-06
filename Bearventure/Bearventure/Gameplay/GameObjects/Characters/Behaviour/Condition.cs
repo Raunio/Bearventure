@@ -37,16 +37,16 @@ namespace Bearventure
             switch (Type)
             {
                 case Constants.ConditionType.DistanceToPlayerEqualTo:
-                    if (Vector2.Distance(subject.position, player.position) == (int)Value) { return true; }
+                    if (Vector2.Distance(subject.Position, player.Position) == (int)Value) { return true; }
                     break;
                 case Constants.ConditionType.DistanceToPlayerLowerThan:
-                    if (Vector2.Distance(subject.position, player.position) < (int)Value) { return true; }
+                    if (Vector2.Distance(subject.Position, player.Position) < (int)Value) { return true; }
                     break;
                 case Constants.ConditionType.DistanceToPlayerGreaterThan:
-                    if (Vector2.Distance(subject.position, player.position) > (int)Value) { return true; }
+                    if (Vector2.Distance(subject.Position, player.Position) > (int)Value) { return true; }
                     break;
                 case Constants.ConditionType.DistanceToPlayerOtherThan:
-                    if (Vector2.Distance(subject.position, player.position) != (int)Value) { return true; }
+                    if (Vector2.Distance(subject.Position, player.Position) != (int)Value) { return true; }
                     break;
                 case Constants.ConditionType.HealthEqualTo:
                     if (subject.health == (int)Value) { return true; }
@@ -85,11 +85,11 @@ namespace Bearventure
                     if(CharacterPhysics.Blocked(subject) == (bool)Value) { return true; }
                     break;
                 case Constants.ConditionType.FacingPlayer:
-                    if (player.position.X < subject.position.X)
+                    if (player.Position.X < subject.Position.X)
                     {
                         return subject.directionX == Constants.DirectionX.Left ? true : false;
                     }
-                    else if (player.position.X > subject.position.X)
+                    else if (player.Position.X > subject.Position.X)
                     {
                         return subject.directionX == Constants.DirectionX.Right ? true : false;
                     }
@@ -99,6 +99,10 @@ namespace Bearventure
                     { 
                         return true; 
                     }
+                    break;
+                case Constants.ConditionType.OnGround:
+                    if (CharacterPhysics.OnGround(subject) == (bool)Value)
+                        return true;
                     break;
                 default:
                     return false;

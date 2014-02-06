@@ -38,7 +38,7 @@ namespace Bearventure.Gameplay
         public void AssingTo(Character subject)
         {
             target = subject;
-            position = subject.position;
+            position = subject.Position;
             velocity = target.velocity;
         }
 
@@ -50,7 +50,7 @@ namespace Bearventure.Gameplay
 
         private void Move()
         {
-            position = target.position;
+            position = target.Position;
         }
 
     }

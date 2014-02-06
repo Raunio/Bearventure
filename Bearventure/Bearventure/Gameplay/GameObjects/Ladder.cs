@@ -29,14 +29,14 @@ namespace Bearventure.Gameplay.GameObjects
             switch (type)
             {
                 case Constants.LadderType.Wooden:
-                    currentAnimation = new Animation(content.Load<Texture2D>(Constants.WoodenLadder), 0, 92, 238, 0, 0, 25);
+                    CurrentAnimation = new Animation(content.Load<Texture2D>(Constants.WoodenLadder), 0, 92, 238, 0, 0, 25);
                     break;
 
             }
         }
         public override void Update(GameTime gameTime)
         {
-            currentAnimation.Animate(gameTime);
+            CurrentAnimation.Animate(gameTime);
         }
     }
 }

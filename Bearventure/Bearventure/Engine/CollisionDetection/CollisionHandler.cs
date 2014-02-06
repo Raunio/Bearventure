@@ -124,6 +124,11 @@ namespace Bearventure.Engine.CollisionDetection
             return on_zones;
         }
 
+        public static void AddObject(GameplayObject obj)
+        {
+            gameObjects.Add(obj);
+        }
+
         public static List<int> OnAdjustedZones(Rectangle rectangle)
         {
             List<int> on_zones = new List<int>();
@@ -370,8 +375,8 @@ namespace Bearventure.Engine.CollisionDetection
 
             int collision = 0;
 
-            Rectangle Y = CollisionAreaRectangleY(subject, subject.velocity.Y);
-            Rectangle X = CollisionAreaRectangleX(subject, subject.velocity.X);
+            Rectangle Y = CollisionAreaRectangleY(subject, movement.Y);
+            Rectangle X = CollisionAreaRectangleX(subject, movement.X);
 
             for (int i = 0; i < gameObjects.Count; i++)
             {
@@ -414,6 +419,7 @@ namespace Bearventure.Engine.CollisionDetection
                     }
                 }
             }
+
             if (X.Intersects(targetBox))
             {
                 if (gameObjects[i].CollisionMap == null)
@@ -433,6 +439,7 @@ namespace Bearventure.Engine.CollisionDetection
                 }
             }
 
+
             if (gameObjects[i].CollisionMap == null && subject.BoundingBox.Intersects(targetBoxScaled) && collision == 0)
             {
                 if (subject.BoundingBox.X < targetBox.X + targetBox.Width / 2)
@@ -447,11 +454,11 @@ namespace Bearventure.Engine.CollisionDetection
             }
                 
 
-                if (collision != 0)
-                {
-                    collisionEvent = new ObjectCollisionEvent(subject, gameObjects[i], collision);
-                    return collisionEvent;
-                }                
+            if (collision != 0)
+            {
+                collisionEvent = new ObjectCollisionEvent(subject, gameObjects[i], collision);
+                return collisionEvent;
+            }                
         }
 
         return null;
@@ -542,7 +549,7 @@ namespace Bearventure.Engine.CollisionDetection
             return collisionAreaRecrangleX;
         }
 
-        public static void DrawCollisionRectangles(SpriteBatch spriteBatch, GameplayObject subject, Vector2 movement)
+        public static void DrawCollisionRectangles(SpriteBatch spriteBatch, Texture2D texture, GameplayObject subject, Vector2 movement)
         {
             Rectangle xRect = CollisionAreaRectangleX(subject, movement.X);
             Rectangle yRect = CollisionAreaRectangleY(subject, movement.Y);
@@ -554,8 +561,8 @@ namespace Bearventure.Engine.CollisionDetection
             xRect.Height *= resizeFactor;
             yRect.Width *= resizeFactor;
 
-            spriteBatch.Draw(content.Load<Texture2D>("Sprites/tosi"), xRect, Color.White);
-            spriteBatch.Draw(content.Load<Texture2D>("Sprites/tosi"), yRect, Color.White);
+            spriteBatch.Draw(texture, xRect, Color.White);
+            spriteBatch.Draw(texture, yRect, Color.White);
         }
 
         public static void ClearData()

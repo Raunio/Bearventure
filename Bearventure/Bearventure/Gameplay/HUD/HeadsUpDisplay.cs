@@ -83,6 +83,8 @@ namespace Bearventure.Gameplay.HUD
 
         public void Update(GameTime gameTime, Vector2 cameraPosition)
         {
+            UpdateBars();
+
             logPosition = cameraPosition + logOffset;
             fpsCounterPosition = cameraPosition + fpsCounterPositionOffset;
             playerLocation = cameraPosition + playerLocationOffset;
@@ -91,7 +93,7 @@ namespace Bearventure.Gameplay.HUD
 
             for (int i = 0; i < enemies.Count; i++)
             {
-                enemyHealthBars[i].Update(gameTime, enemies[i].position, 0, enemies[i].maxHealth, enemies[i].health);
+                enemyHealthBars[i].Update(gameTime, enemies[i].Position, 0, enemies[i].maxHealth, enemies[i].health);
             }
 
             origin = new Vector2(cameraPosition.X - graphics.GraphicsDevice.Viewport.Width / 2, cameraPosition.Y - graphics.GraphicsDevice.Viewport.Height / 2);
@@ -101,6 +103,26 @@ namespace Bearventure.Gameplay.HUD
 
             UpdateFPS(gameTime);
         }
+
+        private void UpdateBars()
+        {
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                if (!enemies[i].IsActive)
+                    enemyHealthBars.RemoveAt(i);
+                if (i == enemyHealthBars.Count)
+                {
+                    StatusBar hb = new StatusBar(new Rectangle(0, 0, 100, 8));
+                    hb.Initialize(graphics, content);
+                    hb.EdgeColor = Color.Black;
+                    hb.ShowEdges = true;
+                    hb.BarColor = Color.DarkRed;
+                    hb.EdgeThickness = 1;
+                    enemyHealthBars.Add(hb);
+                }
+            }
+        }
+
         /// <summary>
         /// Draws the HUD
         /// </summary>
@@ -153,7 +175,7 @@ namespace Bearventure.Gameplay.HUD
         {
             foreach (StatusBar hb in enemyHealthBars)
             {
-                if (hb.CurrentValueDraw > 0 && Vector2.Distance(player.position, hb.Position) < DrawDistance)
+                if (hb.CurrentValueDraw > 0 && Vector2.Distance(player.Position, hb.Position) < DrawDistance)
                     hb.Draw(spriteBatch);
             } 
         }
@@ -169,7 +191,7 @@ namespace Bearventure.Gameplay.HUD
                 ResolutionManager.graphicsDevice.GraphicsDevice.Viewport.Height);
 
             spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), "Fps: " + framesPerSecond, fpsCounterPosition, Color.Yellow);
-            spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), "Player position: " + player.position, playerLocation, Color.Yellow);
+            spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), "Player position: " + player.Position, playerLocation, Color.Yellow);
 
             if(CollisionHandler.OnAdjustedZones(player.BoundingBox).Count == 1)
                 playerZones = CollisionHandler.OnAdjustedZones(player.BoundingBox)[0].ToString();

@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework;
 
 namespace Bearventure
 {
@@ -21,6 +22,16 @@ namespace Bearventure
         private SoundEffect karhuCombo3;
         private SoundEffect badgerSkill;
         private SoundEffect puukotus;
+        private SoundEffect badgerSpawn;
+        private SoundEffect spawnerSound;
+
+        private Vector2 playerPosition;
+
+        public float MaxSoundEffectDistance
+        {
+            get;
+            set;
+        }
 
         public SoundEffect BadgerAttack
         {
@@ -86,6 +97,22 @@ namespace Bearventure
             }
         }
 
+        public SoundEffect BadgerSpawn
+        {
+            get
+            {
+                return badgerSpawn;
+            }
+        }
+
+        public SoundEffect SpawnerSound
+        {
+            get
+            {
+                return spawnerSound;
+            }
+        }
+
         private SoundEffectManager() { }
 
         public void Initialize() { }
@@ -116,7 +143,14 @@ namespace Bearventure
             karhuCombo3 = content.Load<SoundEffect>(Constants.KarhuHit3);
             badgerSkill = content.Load<SoundEffect>(Constants.BadgerSkill);
             puukotus = content.Load<SoundEffect>(Constants.puukkoSound);
+            badgerSpawn = content.Load<SoundEffect>(Constants.badgerSpawn);
+            spawnerSound = content.Load<SoundEffect>(Constants.spawnerSound);
             Console.WriteLine("SoundEffects loaded.");
+        }
+
+        public void UpdatePlayerPosition(Vector2 pos)
+        {
+            playerPosition = pos;
         }
 
         public void PlayIndexChange()
@@ -154,6 +188,11 @@ namespace Bearventure
             if (Globals.SoundsEnabled) matotest.Play();
         }
 
+        public void PlayBadgerSpawn()
+        {
+            if (Globals.SoundsEnabled) badgerSpawn.Play();
+        }
+
         public void PlaySound(string asset)
         {
             SoundEffect sound = content.Load<SoundEffect>(asset);
@@ -171,5 +210,43 @@ namespace Bearventure
             if (Globals.SoundsEnabled) sound.Play();
         }
 
+        public void PlaySpawnSound(Vector2 spawnerPosition, Constants.EnemyType enemyType)
+        {
+            switch (enemyType)
+            {
+                case Constants.EnemyType.BlackMetalBadger:
+                    PlaySoundFromPosition(spawnerPosition, badgerSpawn);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Plays a sound effect and calculates pan & volume values for it relative to player. 
+        /// If the character is the player, then calculations will be ignored and volume and pan are set to 1.
+        /// </summary>
+        /// <param name="sound">The soundeffect</param>
+        /// <param name="distance">distance to player</param>
+        /// <param name="maxDistance">the maximum distance from where the sound can be heard</param>
+        public void PlaySoundFromPosition(Vector2 position, SoundEffect sound)
+        {
+            if (!Globals.SoundsEnabled)
+                return;
+
+            Vector2 DistanceToPlayer = playerPosition - position;
+            //float normDistance = DistanceToPlayer < 0 ? -DistanceToPlayer : DistanceToPlayer;
+            float dist = DistanceToPlayer.Length() < 0 ? -DistanceToPlayer.Length() : DistanceToPlayer.Length();
+
+            if (dist < SoundEffectManager.Instance.MaxSoundEffectDistance)
+            {
+                float pan = DistanceToPlayer.X / SoundEffectManager.Instance.MaxSoundEffectDistance;
+                float volume = 1 - dist / SoundEffectManager.Instance.MaxSoundEffectDistance;
+
+                SoundEffectInstance soundInstance = sound.CreateInstance();
+                soundInstance.Pan = pan;
+                soundInstance.Volume = volume;
+
+                SoundEffectManager.Instance.PlaySound(soundInstance);
+            }
+        }
     }
 }

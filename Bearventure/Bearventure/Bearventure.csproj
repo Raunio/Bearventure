@@ -129,13 +129,14 @@
     <Compile Include="Engine\XmlReader.cs" />
     <Compile Include="Gameplay\Camera.cs" />
     <Compile Include="Gameplay\CameraController.cs" />
-    <Compile Include="Gameplay\GameObjects\Characters\Animation.cs" />
+    <Compile Include="Gameplay\GameObjects\Animation.cs" />
     <Compile Include="Gameplay\GameObjects\Characters\Behaviour\Action.cs" />
     <Compile Include="Gameplay\GameObjects\Characters\Behaviour\Behaviour.cs" />
     <Compile Include="Gameplay\CharacterPhysics.cs" />
     <Compile Include="Gameplay\GameObjects\Characters\Behaviour\Condition.cs" />
     <Compile Include="Gameplay\GameObjects\Characters\Behaviour\ActionManager.cs" />
     <Compile Include="Gameplay\GameObjects\Characters\Character.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\CharacterAnimation.cs" />
     <Compile Include="Gameplay\GameObjects\Characters\Skills\CharacterSkill.cs" />
     <Compile Include="Gameplay\GameObjects\Characters\Skills\CharacterSkillCombo.cs" />
     <Compile Include="Gameplay\CombatManager.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Gameplay\GameObjects\Characters\Enemy.cs" />
     <Compile Include="Gameplay\GameObjects\Characters\Player.cs" />
     <Compile Include="Gameplay\GameObjects\AttachmentPoint.cs" />
+    <Compile Include="Gameplay\GameObjects\GameObjectSpawner.cs" />
     <Compile Include="Gameplay\GameObjects\Ladder.cs" />
     <Compile Include="Gameplay\GameObjects\Platform.cs" />
     <Compile Include="Gameplay\GameObjects\GameplayObject.cs" />

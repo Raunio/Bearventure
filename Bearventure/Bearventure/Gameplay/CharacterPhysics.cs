@@ -29,6 +29,11 @@ namespace Bearventure
         /// <param name="gameTime"></param>
         public static void Apply(Character subject, GameTime gameTime)
         {
+            if (subject.TAG == "Enemy")
+            {
+                int paska = 1;
+                paska--;
+            }
             if (subject.Orientation == Constants.CharacterOrientation.Ground)
                 ApplyGravity(subject);
             else
@@ -74,7 +79,7 @@ namespace Bearventure
             HandleTerrainCollisions(subject);
             HandleObjectCollisions(subject);
 
-            subject.position += subject.velocity;
+            subject.AdjustPosition(subject.velocity);
         }
         /// <summary>
         /// Applies gravity to the subject.
@@ -104,24 +109,7 @@ namespace Bearventure
 
             if (collision != null && collision.B.AttachmentPoints != null)
             {
-                foreach (AttachmentPoint aPoint in collision.B.AttachmentPoints)
-                {
-                    if (aPoint.Subject == subject)
-                    {
-                        subject.position.X = collision.B.BoundingBox.X + aPoint.Location.X;
-                        subject.position.Y = collision.B.BoundingBox.Y + aPoint.Location.Y;
-                        subject.velocity = Vector2.Zero;
-                        return;
-                    }
-                    else if (!aPoint.IsOccupied)
-                    {
-                        aPoint.Attach(subject);
-                        subject.position.X = collision.B.BoundingBox.X + aPoint.Location.X;
-                        subject.position.Y = collision.B.BoundingBox.Y + aPoint.Location.Y;
-                        subject.velocity = Vector2.Zero;
-                        return;
-                    }
-                }
+
             }
             else
                 subject.SetState(Constants.CharacterState.Stopped);
@@ -197,7 +185,8 @@ namespace Bearventure
             if (OnGround(subject) && !OnLadder(subject))
             {
                 subject.velocity.Y -= subject.jumpStrenght;
-                subject.position.Y -= subject.jumpStrenght;
+
+                subject.AdjustPosition(new Vector2(0, -subject.jumpStrenght));
             }
             if(subject.velocity.Y > Gravity * 2)
             {
@@ -224,7 +213,7 @@ namespace Bearventure
                 if (subject.jumpTime == 0)
                 {
                     subject.velocity.Y -= subject.jumpStrenght;
-                    subject.position.Y -= subject.jumpStrenght;
+                    subject.AdjustPosition(new Vector2(0, -subject.jumpStrenght));
                     subject.jumpTime++;
                 }
             }
@@ -268,7 +257,7 @@ namespace Bearventure
         }
         private static void Knock(Character subject)
         {
-            float decceleration = subject.Mass / 100; // Magic number
+            float decceleration = subject.decceleration; // Magic number
 
             if (subject.velocity.X == 0 && OnGround(subject))
                 subject.state = Constants.CharacterState.Stopped;
@@ -299,37 +288,36 @@ namespace Bearventure
 
             if ((collision == Bottom || collision == Top) && CollisionHandler.TerrainType == Constants.Solid)
             {
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(subject.velocity.X, 0);
+
                 if (collision == Bottom && CollisionHandler.DistanceToTerrain > 0)
-                    subject.position.Y += CollisionHandler.DistanceToTerrain;
+                    subject.AdjustPosition(new Vector2(0, CollisionHandler.DistanceToTerrain));
             }
 
             else if ((collision == Bottom + Left || collision == Bottom + Right) && CollisionHandler.TerrainType == Constants.Solid)
             {
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(subject.velocity.X, 0);
 
                 if (CollisionHandler.HeightDifference < subject.BoundingBox.Height / 5)
                 {
-                    subject.position.Y -= CollisionHandler.HeightDifference;
+                    subject.AdjustPosition(new Vector2(0, -CollisionHandler.HeightDifference));
                     return;
                 }
-
-                subject.velocity.X = 0;
+                subject.ChangeVelocity(0, subject.velocity.Y);
             }
 
             else if (collision == Right && CollisionHandler.TerrainType == Constants.Solid)
             {
-                subject.velocity.X = 0;
+                subject.ChangeVelocity(0, subject.velocity.Y);
             }
             else if (collision == Left && CollisionHandler.TerrainType == Constants.Solid)
             {
-                subject.velocity.X = 0;
+                subject.ChangeVelocity(0, subject.velocity.Y);
             }
 
             else if ((collision == Top + Left || collision == Top + Right) && CollisionHandler.TerrainType == Constants.Solid)
             {
-                subject.velocity.X = 0;
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(0, 0);
             }
         }
         public static void HandleObjectCollisions(GameplayObject subject)
@@ -347,32 +335,32 @@ namespace Bearventure
             if (collision.CollisionLocation == Top)
             {
                 if(collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
-                    subject.velocity.Y = 0;
+                    subject.ChangeVelocity(subject.velocity.X, 0, "Object collision TOP");
             }
             else if (collision.CollisionLocation == Bottom && !collision.IsZeroMassCollision)
             {
                 if (collision.B.TAG != "Ladder")
                 {
-                    subject.velocity.Y = 0;
+                    subject.ChangeVelocity(subject.velocity.X, 0, "Object collision Bottom");
 
-                    subject.position.X += collision.A.TAG == "Player" ? collision.B.velocity.X : collision.A.velocity.X;
+                    subject.AdjustPosition(new Vector2(collision.A.TAG == "Player" ? collision.B.velocity.X : collision.A.velocity.X, 0));
                 }
             }
             else if (collision.CollisionLocation == Left && collision.B.TAG != "Ladder")
             {
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {
-                    if (!Blocked((Character)collision.B))
+                    if (!Blocked((Character)collision.B, Constants.DirectionX.Left))
                     {
                         subject.velocity.X /= 2;
-                        collision.B.position.X += subject.velocity.X;
+                        collision.B.AdjustPosition(new Vector2(subject.velocity.X, 0));
                     }
                     else
                         subject.velocity.X = 0;
                 }
                 else if (collision.A.Mass == -1 && !Blocked((Character)collision.B, Constants.DirectionX.Left))
                 {
-                    collision.B.position.X += subject.velocity.X;
+                    collision.B.AdjustPosition(new Vector2(subject.velocity.X, 0));
                 }
                 else if(!collision.IsZeroMassCollision)
                 {
@@ -383,17 +371,17 @@ namespace Bearventure
             {
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {   
-                    if (!Blocked((Character)collision.B))
+                    if (!Blocked((Character)collision.B, Constants.DirectionX.Right))
                     {
                         subject.velocity.X /= 2;
-                        collision.B.position.X += subject.velocity.X;
+                        collision.B.AdjustPosition(new Vector2(subject.velocity.X, 0));
                     }
                     else
                         subject.velocity.X = 0;
                 }
                 else if (collision.A.Mass == -1 && !Blocked((Character)collision.B, Constants.DirectionX.Right))
                 {
-                    collision.B.position.X += subject.velocity.X;
+                    collision.B.AdjustPosition(new Vector2(subject.velocity.X, 0));
                 }
                 else if (!collision.IsZeroMassCollision)
                 {
@@ -402,16 +390,16 @@ namespace Bearventure
             }
             else if (collision.CollisionLocation == Top + Left && collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
             {
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(subject.velocity.X, 0, "Object collision TOP + LEFT");
 
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {
                     subject.velocity.X /= 2;
-                    collision.B.position.X += subject.velocity.X;
+                    collision.B.AdjustPosition(new Vector2(subject.velocity.X, 0));
                 }
                 else if (collision.A.Mass == -1)
                 {
-                    collision.B.position.X += subject.velocity.X;
+                    collision.B.AdjustPosition(new Vector2(subject.velocity.X, 0));
                 }
                 else if (!collision.IsZeroMassCollision)
                 {
@@ -420,16 +408,16 @@ namespace Bearventure
             }
             else if (collision.CollisionLocation == Bottom + Left && collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
             {
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(subject.velocity.X, 0, "Object collision BOTTOM + LEFT");
 
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {
                     subject.velocity.X /= 2;
-                    collision.B.position.X += subject.velocity.X;
+                    collision.B.AdjustPosition(new Vector2(subject.velocity.X, 0));
                 }
                 else if (collision.A.Mass == -1)
                 {
-                    collision.B.position.X += subject.velocity.X;
+                    collision.B.AdjustPosition(new Vector2(subject.velocity.X, 0));
                 }
                 else if (!collision.IsZeroMassCollision)
                 {
@@ -438,16 +426,16 @@ namespace Bearventure
             }
             else if (collision.CollisionLocation == Top + Right && collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
             {
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(subject.velocity.X, 0, "Object collision TOP + RIGHT");
 
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {
                     subject.velocity.X /= 2;
-                    collision.B.position.X += subject.velocity.X;
+                    collision.B.AdjustPosition(new Vector2(subject.velocity.X, 0));
                 }
                 else if (collision.A.Mass == -1)
                 {
-                    collision.B.position.X += subject.velocity.X;
+                    collision.B.AdjustPosition(new Vector2(subject.velocity.X, 0));
                 }
                 else if (!collision.IsZeroMassCollision)
                 {
@@ -456,16 +444,16 @@ namespace Bearventure
             }
             else if (collision.CollisionLocation == Bottom + Right && collision.B.TAG != "Ladder" && !collision.IsZeroMassCollision)
             {
-                subject.velocity.Y = 0;
+                subject.ChangeVelocity(subject.velocity.X, 0, "Object collision BOTTOM + RIGHT");
 
                 if (collision.EventCausedByPlayer && collision.B.TAG == "Enemy" && collision.B.Mass > 0)
                 {
                     subject.velocity.X /= 2;
-                    collision.B.position.X += subject.velocity.X;
+                    collision.B.AdjustPosition(new Vector2(subject.velocity.X, 0));
                 }
                 else if (collision.A.Mass == -1)
                 {
-                    collision.B.position.X += subject.velocity.X;
+                    collision.B.AdjustPosition(new Vector2(subject.velocity.X, 0));
                 }
                 else if (!collision.IsZeroMassCollision)
                 {
@@ -514,7 +502,7 @@ namespace Bearventure
             {
                 float targetPosition = collision.B.BoundingBox.Left + collision.B.BoundingBox.Width / 2;
 
-                if (subject.position.X > targetPosition + subject.walkSpeed / 2)
+                if (subject.Position.X > targetPosition + subject.walkSpeed / 2)
                 {
                     if (subject.velocity.X > -subject.walkSpeed)
                         subject.velocity.X -= subject.acceleration;
@@ -522,7 +510,7 @@ namespace Bearventure
                     else if (subject.velocity.X < -subject.walkSpeed)
                         subject.velocity.X = -subject.walkSpeed;
                 }
-                else if (subject.position.X < targetPosition - subject.walkSpeed / 2)
+                else if (subject.Position.X < targetPosition - subject.walkSpeed / 2)
                 {
                     if (subject.velocity.X < subject.walkSpeed)
                         subject.velocity.X += subject.acceleration;
@@ -633,7 +621,7 @@ namespace Bearventure
         /// <param name="subject"></param>
         public static void FixOverlaps(Character subject)
         {
-            subject.position.X += CollisionHandler.OverlapsCharacter(subject);
+            subject.AdjustPosition(new Vector2(CollisionHandler.OverlapsCharacter(subject), 0));
         }
         private static void UpdateAltitude(Character subject, GameTime gameTime)
         {
@@ -683,10 +671,10 @@ namespace Bearventure
 
             if (up)
             {
-                subject.position.Y -= amount;
+                subject.AdjustPosition(new Vector2(0, -amount));
             }
             else
-                subject.position.Y += amount;
+                subject.AdjustPosition(new Vector2(0, amount));
         }
     }
 }

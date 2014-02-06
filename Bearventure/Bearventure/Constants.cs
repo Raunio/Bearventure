@@ -27,6 +27,8 @@ namespace Bearventure
         public const String quietStep = "SoundEffects/quietStep";
         public const String matoTest = "SoundEffects/matotest";
         public const String puukkoSound = "SoundEffects/puukotus";
+        public const String badgerSpawn = "SoundEffects/badgerSpawn";
+        public const String spawnerSound = "SoundEffects/spawnerSound";
         #endregion
         #region Music
         public const String Level1Music = "Music/Level1";
@@ -60,6 +62,11 @@ namespace Bearventure
         public const String DelayOwl = "Sprites/paskapollofix";
         public const String OscillatorWorm = "Sprites/mato";
 
+        #endregion
+
+        #region Character anatomy files
+        public const String BadgerAttackAnatomy = "Content/CharacterAnatomy/BadgerAttackAnatomy.txt";
+        public const String KarhuPuukkoAnatomy = "Content/CharacterAnatomy/PlayerPuukkoAnatomy.txt";
         #endregion
 
         #region GameObjects
@@ -98,6 +105,7 @@ namespace Bearventure
         public enum DirectionX
         {
             Left,
+            None,
             Right
         };
         public enum DirectionY
@@ -110,6 +118,19 @@ namespace Bearventure
         {
             Ground,
             Air,
+        };
+        public enum CharacterBodyPart
+        {
+            None,
+            Mouth,
+            LeftEye,
+            RightEye,
+            LeftHand,
+            RightHand,
+            LeftFoot,
+            RightFoot,
+            Belly,
+            Groin,
         };
 
         #endregion
@@ -169,6 +190,7 @@ namespace Bearventure
             Blocked,
             FacingPlayer,
             CollidesWithPlayer,
+            OnGround,
         };
 
         #endregion
@@ -218,14 +240,7 @@ namespace Bearventure
         public enum PlatformType
         {
             MovingGrassPlatform,
-            PassiveTreeBranchLeft,
-            PassiveTreeBranchLeft2,
-            PassiveTreeBranchRight,
-            TriggeredTreeBranchLeft,
-            TriggeredTreeBranchLeft2,
-            TriggeredTreeBranchRight,
-            TriggeredTreeBranchRight2,
-
+            FallingPlatform,
         }
 
         public enum LadderType

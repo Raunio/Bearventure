@@ -288,6 +288,12 @@ Content\Levels\Testilevel2\Background\Static1Takana\Testilevel2Static1Takana_30.
 Content\Levels\Testilevel2\Background\Static1Takana\Testilevel2Static1Takana_31.xnb
 Content\Levels\Testilevel2\Background\Static1Takana\Testilevel2Static1Takana_8.xnb
 Content\Levels\Testilevel2\Background\Static1Takana\Testilevel2Static1Takana_9.xnb
+Content\Sprites\red.xnb
+Content\SoundEffects\badgerSpawn.xnb
+Content\VisualEffects\spawnTest.xnb
+Content\SoundEffects\spawnerSound.xnb
 Content\Music\Intro.wma
 Content\Music\Level1.wma
 Content\Music\Splash.wma
+Content\CharacterAnatomy\BadgerAttackAnatomy.txt
+Content\CharacterAnatomy\PlayerPuukkoAnatomy.txt
