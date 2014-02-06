@@ -12,8 +12,6 @@ namespace Bearventure.Gameplay
 {
     public abstract class GameplayObject
     {
-        private int trueBBOffset;
-
         public String TAG
         {
             get;
@@ -34,6 +32,13 @@ namespace Bearventure.Gameplay
                 Color[] data = new Color[collisionMap.Width * collisionMap.Height];
                 collisionMap.GetData(data);
                 CollisionMapData = TextureData2D(collisionMap, data);
+            }
+        }
+        public Vector2 Position
+        {
+            get
+            {
+                return new Vector2(position.X, position.Y);
             }
         }
         public Color[,] CollisionMapData
@@ -80,7 +85,7 @@ namespace Bearventure.Gameplay
         /// <summary>
         /// Character position.
         /// </summary>
-        public Vector2 position;
+        protected Vector2 position;
         /// <summary>
         /// Character velocity.
         /// </summary>
@@ -155,8 +160,8 @@ namespace Bearventure.Gameplay
         {
             get
             {
-                int x = (int)(position.X - (CurrentAnimation.Origin.X * scale)) + BoundingBoxOffset + BoundingBoxAnimationOffset;
-                int y = (int)(position.Y - (CurrentAnimation.Origin.Y * scale)) + BoundingBoxOffset;
+                int x = (int)(Position.X - (CurrentAnimation.Origin.X * scale)) + BoundingBoxOffset + BoundingBoxAnimationOffset;
+                int y = (int)(Position.Y - (CurrentAnimation.Origin.Y * scale)) + BoundingBoxOffset;
                 int width = (int)(BoundingBoxSize.X * scale) - BoundingBoxOffset * 2;
                 int height = (int)(BoundingBoxSize.Y * scale) - BoundingBoxOffset;
 
@@ -188,7 +193,7 @@ namespace Bearventure.Gameplay
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             // TODO: Chop this too -Huemac
-            spriteBatch.Draw(CurrentAnimation.spriteSheet, position, CurrentAnimation.FrameRectangle, Color.White, CurrentAnimation.Rotation, CurrentAnimation.Origin, scale, CurrentAnimation.Effects, CurrentAnimation.LayerDepth);
+            spriteBatch.Draw(CurrentAnimation.spriteSheet, Position, CurrentAnimation.FrameRectangle, Color.White, CurrentAnimation.Rotation, CurrentAnimation.Origin, scale, CurrentAnimation.Effects, CurrentAnimation.LayerDepth);
         }
 
         public abstract void Update(GameTime gameTime);
@@ -222,6 +227,17 @@ namespace Bearventure.Gameplay
             Debug.Write("Velocity changed to: " + x + "." + y + " " + message);
 
             CombatManager.Instance.CombatLog.Add("Velocity changed to: " + x + "." + y + " " + message);
+        }
+
+        public void ChangePosition(Vector2 pos)
+        {
+            position.X = pos.X;
+            position.Y = pos.Y;
+        }
+
+        public void AdjustPosition(Vector2 amount)
+        {
+            position += amount;
         }
     }
 }

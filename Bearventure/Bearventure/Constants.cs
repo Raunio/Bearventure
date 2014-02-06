@@ -27,6 +27,8 @@ namespace Bearventure
         public const String quietStep = "SoundEffects/quietStep";
         public const String matoTest = "SoundEffects/matotest";
         public const String puukkoSound = "SoundEffects/puukotus";
+        public const String badgerSpawn = "SoundEffects/badgerSpawn";
+        public const String spawnerSound = "SoundEffects/spawnerSound";
         #endregion
         #region Music
         public const String Level1Music = "Music/Level1";
@@ -188,6 +190,7 @@ namespace Bearventure
             Blocked,
             FacingPlayer,
             CollidesWithPlayer,
+            OnGround,
         };
 
         #endregion

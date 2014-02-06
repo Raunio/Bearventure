@@ -60,7 +60,7 @@ namespace Bearventure.Gameplay.Characters
             puukkoSheet = content.Load<Texture2D>("Sprites/puukkorage");
             IsActive = true;
 
-            this.position = position;
+            this.position = Position;
             directionX = Constants.DirectionX.Right;
 
             AttachmentPoints = new AttachmentPoint[]

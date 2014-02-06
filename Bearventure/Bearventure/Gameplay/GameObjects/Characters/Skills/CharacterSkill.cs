@@ -404,15 +404,15 @@ namespace Bearventure.Gameplay.Characters.Skills
                         {
                             if (subject.directionX == Constants.DirectionX.Left)
                             {
-                                hitBox.X = (int)subject.position.X - ((int)HitBoxPositions[i].X + HitBoxWidth);
-                                hitBox.Y = (int)subject.position.Y + (int)HitBoxPositions[i].Y;
+                                hitBox.X = (int)subject.Position.X - ((int)HitBoxPositions[i].X + HitBoxWidth);
+                                hitBox.Y = (int)subject.Position.Y + (int)HitBoxPositions[i].Y;
                                 hitBox.Width = HitBoxWidth;
                                 hitBox.Height = HitBoxHeight;
                             }
                             else
                             {
-                                hitBox.X = (int)subject.position.X + (int)HitBoxPositions[i].X;
-                                hitBox.Y = (int)subject.position.Y + (int)HitBoxPositions[i].Y;
+                                hitBox.X = (int)subject.Position.X + (int)HitBoxPositions[i].X;
+                                hitBox.Y = (int)subject.Position.Y + (int)HitBoxPositions[i].Y;
                                 hitBox.Width = HitBoxWidth;
                                 hitBox.Height = HitBoxHeight;
                             }
@@ -444,12 +444,12 @@ namespace Bearventure.Gameplay.Characters.Skills
 
                             if (subject.directionX == Constants.DirectionX.Right)
                             {
-                                VisualEffectManager.Instance.CreateEffect(Effects[i].asset, subject.position + offset, VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
+                                VisualEffectManager.Instance.CreateEffect(Effects[i].asset, subject.Position + offset, VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
                                 effectPointers[i] = VisualEffectManager.Instance.GetTopEffect();
                             }
                             else
                             {
-                                VisualEffectManager.Instance.CreateEffect(Effects[i].asset, subject.position + new Vector2(-offset.X, offset.Y), VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
+                                VisualEffectManager.Instance.CreateEffect(Effects[i].asset, subject.Position + new Vector2(-offset.X, offset.Y), VisualEffectLifetime == 0 ? 500 : VisualEffectLifetime);
                                 effectPointers[i] = VisualEffectManager.Instance.GetTopEffect();
                             }
 
@@ -523,7 +523,9 @@ namespace Bearventure.Gameplay.Characters.Skills
             subject.SpriteRotation = subject.directionX == Constants.DirectionX.Left ? -StartRotation : StartRotation;
 
             if (SkillSoundEffect != null)
-                subject.PlaySound(SkillSoundEffect);
+            {
+                SoundEffectManager.Instance.PlaySoundFromPosition(subject.Position, SkillSoundEffect);
+            }
         }
 
         public void AddEffect(string asset, Vector2 positionOffset, int creationFrame)
@@ -585,7 +587,7 @@ namespace Bearventure.Gameplay.Characters.Skills
 
                 if (target != Vector2.Zero)
                 {
-                    effectPointers[i].Position = new Vector2(subject.position.X - currentAnimation.Origin.X + target.X, subject.position.Y - currentAnimation.Origin.Y + target.Y);
+                    effectPointers[i].Position = new Vector2(subject.Position.X - currentAnimation.Origin.X + target.X, subject.Position.Y - currentAnimation.Origin.Y + target.Y);
                 }
             }
         }

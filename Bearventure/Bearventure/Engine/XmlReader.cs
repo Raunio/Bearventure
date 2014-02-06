@@ -74,7 +74,7 @@ namespace Bearventure
                         break;
                 }
 
-                Enemy e = new Enemy(type, behaviourType, xEnemy.X, xEnemy.Y, spriteSheet, mPlayer, xEnemy.PatrolPoint_A, xEnemy.PatrolPoint_B, 2000);
+                Enemy e = new Enemy(type, behaviourType, xEnemy.X, xEnemy.Y, mPlayer, xEnemy.PatrolPoint_A, xEnemy.PatrolPoint_B, 2000, mContent);
                 e.Name = xEnemy.Name;
 
                 enemies.Add(e);

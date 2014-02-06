@@ -35,28 +35,12 @@ namespace Bearventure.Gameplay.Characters
             get;
         }
         /// <summary>
-        /// Gets the distance to player.
-        /// </summary>
-        public Vector2 DistanceToPlayer
-        {
-            get;
-            set;
-        }
-        /// <summary>
         /// Sets and gets the amount of force needed to knockback the character.
         /// </summary>
         public int KnockBackTreshold
         {
             get;
             protected set;
-        }
-        /// <summary>
-        /// The maximum distance from where the characters sound effects can be heard relative to player.
-        /// </summary>
-        public float MaxSoundEffectDistance
-        {
-            get;
-            set;
         }
         /// <summary>
         /// Character current health.
@@ -255,35 +239,6 @@ namespace Bearventure.Gameplay.Characters
             spriteBatch.Draw(texture, Bottom, Color.White);
             spriteBatch.Draw(texture, Right, Color.White);
             spriteBatch.Draw(texture, Left, Color.White);
-        }
-
-        /// <summary>
-        /// Plays a sound effect and calculates pan & volume values for it relative to player. 
-        /// If the character is the player, then calculations will be ignored and volume and pan are set to 1.
-        /// </summary>
-        /// <param name="sound">The soundeffect</param>
-        /// <param name="distance">distance to player</param>
-        /// <param name="maxDistance">the maximum distance from where the sound can be heard</param>
-        public void PlaySound(SoundEffect sound)
-        {
-            //float normDistance = DistanceToPlayer < 0 ? -DistanceToPlayer : DistanceToPlayer;
-            float dist = DistanceToPlayer.Length() < 0 ? -DistanceToPlayer.Length() : DistanceToPlayer.Length();
-
-            if (this.TAG != "Player" && dist < MaxSoundEffectDistance)
-            {
-                float pan = DistanceToPlayer.X / MaxSoundEffectDistance;
-                float volume = 1 - dist / MaxSoundEffectDistance;
-
-                SoundEffectInstance soundInstance = sound.CreateInstance();
-                soundInstance.Pan = pan;
-                soundInstance.Volume = volume;
-
-                SoundEffectManager.Instance.PlaySound(soundInstance);
-            }
-            else if(this.TAG == "Player")
-            {
-                SoundEffectManager.Instance.PlaySound(sound);
-            }
         }
 
         #endregion

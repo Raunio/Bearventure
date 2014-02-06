@@ -156,7 +156,7 @@ namespace Bearventure.Gameplay.GameObjects
 
             float brakepoint = (speed / acceleration) * 2;
 
-            if (DistanceBetween((int)position.X, patrolPointA) <= brakepoint)
+            if (DistanceBetween((int)Position.X, patrolPointA) <= brakepoint)
             {
                 if (previousPoint != patrolPointA)
                 {
@@ -169,7 +169,7 @@ namespace Bearventure.Gameplay.GameObjects
                 state = Constants.PlatformState.Stopped;
             }
 
-            else if (DistanceBetween((int)position.X, patrolPointB) <= brakepoint)
+            else if (DistanceBetween((int)Position.X, patrolPointB) <= brakepoint)
             {
                 if (previousPoint != patrolPointB)
                 {
@@ -190,7 +190,7 @@ namespace Bearventure.Gameplay.GameObjects
         }
         private void GoTo(int point)
         {
-            int position = (int)this.position.X;
+            int position = (int)this.Position.X;
 
             if (position < point)
             {

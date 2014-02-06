@@ -124,6 +124,11 @@ namespace Bearventure.Engine.CollisionDetection
             return on_zones;
         }
 
+        public static void AddObject(GameplayObject obj)
+        {
+            gameObjects.Add(obj);
+        }
+
         public static List<int> OnAdjustedZones(Rectangle rectangle)
         {
             List<int> on_zones = new List<int>();

@@ -145,6 +145,7 @@
     <Compile Include="Gameplay\GameObjects\Characters\Enemy.cs" />
     <Compile Include="Gameplay\GameObjects\Characters\Player.cs" />
     <Compile Include="Gameplay\GameObjects\AttachmentPoint.cs" />
+    <Compile Include="Gameplay\GameObjects\GameObjectSpawner.cs" />
     <Compile Include="Gameplay\GameObjects\Ladder.cs" />
     <Compile Include="Gameplay\GameObjects\Platform.cs" />
     <Compile Include="Gameplay\GameObjects\GameplayObject.cs" />
