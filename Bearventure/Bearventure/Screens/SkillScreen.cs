@@ -2,95 +2,48 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework;
 
 namespace Bearventure
 {
     class SkillScreen : MenuScreen
     {
-        #region Initialization
+        Texture2D skillWindowBorder;
+        Vector2 skillWindowBorderPos;
+        Point resolution;
+        ContentManager content;
 
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
         public SkillScreen()
-            : base("SKILLS")
+            :base("Mad Skillz Brah!")
+        {
+            
+        }
+
+        public override void Activate(bool instancePreserved)
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
-            // Create our menu entries.
-            MenuEntry applyMenuEntry = new MenuEntry("Apply");
-            MenuEntry cancelMenuEntry = new MenuEntry("Cancel");
-
-            // Hook up menu event handlers.
-            applyMenuEntry.Selected += ApplyMenuEntrySelected;
-            cancelMenuEntry.Selected += CancelMenuEntrySelected;
-
-            // Add entries to the menu.
-            MenuEntries.Add(applyMenuEntry);
-            MenuEntries.Add(cancelMenuEntry);
+            content = new ContentManager(ScreenManager.Game.Services, "Content");
+            resolution = ResolutionManager.GetVirtualResolution();
+            skillWindowBorder = content.Load<Texture2D>("Bitmaps/skillBlock");
+            skillWindowBorderPos = new Vector2(resolution.X * 0.1f, resolution.Y * 0.1f);
         }
 
-
-        #endregion
-
-        #region Handle Input
-
-
-        /// <summary>
-        /// Event handler for when the Restart menu entry is selected.
-        /// </summary>
-        void ApplyMenuEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            MessageBoxScreen confirmRestartMessageBox = new MessageBoxScreen(Constants.RestartPromptText);
-
-            confirmRestartMessageBox.Accepted += ConfirmRestartMessageBoxAccepted;
-
-            ScreenManager.AddScreen(confirmRestartMessageBox, ControllingPlayer);
-        }
-        /// <summary>
-        /// Event handler for when the Quit Game menu entry is selected.
-        /// </summary>
-        void CancelMenuEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            MessageBoxScreen confirmQuitMessageBox = new MessageBoxScreen(Constants.PauseExitPromptText);
-
-            confirmQuitMessageBox.Accepted += ConfirmQuitMessageBoxAccepted;
-
-            ScreenManager.AddScreen(confirmQuitMessageBox, ControllingPlayer);
-        }
-
-
-        /// <summary>
-        /// Event handler for when the user selects ok on the "are you sure
-        /// you want to quit" message box. This uses the loading screen to
-        /// transition from the game back to the main menu screen.
-        /// </summary>
-        void ConfirmQuitMessageBoxAccepted(object sender, PlayerIndexEventArgs e)
-        {
-            LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(),
-                                                           new MainMenuScreen());
-
-            MusicManager.Instance.StopMusic();
-            MusicManager.Instance.PlayMenuMusic();
-        }
-        /// <summary>
-        /// Event handler for when the user selects ok on the "are you sure
-        /// you want to restart" message box.This uses the loading screen to
-        /// transition from the game back to the current level screen.
-        /// </summary>
-        /// // TODO: Restarts to current screen rather than level1screen
-        void ConfirmRestartMessageBoxAccepted(object sender, PlayerIndexEventArgs e)
+        public void Update()
         {
 
-            LoadingScreen.Load(ScreenManager, false, ControllingPlayer, new BackgroundScreen(),
-                                                           new Level1Screen());
-
-            MusicManager.Instance.StopMusic();
-            MusicManager.Instance.PlayLevel1Music();
         }
 
+        public override void Draw(GameTime gameTime)
+        {
+            SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-        #endregion
+            spriteBatch.Begin();
+            spriteBatch.Draw(skillWindowBorder, skillWindowBorderPos, Color.White);
+            spriteBatch.End();
+
+        }
     }
 }

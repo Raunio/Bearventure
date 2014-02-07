@@ -60,6 +60,7 @@ namespace Bearventure
         float pauseAlpha;
 
         InputAction pauseAction;
+        InputAction skillScreenAction;
 
         #endregion
 
@@ -78,6 +79,10 @@ namespace Bearventure
             pauseAction = new InputAction(
                 new Buttons[] { Buttons.Start, Buttons.Back },
                 new Keys[] { Keys.Escape },
+                true);
+            skillScreenAction = new InputAction(
+                new Buttons[] { Buttons.Back },
+                new Keys[] { Keys.Back },
                 true);
         }
 
@@ -387,6 +392,12 @@ namespace Bearventure
                 ScreenManager.AddScreen(new DeathScreen(), ControllingPlayer);
                 //DestroyScreen();
 #endif
+            }                   
+            if (skillScreenAction.Evaluate(input, ControllingPlayer, out player))
+            {
+                ScreenManager.GetScreens();
+                ScreenManager.AddScreen(new SkillScreen(), ControllingPlayer);
+                
             }
             else
             {
