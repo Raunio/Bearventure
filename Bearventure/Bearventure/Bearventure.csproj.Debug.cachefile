@@ -13,10 +13,22 @@ Content\Sprites\karhukombo1.xnb
 Content\Bitmaps\blood.xnb
 Content\Bitmaps\Particle003.xnb
 Content\Sprites\taso.xnb
+<<<<<<< HEAD
 Content\Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_0.xnb
 Content\Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_1.xnb
 Content\Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_2.xnb
 Content\Levels\Testilevel2\CollisionMap\Testilevel2CollisionMap_3.xnb
+=======
+Content\Sprites\hyppyfix.xnb
+Content\Sprites\kavelyfixed.xnb
+Content\Sprites\WoodenLadder.xnb
+Content\Sprites\paskapollofix.xnb
+Content\Sprites\hover.xnb
+Content\Sprites\tosi.xnb
+Content\Sprites\karhuclimb2.xnb
+Content\Sprites\mato.xnb
+Content\Sprites\puukkorage.xnb
+>>>>>>> 787812a5c85a445c7a4b8d6ac1c9829d5bfad0f8
 Content\SoundEffects\IndexChange.xnb
 Content\SoundEffects\IndexSelect.xnb
 Content\SoundEffects\testiOh.xnb
@@ -291,7 +303,13 @@ Content\Levels\Testilevel2\Background\Static1Takana\Testilevel2Static1Takana_9.x
 Content\Sprites\red.xnb
 Content\SoundEffects\badgerSpawn.xnb
 Content\SoundEffects\spawnerSound.xnb
+<<<<<<< HEAD
 Content\VisualEffects\spawnTest.xnb
+=======
+Content\SoundEffects\badgerDeath.xnb
+Content\Sprites\badgerspritesheet.xnb
+Content\Sprites\matoallas.xnb
+>>>>>>> 787812a5c85a445c7a4b8d6ac1c9829d5bfad0f8
 Content\Music\Intro.wma
 Content\Music\Level1.wma
 Content\Music\Splash.wma

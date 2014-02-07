@@ -29,6 +29,7 @@ namespace Bearventure
         public const String puukkoSound = "SoundEffects/puukotus";
         public const String badgerSpawn = "SoundEffects/badgerSpawn";
         public const String spawnerSound = "SoundEffects/spawnerSound";
+        public const String badgerDeath = "SoundEffects/badgerDeath";
         #endregion
         #region Music
         public const String Level1Music = "Music/Level1";
@@ -58,7 +59,7 @@ namespace Bearventure
         #endregion
         #region Character Textures
 
-        public const String BlackMetalBadger = "Sprites/badger";
+        public const String BlackMetalBadger = "Sprites/badgerspritesheet";
         public const String DelayOwl = "Sprites/paskapollofix";
         public const String OscillatorWorm = "Sprites/mato";
 
@@ -101,6 +102,7 @@ namespace Bearventure
             Climbing,
             LatchedToObject,
             DoubleJump,
+            Spawning,
         };
         public enum DirectionX
         {
@@ -253,6 +255,12 @@ namespace Bearventure
             Stopped,
             Moving,
             Falling,
+        }
+
+        public enum SpawnerActivationType
+        {
+            Automatic,
+            Proximity,
         }
 
         #endregion

@@ -203,6 +203,7 @@ namespace Bearventure.Gameplay
                 {
                     subject.ActiveSkill.Cancel();
                     CombatLog.Add(subject.Name + " was interrupted!");
+                    subject.state = Constants.CharacterState.Knocked;
                 }
 
             }

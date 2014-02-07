@@ -156,6 +156,7 @@ namespace Bearventure.Gameplay.Characters
                 damageTimer = 0;
 
                 CombatManager.Instance.CombatLog.Add(this.Name + " took " + damage + " damage.");
+                    
             }
         }
         /// <summary>
@@ -199,6 +200,9 @@ namespace Bearventure.Gameplay.Characters
                         state = newState;
                         break;
                     case Constants.CharacterState.LatchedToObject:
+                        state = newState;
+                        break;
+                    case Constants.CharacterState.Spawning:
                         state = newState;
                         break;
                 }
