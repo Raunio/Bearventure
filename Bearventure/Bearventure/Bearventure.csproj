@@ -167,8 +167,10 @@
     <Compile Include="Screens\MenuScreen.cs" />
     <Compile Include="Screens\MessageBoxScreen.cs" />
     <Compile Include="Screens\OptionsMenuScreen.cs" />
+    <Compile Include="Screens\HUDScreen.cs" />
     <Compile Include="Screens\PauseMenuScreen.cs" />
     <Compile Include="PlayerIndexEventArgs.cs" />
+    <Compile Include="Screens\SkillScreen.cs" />
     <Compile Include="StateManager\GameScreen.cs" />
     <Compile Include="StateManager\InputAction.cs" />
     <Compile Include="StateManager\InputState.cs" />

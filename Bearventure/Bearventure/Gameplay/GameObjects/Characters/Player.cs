@@ -43,7 +43,7 @@ namespace Bearventure.Gameplay.Characters
 
 
         float jumpTimer = 0;
-        float jumpFrequency = 200;
+        float jumpFrequency = 150;
 
         CharacterSkillCombo combo1 = new CharacterSkillCombo();
         CharacterSkill puukotus;

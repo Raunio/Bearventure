@@ -24,8 +24,6 @@ namespace Bearventure.Gameplay.HUD
 
         private float updateSpeed = 25;
 
-        private bool isDisabled;
-
         #endregion
         #region Gets and Sets
         /// <summary>
@@ -218,9 +216,6 @@ namespace Bearventure.Gameplay.HUD
 
         public void Update(GameTime gameTime, Vector2 Position, int minVal, int maxVal, int currentVal)
         {
-            if (isDisabled)
-                return;
-
             animTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             if (animTimer > updateSpeed)
@@ -247,9 +242,6 @@ namespace Bearventure.Gameplay.HUD
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (isDisabled)
-                return;
-
             int unit = Base.Width / MaximumValue;
 
             int current = unit * currentValue;
@@ -281,12 +273,8 @@ namespace Bearventure.Gameplay.HUD
 
         private void DrawText(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(font, CurrentValueDraw.ToString() + "/" + MaximumValue, new Vector2(Position.X, Position.Y - 15), TextColor);
-        }
 
-        public void Disable()
-        {
-            isDisabled = true;
+            spriteBatch.DrawString(font, CurrentValueDraw.ToString() + "/" + MaximumValue, new Vector2(Position.X - 20, Position.Y - 15), TextColor);
         }
     }
 }

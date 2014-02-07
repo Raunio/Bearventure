@@ -14,53 +14,32 @@ namespace Bearventure.Gameplay.HUD
     public class HeadsUpDisplay
     {
         private ContentManager content;
-        private Vector2 logOffset;
-        private Vector2 logPosition;
         private List<Enemy> enemies;
         private Player player;
         private GraphicsDeviceManager graphics;
         private Vector2 origin;
 
-        private int frameCounter;
-        private double fpsTimer;
-        private int framesPerSecond;
-        private Vector2 fpsCounterPosition;
-        private Vector2 fpsCounterPositionOffset;
         private Vector2 playerLocation;
         private Vector2 playerLocationOffset;
         private Vector2 playerZonesLocation;
         private Vector2 playerZonesLocationOffset;
-        private Vector2 cameraZonesLocation;
-        private Vector2 cameraZonesOffset;
+
+        private Point resolution;
 
         private const int DrawDistance = 350;
 
-        private List<StatusBar> enemyHealthBars = new List<StatusBar>();
         private StatusBar playerHealthBar;
         private StatusBar playerRageBar;
 
         public void Initialize(ContentManager content, GraphicsDeviceManager graphics, List<Enemy> enemies, Player player)
         {
             this.content = content;
-            this.logOffset = new Vector2(-graphics.GraphicsDevice.Viewport.Width / 2 + 300, graphics.GraphicsDevice.Viewport.Height / 2 - 250);
-            this.fpsCounterPositionOffset = new Vector2(-graphics.GraphicsDevice.Viewport.Width / 2 + 250, -graphics.GraphicsDevice.Viewport.Height / 2 + 250);
             this.playerLocationOffset = new Vector2(-graphics.GraphicsDevice.Viewport.Width / 2 + 250, -graphics.GraphicsDevice.Viewport.Height / 2 + 300);
             this.playerZonesLocationOffset = new Vector2(-graphics.GraphicsDevice.Viewport.Width / 2 + 250, -graphics.GraphicsDevice.Viewport.Height / 2 + 350);
-            this.cameraZonesOffset = new Vector2(-graphics.GraphicsDevice.Viewport.Width / 2 + 250, -graphics.GraphicsDevice.Viewport.Height / 2 + 400);
             this.enemies = enemies;
             this.player = player;
             this.graphics = graphics;
 
-            foreach (Enemy e in enemies)
-            {
-                StatusBar hb = new StatusBar(new Rectangle(0, 0, 100, 8));
-                hb.Initialize(graphics, content);
-                hb.EdgeColor = Color.Black;
-                hb.ShowEdges = true;               
-                hb.BarColor = Color.DarkRed;
-                hb.EdgeThickness = 1;
-                enemyHealthBars.Add(hb);
-            }
 
             playerHealthBar = new StatusBar(new Rectangle(0, 0, 210, 15));
             playerHealthBar.Initialize(graphics, content);
@@ -81,49 +60,22 @@ namespace Bearventure.Gameplay.HUD
             playerRageBar.TextColor = Color.Black;
         }
 
-        public void Update(GameTime gameTime, Vector2 cameraPosition)
+        public void Update(GameTime gameTime)
         {
-            UpdateBars();
+            resolution = ResolutionManager.GetResolution();
 
-            logPosition = cameraPosition + logOffset;
-            fpsCounterPosition = cameraPosition + fpsCounterPositionOffset;
-            playerLocation = cameraPosition + playerLocationOffset;
-            playerZonesLocation = cameraPosition + playerZonesLocationOffset;
-            cameraZonesLocation = cameraPosition + cameraZonesOffset;
+            /*playerLocation = resolution + playerLocationOffset;
+            playerZonesLocation = resolution + playerZonesLocationOffset;*/
 
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                enemyHealthBars[i].Update(gameTime, 
-                    new Vector2(enemies[i].Position.X, enemies[i].Position.Y - enemies[i].CurrentAnimation.Origin.Y - enemyHealthBars[i].Base.Height), 
-                    0, enemies[i].maxHealth, enemies[i].health);
-            }
 
-            origin = new Vector2(cameraPosition.X - graphics.GraphicsDevice.Viewport.Width / 2, cameraPosition.Y - graphics.GraphicsDevice.Viewport.Height / 2);
+            origin = new Vector2(resolution.X - graphics.GraphicsDevice.Viewport.Width / 2, resolution.Y - graphics.GraphicsDevice.Viewport.Height / 2);
 
-            playerHealthBar.Update(gameTime, origin + new Vector2(450, 200), 0, player.maxHealth, player.health);
-            playerRageBar.Update(gameTime, origin + new Vector2(450, 230), 0, player.MaxSkillResource, player.CurrentSkillResource);
+            playerHealthBar.Update(gameTime, new Vector2(resolution.X *0.1f , resolution.Y *0.96f), 0, player.maxHealth, player.health);
+            playerRageBar.Update(gameTime, new Vector2(resolution.X * 0.9f, resolution.Y * 0.96f), 0, player.MaxSkillResource, player.CurrentSkillResource);
 
-            UpdateFPS(gameTime);
+
         }
 
-        private void UpdateBars()
-        {
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                if (!enemies[i].IsActive)
-                    enemyHealthBars[i].Disable();
-                if (i == enemyHealthBars.Count)
-                {
-                    StatusBar hb = new StatusBar(new Rectangle(0, 0, 100, 8));
-                    hb.Initialize(graphics, content);
-                    hb.EdgeColor = Color.Black;
-                    hb.ShowEdges = true;
-                    hb.BarColor = Color.DarkRed;
-                    hb.EdgeThickness = 1;
-                    enemyHealthBars.Add(hb);
-                }
-            }
-        }
 
         /// <summary>
         /// Draws the HUD
@@ -131,56 +83,11 @@ namespace Bearventure.Gameplay.HUD
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            if(Globals.DisplayHealthBars)
-                DrawHealthBars(spriteBatch);
-
-            DrawCombatLog(spriteBatch);
-
             DrawDebugInfo(spriteBatch);
             playerHealthBar.Draw(spriteBatch);
             playerRageBar.Draw(spriteBatch);
         }
 
-        private void DrawCombatLog(SpriteBatch spriteBatch)
-        {
-            int rows = 5;
-            int rowHeight = 20;
-
-            if (CombatManager.Instance.CombatLog.Count < rows)
-            {
-                int counter = 0;
-                foreach (string s in CombatManager.Instance.CombatLog)
-                {
-                    spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), CombatManager.Instance.CombatLog[counter],
-                        new Vector2(logPosition.X, logPosition.Y + (rowHeight * counter)), Color.Yellow);
-
-                    counter++;
-                }
-            }
-            else
-            {
-                int i = CombatManager.Instance.CombatLog.Count - rows;
-                int j = 0;
-
-                while (i < CombatManager.Instance.CombatLog.Count)
-                {
-                    spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), CombatManager.Instance.CombatLog[i],
-                        new Vector2(logPosition.X, logPosition.Y + (rowHeight * j)), Color.Yellow);
-
-                    i++;
-                    j++;
-                }
-            }
-        }
-
-        private void DrawHealthBars(SpriteBatch spriteBatch)
-        {
-            foreach (StatusBar hb in enemyHealthBars)
-            {
-                if (hb.CurrentValueDraw > 0 && Vector2.Distance(player.Position, hb.Position) < DrawDistance)
-                    hb.Draw(spriteBatch);
-            } 
-        }
 
         private void DrawDebugInfo(SpriteBatch spriteBatch)
         {
@@ -192,7 +99,6 @@ namespace Bearventure.Gameplay.HUD
                 ResolutionManager.graphicsDevice.GraphicsDevice.Viewport.Width,
                 ResolutionManager.graphicsDevice.GraphicsDevice.Viewport.Height);
 
-            spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), "Fps: " + framesPerSecond, fpsCounterPosition, Color.Yellow);
             spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), "Player position: " + player.Position, playerLocation, Color.Yellow);
 
             if(CollisionHandler.OnAdjustedZones(player.BoundingBox).Count == 1)
@@ -208,21 +114,8 @@ namespace Bearventure.Gameplay.HUD
             else if (CollisionHandler.OnAdjustedZones(cameraBox).Count > 1)
                 cameraZones = CollisionHandler.OnAdjustedZones(cameraBox)[0] + ", " + CollisionHandler.OnAdjustedZones(cameraBox)[1];
 
-            spriteBatch.DrawString(content.Load<SpriteFont>(Constants.HudFont), "Camera on zones: " + cameraZones, cameraZonesLocation, Color.Yellow);
+
         }
 
-        private void UpdateFPS(GameTime gameTime)
-        {
-            frameCounter++;
-
-            fpsTimer += gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (fpsTimer >= 1)
-            {            
-                framesPerSecond = frameCounter;
-                frameCounter = 0;
-                fpsTimer = 0;
-            }
-        }
     }
 }
