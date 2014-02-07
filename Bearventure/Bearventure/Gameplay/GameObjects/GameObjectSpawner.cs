@@ -22,10 +22,21 @@ namespace Bearventure.Gameplay.GameObjects
         private int spawnCounter;
         private int objectIndexCounter;
         private Vector2 position;
-        private Texture2D texture;
+        private Animation animation;
         private Player player;
         private ContentManager content;
         private SoundEffect spawnSound;
+        private Constants.SpawnerActivationType activationType;
+        private bool isActive = false;
+        private float initialScale;
+        private float ultimateScale;
+        private float scalingSpeed;
+
+        public int ActivationDistance
+        {
+            get;
+            set;
+        }
 
         private struct ObjectSpawn
         {
@@ -37,15 +48,16 @@ namespace Bearventure.Gameplay.GameObjects
         /// Initializes a game object spawner that creates new objects to the game with given parameters.
         /// </summary>
         /// <param name="gameObjects"></param>
-        public GameObjectSpawner(Texture2D texture, Vector2 position, List<Enemy> gameObjects, float spawnInterval, Player player, ContentManager content)
+        public GameObjectSpawner(Animation animation, Vector2 position, List<Enemy> gameObjects, float spawnInterval, Player player, ContentManager content)
         {
             objectsToSpawn = new List<ObjectSpawn>();
             this.gameObjects = gameObjects;
             this.spawnInterval = spawnInterval;
             this.position = position;
-            this.texture = texture;
             this.player = player;
             this.content = content;
+            this.spawnTimer = spawnInterval;
+            this.animation = animation;
         }
         /// <summary>
         /// Add an object to spawn.
@@ -70,26 +82,54 @@ namespace Bearventure.Gameplay.GameObjects
             this.effect = effect;
         }
 
+        public void SetScaleModifier(float initial, float ultimate, float speed)
+        {
+            this.initialScale = initial;
+            this.ultimateScale = ultimate;
+            this.scalingSpeed = speed;
+        }
+
         public void AddSoundEffect(SoundEffect sound)
         {
             this.spawnSound = sound;
         }
 
+        public void SetActivation(Constants.SpawnerActivationType type)
+        {
+            this.activationType = type;
+        }
+
         public void Update(GameTime gameTime)
         {
+            if(animation != null)
+                animation.Animate(gameTime);
+
+            UpdateActivation();
+
             spawnTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (spawnTimer >= spawnInterval && objectIndexCounter < objectsToSpawn.Count)
+            if (activationType == Constants.SpawnerActivationType.Automatic || isActive)
             {
-                SpawnObject(objectsToSpawn[objectIndexCounter]);
+                if (spawnTimer >= spawnInterval && objectIndexCounter < objectsToSpawn.Count)
+                {
+                    SpawnObject(objectsToSpawn[objectIndexCounter]);
 
-                spawnCounter++;
+                    spawnCounter++;
 
-                spawnTimer = 0;
+                    spawnTimer = 0;
 
-                if (spawnCounter == objectsToSpawn[objectIndexCounter].amount)
-                    objectIndexCounter++;
+                    if (spawnCounter == objectsToSpawn[objectIndexCounter].amount)
+                        objectIndexCounter++;
+                }
             }
+        }
+
+        private void UpdateActivation()
+        {
+            if (Vector2.Distance(player.Position, position) <= ActivationDistance)
+                isActive = true;
+            else
+                isActive = false;
         }
 
         private void SpawnObject(ObjectSpawn spawn)
@@ -97,7 +137,13 @@ namespace Bearventure.Gameplay.GameObjects
             Enemy e = new Enemy(spawn.objectType, Constants.BehaviourType.Default, (int)position.X, (int)position.Y, player, 0, 0, 0, content);
             e.ChangeVelocity(spawn.spawnVelocity.X, spawn.spawnVelocity.Y);
             e.ChangePosition(position);
-            e.SetState(Constants.CharacterState.Knocked);
+            e.SetState(Constants.CharacterState.Spawning);
+
+            if (initialScale != 0 && ultimateScale != 0 && scalingSpeed != 0)
+            {
+                e.SetScaling(initialScale, ultimateScale, scalingSpeed);
+            }
+
             CollisionHandler.AddObject(e);
             gameObjects.Add(e);
 
@@ -111,8 +157,8 @@ namespace Bearventure.Gameplay.GameObjects
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if(texture != null)
-                spriteBatch.Draw(texture, position, Color.White);
+            if(animation != null)
+                spriteBatch.Draw(animation.spriteSheet, position, animation.FrameRectangle, Color.White, animation.Rotation, animation.Origin, 2f, animation.Effects, animation.LayerDepth);
         }
     }
 }

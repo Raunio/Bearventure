@@ -122,6 +122,17 @@ namespace Bearventure.Gameplay
         /// <summary>
         /// Color data used for collision
         /// </summary>
+
+        private float targetScale = 1f;
+
+        private float scalingSpeed;
+
+        private float targetRotation = 0f;
+
+        private float rotatingSpeed;
+
+        private bool considerDirection;
+
         public Color[] textureData
         {
             get
@@ -136,6 +147,15 @@ namespace Bearventure.Gameplay
         {
             get;
             protected set;
+        }
+        public bool IsRotating
+        {
+            get
+            {
+                if (SpriteRotation != targetRotation)
+                    return true;
+                return false;
+            }
         }
         private Point boundingBoxSize;
         public Point BoundingBoxSize
@@ -238,6 +258,57 @@ namespace Bearventure.Gameplay
         public void AdjustPosition(Vector2 amount)
         {
             position += amount;
+        }
+
+        public void SetScaling(float from, float to, float speed)
+        {
+            scale = from;
+            targetScale = to;
+            scalingSpeed = speed;
+        }
+
+        public void SetRotating(float from, float to, float speed, bool considerDirection)
+        {
+            SpriteRotation = from;
+            targetRotation = to;
+            rotatingSpeed = speed;
+            this.considerDirection = considerDirection;
+        }
+
+        protected void UpdateRotating()
+        {
+            float targetRot = targetRotation;
+
+            if (considerDirection)
+            {
+                if (directionX == Constants.DirectionX.Right)
+                    targetRot = -targetRot;
+            }
+
+            if (SpriteRotation < targetRot - rotatingSpeed)
+            {
+                SpriteRotation += rotatingSpeed;
+            }
+            else if (SpriteRotation > targetRot + rotatingSpeed)
+            {
+                SpriteRotation -= rotatingSpeed;
+            }
+            else
+                SpriteRotation = targetRot;
+        }
+
+        protected void UpdateScaling()
+        {
+            if (scale < targetScale - scalingSpeed)
+            {
+                scale += scalingSpeed;
+            }
+            else if (scale > targetScale + scalingSpeed)
+            {
+                scale -= scalingSpeed;
+            }
+            else
+                scale = targetScale;
         }
     }
 }

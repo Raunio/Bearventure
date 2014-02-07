@@ -55,7 +55,7 @@ namespace Bearventure.Gameplay.Characters
             this.backwards = backwards;
             this.looping = looping;
             HasFinished = false;
-            frameRectangle = new Rectangle();
+            frameRectangle = new Rectangle(0, 0, FrameWidth, FrameHeight);
         }
         /// <summary>
         /// 

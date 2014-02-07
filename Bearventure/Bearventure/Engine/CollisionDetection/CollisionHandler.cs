@@ -220,6 +220,8 @@ namespace Bearventure.Engine.CollisionDetection
         /// <returns></returns>
         public static int CollisionOccursWithMap(Character subject, Vector2 movement)
         {
+            CleanInactives();
+
             if (CollisionAreaRectangleY(subject, movement.Y).Bottom >= map_height || CollisionAreaRectangleY(subject, movement.Y).Top <= 0 || CollisionAreaRectangleX(subject,movement.X).Left <= 0 || CollisionAreaRectangleX(subject,movement.X).Right >= map_width)
             {
                 return -1;
@@ -371,6 +373,8 @@ namespace Bearventure.Engine.CollisionDetection
         /// <returns></returns>
         public static ObjectCollisionEvent CollisionOccursWithObject(GameplayObject subject, Vector2 movement)
         {
+            CleanInactives();
+
             ObjectCollisionEvent collisionEvent = null;
 
             int collision = 0;
@@ -563,6 +567,17 @@ namespace Bearventure.Engine.CollisionDetection
 
             spriteBatch.Draw(texture, xRect, Color.White);
             spriteBatch.Draw(texture, yRect, Color.White);
+        }
+
+        private static void CleanInactives()
+        {
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                if (!gameObjects[i].IsActive)
+                {
+                    gameObjects.RemoveAt(i);
+                }
+            }
         }
 
         public static void ClearData()

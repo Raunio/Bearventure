@@ -151,7 +151,7 @@ namespace Bearventure
                     break;
             }
 
-            if(calculateBoundingBoxOffsets)
+            if (calculateBoundingBoxOffsets)
                 CalcBBOffsets();
         }
 

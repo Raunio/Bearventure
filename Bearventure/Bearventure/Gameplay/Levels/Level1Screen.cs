@@ -134,20 +134,65 @@ namespace Bearventure
                 SoundEffectManager.Instance.MaxSoundEffectDistance = 750;
 
                 platforms = new List<Platform>();
-                Platform plat = new Platform(content, Constants.PlatformType.MovingGrassPlatform, new Vector2(5100, 5200));
-                Platform fallingPlat = new Platform(content, Constants.PlatformType.FallingPlatform, new Vector2(3400, 3200));
-                fallingPlat.InitCollapse(1000);
-                plat.InitPatrol(5, 0.2f, 5100, 5900, 200f);
-                //platforms.Add(plat);
-                //platforms.Add(fallingPlat);
+                Platform plat = new Platform(content, Constants.PlatformType.MovingGrassPlatform, new Vector2(7670, 4900));
+                Platform fallingPlat = new Platform(content, Constants.PlatformType.FallingPlatform, new Vector2(7600, 4100));
+                Platform fallingPlat2 = new Platform(content, Constants.PlatformType.FallingPlatform, new Vector2(7850, 4100));
+                Platform fallingPlat3 = new Platform(content, Constants.PlatformType.FallingPlatform, new Vector2(8100, 4100));
+                Platform fallingPlat4 = new Platform(content, Constants.PlatformType.FallingPlatform, new Vector2(8350, 4100));
+                fallingPlat.InitCollapse(500);
+                fallingPlat2.InitCollapse(500);
+                fallingPlat3.InitCollapse(500);
+                fallingPlat4.InitCollapse(500);
+                plat.InitPatrol(5, 0.2f, 7670, 8400, 200f);
+                platforms.Add(plat);
+                platforms.Add(fallingPlat);
+                platforms.Add(fallingPlat2);
+                platforms.Add(fallingPlat3);
+                platforms.Add(fallingPlat4);
 
+                #region SPAWNER TESTING
                 spawners = new List<GameObjectSpawner>();
-                GameObjectSpawner badgerSpawner = new GameObjectSpawner(null, new Vector2(3400, 3400), enemies, 3000f, _player, content);
+                GameObjectSpawner badgerSpawner = new GameObjectSpawner(null, new Vector2(3300, 4070), enemies, 3000f, _player, content);
                 badgerSpawner.AddEffect(new VisualEffect("VisualEffects/spawnTest"));
                 badgerSpawner.AddSoundEffect(SoundEffectManager.Instance.SpawnerSound);
+                badgerSpawner.SetActivation(Constants.SpawnerActivationType.Proximity);
+                badgerSpawner.ActivationDistance = 200;
+                badgerSpawner.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
+                badgerSpawner.SetScaleModifier(0.5f, 1f, 0.1f);
                 spawners.Add(badgerSpawner);
 
-                spawners[0].AddObject(Constants.EnemyType.BlackMetalBadger, 5, new Vector2(0, -8));
+                GameObjectSpawner badgerSpawner2 = new GameObjectSpawner(null, new Vector2(3540, 4070), enemies, 3000f, _player, content);
+                badgerSpawner2.AddEffect(new VisualEffect("VisualEffects/spawnTest"));
+                badgerSpawner2.AddSoundEffect(SoundEffectManager.Instance.SpawnerSound);
+                badgerSpawner2.SetActivation(Constants.SpawnerActivationType.Proximity);
+                badgerSpawner2.ActivationDistance = 200;
+                badgerSpawner2.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
+                badgerSpawner2.SetScaleModifier(0.5f, 1f, 0.1f);
+                //spawners.Add(badgerSpawner2);
+
+                GameObjectSpawner badgerSpawner3 = new GameObjectSpawner(null, new Vector2(3775, 4070), enemies, 3000f, _player, content);
+                badgerSpawner3.AddEffect(new VisualEffect("VisualEffects/spawnTest"));
+                badgerSpawner3.AddSoundEffect(SoundEffectManager.Instance.SpawnerSound);
+                badgerSpawner3.SetActivation(Constants.SpawnerActivationType.Proximity);
+                badgerSpawner3.ActivationDistance = 200;
+                badgerSpawner3.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
+                badgerSpawner3.SetScaleModifier(0.5f, 1f, 0.1f);
+                //spawners.Add(badgerSpawner3);
+
+                GameObjectSpawner badgerSpawner4 = new GameObjectSpawner(null, new Vector2(4420, 4200), enemies, 3000f, _player, content);
+                badgerSpawner4.AddEffect(new VisualEffect("VisualEffects/spawnTest"));
+                badgerSpawner4.AddSoundEffect(SoundEffectManager.Instance.SpawnerSound);
+                badgerSpawner4.SetActivation(Constants.SpawnerActivationType.Proximity);
+                badgerSpawner4.ActivationDistance = 200;
+                badgerSpawner4.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
+                badgerSpawner4.SetScaleModifier(0.5f, 1f, 0.1f);
+                //spawners.Add(badgerSpawner4);
+
+                //Animation worm = new Animation(content.Load<Texture2D>("Sprites/matoallas"), 0, 612, 264, 0, 5, 30);
+
+                //GameObjectSpawner wormPool = new GameObjectSpawner(worm, new Vector2(8100, 5000), enemies, 500, _player, content);
+                //spawners.Add(wormPool);
+                #endregion
 
                 ladders = new List<Ladder>();
                 //ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(3050, 3600)));
@@ -363,7 +408,7 @@ namespace Bearventure
             //CollisionHandler.Map.DrawMap(spriteBatch);
             //CollisionHandler.Map.DrawGrid(spriteBatch);
             //CollisionHandler.DrawCollisionRectangles(spriteBatch, yellow, _player, _player.velocity);
-            //_player.DrawBoundingBox(spriteBatch, red);
+            _player.DrawBoundingBox(spriteBatch, red);
 
             foreach (GameObjectSpawner spawner in spawners)
             {

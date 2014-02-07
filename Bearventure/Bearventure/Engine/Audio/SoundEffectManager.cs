@@ -24,6 +24,7 @@ namespace Bearventure
         private SoundEffect puukotus;
         private SoundEffect badgerSpawn;
         private SoundEffect spawnerSound;
+        private SoundEffect badgerDeath;
 
         private Vector2 playerPosition;
 
@@ -31,6 +32,14 @@ namespace Bearventure
         {
             get;
             set;
+        }
+
+        public SoundEffect BadgerDeath
+        {
+            get
+            {
+                return badgerDeath;
+            }
         }
 
         public SoundEffect BadgerAttack
@@ -145,6 +154,7 @@ namespace Bearventure
             puukotus = content.Load<SoundEffect>(Constants.puukkoSound);
             badgerSpawn = content.Load<SoundEffect>(Constants.badgerSpawn);
             spawnerSound = content.Load<SoundEffect>(Constants.spawnerSound);
+            badgerDeath = content.Load<SoundEffect>(Constants.badgerDeath);
             Console.WriteLine("SoundEffects loaded.");
         }
 
@@ -216,6 +226,16 @@ namespace Bearventure
             {
                 case Constants.EnemyType.BlackMetalBadger:
                     PlaySoundFromPosition(spawnerPosition, badgerSpawn);
+                    break;
+            }
+        }
+
+        public void PlayDeathSound(Vector2 position, Constants.EnemyType enemyType)
+        {
+            switch (enemyType)
+            {
+                case Constants.EnemyType.BlackMetalBadger:
+                    PlaySoundFromPosition(position, badgerDeath);
                     break;
             }
         }

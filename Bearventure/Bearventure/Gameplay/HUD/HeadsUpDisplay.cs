@@ -93,7 +93,9 @@ namespace Bearventure.Gameplay.HUD
 
             for (int i = 0; i < enemies.Count; i++)
             {
-                enemyHealthBars[i].Update(gameTime, enemies[i].Position, 0, enemies[i].maxHealth, enemies[i].health);
+                enemyHealthBars[i].Update(gameTime, 
+                    new Vector2(enemies[i].Position.X, enemies[i].Position.Y - enemies[i].CurrentAnimation.Origin.Y - enemyHealthBars[i].Base.Height), 
+                    0, enemies[i].maxHealth, enemies[i].health);
             }
 
             origin = new Vector2(cameraPosition.X - graphics.GraphicsDevice.Viewport.Width / 2, cameraPosition.Y - graphics.GraphicsDevice.Viewport.Height / 2);
@@ -109,7 +111,7 @@ namespace Bearventure.Gameplay.HUD
             for (int i = 0; i < enemies.Count; i++)
             {
                 if (!enemies[i].IsActive)
-                    enemyHealthBars.RemoveAt(i);
+                    enemyHealthBars[i].Disable();
                 if (i == enemyHealthBars.Count)
                 {
                     StatusBar hb = new StatusBar(new Rectangle(0, 0, 100, 8));

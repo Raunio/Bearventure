@@ -49,8 +49,6 @@ namespace Bearventure
             chase = new Action(Constants.ActionType.Chase);
             chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.Vision));
             chase.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, subject.AttackRange));
-            chase.AddCondition(new Condition(Constants.ConditionType.Blocked, false));
-            chase.AddCondition(new Condition(Constants.ConditionType.HealthHigherThan, subject.maxHealth / 4));
 
             preDeterminedActions.Add(chase);
 
@@ -65,7 +63,7 @@ namespace Bearventure
             flee.AddCondition(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, subject.Vision));
             flee.AddCondition(new Condition(Constants.ConditionType.Blocked, false));
 
-            preDeterminedActions.Add(flee);
+            //preDeterminedActions.Add(flee);
 
             /*cower = new Action(Constants.ActionType.Stop, true);
             cower.AddCondition(new Condition(Constants.ConditionType.HealthLowerThan, subject.maxHealth / 4));

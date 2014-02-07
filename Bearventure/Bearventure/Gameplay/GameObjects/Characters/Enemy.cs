@@ -6,6 +6,7 @@ using Bearventure.Gameplay.Characters.Skills;
 using Microsoft.Xna.Framework.Audio;
 using Bearventure.Gameplay.GameObjects;
 using Microsoft.Xna.Framework.Content;
+using System;
 
 namespace Bearventure.Gameplay.Characters
 {
@@ -174,10 +175,13 @@ namespace Bearventure.Gameplay.Characters
                     RunLeft = new CharacterAnimation(spriteSheet, 0, 93, 103, 0, 7, 40, SpriteEffects.None, 0f, 0f, false, true);
                     Stopped = new CharacterAnimation(spriteSheet, 0, 93, 103, 4, 4, 60, SpriteEffects.None, 0f, 0f, false, true);
                     Jumping = new CharacterAnimation(spriteSheet, 0, 93, 103, 5, 6, 100, SpriteEffects.None, 0f, 0f, false, true);
-                    Dying = new CharacterAnimation(spriteSheet, 0, 93, 103, 7, 7, 80, SpriteEffects.None, 0f, 0f, false, false);
-                    KnockBack = new CharacterAnimation(spriteSheet, 2, 96, 121, 0, 0, 25, SpriteEffects.None, 0f, 0f, false, true);
+                    Dying = new CharacterAnimation(spriteSheet, 2, 114, 121, 0, 1, 80, SpriteEffects.None, 0f, 0f, false, false);
+                    Dying.CustomFrameRowPosition = 208;
+                    KnockBack = new CharacterAnimation(spriteSheet, 2, 114, 121, 0, 1, 80, SpriteEffects.None, 0f, 0f, false, false);
                     KnockBack.CustomFrameRowPosition = 208;
-                    SpawnAnimation = new CharacterAnimation(spriteSheet, 0, 93, 103, 4, 4, 60, SpriteEffects.None, 0f, 0f, false, true);
+                    SpawnAnimation = new CharacterAnimation(spriteSheet, 3, 154, 107, 0, 3, 50, SpriteEffects.None, 0f, 0f, false, false);
+                    SpawnAnimation.CustomFrameRowPosition = 327;
+                    SpawnAnimation.ReverseAtEnd = true;
                     break;
                 case Constants.EnemyType.DelayOwl:
                     spriteSheet = content.Load<Texture2D>(Constants.DelayOwl);
@@ -293,13 +297,13 @@ namespace Bearventure.Gameplay.Characters
                     walkSpeed = 5f;
                     runSpeed = 7f;
                     acceleration = 1f;
-                    decceleration = 0.5f;
+                    decceleration = 1f;
                     jumpStrenght = 15;
                     Orientation = Constants.CharacterOrientation.Ground;
-                    Vision = 300;
+                    Vision = 600;
                     AttackRange = 120;
-                    health = 500;
-                    maxHealth = 500;
+                    health = 30;
+                    maxHealth = 30;
                     healthRegen = 2;
                     BoundingBoxOffset = 10;
                     ReactSpeed = 250f;
@@ -351,7 +355,8 @@ namespace Bearventure.Gameplay.Characters
             {
                 case Constants.EnemyType.BlackMetalBadger:
                     #region TESTING
-                    CharacterAnimation testSkillAnimation = new CharacterAnimation(spriteSheet, 0, 93, 103, 0, 4, 20, SpriteEffects.None, 0f, 0f, false, false);
+                    CharacterAnimation testSkillAnimation = new CharacterAnimation(spriteSheet, 3, 154, 107, 0, 3, 30, SpriteEffects.None, 0f, 0f, false, false);
+                    testSkillAnimation.CustomFrameRowPosition = 327;
                     testSkillAnimation.FreezeFrames = new Animation.FrameFreezer
                     {
                         Frames = new List<int> { 3, 4 },
@@ -396,6 +401,7 @@ namespace Bearventure.Gameplay.Characters
                     Attack.StartVelocity = new Vector2(5, 0);
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.FacingPlayer, true));
+                    Attack.Conditions.Add(new Condition(Constants.ConditionType.OnGround, true));
                     Attack.SkillSoundEffect = SoundEffectManager.Instance.BadgerAttack;
                     Attack.DamagingFrames = new List<int>
                     {
@@ -512,14 +518,15 @@ namespace Bearventure.Gameplay.Characters
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
-            if (state != Constants.CharacterState.Dead)
+            HandleAnimations(gameTime);
+
+            if (state != Constants.CharacterState.Dead && state != Constants.CharacterState.Spawning)
             {
                 if (!IsDisabled)
                 {
                     behaviour.Apply(gameTime);
                 }
-
-                HandleAnimations(gameTime);
+  
                 UpdateSkills(gameTime);
                 CleanActiveSkill();
                 RegenerateHealth(gameTime);
@@ -532,16 +539,30 @@ namespace Bearventure.Gameplay.Characters
             {
                 if (CurrentAnimation == Dying)
                 {
-                    if (CurrentAnimation.HasFinished)
+                    if (CurrentAnimation.HasFinished && CharacterPhysics.OnGround(this) && !IsRotating)
                     {
-                        velocity.X = 0;
-                        state = Constants.CharacterState.Dead;
-                        IsActive = false;
+                        if (velocity.X != 0)
+                            CharacterPhysics.Stop(this);
+                        else
+                        {
+                            state = Constants.CharacterState.Dead;
+                            IsActive = false;
+                        }
+                        
                     }
                 }
             }
-
+            else if (state == Constants.CharacterState.Spawning)
+            {
+                if (CurrentAnimation.HasFinished)
+                {
+                    SetState(Constants.CharacterState.Stopped);
+                }
+            }
+  
             CharacterPhysics.Apply(this, gameTime);
+            UpdateScaling();
+            UpdateRotating();
         }
         /// <summary>
         /// Should be called in update. Reads the enemys state and changes its animations accordingly.
@@ -576,6 +597,9 @@ namespace Bearventure.Gameplay.Characters
                     
                     ChangeAnimation(KnockBack);
                     break;
+                case Constants.CharacterState.Spawning:
+                    ChangeAnimation(SpawnAnimation);
+                    break;
             }
 
             CurrentAnimation.Animate(gameTime);
@@ -589,10 +613,20 @@ namespace Bearventure.Gameplay.Characters
         /// </summary>
         public void Kill()
         {
-            if (state != Constants.CharacterState.Disabled || state != Constants.CharacterState.Knocked)
+            if (state != Constants.CharacterState.Disabled)
                 state = Constants.CharacterState.Disabled;
+            else
+                return;
+
+            if (directionX == Constants.DirectionX.Left)
+                Dying.Effects = SpriteEffects.FlipHorizontally;
+            else
+                Dying.Effects = SpriteEffects.None;
 
             ChangeAnimation(Dying);
+            SetRotating(0f, (float)Math.PI / 2, 0.2f, true);
+
+            SoundEffectManager.Instance.PlayDeathSound(position, type);
         }
 
         public void PlayStepSounds()

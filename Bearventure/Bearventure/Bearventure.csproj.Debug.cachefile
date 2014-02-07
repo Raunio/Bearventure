@@ -17,7 +17,6 @@ Content\Sprites\hyppyfix.xnb
 Content\Sprites\kavelyfixed.xnb
 Content\Sprites\WoodenLadder.xnb
 Content\Sprites\paskapollofix.xnb
-Content\Sprites\badger.xnb
 Content\Sprites\hover.xnb
 Content\Sprites\tosi.xnb
 Content\Sprites\karhuclimb2.xnb
@@ -292,6 +291,9 @@ Content\Sprites\red.xnb
 Content\SoundEffects\badgerSpawn.xnb
 Content\VisualEffects\spawnTest.xnb
 Content\SoundEffects\spawnerSound.xnb
+Content\SoundEffects\badgerDeath.xnb
+Content\Sprites\badgerspritesheet.xnb
+Content\Sprites\matoallas.xnb
 Content\Music\Intro.wma
 Content\Music\Level1.wma
 Content\Music\Splash.wma
