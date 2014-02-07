@@ -48,12 +48,12 @@ namespace Bearventure
         LayeredLevelBackground layeredBackground;
         Camera camera;
         CameraController cameraController;
-        HeadsUpDisplay hud;
 
         List<Enemy> enemies;
         List<Platform> platforms;
         List<Ladder> ladders;
         Player _player;
+        HUDScreen hudScreen;
 
         List<GameObjectSpawner> spawners;
 
@@ -71,9 +71,9 @@ namespace Bearventure
         /// </summary>
         public Level1Screen()
         {
+            
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
-
 
             pauseAction = new InputAction(
                 new Buttons[] { Buttons.Start, Buttons.Back },
@@ -98,6 +98,8 @@ namespace Bearventure
                 
                 _player = new Player(content);
                 XmlReader.Initialize(content, _player);
+                
+                
 
                 #region Layered Background TESTING
 
@@ -125,7 +127,7 @@ namespace Bearventure
 
                 yellow = content.Load<Texture2D>("Sprites/tosi");
                 red = content.Load<Texture2D>("Sprites/red");
-
+                
                 _player.ChangePosition(XmlReader.StartPoint("Levels/Testilevel2/Items/Testilevel2_StartPoint"));
               
                 gameFont = content.Load<SpriteFont>(Constants.GameFont);
@@ -155,8 +157,8 @@ namespace Bearventure
                 //ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(3050, 3838)));
 
                 CombatManager.Instance.Initialize(_player, enemies);
-                hud = new HeadsUpDisplay();
-                hud.Initialize(content, ResolutionManager.graphicsDevice, enemies, _player);
+                //hud = new HeadsUpDisplay();
+                //hud.Initialize(content, ResolutionManager.graphicsDevice, enemies, _player);
                 cameraController = new CameraController();
                 cameraController.AssingTo(_player);
 
@@ -178,7 +180,11 @@ namespace Bearventure
                 // once the load has finished, we use ResetElapsedTime to tell the game's
                 // timing mechanism that we have just finished a very long frame, and that
                 // it should not try to catch up.s
-                ScreenManager.Game.ResetElapsedTime();
+                ScreenManager.Game.ResetElapsedTime();                
+                hudScreen = new HUDScreen(content, _player, enemies, camera);
+                ScreenManager.AddScreen(new HUDScreen(content, _player, enemies, camera), null);
+                hudScreen.Activate();
+                
             }
 
 #if WINDOWS_PHONE
@@ -236,6 +242,7 @@ namespace Bearventure
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
+            
             base.Update(gameTime, otherScreenHasFocus, false);
 
             // Gradually fade in or out depending on whether we are covered by the pause screen.
@@ -289,11 +296,10 @@ namespace Bearventure
                 
                 camera.LookAt(cameraController.Position, new Vector2(layeredBackground.LevelWidth, layeredBackground.LevelHeight));
                 VisualEffectManager.Instance.UpdateEffects(gameTime);
-                hud.Update(gameTime, camera.Position);
-
                 layeredBackground.Update(camera.Pos);
-
                 SoundEffectManager.Instance.UpdatePlayerPosition(_player.Position);
+                hudScreen.Update(gameTime);
+                
                 
             }
 
@@ -339,7 +345,7 @@ namespace Bearventure
             }
             else
             {
-
+                
             }
         }
 
@@ -349,11 +355,12 @@ namespace Bearventure
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
+            
             ResolutionManager.BeginDraw();
 
 
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-
+            
 
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None,
                     RasterizerState.CullNone, null, camera.GetTransformation(ResolutionManager.graphicsDevice.GraphicsDevice));
@@ -397,13 +404,17 @@ namespace Bearventure
             }
 
             VisualEffectManager.Instance.DrawEffects(spriteBatch);
-
+            
             //CollisionHandler.DrawCollisionRectangles(spriteBatch, _player, _player.velocity);
 
             //if(player.ActiveSkill != null)
                 //player.ActiveSkill.DrawHitBox(spriteBatch, content.Load<Texture2D>("Sprites/player"));
 
-            hud.Draw(spriteBatch);
+            //hud.Draw(spriteBatch);
+            spriteBatch.End();
+
+            spriteBatch.Begin();
+            hudScreen.Draw(spriteBatch);
             spriteBatch.End();
 
             // If the game is transitioning on or off, fade it out to black.

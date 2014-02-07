@@ -23,11 +23,11 @@ namespace Bearventure
 {
     static class ResolutionManager
     {
+        
         private static readonly ReadOnlyCollection<Point> resolutions =
             new ReadOnlyCollection<Point>(new[]
         {
             new Point(1920,1080),
-            new Point(1680,1050),
             new Point(1280,720),
             new Point(720,480),
             new Point(640,360),
@@ -89,6 +89,7 @@ namespace Bearventure
             ApplyResolutionSettings();
         }
 
+
         static public void SetResolution(Constants.ScreenMode screenMode, bool fullScreen)
         {
             CurrentScreenMode = screenMode;
@@ -112,7 +113,7 @@ namespace Bearventure
         // Added by Huemac
         static public Point GetVirtualResolution()
         {
-            Console.WriteLine(virtualWidth + "X" + virtualHeight);
+            //Console.WriteLine(virtualWidth + "X" + virtualHeight);
             return new Point(virtualWidth, virtualHeight);
         }
 
