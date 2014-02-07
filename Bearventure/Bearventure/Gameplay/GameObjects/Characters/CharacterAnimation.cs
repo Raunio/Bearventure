@@ -159,7 +159,7 @@ namespace Bearventure
         {
             if (FrameRectangle.Width != boundingBoxSize.X)
             {
-                BoundingBoxOffset = animationDirection == Constants.DirectionX.Left ? (FrameRectangle.Width - boundingBoxSize.X) / 2 : -(boundingBoxSize.X - FrameRectangle.Width) / 2;
+                BoundingBoxOffset = animationDirection == Constants.DirectionX.Left ? (FrameRectangle.Width - boundingBoxSize.X) : -(boundingBoxSize.X - FrameRectangle.Width) / 2;
             }
         }
     }

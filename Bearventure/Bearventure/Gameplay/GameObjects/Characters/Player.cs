@@ -78,7 +78,7 @@ namespace Bearventure.Gameplay.Characters
             InitStats();
             InitSkills();
 
-            BoundingBoxSize = new Point(stoppedRight.FrameWidth, stoppedLeft.FrameHeight);
+            BoundingBoxSize = new Point(stoppedRight.FrameWidth - 15, stoppedLeft.FrameHeight);
         }
 
         #region ControlInitialization
@@ -167,7 +167,7 @@ namespace Bearventure.Gameplay.Characters
             #region Combo1 Initialization
             #region ComboSkill 1 Initialization
 
-            CharacterAnimation StraightPunch_R = new CharacterAnimation(comboSheet, 0, 118, 120, 0, 3, 30, SpriteEffects.None, 0f, 0f, false, false);
+            CharacterAnimation StraightPunch_R = new CharacterAnimation(comboSheet, 0, 118, 120, 0, 3, 300, SpriteEffects.None, 0f, 0f, false, false);
             StraightPunch_R.FreezeFrames = new Animation.FrameFreezer
             {
                 Frames = new List<int>
@@ -180,7 +180,7 @@ namespace Bearventure.Gameplay.Characters
 
             StraightPunch_R.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
 
-            CharacterAnimation StraightPunch_L = new CharacterAnimation(comboSheet, 0, 118, 120, 0, 3, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+            CharacterAnimation StraightPunch_L = new CharacterAnimation(comboSheet, 0, 118, 120, 0, 3, 300, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
             StraightPunch_L.FreezeFrames = new Animation.FrameFreezer
             {
                 Frames = new List<int>
@@ -493,13 +493,13 @@ namespace Bearventure.Gameplay.Characters
 
         public override void Update(GameTime gameTime)
         {
-            CharacterPhysics.Apply(this, gameTime);
-
-            jumpTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            CurrentAnimation.Animate(gameTime);
 
             HandleAnimations();
 
-            CurrentAnimation.Animate(gameTime);
+            CharacterPhysics.Apply(this, gameTime);
+
+            jumpTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             PlayStepSoundEffects();
 
