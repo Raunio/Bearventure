@@ -2,6 +2,7 @@
 using Bearventure.Gameplay.Characters;
 using Microsoft.Xna.Framework;
 using Bearventure.Engine.CollisionDetection;
+using Bearventure.Gameplay.Characters.Skills;
 namespace Bearventure
 {
     /// <summary>
@@ -106,6 +107,15 @@ namespace Bearventure
                     break;
                 default:
                     return false;
+                case Constants.ConditionType.HasActiveSkill:
+                    if (subject.ActiveSkill != null) { if (subject.ActiveSkill.IsActive == (bool)Value) return true; }
+                    break;
+                case Constants.ConditionType.IsUsingSkill:
+                    if (subject.ActiveSkill == (CharacterSkill)Value) { return true; }
+                    break;
+                case Constants.ConditionType.IsNotUsingSkill:
+                    if (subject.ActiveSkill != (CharacterSkill)Value) { return true; }
+                    break;
             }
 
             return false;

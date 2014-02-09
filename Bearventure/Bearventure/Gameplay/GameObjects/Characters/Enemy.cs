@@ -356,6 +356,7 @@ namespace Bearventure.Gameplay.Characters
                 case Constants.EnemyType.BlackMetalBadger:
                     #region TESTING
                     CharacterAnimation testSkillAnimation = new CharacterAnimation(spriteSheet, 3, 154, 107, 0, 3, 30, SpriteEffects.None, 0f, 0f, false, false);
+                    testSkillAnimation.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.None);
                     testSkillAnimation.CustomFrameRowPosition = 327;
                     testSkillAnimation.FreezeFrames = new Animation.FrameFreezer
                     {
@@ -369,7 +370,7 @@ namespace Bearventure.Gameplay.Characters
                     testSkill.UltimateVelocityX = 0;
                     testSkill.SkillSoundEffect = SoundEffectManager.Instance.BadgerSkill;
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, Vision));
-                    testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, AttackRange));
+                    testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, AttackRange * 2));
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.FacingPlayer, true));
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.OnGround, true));
                     testSkill.DamagingFrames = new List<int>
@@ -382,14 +383,14 @@ namespace Bearventure.Gameplay.Characters
                     };
 
                     for(int i = 0; i < 4; i++)
-                        testSkill.HitBoxPositions[i] = new Vector2(40, -BoundingBox.Height / 2);
+                        testSkill.HitBoxPositions[i] = new Vector2(45, -BoundingBox.Height / 2);
                    
                     testSkill.HitBoxHeight = BoundingBox.Height;
                     testSkill.HitBoxWidth = 20;
                     testSkill.InflictForce = new Vector2(35, 0);
 
-                    CharacterAnimation attack_right = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 30, SpriteEffects.None, 0f, 0f, false, false);
-                    CharacterAnimation attack_left = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+                    CharacterAnimation attack_right = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 100, SpriteEffects.None, 0f, 0f, false, false);
+                    CharacterAnimation attack_left = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 100, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
 
                     attack_left.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Left);
                     attack_right.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
@@ -402,6 +403,7 @@ namespace Bearventure.Gameplay.Characters
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.FacingPlayer, true));
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.OnGround, true));
+                    Attack.Conditions.Add(new Condition(Constants.ConditionType.IsNotUsingSkill, testSkill));
                     Attack.SkillSoundEffect = SoundEffectManager.Instance.BadgerAttack;
                     Attack.DamagingFrames = new List<int>
                     {
@@ -535,7 +537,7 @@ namespace Bearventure.Gameplay.Characters
                     Kill();
             }
 
-            if (state == Constants.CharacterState.Disabled)
+            if (state == Constants.CharacterState.Disabled || state == Constants.CharacterState.Dead)
             {
                 if (CurrentAnimation == Dying)
                 {
@@ -545,8 +547,15 @@ namespace Bearventure.Gameplay.Characters
                             CharacterPhysics.Stop(this);
                         else
                         {
-                            state = Constants.CharacterState.Dead;
-                            IsActive = false;
+                            if (Opacity == 1)
+                            {
+                                SetOpacity(1f, 0f, 0.05f);
+                                state = Constants.CharacterState.Dead;
+                            }
+                            else if(Opacity == 0)
+                            {
+                                IsActive = false;
+                            }
                         }
                         
                     }
@@ -563,6 +572,7 @@ namespace Bearventure.Gameplay.Characters
             CharacterPhysics.Apply(this, gameTime);
             UpdateScaling();
             UpdateRotating();
+            UpdateOpacity();
         }
         /// <summary>
         /// Should be called in update. Reads the enemys state and changes its animations accordingly.
@@ -625,6 +635,8 @@ namespace Bearventure.Gameplay.Characters
 
             ChangeAnimation(Dying);
             SetRotating(0f, (float)Math.PI / 2, 0.2f, true);
+
+            mass = 0;
 
             SoundEffectManager.Instance.PlayDeathSound(position, type);
         }

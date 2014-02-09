@@ -148,13 +148,21 @@ namespace Bearventure.Gameplay.Characters
         {
             stoppedRight = new CharacterAnimation(spriteSheet, 0, 88, 121, 12, 12, 50, SpriteEffects.None, 0f, 0f, false, true);
             stoppedLeft = new CharacterAnimation(spriteSheet, 0, 88, 121, 9, 9, 50, SpriteEffects.None, 0f, 0f, false, true);
+            stoppedRight.SetFixedBoundingBoxOffset(10);       
+            stoppedLeft.SetFixedBoundingBoxOffset(3);
             walkRight = new CharacterAnimation(spriteSheet, 0, 88, 121, 13, 21, 50, SpriteEffects.None, 0f, 0f, false, true);
+            walkRight.SetFixedBoundingBoxOffset(10);
             walkLeft = new CharacterAnimation(spriteSheet, 0, 88, 121, 0, 8, 50, SpriteEffects.None, 0f, 0f, true, true);
+            walkLeft.SetFixedBoundingBoxOffset(3);
             runRight = new CharacterAnimation(spriteSheet, 0, 88, 121, 13, 21, 25, SpriteEffects.None, 0f, 0f, false, true);
+            runRight.SetFixedBoundingBoxOffset(10);
             runLeft = new CharacterAnimation(spriteSheet, 0, 88, 121, 0, 8, 25, SpriteEffects.None, 0f, 0f, true, true);
+            runLeft.SetFixedBoundingBoxOffset(3);
 
             jumpingRight = new CharacterAnimation(jumpSheet, 0, 106, 120, 0, 3, 40, SpriteEffects.None, 0f, 0f, false, false);
+            jumpingRight.SetFixedBoundingBoxOffset(10);
             jumpingLeft = new CharacterAnimation(jumpSheet, 0, 106, 120, 0, 3, 40, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+            jumpingLeft.SetFixedBoundingBoxOffset(20);
 
             climbing = new CharacterAnimation(climbSheet, 0, 90, 135, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, true);
             climbingStopped = new CharacterAnimation(climbSheet, 0, 90, 135, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, false);
@@ -167,7 +175,7 @@ namespace Bearventure.Gameplay.Characters
             #region Combo1 Initialization
             #region ComboSkill 1 Initialization
 
-            CharacterAnimation StraightPunch_R = new CharacterAnimation(comboSheet, 0, 118, 120, 0, 3, 300, SpriteEffects.None, 0f, 0f, false, false);
+            CharacterAnimation StraightPunch_R = new CharacterAnimation(comboSheet, 0, 118, 120, 0, 3, 30, SpriteEffects.None, 0f, 0f, false, false);
             StraightPunch_R.FreezeFrames = new Animation.FrameFreezer
             {
                 Frames = new List<int>
@@ -180,7 +188,7 @@ namespace Bearventure.Gameplay.Characters
 
             StraightPunch_R.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
 
-            CharacterAnimation StraightPunch_L = new CharacterAnimation(comboSheet, 0, 118, 120, 0, 3, 300, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+            CharacterAnimation StraightPunch_L = new CharacterAnimation(comboSheet, 0, 118, 120, 0, 3, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
             StraightPunch_L.FreezeFrames = new Animation.FrameFreezer
             {
                 Frames = new List<int>
@@ -199,7 +207,7 @@ namespace Bearventure.Gameplay.Characters
             skill1.Acceleration = 0.25f;
             skill1.StartVelocity = new Vector2(4, 0);
             skill1.UltimateVelocityX = 0;
-            skill1.InflictForce = new Vector2(7, -5);
+            skill1.InflictForce = new Vector2(9, -7);
             skill1.DamagingFrames = new List<int>
             {
                 2,
@@ -393,6 +401,9 @@ namespace Bearventure.Gameplay.Characters
         }
         public override void HandleInput(GameTime gameTime, InputState input)
         {
+            if (state == Constants.CharacterState.Knocked || state == Constants.CharacterState.Disabled)
+                return;
+
             PlayerIndex playerIndex;
 
             if (state == Constants.CharacterState.Climbing && CharacterPhysics.OnLadder(this))

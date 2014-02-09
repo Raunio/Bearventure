@@ -133,6 +133,10 @@ namespace Bearventure.Gameplay
 
         private bool considerDirection;
 
+        private float opacity = 1f;
+        private float targetOpacity;
+        private float opacitySpeed;
+
         public Color[] textureData
         {
             get
@@ -152,7 +156,7 @@ namespace Bearventure.Gameplay
         {
             get
             {
-                if (SpriteRotation != targetRotation)
+                if (SpriteRotation != targetRotation && SpriteRotation != -targetRotation)
                     return true;
                 return false;
             }
@@ -206,6 +210,13 @@ namespace Bearventure.Gameplay
                 return mass;
             }
         }
+        public float Opacity
+        {
+            get
+            {
+                return opacity;
+            }
+        }
         /// <summary>
         /// Draw
         /// </summary>
@@ -213,7 +224,7 @@ namespace Bearventure.Gameplay
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             // TODO: Chop this too -Huemac
-            spriteBatch.Draw(CurrentAnimation.spriteSheet, Position, CurrentAnimation.FrameRectangle, Color.White, CurrentAnimation.Rotation, CurrentAnimation.Origin, scale, CurrentAnimation.Effects, CurrentAnimation.LayerDepth);
+            spriteBatch.Draw(CurrentAnimation.spriteSheet, Position, CurrentAnimation.FrameRectangle, new Color(255, 255, 255, Opacity), CurrentAnimation.Rotation, CurrentAnimation.Origin, scale, CurrentAnimation.Effects, CurrentAnimation.LayerDepth);
         }
 
         public abstract void Update(GameTime gameTime);
@@ -275,6 +286,13 @@ namespace Bearventure.Gameplay
             this.considerDirection = considerDirection;
         }
 
+        public void SetOpacity(float from, float to, float speed)
+        {
+            this.opacity = from;
+            this.targetOpacity = to;
+            this.opacitySpeed = speed;
+        }
+
         protected void UpdateRotating()
         {
             float targetRot = targetRotation;
@@ -309,6 +327,20 @@ namespace Bearventure.Gameplay
             }
             else
                 scale = targetScale;
+        }
+
+        protected void UpdateOpacity()
+        {
+            if (opacity < targetOpacity - opacitySpeed)
+            {
+                opacity += opacitySpeed;
+            }
+            else if (opacity > targetOpacity + opacitySpeed)
+            {
+                opacity -= opacitySpeed;
+            }
+            else
+                opacity = targetOpacity;
         }
     }
 }

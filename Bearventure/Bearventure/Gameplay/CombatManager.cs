@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Bearventure.Engine.Effects;
 using Bearventure.Gameplay.Characters;
 using Bearventure.Gameplay.Characters.Skills;
+using Bearventure.Engine.CollisionDetection;
 
 namespace Bearventure.Gameplay
 {
@@ -98,13 +99,13 @@ namespace Bearventure.Gameplay
 
         private void PlayHitEffects(Vector2 position, Constants.DamageType damageType, Constants.ArmorType armorType)
         {
-            //VisualEffectManager.Instance.CreateEffect("VisualEffects/hitTest", position, 100);
+            VisualEffectManager.Instance.CreateEffect("VisualEffects/hitTest", position, 100);
 
             if (Globals.GoreEnabled)
             {
                 if (armorType == Constants.ArmorType.Fur || armorType == Constants.ArmorType.Feathers || armorType == Constants.ArmorType.Skin)
                 {
-                    //VisualEffectManager.Instance.CreateEffect("VisualEffects/blood2", position, 200);
+                    VisualEffectManager.Instance.CreateEffect("VisualEffects/blood2", position, 200);
                     SoundEffectManager.Instance.PlaySound(Constants.Splat);
                 }
             }
@@ -192,7 +193,9 @@ namespace Bearventure.Gameplay
                 force.Y = skill.InflictForce.Y + mass.Y;
 
                 subject.ChangeVelocity(force.X, force.Y, "Character Skill Force");
-                //subject.position.Y += force.Y;
+
+                if(CollisionHandler.CollisionOccursWithMap(subject, force) != subject.BoundingBox.Top)
+                    subject.AdjustPosition(new Vector2(0, force.Y));
 
                 if (skill.InflictForce.Length() >= subject.KnockBackTreshold)
                 {

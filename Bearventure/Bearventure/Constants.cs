@@ -193,6 +193,9 @@ namespace Bearventure
             FacingPlayer,
             CollidesWithPlayer,
             OnGround,
+            HasActiveSkill,
+            IsUsingSkill,
+            IsNotUsingSkill,
         };
 
         #endregion

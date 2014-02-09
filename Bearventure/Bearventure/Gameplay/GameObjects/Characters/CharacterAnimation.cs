@@ -58,6 +58,10 @@ namespace Bearventure
             for (int i = 0; i < infoList.Count; i++)
                 AnatInfo[i] = infoList[i];
         }
+        public void SetFixedBoundingBoxOffset(int amount)
+        {
+            BoundingBoxOffset = amount;
+        }
         /// <summary>
         /// Sets anatomic info from a text file.
         /// </summary>
@@ -159,7 +163,7 @@ namespace Bearventure
         {
             if (FrameRectangle.Width != boundingBoxSize.X)
             {
-                BoundingBoxOffset = animationDirection == Constants.DirectionX.Left ? (FrameRectangle.Width - boundingBoxSize.X) : -(boundingBoxSize.X - FrameRectangle.Width) / 2;
+                BoundingBoxOffset = animationDirection == Constants.DirectionX.Left ? (FrameRectangle.Width - boundingBoxSize.X) / 2 : -(boundingBoxSize.X - FrameRectangle.Width) / 2;
             }
         }
     }

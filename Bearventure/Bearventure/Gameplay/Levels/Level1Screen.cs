@@ -124,7 +124,7 @@ namespace Bearventure
                 layeredBackground.AddLayer(Layer2, 3, new Vector2(0.2f, 0));
                 layeredBackground.AddLayer(Layer3, 4, new Vector2(0.3f, 0));
                 layeredBackground.AddLayer(Layer4, 5, new Vector2(0.55f, 0));           
-                layeredBackground.AddLayer(skyLayer, 6, new Vector2(1f, 0));
+                layeredBackground.AddLayer(skyLayer, 6, new Vector2(1f, 0f));
 
                 layeredBackground.Initialize();
 
@@ -176,7 +176,7 @@ namespace Bearventure
                 badgerSpawner2.ActivationDistance = 200;
                 badgerSpawner2.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
                 badgerSpawner2.SetScaleModifier(0.5f, 1f, 0.1f);
-                //spawners.Add(badgerSpawner2);
+                spawners.Add(badgerSpawner2);
 
                 GameObjectSpawner badgerSpawner3 = new GameObjectSpawner(null, new Vector2(3775, 4070), enemies, 3000f, _player, content);
                 badgerSpawner3.AddEffect(new VisualEffect("VisualEffects/spawnTest"));
@@ -185,7 +185,7 @@ namespace Bearventure
                 badgerSpawner3.ActivationDistance = 200;
                 badgerSpawner3.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
                 badgerSpawner3.SetScaleModifier(0.5f, 1f, 0.1f);
-                //spawners.Add(badgerSpawner3);
+                spawners.Add(badgerSpawner3);
 
                 GameObjectSpawner badgerSpawner4 = new GameObjectSpawner(null, new Vector2(4420, 4200), enemies, 3000f, _player, content);
                 badgerSpawner4.AddEffect(new VisualEffect("VisualEffects/spawnTest"));
@@ -194,7 +194,7 @@ namespace Bearventure
                 badgerSpawner4.ActivationDistance = 200;
                 badgerSpawner4.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
                 badgerSpawner4.SetScaleModifier(0.5f, 1f, 0.1f);
-                //spawners.Add(badgerSpawner4);
+                spawners.Add(badgerSpawner4);
 
                 //Animation worm = new Animation(content.Load<Texture2D>("Sprites/matoallas"), 0, 612, 264, 0, 5, 30);
 
@@ -303,6 +303,9 @@ namespace Bearventure
 
             if (IsActive)
             {
+                if (_player.IsActive)
+                    _player.Update(gameTime);
+
                 foreach (GameObjectSpawner spawner in spawners)
                 {
                     spawner.Update(gameTime);
@@ -317,9 +320,6 @@ namespace Bearventure
                         enemy.PlayStepSounds();
                     }
                 }
-
-                if(_player.IsActive)
-                _player.Update(gameTime);
 
                 foreach (Platform p in platforms)
                 {
@@ -422,23 +422,18 @@ namespace Bearventure
                     RasterizerState.CullNone, null, camera.GetTransformation(ResolutionManager.graphicsDevice.GraphicsDevice));
 
             layeredBackground.Draw(spriteBatch);
-            layeredBackground.DrawGrid(spriteBatch);
+            //layeredBackground.DrawGrid(spriteBatch);
             
             //CollisionHandler.Map.DrawMap(spriteBatch);
             //CollisionHandler.Map.DrawGrid(spriteBatch);
             //CollisionHandler.DrawCollisionRectangles(spriteBatch, yellow, _player, _player.velocity);
-            _player.DrawBoundingBox(spriteBatch, red);
+            //_player.DrawBoundingBox(spriteBatch, red);
 
             foreach (GameObjectSpawner spawner in spawners)
             {
                 spawner.Draw(spriteBatch);
             }
 
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                //CollisionHandler.DrawCollisionRectangles(spriteBatch, yellow, enemies[i], enemies[i].velocity);
-                //enemies[i].DrawBoundingBox(spriteBatch, red);
-            }
 
             foreach (Ladder l in ladders)
             {
@@ -457,6 +452,14 @@ namespace Bearventure
                 p.Draw(spriteBatch);
                 //testing
                 
+            }
+
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                //CollisionHandler.DrawCollisionRectangles(spriteBatch, yellow, enemies[i], enemies[i].velocity);
+                //enemies[i].DrawBoundingBox(spriteBatch, red);
+                //if (enemies[i].ActiveSkill != null)
+                    //enemies[i].ActiveSkill.DrawHitBox(spriteBatch, red);
             }
 
             VisualEffectManager.Instance.DrawEffects(spriteBatch);

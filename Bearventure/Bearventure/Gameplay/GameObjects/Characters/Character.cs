@@ -118,6 +118,10 @@ namespace Bearventure.Gameplay.Characters
         {
             if (CurrentAnimation != animation)
             {
+                animation.Animate(new GameTime());
+
+                BoundingBoxAnimationOffset = animation.BoundingBoxOffset;
+
                 if(CurrentAnimation != null)
                     CurrentAnimation.Reset();
 
