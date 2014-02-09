@@ -169,7 +169,6 @@ namespace Bearventure
         {
             if (screenMode != ResolutionManager.CurrentScreenMode)
             {
-                ResolutionManager.SetVirtualResolution(screenMode);
                 ResolutionManager.SetResolution(screenMode, true);
             }
         }
