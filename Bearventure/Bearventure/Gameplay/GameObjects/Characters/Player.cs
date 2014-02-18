@@ -146,13 +146,14 @@ namespace Bearventure.Gameplay.Characters
 
         private void InitAnimations()
         {
-            stoppedRight = new CharacterAnimation(spriteSheet, 0, 88, 121, 12, 12, 50, SpriteEffects.None, 0f, 0f, false, true);
-            stoppedLeft = new CharacterAnimation(spriteSheet, 0, 88, 121, 9, 9, 50, SpriteEffects.None, 0f, 0f, false, true);
+            stoppedRight = new CharacterAnimation(spriteSheet, 0, 156, 226, 0, 0, 50, SpriteEffects.None, 0f, 0f, false, true);
+            stoppedLeft = new CharacterAnimation(spriteSheet, 0, 156, 226, 0, 0, 50, SpriteEffects.None, 0f, 0f, false, true);
             stoppedRight.SetFixedBoundingBoxOffset(10);       
             stoppedLeft.SetFixedBoundingBoxOffset(3);
-            walkRight = new CharacterAnimation(spriteSheet, 0, 88, 121, 13, 21, 50, SpriteEffects.None, 0f, 0f, false, true);
+            walkRight = new CharacterAnimation(spriteSheet, 0, 156, 226, 0, 5, 100, SpriteEffects.None, 0f, 0f, false, true);
             walkRight.SetFixedBoundingBoxOffset(10);
-            walkLeft = new CharacterAnimation(spriteSheet, 0, 88, 121, 0, 8, 50, SpriteEffects.None, 0f, 0f, true, true);
+            walkLeft = new CharacterAnimation(spriteSheet, 0, 156, 226, 0, 5, 100, SpriteEffects.None, 0f, 0f, false, true);
+            walkLeft.Effects = SpriteEffects.FlipHorizontally;
             walkLeft.SetFixedBoundingBoxOffset(3);
             runRight = new CharacterAnimation(spriteSheet, 0, 88, 121, 13, 21, 25, SpriteEffects.None, 0f, 0f, false, true);
             runRight.SetFixedBoundingBoxOffset(10);

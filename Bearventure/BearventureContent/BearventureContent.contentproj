@@ -234,13 +234,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sprites\kavelyfixed.png">
-      <Name>kavelyfixed</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Sprites\WoodenLadder.png">
       <Name>WoodenLadder</Name>
       <Importer>TextureImporter</Importer>
@@ -1880,6 +1873,13 @@
   <ItemGroup>
     <Compile Include="Bitmaps\skillBlock.png">
       <Name>skillBlock</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Sprites\kavelyfixed.png">
+      <Name>kavelyfixed</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

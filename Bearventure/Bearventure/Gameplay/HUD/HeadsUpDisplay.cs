@@ -72,8 +72,6 @@ namespace Bearventure.Gameplay.HUD
 
             playerHealthBar.Update(gameTime, new Vector2(resolution.X *0.1f , resolution.Y *0.96f), 0, player.maxHealth, player.health);
             playerRageBar.Update(gameTime, new Vector2(resolution.X * 0.9f, resolution.Y * 0.96f), 0, player.MaxSkillResource, player.CurrentSkillResource);
-
-
         }
 
 

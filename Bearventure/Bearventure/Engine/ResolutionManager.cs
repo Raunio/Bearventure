@@ -30,8 +30,8 @@ namespace Bearventure
             new Point(1920,1080),
             new Point(1280,720),
             new Point(720,480),
-            new Point(640,360),
-            new Point(320,240)
+            new Point(1440,900),
+            new Point(1680,1050)
             
         });
 
@@ -186,13 +186,13 @@ namespace Bearventure
             // Start by reseting viewport to (0,0,1,1)
             FullViewport();
             // Clear to Black
-            graphicsDevice.GraphicsDevice.Clear(Color.Black);
+            graphicsDevice.GraphicsDevice.Clear(Color.Transparent);
             // Calculate Proper Viewport according to Aspect Ratio
             ResetViewport();
             // and clear that
             // This way we are gonna have black bars if aspect ratio requires it and
             // the clear color on the rest
-            graphicsDevice.GraphicsDevice.Clear(Color.Black);
+            graphicsDevice.GraphicsDevice.Clear(Color.Blue);
         }
 
         static private void RecreateScaleMatrix()
@@ -221,6 +221,11 @@ namespace Bearventure
         static public float GetVirtualAspectRatio()
         {
             return (float)virtualWidth / (float)virtualHeight;
+        }
+
+        static public float GetAspectRatio()
+        {
+            return (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
         }
 
         static public void ResetViewport()

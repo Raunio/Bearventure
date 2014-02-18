@@ -230,7 +230,7 @@ namespace Bearventure
                 // once the load has finished, we use ResetElapsedTime to tell the game's
                 // timing mechanism that we have just finished a very long frame, and that
                 // it should not try to catch up.s
-                ScreenManager.Game.ResetElapsedTime();                
+                ScreenManager.Game.ResetElapsedTime();
                 hudScreen = new HUDScreen(content, _player, enemies, camera);
                 ScreenManager.AddScreen(new HUDScreen(content, _player, enemies, camera), null);
                 hudScreen.Activate();
@@ -411,6 +411,8 @@ namespace Bearventure
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
+
+
             
             ResolutionManager.BeginDraw();
 
@@ -471,10 +473,10 @@ namespace Bearventure
 
             //hud.Draw(spriteBatch);
             spriteBatch.End();
-
             spriteBatch.Begin();
             hudScreen.Draw(spriteBatch);
             spriteBatch.End();
+
 
             // If the game is transitioning on or off, fade it out to black.
             if (TransitionPosition > 0 || pauseAlpha > 0)
