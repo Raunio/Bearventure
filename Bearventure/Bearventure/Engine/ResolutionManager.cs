@@ -31,7 +31,7 @@ namespace Bearventure
             new Point(1280,720),
             new Point(720,480),
             new Point(640,360),
-            new Point(320,240)
+            new Point(1680,1050)
             
         });
 

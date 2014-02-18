@@ -32,10 +32,25 @@ namespace Bearventure.Gameplay.GameObjects
         private float ultimateScale;
         private float scalingSpeed;
 
+        private Animation preActivationAnimation;
+        private Animation defaultAnimation;
+
         public int ActivationDistance
         {
             get;
             set;
+        }
+
+        public Animation PreActivationAnimation
+        {
+            get
+            {
+                return preActivationAnimation;
+            }
+            set
+            {
+                preActivationAnimation = value;
+            }
         }
 
         private struct ObjectSpawn
@@ -58,6 +73,7 @@ namespace Bearventure.Gameplay.GameObjects
             this.content = content;
             this.spawnTimer = spawnInterval;
             this.animation = animation;
+            this.defaultAnimation = animation;
         }
         /// <summary>
         /// Add an object to spawn.
@@ -110,33 +126,39 @@ namespace Bearventure.Gameplay.GameObjects
 
             if (activationType == Constants.SpawnerActivationType.Automatic || isActive)
             {
-                if (spawnTimer >= spawnInterval && objectIndexCounter < objectsToSpawn.Count)
-                {
-                    SpawnObject(objectsToSpawn[objectIndexCounter]);
+                if(preActivationAnimation == null || preActivationAnimation.HasFinished)
+                    if (spawnTimer >= spawnInterval && objectIndexCounter < objectsToSpawn.Count)
+                    {
+                        SpawnObject(objectsToSpawn[objectIndexCounter]);
 
-                    spawnCounter++;
+                        spawnCounter++;
 
-                    spawnTimer = 0;
+                        spawnTimer = 0;
 
-                    if (spawnCounter == objectsToSpawn[objectIndexCounter].amount)
-                        objectIndexCounter++;
-                }
+                        if (spawnCounter == objectsToSpawn[objectIndexCounter].amount)
+                            objectIndexCounter++;
+                    }
             }
         }
 
         private void UpdateActivation()
         {
             if (Vector2.Distance(player.Position, position) <= ActivationDistance)
+            {
                 isActive = true;
+
+                if (preActivationAnimation != null)
+                    animation = preActivationAnimation;
+            }
             else
-                isActive = false;
+                animation = defaultAnimation;
         }
 
         private void SpawnObject(ObjectSpawn spawn)
         {
             Enemy e = new Enemy(spawn.objectType, Constants.BehaviourType.Default, (int)position.X, (int)position.Y, player, 0, 0, 0, content);
             e.ChangeVelocity(spawn.spawnVelocity.X, spawn.spawnVelocity.Y);
-            e.ChangePosition(position);
+
             e.SetState(Constants.CharacterState.Spawning);
 
             if (initialScale != 0 && ultimateScale != 0 && scalingSpeed != 0)

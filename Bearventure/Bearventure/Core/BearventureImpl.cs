@@ -58,7 +58,7 @@ namespace Bearventure
 
             ResolutionManager.Initialize(ref graphics);
             ResolutionManager.SetVirtualResolution(Constants.ScreenMode.v720p);
-            ResolutionManager.SetResolution(Constants.ScreenMode.v720p, false); // Gets your system screen size etc...
+            ResolutionManager.SetResolution(Constants.ScreenMode.v240p, false); // Gets your system screen size etc...
 
             Globals.SoundsEnabled = false;
 

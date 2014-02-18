@@ -389,8 +389,8 @@ namespace Bearventure.Gameplay.Characters
                     testSkill.HitBoxWidth = 20;
                     testSkill.InflictForce = new Vector2(35, 0);
 
-                    CharacterAnimation attack_right = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 100, SpriteEffects.None, 0f, 0f, false, false);
-                    CharacterAnimation attack_left = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 100, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+                    CharacterAnimation attack_right = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 55, SpriteEffects.None, 0f, 0f, false, false);
+                    CharacterAnimation attack_left = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 55, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
 
                     attack_left.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Left);
                     attack_right.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
@@ -634,7 +634,7 @@ namespace Bearventure.Gameplay.Characters
                 Dying.Effects = SpriteEffects.None;
 
             ChangeAnimation(Dying);
-            SetRotating(0f, (float)Math.PI / 2, 0.2f, true);
+            SetRotating(0f, (float)Math.PI / 2, 0.35f, true);
 
             mass = 0;
 

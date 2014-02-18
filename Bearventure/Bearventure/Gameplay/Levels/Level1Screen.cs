@@ -160,13 +160,16 @@ namespace Bearventure
 
                 #region SPAWNER TESTING
                 spawners = new List<GameObjectSpawner>();
+
+
                 GameObjectSpawner badgerSpawner = new GameObjectSpawner(null, new Vector2(3300, 4070), enemies, 3000f, _player, content);
                 badgerSpawner.AddEffect(new VisualEffect("VisualEffects/spawnTest"));
                 badgerSpawner.AddSoundEffect(SoundEffectManager.Instance.SpawnerSound);
                 badgerSpawner.SetActivation(Constants.SpawnerActivationType.Proximity);
                 badgerSpawner.ActivationDistance = 200;
                 badgerSpawner.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
-                badgerSpawner.SetScaleModifier(0.5f, 1f, 0.1f);
+                badgerSpawner.SetScaleModifier(0.25f, 1f, 0.1f);
+                
                 spawners.Add(badgerSpawner);
 
                 GameObjectSpawner badgerSpawner2 = new GameObjectSpawner(null, new Vector2(3540, 4070), enemies, 3000f, _player, content);
@@ -175,7 +178,7 @@ namespace Bearventure
                 badgerSpawner2.SetActivation(Constants.SpawnerActivationType.Proximity);
                 badgerSpawner2.ActivationDistance = 200;
                 badgerSpawner2.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
-                badgerSpawner2.SetScaleModifier(0.5f, 1f, 0.1f);
+                badgerSpawner2.SetScaleModifier(0.25f, 1f, 0.1f);
                 spawners.Add(badgerSpawner2);
 
                 GameObjectSpawner badgerSpawner3 = new GameObjectSpawner(null, new Vector2(3775, 4070), enemies, 3000f, _player, content);
@@ -184,7 +187,7 @@ namespace Bearventure
                 badgerSpawner3.SetActivation(Constants.SpawnerActivationType.Proximity);
                 badgerSpawner3.ActivationDistance = 200;
                 badgerSpawner3.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
-                badgerSpawner3.SetScaleModifier(0.5f, 1f, 0.1f);
+                badgerSpawner3.SetScaleModifier(0.25f, 1f, 0.1f);
                 spawners.Add(badgerSpawner3);
 
                 GameObjectSpawner badgerSpawner4 = new GameObjectSpawner(null, new Vector2(4420, 4200), enemies, 3000f, _player, content);
@@ -193,7 +196,7 @@ namespace Bearventure
                 badgerSpawner4.SetActivation(Constants.SpawnerActivationType.Proximity);
                 badgerSpawner4.ActivationDistance = 200;
                 badgerSpawner4.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
-                badgerSpawner4.SetScaleModifier(0.5f, 1f, 0.1f);
+                badgerSpawner4.SetScaleModifier(0.25f, 1f, 0.1f);
                 spawners.Add(badgerSpawner4);
 
                 //Animation worm = new Animation(content.Load<Texture2D>("Sprites/matoallas"), 0, 612, 264, 0, 5, 30);
