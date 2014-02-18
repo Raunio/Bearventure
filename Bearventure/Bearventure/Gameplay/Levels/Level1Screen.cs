@@ -110,6 +110,7 @@ namespace Bearventure
 
                 layeredBackground = new LayeredLevelBackground();
 
+                LevelBackground treeLayer = new LevelBackground("Testilevel2/Background/PuutJaOksat", "Testilevel2PuuJaOksat", 32, content);
                 LevelBackground platformLayer = new LevelBackground("Testilevel2/Background/Platform", "Testilevel2Platform", 32, content);
                 LevelBackground static1Layer = new LevelBackground("Testilevel2/Background/Static1", "Testilevel2Static1", 32, content);
                 LevelBackground static2Layer = new LevelBackground("Testilevel2/Background/Static1Takana", "Testilevel2Static1Takana", 32, content);
@@ -118,13 +119,15 @@ namespace Bearventure
                 LevelBackground Layer4 = new LevelBackground("Testilevel2/Background/4", "Testilevel2-4", 32, content);
                 LevelBackground skyLayer = new LevelBackground("Testilevel2/Background/Sky", "Testilevel2Sky", 32, content);
 
-                layeredBackground.AddLayer(platformLayer, 0, new Vector2(0, 0));
-                layeredBackground.AddLayer(static2Layer, 1, new Vector2(0, 0));
-                layeredBackground.AddLayer(static1Layer, 2, new Vector2(0, 0)); 
-                layeredBackground.AddLayer(Layer2, 3, new Vector2(0.2f, 0));
-                layeredBackground.AddLayer(Layer3, 4, new Vector2(0.3f, 0));
-                layeredBackground.AddLayer(Layer4, 5, new Vector2(0.55f, 0));           
-                layeredBackground.AddLayer(skyLayer, 6, new Vector2(1f, 0f));
+                
+                layeredBackground.AddLayer(platformLayer, 1, new Vector2(0, 0));
+                layeredBackground.AddLayer(treeLayer, 3, Vector2.Zero);
+                layeredBackground.AddLayer(static2Layer, 2, new Vector2(0, 0));
+                layeredBackground.AddLayer(static1Layer, 0, new Vector2(0, 0)); 
+                layeredBackground.AddLayer(Layer2, 4, new Vector2(0.2f, 0));
+                layeredBackground.AddLayer(Layer3, 5, new Vector2(0.3f, 0));
+                layeredBackground.AddLayer(Layer4, 6, new Vector2(0.55f, 0));           
+                layeredBackground.AddLayer(skyLayer, 7, new Vector2(1f, 0f));
 
                 layeredBackground.Initialize();
 
@@ -180,7 +183,7 @@ namespace Bearventure
                 badgerSpawner.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
                 badgerSpawner.SetScaleModifier(0.25f, 1f, 0.1f);
                 
-                spawners.Add(badgerSpawner);
+                //spawners.Add(badgerSpawner);
 
                 GameObjectSpawner badgerSpawner2 = new GameObjectSpawner(null, new Vector2(3540, 4070), enemies, 3000f, _player, content);
                 badgerSpawner2.AddEffect(new VisualEffect("VisualEffects/spawnTest"));
@@ -189,7 +192,8 @@ namespace Bearventure
                 badgerSpawner2.ActivationDistance = 200;
                 badgerSpawner2.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
                 badgerSpawner2.SetScaleModifier(0.25f, 1f, 0.1f);
-                spawners.Add(badgerSpawner2);
+                
+                //spawners.Add(badgerSpawner2);
 
                 GameObjectSpawner badgerSpawner3 = new GameObjectSpawner(null, new Vector2(3775, 4070), enemies, 3000f, _player, content);
                 badgerSpawner3.AddEffect(new VisualEffect("VisualEffects/spawnTest"));
@@ -198,7 +202,8 @@ namespace Bearventure
                 badgerSpawner3.ActivationDistance = 200;
                 badgerSpawner3.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
                 badgerSpawner3.SetScaleModifier(0.25f, 1f, 0.1f);
-                spawners.Add(badgerSpawner3);
+                
+                //spawners.Add(badgerSpawner3);
 
                 GameObjectSpawner badgerSpawner4 = new GameObjectSpawner(null, new Vector2(4420, 4200), enemies, 3000f, _player, content);
                 badgerSpawner4.AddEffect(new VisualEffect("VisualEffects/spawnTest"));
@@ -207,7 +212,8 @@ namespace Bearventure
                 badgerSpawner4.ActivationDistance = 200;
                 badgerSpawner4.AddObject(Constants.EnemyType.BlackMetalBadger, 1, new Vector2(0, -8));
                 badgerSpawner4.SetScaleModifier(0.25f, 1f, 0.1f);
-                spawners.Add(badgerSpawner4);
+                
+                //spawners.Add(badgerSpawner4);
 
                 //Animation worm = new Animation(content.Load<Texture2D>("Sprites/matoallas"), 0, 612, 264, 0, 5, 30);
 

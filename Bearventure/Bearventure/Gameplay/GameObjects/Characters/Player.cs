@@ -128,7 +128,7 @@ namespace Bearventure.Gameplay.Characters
             decceleration = 1.75f;
             walkSpeed = 12f;
             runSpeed = 20f;
-            jumpStrenght = 25;
+            jumpStrenght = 35;
 
             maxHealth = 50;
             health = 50;
@@ -159,9 +159,9 @@ namespace Bearventure.Gameplay.Characters
             runLeft = new CharacterAnimation(spriteSheet, 1, 134, 187, 0, 5, 65, SpriteEffects.FlipHorizontally, 0f, 0f, false, true);
             runLeft.SetFixedBoundingBoxOffset(3);
 
-            jumpingRight = new CharacterAnimation(spriteSheet, 0, 134, 187, 0, 0, 40, SpriteEffects.None, 0f, 0f, false, false);
+            jumpingRight = new CharacterAnimation(spriteSheet, 1, 134, 187, 3, 3, 40, SpriteEffects.None, 0f, 0f, false, false);
             jumpingRight.SetFixedBoundingBoxOffset(10);
-            jumpingLeft = new CharacterAnimation(spriteSheet, 0, 134, 187, 0, 0, 40, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+            jumpingLeft = new CharacterAnimation(spriteSheet, 1, 134, 187, 3, 3, 40, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
             jumpingLeft.SetFixedBoundingBoxOffset(20);
 
             climbing = new CharacterAnimation(climbSheet, 0, 90, 134, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, true);
@@ -567,7 +567,7 @@ namespace Bearventure.Gameplay.Characters
         {
             if (CurrentAnimation == walkLeft || CurrentAnimation == runLeft)
             {
-                if (CurrentAnimation.CurrentFrame == 2 || CurrentAnimation.CurrentFrame == 6)
+                if (CurrentAnimation.CurrentFrame == 2 || CurrentAnimation.CurrentFrame == 5)
                 {
                     if (CurrentAnimation.IsNewFrame)
                         SoundEffectManager.Instance.PlayStep();
@@ -575,7 +575,7 @@ namespace Bearventure.Gameplay.Characters
             }
             else if (CurrentAnimation == walkRight || CurrentAnimation == runRight)
             {
-                if (CurrentAnimation.CurrentFrame == 15 || CurrentAnimation.CurrentFrame == 19)
+                if (CurrentAnimation.CurrentFrame == 2 || CurrentAnimation.CurrentFrame == 5)
                 {
                     if (CurrentAnimation.IsNewFrame)
                         SoundEffectManager.Instance.PlayStep();
