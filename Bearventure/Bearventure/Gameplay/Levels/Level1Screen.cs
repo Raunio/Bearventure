@@ -158,6 +158,16 @@ namespace Bearventure
                 platforms.Add(fallingPlat3);
                 platforms.Add(fallingPlat4);
 
+                /*Enemy worm = new Enemy(Constants.EnemyType.OscillatorWorm, Constants.BehaviourType.Default, 3825, 3333, _player, 0, 0, 0, content);
+                Enemy worm2 = new Enemy(Constants.EnemyType.OscillatorWorm, Constants.BehaviourType.Default, 3925, 3233, _player, 0, 0, 0, content);
+                Enemy worm3 = new Enemy(Constants.EnemyType.OscillatorWorm, Constants.BehaviourType.Default, 4025, 3133, _player, 0, 0, 0, content);
+                Enemy worm4 = new Enemy(Constants.EnemyType.OscillatorWorm, Constants.BehaviourType.Default, 4125, 3033, _player, 0, 0, 0, content);
+                enemies.Add(worm);
+                enemies.Add(worm2);
+                enemies.Add(worm3);
+                enemies.Add(worm4);
+                */
+
                 #region SPAWNER TESTING
                 spawners = new List<GameObjectSpawner>();
 
@@ -445,12 +455,15 @@ namespace Bearventure
                 l.Draw(spriteBatch);
             }
 
+            _player.Draw(spriteBatch);
+
             foreach (Enemy enemy in enemies)
             {
                 enemy.Draw(spriteBatch);
+                //enemy.DrawBoundingBox(spriteBatch, red);
             }
 
-            _player.Draw(spriteBatch);
+            
 
             foreach (Platform p in platforms)
             {

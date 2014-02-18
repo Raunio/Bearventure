@@ -65,11 +65,11 @@ namespace Bearventure.Gameplay.Characters
 
             AttachmentPoints = new AttachmentPoint[]
             {
-                new AttachmentPoint(new Vector2(20, 20)),
-                new AttachmentPoint(new Vector2(20, 30)),
-                new AttachmentPoint(new Vector2(20, 40)),
-                new AttachmentPoint(new Vector2(20, 50)),
-                new AttachmentPoint(new Vector2(20, 60)),
+                new AttachmentPoint(new Vector2(-50, -70)),
+                new AttachmentPoint(new Vector2(-50, -30)),
+                new AttachmentPoint(new Vector2(-50, -40)),
+                new AttachmentPoint(new Vector2(-50, -50)),
+                new AttachmentPoint(new Vector2(-50, -60)),
             };
 
 
@@ -146,27 +146,26 @@ namespace Bearventure.Gameplay.Characters
 
         private void InitAnimations()
         {
-            stoppedRight = new CharacterAnimation(spriteSheet, 0, 156, 226, 0, 0, 50, SpriteEffects.None, 0f, 0f, false, true);
-            stoppedLeft = new CharacterAnimation(spriteSheet, 0, 156, 226, 0, 0, 50, SpriteEffects.None, 0f, 0f, false, true);
+            stoppedRight = new CharacterAnimation(spriteSheet, 0, 134, 187, 0, 0, 50, SpriteEffects.None, 0f, 0f, false, true);
+            stoppedLeft = new CharacterAnimation(spriteSheet, 0, 134, 187, 0, 0, 50, SpriteEffects.FlipHorizontally, 0f, 0f, false, true);
             stoppedRight.SetFixedBoundingBoxOffset(10);       
             stoppedLeft.SetFixedBoundingBoxOffset(3);
-            walkRight = new CharacterAnimation(spriteSheet, 0, 156, 226, 0, 5, 100, SpriteEffects.None, 0f, 0f, false, true);
+            walkRight = new CharacterAnimation(spriteSheet, 1, 134, 187, 0, 5, 100, SpriteEffects.None, 0f, 0f, false, true);
             walkRight.SetFixedBoundingBoxOffset(10);
-            walkLeft = new CharacterAnimation(spriteSheet, 0, 156, 226, 0, 5, 100, SpriteEffects.None, 0f, 0f, false, true);
-            walkLeft.Effects = SpriteEffects.FlipHorizontally;
+            walkLeft = new CharacterAnimation(spriteSheet, 1, 134, 187, 0, 5, 100, SpriteEffects.FlipHorizontally, 0f, 0f, false, true);
             walkLeft.SetFixedBoundingBoxOffset(3);
-            runRight = new CharacterAnimation(spriteSheet, 0, 88, 121, 13, 21, 25, SpriteEffects.None, 0f, 0f, false, true);
+            runRight = new CharacterAnimation(spriteSheet, 1, 134, 187, 0, 5, 65, SpriteEffects.None, 0f, 0f, false, true);
             runRight.SetFixedBoundingBoxOffset(10);
-            runLeft = new CharacterAnimation(spriteSheet, 0, 88, 121, 0, 8, 25, SpriteEffects.None, 0f, 0f, true, true);
+            runLeft = new CharacterAnimation(spriteSheet, 1, 134, 187, 0, 5, 65, SpriteEffects.FlipHorizontally, 0f, 0f, false, true);
             runLeft.SetFixedBoundingBoxOffset(3);
 
-            jumpingRight = new CharacterAnimation(jumpSheet, 0, 106, 120, 0, 3, 40, SpriteEffects.None, 0f, 0f, false, false);
+            jumpingRight = new CharacterAnimation(spriteSheet, 0, 134, 187, 0, 0, 40, SpriteEffects.None, 0f, 0f, false, false);
             jumpingRight.SetFixedBoundingBoxOffset(10);
-            jumpingLeft = new CharacterAnimation(jumpSheet, 0, 106, 120, 0, 3, 40, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+            jumpingLeft = new CharacterAnimation(spriteSheet, 0, 134, 187, 0, 0, 40, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
             jumpingLeft.SetFixedBoundingBoxOffset(20);
 
-            climbing = new CharacterAnimation(climbSheet, 0, 90, 135, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, true);
-            climbingStopped = new CharacterAnimation(climbSheet, 0, 90, 135, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, false);
+            climbing = new CharacterAnimation(climbSheet, 0, 90, 134, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, true);
+            climbingStopped = new CharacterAnimation(climbSheet, 0, 90, 134, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, false);
 
             ChangeAnimation(stoppedRight);
         }

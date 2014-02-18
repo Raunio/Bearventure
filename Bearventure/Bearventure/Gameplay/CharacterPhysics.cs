@@ -35,7 +35,7 @@ namespace Bearventure
             {
                 if (subject.state != Constants.CharacterState.Dead)
                     UpdateAltitude(subject, gameTime);
-                else
+                else if(subject.state != Constants.CharacterState.LatchedToObject)
                     ApplyGravity(subject);
             }
             
@@ -102,14 +102,27 @@ namespace Bearventure
 
         private static void LatchToObject(Character subject)
         {
-            ObjectCollisionEvent collision = CollisionHandler.CollisionOccursWithObject(subject, subject.velocity);
+            GameplayObject player = CollisionHandler.GetPlayer;
 
-            if (collision != null && collision.B.AttachmentPoints != null)
+            if(subject.BoundingBox.Intersects(player.BoundingBox))
             {
-
+                for (int i = 0; i < player.AttachmentPoints.Length; i++)
+                {
+                    if (!player.AttachmentPoints[i].IsOccupied)
+                    {
+                        subject.ChangeVelocity(0, 0);
+                        subject.ChangePosition(player.Position + player.AttachmentPoints[i].Location);
+                        player.AttachmentPoints[i].Attach(subject);
+                        break;
+                    }
+                    else if (player.AttachmentPoints[i].Subject == subject)
+                    {
+                        subject.ChangePosition(player.Position + player.AttachmentPoints[i].Location);
+                        subject.ChangeVelocity(0, 0);
+                        break;
+                    }
+                }
             }
-            else
-                subject.SetState(Constants.CharacterState.Stopped);
         }
 
         public static void Stop(Character subject)
@@ -125,7 +138,7 @@ namespace Bearventure
         }
         private static void Walk(Character subject)
         {
-            if (!OnGround(subject) && subject.Orientation == Constants.CharacterOrientation.Ground && !OnLadder(subject) && subject.velocity.Y > Gravity * 2)
+            if (!OnGround(subject) && subject.Orientation == Constants.CharacterOrientation.Ground && !OnLadder(subject) && subject.velocity.Y > Gravity * 10)
             {
                 subject.state = Constants.CharacterState.Falling;
                 return;
@@ -631,6 +644,10 @@ namespace Bearventure
         public static void FixOverlaps(Character subject)
         {
             float x = CollisionHandler.OverlapsCharacter(subject);
+            ObjectCollisionEvent collision = CollisionHandler.CollisionOccursWithObject(subject, subject.velocity);
+
+            if (collision != null && (collision.B.Mass == 0 || collision.A.Mass == 0))
+                return;
 
             if (x < 0 && !Blocked(subject, Constants.DirectionX.Left))
                 subject.AdjustPosition(new Vector2(x, 0));

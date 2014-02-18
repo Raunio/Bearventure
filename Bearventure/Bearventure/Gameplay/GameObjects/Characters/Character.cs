@@ -169,7 +169,7 @@ namespace Bearventure.Gameplay.Characters
         /// <param name="newState"></param>
         public void SetState(Constants.CharacterState newState)
         {
-            if (state != Constants.CharacterState.UsingSkill && !IsDisabled)
+            if (state != Constants.CharacterState.UsingSkill && !IsDisabled && state != Constants.CharacterState.LatchedToObject)
             {
                 switch (newState)
                 {

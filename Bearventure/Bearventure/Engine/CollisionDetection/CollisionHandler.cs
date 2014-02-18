@@ -632,5 +632,17 @@ namespace Bearventure.Engine.CollisionDetection
             get;
             private set;
         }
+
+        public static GameplayObject GetPlayer
+        {
+            get
+            {
+                for (int i = 0; i < gameObjects.Count; i++)
+                    if (gameObjects[i].TAG == "Player")
+                        return gameObjects[i];
+
+                return null;
+            }
+        }
     }
 }
