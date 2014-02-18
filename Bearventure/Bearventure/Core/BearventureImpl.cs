@@ -24,7 +24,7 @@ namespace Bearventure
         GraphicsDeviceManager graphics;
         ScreenManager screenManager;
         ScreenFactory screenFactory;
-        float aspectRatio;
+        float AspectRatio;
         float aspectRatio169 = 1.77777779f;
         float aspectRatio1610 = 1.6f;
 
@@ -52,7 +52,7 @@ namespace Bearventure
 
             // Create the screen manager component.
             screenManager = new ScreenManager(this);
-            aspectRatio = ResolutionManager.GetAspectRatio();
+            AspectRatio = ResolutionManager.GetAspectRatio();
 
             Components.Add(screenManager);
 
@@ -62,13 +62,13 @@ namespace Bearventure
 
             ResolutionManager.Initialize(ref graphics);
             
-            if (aspectRatio == aspectRatio169)
+            if (AspectRatio == aspectRatio169)
             {
                 ResolutionManager.SetVirtualResolution(Constants.ScreenMode.v720p);
                 ResolutionManager.SetResolution(Constants.ScreenMode.v720p, false); // Gets your system screen size etc...
             }
 
-            if (aspectRatio == aspectRatio1610)
+            if (AspectRatio == aspectRatio1610)
             {
                 ResolutionManager.SetVirtualResolution(Constants.ScreenMode.v360p);
                 ResolutionManager.SetResolution(Constants.ScreenMode.v240p, false); // Gets your system screen size etc...
