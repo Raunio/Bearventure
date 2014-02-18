@@ -11,6 +11,20 @@ namespace Bearventure
         public const String PauseExitPromptText = "Are you sure you want to end game?";
         public const String RestartPromptText = "Are you sure you want to restart?";
         #endregion
+        #region SkillDescriptionTexts
+        public const String MagmaHurlDesc = "You throw up some lava, no explanations needed";
+        public const String PalmStrikeDesc = "Perform a swift palmstrike, knocking your opponent backwards";
+        public const String TurtleDesc = "You start turtling like a little bitch, mitigating most incoming damage";
+        public const String ImmenseRageDesc = "You become an embodiment of your endless rage towards shitty music, gaining immense power. While enraged, you are unable to generate any further rage";
+        public const String JumpDesc = "Jump";
+        public const String StabDesc = "You stab yourself in an effort to build up your rage";
+        public const String MeditationDesc = "Meditating grants you increased life regeneration, but you feel like a dirty hippie afterwards";
+        public const String FerociousRoarDesc = "Start screaming like a maniac 'Unleash the cry of a true bear, and watch the world crumble before you'";
+        public const String SevenDragonsDesc = "Copypasta from code";
+        public const String CalmLionDesc = "Make your enemies bleed like the little bitches they are";
+        public const String WanderingSharkDesc = "Attuning to the power of a certain thunder god, you perform a wild streak of uppercuts with lightning speed";
+        public const String InfiniteStallionDesc = "Unleash the power of your immense hind legs, damaging all pussies nearby";
+        #endregion
         #region SoundEffects
         public const String MenuSelectedIndexChange = "SoundEffects/IndexChange";
         public const String MenuIndexSelected = "SoundEffects/IndexSelect";
