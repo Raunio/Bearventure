@@ -184,7 +184,7 @@ namespace Bearventure.Gameplay
         {
             get
             {
-                int x = (int)(Position.X - (CurrentAnimation.Origin.X * scale)) + BoundingBoxOffset;
+                int x = (int)(Position.X - (CurrentAnimation.Origin.X * scale)) + BoundingBoxOffset + BoundingBoxAnimationOffset;
                 int y = (int)(Position.Y - (CurrentAnimation.Origin.Y * scale)) + BoundingBoxOffset;
                 int width = (int)(BoundingBoxSize.X * scale) - BoundingBoxOffset * 2;
                 int height = (int)(BoundingBoxSize.Y * scale) - BoundingBoxOffset;

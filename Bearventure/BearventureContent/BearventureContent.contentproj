@@ -2072,6 +2072,31 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SoundEffects\batPunch.wav">
+      <Name>batPunch</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="SoundEffects\woosh2.wav">
+      <Name>woosh2</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Compile Include="SoundEffects\jab.wav">
+      <Name>jab</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
+    <Content Include="SoundEffects\punch.wav">
+      <Name>punch</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Content>
+    <Compile Include="SoundEffects\woosh.wav">
+      <Name>woosh</Name>
+      <Importer>WavImporter</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+    </Compile>
     <Compile Include="Sprites\karhusprite.png">
       <Name>karhusprite</Name>
       <Importer>TextureImporter</Importer>

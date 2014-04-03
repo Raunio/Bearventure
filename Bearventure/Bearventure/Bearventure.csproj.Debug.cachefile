@@ -327,6 +327,10 @@ Content\Levels\Testilevel2\Background\Platform\Testilevel2Platform_7.xnb
 Content\Levels\Testilevel2\Background\Platform\Testilevel2Platform_8.xnb
 Content\Levels\Testilevel2\Background\Platform\Testilevel2Platform_9.xnb
 Content\Sprites\karhusprite.xnb
+Content\SoundEffects\jab.xnb
+Content\SoundEffects\woosh.xnb
+Content\SoundEffects\batPunch.xnb
+Content\SoundEffects\woosh2.xnb
 Content\Music\Intro.wma
 Content\Music\Level1.wma
 Content\Music\Splash.wma

@@ -25,6 +25,10 @@ namespace Bearventure
         private SoundEffect badgerSpawn;
         private SoundEffect spawnerSound;
         private SoundEffect badgerDeath;
+        private SoundEffect woosh;
+        private SoundEffect punch;
+        private SoundEffect jab;
+        private SoundEffect woosh2;
 
         private Vector2 playerPosition;
 
@@ -122,6 +126,38 @@ namespace Bearventure
             }
         }
 
+        public SoundEffect Woosh
+        {
+            get
+            {
+                return woosh;
+            }
+        }
+
+        public SoundEffect Jab
+        {
+            get
+            {
+                return jab;
+            }
+        }
+
+        public SoundEffect Punch
+        {
+            get
+            {
+                return punch;
+            }
+        }
+
+        public SoundEffect Woosh2
+        {
+            get
+            {
+                return woosh2;
+            }
+        }
+
         private SoundEffectManager() { }
 
         public void Initialize() { }
@@ -155,6 +191,10 @@ namespace Bearventure
             badgerSpawn = content.Load<SoundEffect>(Constants.badgerSpawn);
             spawnerSound = content.Load<SoundEffect>(Constants.spawnerSound);
             badgerDeath = content.Load<SoundEffect>(Constants.badgerDeath);
+            jab = content.Load<SoundEffect>("SoundEffects/jab");
+            punch = content.Load<SoundEffect>("SoundEffects/batPunch");
+            woosh = content.Load<SoundEffect>("SoundEffects/woosh");
+            woosh2 = content.Load<SoundEffect>("SoundEffects/woosh2");
             Console.WriteLine("SoundEffects loaded.");
         }
 

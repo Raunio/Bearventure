@@ -296,14 +296,14 @@ namespace Bearventure.Gameplay.Characters
                 case Constants.EnemyType.BlackMetalBadger:
                     walkSpeed = 5f;
                     runSpeed = 7f;
-                    acceleration = 1f;
-                    decceleration = 1f;
+                    acceleration = 1.5f;
+                    decceleration = 2f;
                     jumpStrenght = 15;
                     Orientation = Constants.CharacterOrientation.Ground;
                     Vision = 600;
                     AttackRange = 120;
-                    health = 30;
-                    maxHealth = 30;
+                    health = 35;
+                    maxHealth = 35;
                     healthRegen = 2;
                     BoundingBoxOffset = 10;
                     ReactSpeed = 250f;
@@ -368,7 +368,7 @@ namespace Bearventure.Gameplay.Characters
                     testSkill.Acceleration = 0.25f;
                     testSkill.StartVelocity = new Vector2(25, 0);
                     testSkill.UltimateVelocityX = 0;
-                    testSkill.SkillSoundEffect = SoundEffectManager.Instance.BadgerSkill;
+                    testSkill.ActivationSoundEffect = SoundEffectManager.Instance.BadgerSkill;
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, Vision));
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, AttackRange * 2));
                     testSkill.Conditions.Add(new Condition(Constants.ConditionType.FacingPlayer, true));
@@ -383,14 +383,14 @@ namespace Bearventure.Gameplay.Characters
                     };
 
                     for(int i = 0; i < 4; i++)
-                        testSkill.HitBoxPositions[i] = new Vector2(45, -BoundingBox.Height / 2);
+                        testSkill.HitBoxPositions[i] = new Vector2(70, -BoundingBox.Height / 2);
                    
                     testSkill.HitBoxHeight = BoundingBox.Height;
                     testSkill.HitBoxWidth = 20;
                     testSkill.InflictForce = new Vector2(35, 0);
 
-                    CharacterAnimation attack_right = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 55, SpriteEffects.None, 0f, 0f, false, false);
-                    CharacterAnimation attack_left = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 55, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+                    CharacterAnimation attack_right = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 30, SpriteEffects.None, 0f, 0f, false, false);
+                    CharacterAnimation attack_left = new CharacterAnimation(spriteSheet, 1, 149, 105, 0, 5, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
 
                     attack_left.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Left);
                     attack_right.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
@@ -404,7 +404,7 @@ namespace Bearventure.Gameplay.Characters
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.FacingPlayer, true));
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.OnGround, true));
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.IsNotUsingSkill, testSkill));
-                    Attack.SkillSoundEffect = SoundEffectManager.Instance.BadgerAttack;
+                    Attack.ActivationSoundEffect = SoundEffectManager.Instance.BadgerAttack;
                     Attack.DamagingFrames = new List<int>
                     {
                         2,
@@ -417,7 +417,7 @@ namespace Bearventure.Gameplay.Characters
                     Attack.HitBoxHeight = 25;
                     Attack.HitBoxWidth = 25;
 
-                    Attack.InflictForce = new Vector2(15, 0);
+                    Attack.InflictForce = new Vector2(10, 0);
                     Attack.ForceInterruptTreshold = 5;
 
                     Skills = new List<EnemySkill>();
@@ -471,7 +471,7 @@ namespace Bearventure.Gameplay.Characters
                     pounce.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, Vision));
                     pounce.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerGreaterThan, Vision / 3));
 
-                    pounce.SkillSoundEffect = SoundEffectManager.Instance.MatoTest;
+                    pounce.ActivationSoundEffect = SoundEffectManager.Instance.MatoTest;
 
                     pounce.StartVelocity = new Vector2(jumpStrenght, -jumpStrenght);
                     pounce.UltimateVelocityX = 0;

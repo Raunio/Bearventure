@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Bearventure.Engine.Audio;
 
 namespace Bearventure.Gameplay.Characters.Skills
 {
@@ -49,6 +51,18 @@ namespace Bearventure.Gameplay.Characters.Skills
             private set;
         }
 
+        public SoundEffect ActivationSound
+        {
+            get;
+            set;
+        }
+
+        public SoundEffectRandomizer SoundEffectRand
+        {
+            get;
+            set;
+        }
+
         private int skillCounter = 0;
         private float resetTimer;
 
@@ -63,6 +77,16 @@ namespace Bearventure.Gameplay.Characters.Skills
 
             if (!ActiveSkill.IsActive)
             {
+                if(ActivationSound != null)
+                    SoundEffectManager.Instance.PlaySound(ActivationSound);
+                if (SoundEffectRand != null)
+                {
+                    SoundEffect s = SoundEffectRand.GetRandomSound(true);
+
+                    if (s != null)
+                        SoundEffectManager.Instance.PlaySound(s);
+                }
+
                 ActiveSkill = SkillArray[skillCounter];
                 skillCounter++;
 

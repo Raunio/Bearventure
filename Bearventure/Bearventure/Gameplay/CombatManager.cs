@@ -62,7 +62,7 @@ namespace Bearventure.Gameplay
                         InflictDebuffs(enemies[i], player.ActiveSkill, player.directionX);
 
                         PlayHitEffects(new Vector2(player.ActiveSkill.HitBox.X + player.ActiveSkill.HitBox.Width / 2,
-                                player.ActiveSkill.HitBox.Y + player.ActiveSkill.HitBox.Height / 2), player.ActiveSkill.DamageType, enemies[i].ArmorType);               
+                                player.ActiveSkill.HitBox.Y + player.ActiveSkill.HitBox.Height / 2), player.ActiveSkill);               
 
 
                         if(enemies[i].health <= 0)
@@ -79,7 +79,7 @@ namespace Bearventure.Gameplay
                         InflictDebuffs(player, enemies[i].ActiveSkill, enemies[i].directionX);
 
                         PlayHitEffects(new Vector2(enemies[i].ActiveSkill.HitBox.X + enemies[i].ActiveSkill.HitBox.Width / 2,
-                                enemies[i].ActiveSkill.HitBox.Y + enemies[i].ActiveSkill.HitBox.Height / 2), enemies[i].ActiveSkill.DamageType, player.ArmorType); 
+                                enemies[i].ActiveSkill.HitBox.Y + enemies[i].ActiveSkill.HitBox.Height / 2), enemies[i].ActiveSkill); 
                     }
                 }
 
@@ -93,29 +93,22 @@ namespace Bearventure.Gameplay
                     InflictDebuffs(player, player.ActiveSkill, player.directionX);
 
                     PlayHitEffects(new Vector2(player.ActiveSkill.HitBox.X + player.ActiveSkill.HitBox.Width / 2,
-                            player.ActiveSkill.HitBox.Y + player.ActiveSkill.HitBox.Height / 2), player.ActiveSkill.DamageType, player.ArmorType);
+                            player.ActiveSkill.HitBox.Y + player.ActiveSkill.HitBox.Height / 2), player.ActiveSkill);
                 }
         }
 
-        private void PlayHitEffects(Vector2 position, Constants.DamageType damageType, Constants.ArmorType armorType)
+        private void PlayHitEffects(Vector2 position, CharacterSkill skill)
         {
             VisualEffectManager.Instance.CreateEffect("VisualEffects/hitTest", position, 100);
 
             if (Globals.GoreEnabled)
             {
-                if (armorType == Constants.ArmorType.Fur || armorType == Constants.ArmorType.Feathers || armorType == Constants.ArmorType.Skin)
-                {
-                    VisualEffectManager.Instance.CreateEffect("VisualEffects/blood2", position, 200);
-                    SoundEffectManager.Instance.PlaySound(Constants.Splat);
-                }
+                VisualEffectManager.Instance.CreateEffect("VisualEffects/blood2", position, 200);
             }
 
-            if (damageType == Constants.DamageType.Crushing)
+            if (skill.HitSoundEffect != null)
             {
-                if (armorType == Constants.ArmorType.Fur)
-                {
-                    SoundEffectManager.Instance.PlaySound(Constants.Crush);
-                }
+                SoundEffectManager.Instance.PlaySoundFromPosition(position, skill.HitSoundEffect);
             }
         }
 
@@ -194,12 +187,12 @@ namespace Bearventure.Gameplay
 
                 subject.ChangeVelocity(force.X, force.Y, "Character Skill Force");
 
-                if(CollisionHandler.CollisionOccursWithMap(subject, force) != subject.BoundingBox.Top)
-                    subject.AdjustPosition(new Vector2(0, force.Y));
+                //if(CollisionHandler.CollisionOccursWithMap(subject, force) != subject.BoundingBox.Top)
+                    //subject.AdjustPosition(new Vector2(0, force.Y));
 
                 if (skill.InflictForce.Length() >= subject.KnockBackTreshold)
                 {
-                    subject.state = Constants.CharacterState.Knocked;
+                    //subject.state = Constants.CharacterState.Knocked;
                 }
 
                 if (subject.ActiveSkill != null && force.Length() > subject.ActiveSkill.ForceInterruptTreshold && subject.ActiveSkill.ForceInterruptTreshold != 0)

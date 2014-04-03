@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
+using Bearventure.Engine.Audio;
 
 namespace Bearventure.Gameplay.Characters.Skills
 {
@@ -147,7 +148,7 @@ namespace Bearventure.Gameplay.Characters.Skills
         /// <summary>
         /// Do not initialize if no sound effect should be played upon activation of this skill.
         /// </summary>
-        public SoundEffect SkillSoundEffect
+        public SoundEffect ActivationSoundEffect
         {
             get;
             set;
@@ -288,6 +289,22 @@ namespace Bearventure.Gameplay.Characters.Skills
         /// Gets and sets the treshold for the needed force to interrupt this skill.
         /// </summary>
         public int ForceInterruptTreshold
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Sets up a sound effect randomizer for random activation sound effects.
+        /// </summary>
+        public SoundEffectRandomizer ActivationSoundEffectRand
+        {
+            get;
+            set;
+        }
+        /// <summary>
+        /// Sound effect that is played when the skill "hits" succesfully
+        /// </summary>
+        public SoundEffect HitSoundEffect
         {
             get;
             set;
@@ -487,18 +504,14 @@ namespace Bearventure.Gameplay.Characters.Skills
                 leftAnimation.Reset();
 
             if (subject.directionX == Constants.DirectionX.Left)
-            {
+            {  
                 if (subject.velocity.X >= -subject.walkSpeed)
                     subject.velocity.X -= StartVelocity.X;
-                else
-                    subject.velocity.X = -StartVelocity.X;
             }
             else if(subject.directionX == Constants.DirectionX.Right)
             {
                 if (subject.velocity.X <= subject.walkSpeed)
                     subject.velocity.X += StartVelocity.X;
-                else
-                    subject.velocity.X = StartVelocity.X;
             }
 
             subject.velocity.Y += StartVelocity.Y;
@@ -522,9 +535,16 @@ namespace Bearventure.Gameplay.Characters.Skills
 
             subject.SpriteRotation = subject.directionX == Constants.DirectionX.Left ? -StartRotation : StartRotation;
 
-            if (SkillSoundEffect != null)
+            if (ActivationSoundEffect != null)
             {
-                SoundEffectManager.Instance.PlaySoundFromPosition(subject.Position, SkillSoundEffect);
+                SoundEffectManager.Instance.PlaySoundFromPosition(subject.Position, ActivationSoundEffect);
+            }
+
+            if (ActivationSoundEffectRand != null)
+            {
+                SoundEffect s = ActivationSoundEffectRand.GetRandomSound(true);
+                if (s != null)
+                    SoundEffectManager.Instance.PlaySoundFromPosition(subject.Position, s);
             }
         }
 

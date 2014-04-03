@@ -125,7 +125,8 @@ namespace Bearventure
             blockCheckTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             actionManager.Plan(gameTime);
-
+            if (subject.ActiveSkill != null)
+                return;
             switch (actionManager.CurrentAction())
             {
                 case Constants.ActionType.Default:
