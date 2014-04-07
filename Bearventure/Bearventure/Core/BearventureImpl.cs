@@ -78,7 +78,7 @@ namespace Bearventure
 
             Globals.SoundsEnabled = false;
 
-            Globals.GoreEnabled = true;
+            Globals.GoreEnabled = false;
             Globals.DisplayHealthBars = true;
 
 #if WINDOWS_PHONE

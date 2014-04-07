@@ -126,6 +126,11 @@ namespace Bearventure.Gameplay.Characters
             private set;
             get;
         }
+        public CharacterAnimation Damaged
+        {
+            private set;
+            get;
+        }
         /// <summary>
         /// Must not be a looping animation.
         /// </summary>
@@ -179,6 +184,8 @@ namespace Bearventure.Gameplay.Characters
                     Dying.CustomFrameRowPosition = 208;
                     KnockBack = new CharacterAnimation(spriteSheet, 2, 114, 121, 0, 1, 80, SpriteEffects.None, 0f, 0f, false, false);
                     KnockBack.CustomFrameRowPosition = 208;
+                    Damaged = new CharacterAnimation(spriteSheet, 4, 91, 102, 0, 0, 110, SpriteEffects.None, 0f, 0f, false, false);
+                    Damaged.CustomFrameRowPosition = 434;
                     SpawnAnimation = new CharacterAnimation(spriteSheet, 3, 154, 107, 0, 3, 50, SpriteEffects.None, 0f, 0f, false, false);
                     SpawnAnimation.CustomFrameRowPosition = 327;
                     SpawnAnimation.ReverseAtEnd = true;
@@ -420,6 +427,8 @@ namespace Bearventure.Gameplay.Characters
                     Attack.InflictForce = new Vector2(10, 0);
                     Attack.ForceInterruptTreshold = 5;
 
+                    Attack.HitSoundEffect = SoundEffectManager.Instance.Crush;
+
                     Skills = new List<EnemySkill>();
                     Skills.Add(testSkill);
                     Skills.Add(Attack);
@@ -580,37 +589,42 @@ namespace Bearventure.Gameplay.Characters
         /// <param name="gameTime"></param>
         private void HandleAnimations(GameTime gameTime)
         {
-            switch (state)
+            if (CurrentCharacterAnimation == Damaged && !CurrentCharacterAnimation.HasFinished)
             {
-                case Constants.CharacterState.Walking:
-                    if (directionX == Constants.DirectionX.Left) { ChangeAnimation(WalkLeft); }
-                    else { ChangeAnimation(WalkRight); }
-                    break;
 
-                case Constants.CharacterState.Running:
-                    if (directionX == Constants.DirectionX.Left) { ChangeAnimation(RunLeft); }
-                    else { ChangeAnimation(RunRight); }
-                    break;
-
-                case Constants.CharacterState.Stopped:
-                    ChangeAnimation(Stopped);
-                    break;
-
-                case Constants.CharacterState.Jumping:
-                    ChangeAnimation(Jumping);
-                    break;
-                case Constants.CharacterState.Knocked:
-                    if (directionX == Constants.DirectionX.Right)
-                        KnockBack.Effects = SpriteEffects.None;
-                    else
-                        KnockBack.Effects = SpriteEffects.FlipHorizontally;
-                    
-                    ChangeAnimation(KnockBack);
-                    break;
-                case Constants.CharacterState.Spawning:
-                    ChangeAnimation(SpawnAnimation);
-                    break;
             }
+            else
+                switch (state)
+                {
+                    case Constants.CharacterState.Walking:
+                        if (directionX == Constants.DirectionX.Left) { ChangeAnimation(WalkLeft); }
+                        else { ChangeAnimation(WalkRight); }
+                        break;
+
+                    case Constants.CharacterState.Running:
+                        if (directionX == Constants.DirectionX.Left) { ChangeAnimation(RunLeft); }
+                        else { ChangeAnimation(RunRight); }
+                        break;
+
+                    case Constants.CharacterState.Stopped:
+                        ChangeAnimation(Stopped);
+                        break;
+
+                    case Constants.CharacterState.Jumping:
+                        ChangeAnimation(Jumping);
+                        break;
+                    case Constants.CharacterState.Knocked:
+                        if (directionX == Constants.DirectionX.Right)
+                            KnockBack.Effects = SpriteEffects.None;
+                        else
+                            KnockBack.Effects = SpriteEffects.FlipHorizontally;
+                    
+                        ChangeAnimation(KnockBack);
+                        break;
+                    case Constants.CharacterState.Spawning:
+                        ChangeAnimation(SpawnAnimation);
+                        break;
+                }
 
             CurrentAnimation.Animate(gameTime);
             BoundingBoxAnimationOffset = CurrentCharacterAnimation.BoundingBoxOffset;
@@ -667,6 +681,28 @@ namespace Bearventure.Gameplay.Characters
                         }
                     }
                     break;
+            }
+        }
+
+        /// <summary>
+        /// Apply damage to character.
+        /// </summary>
+        /// <param name="damage"></param>
+        public override void TakeDamage(float damage)
+        {
+            if (damageTimer > 300)
+            {
+                health -= (int)damage;
+                damageTimer = 0;
+
+                CombatManager.Instance.CombatLog.Add(this.Name + " took " + damage + " damage.");
+
+                if (directionX == Constants.DirectionX.Left)
+                    Damaged.Effects = SpriteEffects.FlipHorizontally;
+                else
+                    Damaged.Effects = SpriteEffects.None;
+
+                ChangeAnimation(Damaged);
             }
         }
 

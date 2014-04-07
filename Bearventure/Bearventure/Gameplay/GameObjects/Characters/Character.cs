@@ -59,7 +59,7 @@ namespace Bearventure.Gameplay.Characters
         /// </summary>
         public int healthRegen;
         private float regenTimer;
-        private float damageTimer;
+        protected float damageTimer;
 
         public int CurrentSkillResource
         {
@@ -152,7 +152,7 @@ namespace Bearventure.Gameplay.Characters
         /// Apply damage to character.
         /// </summary>
         /// <param name="damage"></param>
-        public void TakeDamage(float damage)
+        public virtual void TakeDamage(float damage)
         {
             if (damageTimer > 300)
             {

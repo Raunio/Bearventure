@@ -318,10 +318,22 @@ namespace Bearventure
 
             else if (collision == Right && CollisionHandler.TerrainType == Constants.Solid)
             {
+                if (CollisionHandler.HeightDifference < subject.BoundingBox.Height / 5)
+                {
+                    subject.AdjustPosition(new Vector2(0, -CollisionHandler.HeightDifference));
+                    return;
+                }
+
                 subject.ChangeVelocity(0, subject.velocity.Y);
             }
             else if (collision == Left && CollisionHandler.TerrainType == Constants.Solid)
             {
+                if (CollisionHandler.HeightDifference < subject.BoundingBox.Height / 5)
+                {
+                    subject.AdjustPosition(new Vector2(0, -CollisionHandler.HeightDifference));
+                    return;
+                }
+
                 subject.ChangeVelocity(0, subject.velocity.Y);
             }
 

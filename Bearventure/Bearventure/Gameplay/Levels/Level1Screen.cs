@@ -175,7 +175,7 @@ namespace Bearventure
                 spawners = new List<GameObjectSpawner>();
 
 
-                GameObjectSpawner badgerSpawner = new GameObjectSpawner(null, new Vector2(3630, 3340), enemies, 3000f, _player, content);
+                GameObjectSpawner badgerSpawner = new GameObjectSpawner(null, new Vector2(3730, 3340), enemies, 3000f, _player, content);
                 badgerSpawner.AddEffect(new VisualEffect("VisualEffects/spawnTest"));
                 badgerSpawner.AddSoundEffect(SoundEffectManager.Instance.SpawnerSound);
                 badgerSpawner.SetActivation(Constants.SpawnerActivationType.Proximity);

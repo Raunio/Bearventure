@@ -31,6 +31,8 @@ namespace Bearventure.Gameplay.HUD
         private StatusBar playerHealthBar;
         private StatusBar playerRageBar;
 
+        private SkillBar skillBar;
+
         public void Initialize(ContentManager content, GraphicsDeviceManager graphics, List<Enemy> enemies, Player player)
         {
             this.content = content;
@@ -58,6 +60,8 @@ namespace Bearventure.Gameplay.HUD
             playerRageBar.EdgeThickness = 1;
             playerRageBar.ShowText = true;
             playerRageBar.TextColor = Color.Black;
+
+            skillBar = new SkillBar(player);
         }
 
         public void Update(GameTime gameTime)
@@ -72,6 +76,8 @@ namespace Bearventure.Gameplay.HUD
 
             playerHealthBar.Update(gameTime, new Vector2(resolution.X *0.1f , resolution.Y *0.96f), 0, player.maxHealth, player.health);
             playerRageBar.Update(gameTime, new Vector2(resolution.X * 0.9f, resolution.Y * 0.96f), 0, player.MaxSkillResource, player.CurrentSkillResource);
+
+            skillBar.Update(gameTime, new Vector2(resolution.X * 0.5f - skillBar.BarWidth / 2, resolution.Y * 0.9f));
         }
 
 
@@ -84,6 +90,7 @@ namespace Bearventure.Gameplay.HUD
             DrawDebugInfo(spriteBatch);
             playerHealthBar.Draw(spriteBatch);
             playerRageBar.Draw(spriteBatch);
+            skillBar.Draw(spriteBatch);
         }
 
 

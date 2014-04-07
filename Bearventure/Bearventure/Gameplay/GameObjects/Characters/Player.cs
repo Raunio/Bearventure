@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Bearventure.Gameplay.GameObjects;
 using Microsoft.Xna.Framework;
 using Bearventure.Engine.Audio;
+using Bearventure.Gameplay.GameObjects.Characters.Skills;
 
 namespace Bearventure.Gameplay.Characters
 {
@@ -22,11 +23,6 @@ namespace Bearventure.Gameplay.Characters
         CharacterAnimation climbingStopped;
         CharacterAnimation runRight;
         CharacterAnimation runLeft;
-
-        Texture2D comboSheet;
-        Texture2D jumpSheet;
-        Texture2D climbSheet;
-        Texture2D puukkoSheet;
 
         #region InputActions
 
@@ -46,19 +42,33 @@ namespace Bearventure.Gameplay.Characters
         float jumpTimer = 0;
         float jumpFrequency = 150;
 
-        CharacterSkillCombo combo1 = new CharacterSkillCombo();
-        CharacterSkill puukotus;
+        private CharacterSkillCombo activeCombo = new CharacterSkillCombo();
+        private CharacterSkill[] usableSkills;
+
+        public CharacterSkillCombo ActiveCombo
+        {
+            get
+            {
+                return activeCombo;
+            }
+        }
+
+        public CharacterSkill[] UsableSkills
+        {
+            get
+            {
+                return usableSkills;
+            }
+        }
 
         public Player(ContentManager content)
         {
             TAG = "Player";
             Name = "You";
             scale = 1f;
-            this.spriteSheet = content.Load<Texture2D>("Sprites/karhusprite");
-            comboSheet = content.Load<Texture2D>("Sprites/karhusprite");
-            jumpSheet = content.Load<Texture2D>("Sprites/hyppyfix");
-            climbSheet = content.Load<Texture2D>("Sprites/karhuclimb2");
-            puukkoSheet = content.Load<Texture2D>("Sprites/puukkorage");
+
+            spriteSheet = content.Load<Texture2D>(Constants.PlayerSpriteSheet);
+
             IsActive = true;
 
             this.position = Position;
@@ -77,9 +87,15 @@ namespace Bearventure.Gameplay.Characters
             InitControls(); 
             InitAnimations();
             InitStats();
-            InitSkills();
+            
 
             BoundingBoxSize = new Point(stoppedRight.FrameWidth - 15, stoppedLeft.FrameHeight);
+
+            usableSkills = new CharacterSkill[3];
+
+            PlayerSkills.InitSelectedSkills(content, this);
+
+            InitSkills();
         }
 
         #region ControlInitialization
@@ -105,7 +121,7 @@ namespace Bearventure.Gameplay.Characters
         false);
             playerAttack = new InputAction(
         new Buttons[] { Buttons.B },
-        new Keys[] { Keys.Q },
+        new Keys[] { Keys.Q, Keys.LeftControl },
         true);
             moveDown = new InputAction(
         new Buttons[] { Buttons.DPadDown, Buttons.LeftThumbstickDown },
@@ -117,7 +133,7 @@ namespace Bearventure.Gameplay.Characters
         false);
             stab = new InputAction(
          new Buttons[] { Buttons.LeftShoulder },
-         new Keys[] { Keys.W },
+         new Keys[] { Keys.P },
          true);
             #endregion
 
@@ -160,258 +176,21 @@ namespace Bearventure.Gameplay.Characters
             runLeft = new CharacterAnimation(spriteSheet, 1, 134, 190, 0, 5, 65, SpriteEffects.FlipHorizontally, 0f, 0f, false, true);
             runLeft.SetFixedBoundingBoxOffset(3);
 
-            jumpingRight = new CharacterAnimation(spriteSheet, 1, 134, 190, 3, 3, 40, SpriteEffects.None, 0f, 0f, false, false);
+            jumpingRight = new CharacterAnimation(spriteSheet, 5, 167, 190, 0, 2, 40, SpriteEffects.None, 0f, 0f, false, false);
             jumpingRight.SetFixedBoundingBoxOffset(10);
-            jumpingLeft = new CharacterAnimation(spriteSheet, 1, 134, 190, 3, 3, 40, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+            jumpingLeft = new CharacterAnimation(spriteSheet, 5, 167, 190, 0, 2, 40, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
             jumpingLeft.SetFixedBoundingBoxOffset(20);
 
-            climbing = new CharacterAnimation(climbSheet, 0, 90, 134, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, true);
-            climbingStopped = new CharacterAnimation(climbSheet, 0, 90, 134, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, false);
+            climbing = new CharacterAnimation(spriteSheet, 0, 90, 134, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, true);
+            climbingStopped = new CharacterAnimation(spriteSheet, 0, 90, 134, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, false);
 
             ChangeAnimation(stoppedRight);
         }
 
         private void InitSkills()
         {
-            #region Combo1 Initialization
-            #region ComboSkill 1 Initialization
-
-            CharacterAnimation StraightPunch_R = new CharacterAnimation(comboSheet, 2, 200, 190, 0, 3, 37, SpriteEffects.None, 0f, 0f, false, false);
-            StraightPunch_R.FreezeFrames = new Animation.FrameFreezer
-            {
-                Frames = new List<int>
-                {
-                    0,
-                    2,
-                },
-
-                Amount = 95,
-            };
-
-            StraightPunch_R.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
-
-            CharacterAnimation StraightPunch_L = new CharacterAnimation(comboSheet, 2, 200, 190, 0, 3, 37, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
-            StraightPunch_L.FreezeFrames = new Animation.FrameFreezer
-            {
-                Frames = new List<int>
-                {
-                    0,
-                    2,
-                },
-
-                Amount = 95,
-            };
-
-            StraightPunch_L.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Left);
-
-            CharacterSkill skill1 = new CharacterSkill(this, StraightPunch_R, StraightPunch_L, 300, 3, Constants.DamageType.Crushing);
-            skill1.HitSoundEffect = SoundEffectManager.Instance.Punch;
-
-            skill1.ActivationSoundEffect = SoundEffectManager.Instance.Woosh;
-            skill1.Acceleration = 0.25f;
-            //skill1.StartVelocity = new Vector2(4, 0);
-            skill1.UltimateVelocityX = 0;
-            skill1.InflictForce = new Vector2(10, -5);
-            skill1.DamagingFrames = new List<int>
-            {
-                2,
-            };
-            skill1.HitBoxPositions[0] = new Vector2(63, -27);
-            skill1.HitBoxHeight = 30;
-            skill1.HitBoxWidth = 30;
-
-            #endregion
-            #region ComboSkill 2 Initialization
-            CharacterAnimation SweepingPunch_R = new CharacterAnimation(comboSheet, 3, 200, 190, 0, 3, 22, SpriteEffects.None, 0f, 0f, false, false);
-            SweepingPunch_R.FreezeFrames = new Animation.FrameFreezer
-            {
-                Frames = new List<int>
-                {
-                    0,
-                    2,
-                },
-
-                Amount = 95,
-            };
-
-            SweepingPunch_R.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
-
-            CharacterAnimation SweepingPunch_L = new CharacterAnimation(comboSheet, 3, 200, 190, 0, 3, 22, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
-            SweepingPunch_L.FreezeFrames = new Animation.FrameFreezer
-            {
-                Frames = new List<int>
-                {
-                    0,
-                    2,
-                },
-
-                Amount = 95,
-            };
-
-            SweepingPunch_L.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Left);
-
-            CharacterSkill skill2 = new CharacterSkill(this, SweepingPunch_R, SweepingPunch_L, 300, 4, Constants.DamageType.Crushing);
-
-            skill2.ActivationSoundEffect = SoundEffectManager.Instance.Woosh;
-            skill2.HitSoundEffect = SoundEffectManager.Instance.Punch;
-            skill2.Acceleration = 0.25f;
-            //skill2.StartVelocity = new Vector2(3, 0);
-            skill2.InflictForce = new Vector2(10, -5);
-            skill2.UltimateVelocityX = 0;
-            skill2.DamagingFrames = new List<int>
-            {
-                2,
-            };
-            skill2.HitBoxPositions[0] = new Vector2(65, -38);
-            skill2.HitBoxHeight = 25;
-            skill2.HitBoxWidth = 25;
-
-            #endregion
-            #region ComboSkill 3 Initialization
-
-            CharacterAnimation UpperCut_R = new CharacterAnimation(comboSheet, 4, 200, 190, 0, 6, 30, SpriteEffects.None, 0f, 0f, false, false);
-            UpperCut_R.FreezeFrames = new Animation.FrameFreezer
-            {
-                Frames = new List<int>
-                {
-                    1,
-                    5,
-                },
-
-                Amount = 125,
-            };
-
-            UpperCut_R.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
-
-            CharacterAnimation UpperCut_L = new CharacterAnimation(comboSheet, 4, 200, 190, 0, 6, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
-
-            UpperCut_L.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Left);
-
-            UpperCut_L.FreezeFrames = new Animation.FrameFreezer
-            {
-                Frames = new List<int>
-                {
-                    1,
-                    5,
-                },
-
-                Amount = 125,
-            };
-
-            CharacterSkill skill3 = new CharacterSkill(this, UpperCut_R, UpperCut_L, 300, 10, Constants.DamageType.Crushing);
-
-            skill3.ActivationSoundEffect = SoundEffectManager.Instance.Woosh2;
-            skill3.HitSoundEffect = SoundEffectManager.Instance.Jab;
-            skill3.Acceleration = 0.25f;
-            //skill3.StartVelocity = new Vector2(8, 0);
-            skill3.UltimateVelocityX = 0;
-
-            skill3.InflictForce = new Vector2(40, -15);
-
-            skill3.DamagingFrames = new List<int>
-            {
-                4,
-                5,
-            };
-            skill3.HitBoxPositions[0] = new Vector2(63, -27);
-            skill3.HitBoxPositions[1] = new Vector2(63, -38);
-            skill3.HitBoxHeight = 25;
-            skill3.HitBoxWidth = 25;
-
-            #endregion
-
-            combo1.SkillArray = new List<CharacterSkill>
-            {
-                skill1,
-                skill2,
-                skill3,
-            };
-
-            combo1.ResetTime = 1500;
-
-            combo1.Name = "Flying Diarrhea Drops";
-            combo1.Description = "A basic 3-strike combo with the final strike causing a medium force knockback";
-
-            //combo1.SoundEffectRand = new SoundEffectRandomizer();
-            //combo1.SoundEffectRand.AddSound(SoundEffectManager.Instance.KarhuCombo1);
-            //combo1.SoundEffectRand.AddSound(SoundEffectManager.Instance.KarhuCombo2);
-            //combo1.SoundEffectRand.AddSound(SoundEffectManager.Instance.KarhuCombo3);
-
-            #endregion
-
-            #region Puukko initialization
-
-            CharacterAnimation puukko_R = new CharacterAnimation(puukkoSheet, 0, 156, 121, 0, 7, 25, SpriteEffects.None, 0f, 0f, false, false);
-            puukko_R.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Right);
-            puukko_R.SetAnatomicInfo(Constants.KarhuPuukkoAnatomy, SpriteEffects.None);
-
-            CharacterAnimation puukko_L = new CharacterAnimation(puukkoSheet, 0, 156, 121, 0, 7, 25, SpriteEffects.None, 0f, 0f, false, false);
-            puukko_L.CalculateBoundingBoxOffsets(BoundingBoxSize, Constants.DirectionX.Left);
-            puukko_L.SetAnatomicInfo(Constants.KarhuPuukkoAnatomy, SpriteEffects.FlipHorizontally);
-
-            puukko_L.Effects = SpriteEffects.FlipHorizontally;
-
-            puukko_L.LoopFrames = new Animation.FrameLooper
-            {
-                startFrame = 4,
-                endFrame = 7,
-                loopAmount = 4,
-            };
-
-            puukko_R.LoopFrames = new Animation.FrameLooper
-            {
-                startFrame = 4,
-                endFrame = 7,
-                loopAmount = 4,
-            };
-
-            puukko_L.FreezeFrames = new Animation.FrameFreezer()
-            {
-                Frames = new List<int>()
-                {
-                    2,
-                    3,
-                },
-
-                Amount = 120,
-            };
-
-            puukko_R.FreezeFrames = new Animation.FrameFreezer()
-            {
-                Frames = new List<int>()
-                {
-                    2,
-                    3,
-                },
-
-                Amount = 120,
-            };
-
-            puukko_R.ReverseAtEnd = true;
-            puukko_L.ReverseAtEnd = true;
-
-            puukotus = new CharacterSkill(this, puukko_R, puukko_L, 1000, 5, Constants.DamageType.Piercing);
-            puukotus.StartVelocity = new Vector2(0, 0);
-            puukotus.DamagingFrames = new List<int>()
-            {
-                4,
-            };
-            puukotus.HitBoxPositions[0] = new Vector2(17, -37);
-            
-            //puukotus.AddEffect("VisualEffects/blood2", new Vector2(17, -37), 4);
-            puukotus.AddEffect("VisualEffects/blood2", Constants.CharacterBodyPart.LeftEye, 4);
-            puukotus.VisualEffectLifetime = 150;
-
-            puukotus.ActivationSoundEffect = SoundEffectManager.Instance.Puukotus;
-
-            puukotus.TargetingType = Constants.SkillTarget.Self;
-
-            puukotus.UltimateVelocityX = 0f;
-            puukotus.Acceleration = 1f;
-            puukotus.Cost = -25;
-            
-
-            #endregion
+            activeCombo = PlayerSkills.SevenDragons;
+            usableSkills[0] = PlayerSkills.TestSkill;
         }
         public override void HandleInput(GameTime gameTime, InputState input)
         {
@@ -499,12 +278,12 @@ namespace Bearventure.Gameplay.Characters
                 }
                 if (playerAttack.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
-                    combo1.SetNextSkill();
-                    UseSkill(combo1.ActiveSkill);
+                    activeCombo.SetNextSkill();
+                    UseSkill(activeCombo.ActiveSkill);
                 }
                 else if (stab.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
-                    UseSkill(puukotus);
+                    //UseSkill(puukotus);
                 }
             }
             else
@@ -528,9 +307,13 @@ namespace Bearventure.Gameplay.Characters
 
             PlayStepSoundEffects();
 
-            combo1.Update(gameTime);
+            activeCombo.Update(gameTime);
 
-            puukotus.Update(gameTime);
+            for (int i = 0; i < usableSkills.Length; i++)
+            {
+                if(usableSkills[i] != null)
+                    usableSkills[i].Update(gameTime);
+            }
 
             RegenerateHealth(gameTime);
 

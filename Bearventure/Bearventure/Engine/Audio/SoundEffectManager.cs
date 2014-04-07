@@ -29,6 +29,8 @@ namespace Bearventure
         private SoundEffect punch;
         private SoundEffect jab;
         private SoundEffect woosh2;
+        private SoundEffect scratch;
+        private SoundEffect crush;
 
         private Vector2 playerPosition;
 
@@ -158,6 +160,22 @@ namespace Bearventure
             }
         }
 
+        public SoundEffect Scratch
+        {
+            get
+            {
+                return scratch;
+            }
+        }
+
+        public SoundEffect Crush
+        {
+            get
+            {
+                return crush;
+            }
+        }
+
         private SoundEffectManager() { }
 
         public void Initialize() { }
@@ -195,6 +213,8 @@ namespace Bearventure
             punch = content.Load<SoundEffect>("SoundEffects/batPunch");
             woosh = content.Load<SoundEffect>("SoundEffects/woosh");
             woosh2 = content.Load<SoundEffect>("SoundEffects/woosh2");
+            scratch = content.Load<SoundEffect>("SoundEffects/scratch1");
+            crush = content.Load<SoundEffect>("SoundEffects/crush1");
             Console.WriteLine("SoundEffects loaded.");
         }
 

@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Bearventure.Engine.Audio;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Bearventure.Gameplay.Characters.Skills
 {
@@ -58,6 +59,12 @@ namespace Bearventure.Gameplay.Characters.Skills
         }
 
         public SoundEffectRandomizer SoundEffectRand
+        {
+            get;
+            set;
+        }
+
+        public Texture2D Icon
         {
             get;
             set;

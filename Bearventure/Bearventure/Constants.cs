@@ -76,6 +76,7 @@ namespace Bearventure
         public const String BlackMetalBadger = "Sprites/badgerspritesheet";
         public const String DelayOwl = "Sprites/paskapollofix";
         public const String OscillatorWorm = "Sprites/mato";
+        public const String PlayerSpriteSheet = "Sprites/karhusprite";
 
         #endregion
 
