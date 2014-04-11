@@ -492,6 +492,9 @@ namespace Bearventure.Gameplay.Characters.Skills
         /// </summary>
         public void Activate()
         {
+            if (!IsReady)
+                return;
+
             cdTimer = 0;
             IsReady = false;
             IsActive = true;

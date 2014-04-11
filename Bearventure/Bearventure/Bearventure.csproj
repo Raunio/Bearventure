@@ -124,6 +124,7 @@
     <Compile Include="Engine\Effects\VisualEffect.cs" />
     <Compile Include="Engine\Effects\VisualEffectManager.cs" />
     <Compile Include="Engine\Globals.cs" />
+    <Compile Include="Engine\InputHandler.cs" />
     <Compile Include="Engine\ResolutionManager.cs" />
     <Compile Include="Engine\CollisionDetection\CollisionMap.cs" />
     <Compile Include="Engine\CollisionDetection\CollisionMapTextureFraction.cs" />

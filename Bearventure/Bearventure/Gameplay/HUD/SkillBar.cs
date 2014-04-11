@@ -53,8 +53,10 @@ namespace Bearventure.Gameplay.HUD
 
             for (int i = 0; i < skillSlots.Length; i++)
             {
-                if(skillSlots[i] != null)
+                if (skillSlots[i] != null)
+                {
                     skillSlots[i].Update(gameTime);
+                }
             }
         }
 

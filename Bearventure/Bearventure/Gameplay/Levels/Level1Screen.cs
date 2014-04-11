@@ -57,6 +57,8 @@ namespace Bearventure
 
         List<GameObjectSpawner> spawners;
 
+        InputHandler inputHandler;
+
         float pauseAlpha;
 
         InputAction pauseAction;
@@ -103,8 +105,9 @@ namespace Bearventure
                 
                 _player = new Player(content);
                 XmlReader.Initialize(content, _player);
-                
-                
+
+                inputHandler = new InputHandler();
+                inputHandler.InitControls();
 
                 #region Layered Background TESTING
 
@@ -385,12 +388,14 @@ namespace Bearventure
             if (input == null)
                 throw new ArgumentNullException("input");
 
+            
+
             // Look up inputs for the active player profile.
             int playerIndex = (int)ControllingPlayer.Value;
 
             KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
             GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
-            _player.HandleInput(gameTime, input);
+            inputHandler.HandleInput(input, _player);
             
 
             // The game pauses either if the user presses the pause button, or if

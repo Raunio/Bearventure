@@ -24,21 +24,6 @@ namespace Bearventure.Gameplay.Characters
         CharacterAnimation runRight;
         CharacterAnimation runLeft;
 
-        #region InputActions
-
-        InputAction moveLeft;
-        InputAction moveRight;
-        InputAction jump;
-        InputAction playerAttack;
-        InputAction moveDown;
-        InputAction moveUp;
-        InputAction run;
-        InputAction stab;
-
-        #endregion
-
-
-
         float jumpTimer = 0;
         float jumpFrequency = 150;
 
@@ -83,12 +68,9 @@ namespace Bearventure.Gameplay.Characters
                 new AttachmentPoint(new Vector2(-50, -60)),
             };
 
-
-            InitControls(); 
             InitAnimations();
             InitStats();
             
-
             BoundingBoxSize = new Point(stoppedRight.FrameWidth - 15, stoppedLeft.FrameHeight);
 
             usableSkills = new CharacterSkill[3];
@@ -98,47 +80,6 @@ namespace Bearventure.Gameplay.Characters
             InitSkills();
         }
 
-        #region ControlInitialization
-
-        private void InitControls()
-        {
-            #region InputAction
-            moveLeft = new InputAction(
-        new Buttons[] { Buttons.DPadLeft, Buttons.LeftThumbstickLeft },
-        new Keys[] { Keys.Left },
-        false);
-            moveRight = new InputAction(
-        new Buttons[] { Buttons.DPadRight, Buttons.LeftThumbstickRight },
-        new Keys[] { Keys.Right },
-        false);
-            jump = new InputAction(
-        new Buttons[] { Buttons.A },
-        new Keys[] { Keys.Up },
-        true);
-            moveUp = new InputAction(
-        new Buttons[] { Buttons.DPadUp, Buttons.LeftThumbstickUp },
-        new Keys[] { Keys.Up },
-        false);
-            playerAttack = new InputAction(
-        new Buttons[] { Buttons.B },
-        new Keys[] { Keys.Q, Keys.LeftControl },
-        true);
-            moveDown = new InputAction(
-        new Buttons[] { Buttons.DPadDown, Buttons.LeftThumbstickDown },
-        new Keys[] { Keys.Down },
-        false);
-            run = new InputAction(
-        new Buttons[] { Buttons.X },
-        new Keys[] { Keys.LeftShift },
-        false);
-            stab = new InputAction(
-         new Buttons[] { Buttons.LeftShoulder },
-         new Keys[] { Keys.P },
-         true);
-            #endregion
-
-        }
-        #endregion
         private void InitStats()
         {
             acceleration = 1.75f;
@@ -192,107 +133,57 @@ namespace Bearventure.Gameplay.Characters
             activeCombo = PlayerSkills.SevenDragons;
             usableSkills[0] = PlayerSkills.TestSkill;
         }
-        public override void HandleInput(GameTime gameTime, InputState input)
+        public void WalkLeft()
         {
-            if (state == Constants.CharacterState.Knocked || state == Constants.CharacterState.Disabled)
-                return;
+            SetState(Constants.CharacterState.Walking);
+            directionX = Constants.DirectionX.Left;
+        }
 
-            PlayerIndex playerIndex;
+        public void WalkRight()
+        {
+            SetState(Constants.CharacterState.Walking);
+            directionX = Constants.DirectionX.Right;
+        }
 
-            if (state == Constants.CharacterState.Climbing && CharacterPhysics.OnLadder(this))
+        public void Jump()
+        {
+            if (CharacterPhysics.OnGround(this) && jumpTimer >= jumpFrequency)
             {
-                if (moveUp.Evaluate(input, ControllingPlayer, out playerIndex))
-                {
-                    velocity.Y = -walkSpeed;
-                }
-                else if (moveDown.Evaluate(input, ControllingPlayer, out playerIndex))
-                {
-                    velocity.Y = walkSpeed;
-                }
-                else
-                    velocity = Vector2.Zero;
-            }
-            else if (state == Constants.CharacterState.Climbing && !CharacterPhysics.OnLadder(this))
-            {
-                if (jump.Evaluate(input, ControllingPlayer, out playerIndex))
-                {
-                    velocity.Y = -jumpStrenght;
-                    SetState(Constants.CharacterState.Jumping);
-                }
-            }
+                SetState(Constants.CharacterState.Jumping);
+                jumpTimer = 0;
 
-            if (!IsDisabled && !CharacterPhysics.OnLadder(this))
-            {
-                if (moveLeft.Evaluate(input, ControllingPlayer, out playerIndex))
-                {
-                    if (run.Evaluate(input, ControllingPlayer, out playerIndex) && moveLeft.Evaluate(input, ControllingPlayer, out playerIndex))
-                    {
-                        SetState(Constants.CharacterState.Running);
-                        directionX = Constants.DirectionX.Left;
-                    }
-                    else
-                    {
-                        SetState(Constants.CharacterState.Walking);
-                        directionX = Constants.DirectionX.Left;
-                    }
-                }
-                else if (moveRight.Evaluate(input, ControllingPlayer, out playerIndex))
-                {
-                    if (run.Evaluate(input, ControllingPlayer, out playerIndex) && moveRight.Evaluate(input, ControllingPlayer, out playerIndex))
-                    {
-                        SetState(Constants.CharacterState.Running);
-                        directionX = Constants.DirectionX.Right;
-                    }
-                    else
-                    {
-                        SetState(Constants.CharacterState.Walking);
-                        directionX = Constants.DirectionX.Right;
-                    }
-                }
-                else
-                {
-                    SetState(Constants.CharacterState.Stopped);
-                }
-                if (jump.Evaluate(input, ControllingPlayer, out playerIndex))
-                {
-                    if (CharacterPhysics.OnGround(this) && jumpTimer >= jumpFrequency)
-                    {
-                        SetState(Constants.CharacterState.Jumping);
-                        jumpTimer = 0;
-
-                        SoundEffectManager.Instance.PlayKarhuJump();
-                    }
-                    else
-                        SetState(Constants.CharacterState.Falling);
-                }
-                if (!CharacterPhysics.OnGround(this) && jump.Evaluate(input, ControllingPlayer, out playerIndex) && state == Constants.CharacterState.Jumping && jumpTimer >= jumpFrequency)
-                {
-                    SetState(Constants.CharacterState.DoubleJump);
-                    jumpTimer = 0;
-                    SoundEffectManager.Instance.PlayKarhuJump();
-                    
-                }
-                else
-                {
-                    SetState(Constants.CharacterState.Falling);
-                }
-                if (playerAttack.Evaluate(input, ControllingPlayer, out playerIndex))
-                {
-                    activeCombo.SetNextSkill();
-                    UseSkill(activeCombo.ActiveSkill);
-                }
-                else if (stab.Evaluate(input, ControllingPlayer, out playerIndex))
-                {
-                    //UseSkill(puukotus);
-                }
+                SoundEffectManager.Instance.PlayKarhuJump();
             }
             else
-            {
-                if (moveLeft.Evaluate(input, ControllingPlayer, out playerIndex) || moveRight.Evaluate(input, ControllingPlayer, out playerIndex) || jump.Evaluate(input, ControllingPlayer, out playerIndex) || moveDown.Evaluate(input, ControllingPlayer, out playerIndex))
-                {
-                    SetState(Constants.CharacterState.Climbing);
-                }
-            }
+                SetState(Constants.CharacterState.Falling);
+        }
+
+        public void RunLeft()
+        {
+            SetState(Constants.CharacterState.Running);
+            directionX = Constants.DirectionX.Left;
+        }
+
+        public void RunRight()
+        {
+            SetState(Constants.CharacterState.Running);
+            directionX = Constants.DirectionX.Right;
+        }
+
+        public void Stop()
+        {
+            SetState(Constants.CharacterState.Stopped);
+        }
+
+        public void UseSkillCombo()
+        {
+            activeCombo.SetNextSkill();
+            UseSkill(activeCombo.ActiveSkill);
+        }
+
+        public void UseSkill(int index)
+        {
+            UseSkill(usableSkills[index]);
         }
 
         public override void Update(GameTime gameTime)

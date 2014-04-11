@@ -13,6 +13,30 @@ namespace Bearventure.Gameplay.HUD
         CharacterSkill skill;
         CharacterSkillCombo combo;
 
+        float slotScale = 1f;
+
+        float scaleSpeed = 0.1f;
+
+        bool hasMorphed;
+
+        bool fadeIn;
+
+        public CharacterSkill Skill
+        {
+            get
+            {
+                return skill;
+            }
+        }
+
+        public CharacterSkillCombo Combo
+        {
+            get
+            {
+                return combo;
+            }
+        }
+
         public SkillSlot(CharacterSkill skill)
         {
             this.skill = skill;
@@ -31,9 +55,10 @@ namespace Bearventure.Gameplay.HUD
         public void Draw(SpriteBatch spriteBatch, Rectangle drawRect)
         {
             if (combo == null)
-                spriteBatch.Draw(skill.Icon, drawRect, Color.White);
+                spriteBatch.Draw(skill.Icon, new Vector2(drawRect.X, drawRect.Y), drawRect, Color.White, 0f, Vector2.Zero, slotScale, SpriteEffects.None, 0f);
             else
                 spriteBatch.Draw(combo.Icon, drawRect, Color.White);
         }
+
     }
 }

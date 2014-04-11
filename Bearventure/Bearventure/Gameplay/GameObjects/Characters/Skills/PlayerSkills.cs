@@ -212,7 +212,7 @@ namespace Bearventure.Gameplay.GameObjects.Characters.Skills
             #region Test Skill
             CharacterAnimation testRight = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 0, 134, 190, 0, 0, 50, SpriteEffects.None, 0f, 0f, false, false);
             CharacterAnimation testLeft = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 0, 134, 190, 0, 0, 50, SpriteEffects.None, 0f, 0f, false, false);
-            TestSkill = new CharacterSkill(player, testRight, testLeft, 5, 1);
+            TestSkill = new CharacterSkill(player, testRight, testLeft, 5000, 1);
             TestSkill.Icon = content.Load<Texture2D>("Sprites/testSkill");
             #endregion
         }
