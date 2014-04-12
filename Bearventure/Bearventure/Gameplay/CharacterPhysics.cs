@@ -296,12 +296,18 @@ namespace Bearventure
             int Left = subject.BoundingBox.Left;
             int Right = subject.BoundingBox.Right;
 
-            if ((collision == Bottom || collision == Top) && CollisionHandler.TerrainType == Constants.Solid)
+            if (collision == Bottom && CollisionHandler.TerrainType == Constants.Solid)
             {
+
                 subject.ChangeVelocity(subject.velocity.X, 0);
 
                 if (collision == Bottom && CollisionHandler.DistanceToTerrain > 0)
                     subject.AdjustPosition(new Vector2(0, CollisionHandler.DistanceToTerrain));
+            }
+
+            else if (collision == Top && CollisionHandler.TerrainType == Constants.Solid)
+            {
+                subject.ChangeVelocity(subject.velocity.X, 0);
             }
 
             else if ((collision == Bottom + Left || collision == Bottom + Right) && CollisionHandler.TerrainType == Constants.Solid)

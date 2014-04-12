@@ -147,6 +147,9 @@
     <Compile Include="Gameplay\GameObjects\Characters\Enemy.cs" />
     <Compile Include="Gameplay\GameObjects\Characters\Player.cs" />
     <Compile Include="Gameplay\GameObjects\AttachmentPoint.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Skills\Modifiers\PlayerSkillModifiers.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Skills\Modifiers\SkillComboModifier.cs" />
+    <Compile Include="Gameplay\GameObjects\Characters\Skills\Modifiers\SkillModifier.cs" />
     <Compile Include="Gameplay\GameObjects\Characters\Skills\PlayerSkills.cs" />
     <Compile Include="Gameplay\GameObjects\GameObjectSpawner.cs" />
     <Compile Include="Gameplay\GameObjects\Ladder.cs" />

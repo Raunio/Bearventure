@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Bearventure.Engine.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Bearventure.Gameplay.GameObjects.Characters.Skills.Modifiers;
 
 namespace Bearventure.Gameplay.Characters.Skills
 {
@@ -70,10 +71,31 @@ namespace Bearventure.Gameplay.Characters.Skills
             set;
         }
 
+        public List<SkillComboModifier> Modifiers
+        {
+            get;
+            set;
+        }
+
         private int skillCounter = 0;
         private float resetTimer;
 
-        public CharacterSkillCombo() { }
+        public void AddModifier(SkillComboModifier mod)
+        {
+            Modifiers.Add(mod);
+
+            for (int i = 0; i < mod.ModifiedSkills.Length; i++)
+                for (int j = 0; j < SkillArray.Count; j++)
+                    if (mod.ModifiedSkills[i] == j)
+                    {
+                        SkillArray[j].InflictForce = mod.ForceModifier;
+                    }
+        }
+
+        public CharacterSkillCombo() 
+        {
+            Modifiers = new List<SkillComboModifier>();
+        }
         /// <summary>
         /// Tries to activate the skill that is next in line.
         /// </summary>

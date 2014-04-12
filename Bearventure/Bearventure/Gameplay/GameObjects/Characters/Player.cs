@@ -23,6 +23,7 @@ namespace Bearventure.Gameplay.Characters
         CharacterAnimation climbingStopped;
         CharacterAnimation runRight;
         CharacterAnimation runLeft;
+        CharacterAnimation landing;
 
         float jumpTimer = 0;
         float jumpFrequency = 150;
@@ -122,6 +123,8 @@ namespace Bearventure.Gameplay.Characters
             jumpingLeft = new CharacterAnimation(spriteSheet, 5, 167, 190, 0, 2, 40, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
             jumpingLeft.SetFixedBoundingBoxOffset(20);
 
+            landing = new CharacterAnimation(spriteSheet, 6, 167, 190, 0, 1, 90, SpriteEffects.None, 0f, 0f, false, false);
+
             climbing = new CharacterAnimation(spriteSheet, 0, 90, 134, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, true);
             climbingStopped = new CharacterAnimation(spriteSheet, 0, 90, 134, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, false);
 
@@ -177,8 +180,11 @@ namespace Bearventure.Gameplay.Characters
 
         public void UseSkillCombo()
         {
-            activeCombo.SetNextSkill();
-            UseSkill(activeCombo.ActiveSkill);
+            if (ActiveSkill == null || !ActiveSkill.IsActive)
+            {
+                activeCombo.SetNextSkill();
+                UseSkill(activeCombo.ActiveSkill);
+            }
         }
 
         public void UseSkill(int index)
@@ -213,6 +219,9 @@ namespace Bearventure.Gameplay.Characters
 
         private void HandleAnimations()
         {
+            if (CurrentAnimation == landing && !landing.HasFinished)
+                return;
+            
             switch (state)
             {
                 case Constants.CharacterState.Stopped:
@@ -249,6 +258,26 @@ namespace Bearventure.Gameplay.Characters
             }
 
             BoundingBoxAnimationOffset = CurrentCharacterAnimation.BoundingBoxOffset;
+        }
+
+        public void PlayLandingAnimation()
+        {
+            if (directionX == Constants.DirectionX.Left)
+                landing.Effects = SpriteEffects.FlipHorizontally;
+            else
+                landing.Effects = SpriteEffects.None;
+
+            ChangeAnimation(landing);
+        }
+
+        public override void ChangeVelocity(float x, float y)
+        {
+            velocity.X = x;
+
+            if (y == 0 && velocity.Y > walkSpeed)
+                PlayLandingAnimation();
+
+            velocity.Y = y;
         }
 
         private void PlayStepSoundEffects()

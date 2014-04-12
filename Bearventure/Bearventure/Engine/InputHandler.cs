@@ -50,7 +50,7 @@ namespace Bearventure.Engine
             new Keys[] { Keys.Up },
             false);
                 useSkillCombo = new InputAction(
-            new Buttons[] { Buttons.B },
+            new Buttons[] { Buttons.Y },
             new Keys[] { Keys.Q, Keys.LeftControl },
             true);
                 moveDown = new InputAction(
@@ -58,7 +58,7 @@ namespace Bearventure.Engine
             new Keys[] { Keys.Down },
             false);
                 run = new InputAction(
-            new Buttons[] { Buttons.X },
+            new Buttons[] { Buttons.LeftTrigger },
             new Keys[] { Keys.LeftShift },
             false);
                 useSkill0 = new InputAction(

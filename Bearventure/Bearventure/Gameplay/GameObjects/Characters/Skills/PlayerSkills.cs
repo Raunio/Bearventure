@@ -7,6 +7,7 @@ using Bearventure.Gameplay.Characters;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Bearventure.Gameplay.GameObjects.Characters.Skills.Modifiers;
 
 namespace Bearventure.Gameplay.GameObjects.Characters.Skills
 {
@@ -30,7 +31,7 @@ namespace Bearventure.Gameplay.GameObjects.Characters.Skills
             private set;
         }
         /// <summary>
-        /// TODO: Pass selected skills from skill screen as an array. For now we will initialize all the skills.
+        /// TODO: Pass selected skills and modifiers from skill screen as an array. For now we will initialize all the skills.
         /// </summary>
         public static void InitSelectedSkills(ContentManager content, Player player)
         {
@@ -210,10 +211,18 @@ namespace Bearventure.Gameplay.GameObjects.Characters.Skills
             #endregion
 
             #region Test Skill
-            CharacterAnimation testRight = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 0, 134, 190, 0, 0, 50, SpriteEffects.None, 0f, 0f, false, false);
-            CharacterAnimation testLeft = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 0, 134, 190, 0, 0, 50, SpriteEffects.None, 0f, 0f, false, false);
-            TestSkill = new CharacterSkill(player, testRight, testLeft, 5000, 1);
+            CharacterAnimation testRight = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 1, 134, 190, 0, 5, 100, SpriteEffects.None, 0f, 0f, false, false);
+            CharacterAnimation testLeft = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 1, 134, 190, 0, 5, 100, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+            TestSkill = new CharacterSkill(player, testRight, testLeft, 2000, 1);
             TestSkill.Icon = content.Load<Texture2D>("Sprites/testSkill");
+            #endregion
+
+            #region Mods
+
+            PlayerSkillModifiers.InitSkillModifiers();
+
+            SevenDragons.AddModifier(PlayerSkillModifiers.SevenDragonsTestMod);
+
             #endregion
         }
     }

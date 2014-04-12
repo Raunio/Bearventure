@@ -218,6 +218,9 @@ namespace Bearventure.Gameplay.Characters
         /// <param name="skill"></param>
         public void UseSkill(CharacterSkill skill)
         {
+            if (ActiveSkill != null && ActiveSkill.IsActive)
+                return;
+
             if (skill.IsReady && !skill.IsActive)
             {
                 state = Constants.CharacterState.UsingSkill;

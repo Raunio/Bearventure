@@ -14,8 +14,8 @@ namespace Bearventure.Gameplay.HUD
         SkillSlot[] skillSlots;
         Vector2 position;
 
-        int slotWidth = 48;
-        int slotHeight = 48;
+        int slotWidth = 64;
+        int slotHeight = 64;
 
         public int BarWidth
         {
@@ -65,7 +65,7 @@ namespace Bearventure.Gameplay.HUD
             for (int i = 0; i < skillSlots.Length; i++)
             {
                 if (skillSlots[i] != null)
-                    skillSlots[i].Draw(spriteBatch, new Rectangle((int)position.X + slotWidth * i, (int)position.Y, slotWidth, slotHeight));
+                    skillSlots[i].Draw(spriteBatch, new Vector2(position.X + slotWidth * i, position.Y));
             }
         }
     }

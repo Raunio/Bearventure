@@ -244,7 +244,7 @@ namespace Bearventure.Gameplay
             return colors2D;
         }
 
-        public void ChangeVelocity(float x, float y)
+        public virtual void ChangeVelocity(float x, float y)
         {
             velocity.X = x;
             velocity.Y = y;

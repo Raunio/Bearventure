@@ -2095,11 +2095,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Sprites\karhusprite.png">
-      <Name>karhusprite</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="Sprites\7.png">
       <Name>7</Name>
       <Importer>TextureImporter</Importer>
@@ -2107,6 +2102,11 @@
     </Compile>
     <Compile Include="Sprites\testSkill.png">
       <Name>testSkill</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Sprites\karhusprite.png">
+      <Name>karhusprite</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

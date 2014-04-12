@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Bearventure.Engine.Audio;
+using Bearventure.Gameplay.GameObjects.Characters.Skills.Modifiers;
 
 namespace Bearventure.Gameplay.Characters.Skills
 {
@@ -41,6 +42,13 @@ namespace Bearventure.Gameplay.Characters.Skills
 
         #endregion
         #region Gets & Sets
+        public float CooldownTimer
+        {
+            get
+            {
+                return cdTimer;
+            }
+        }
         /// <summary>
         /// Gets or sets the icon for the skill.
         /// </summary>
@@ -70,7 +78,7 @@ namespace Bearventure.Gameplay.Characters.Skills
         /// </summary>
         public int Damage
         {
-            private set;
+            set;
             get;
         }
         /// <summary>
@@ -309,6 +317,14 @@ namespace Bearventure.Gameplay.Characters.Skills
             get;
             set;
         }
+        /// <summary>
+        /// Gets a list of modifiers for the skill.
+        /// </summary>
+        public List<SkillModifier> Modifiers
+        {
+            get;
+            private set;
+        }
         #endregion
         /// <summary>
         /// Setups the skill with 1 animation.
@@ -342,6 +358,7 @@ namespace Bearventure.Gameplay.Characters.Skills
             this.rightAnimation = right;
             this.leftAnimation = left;
             this.Cooldown = cooldown;
+            this.cdTimer = cooldown;
             this.Damage = damage;
             this.IsReady = true;
             this.DamageType = DamageType;
@@ -353,6 +370,7 @@ namespace Bearventure.Gameplay.Characters.Skills
             this.rightAnimation = right;
             this.leftAnimation = left;
             this.Cooldown = cooldown;
+            this.cdTimer = cooldown;
             this.Healing = healing;
             this.IsReady = true;
             this.DamageType = DamageType;
@@ -628,6 +646,15 @@ namespace Bearventure.Gameplay.Characters.Skills
         {
             IsActive = false;
             subject.state = Constants.CharacterState.Stopped;
+        }
+
+        public void AddModifier(SkillModifier mod)
+        {
+            Modifiers.Add(mod);
+
+            InflictForce += mod.ForceModifier;
+
+            Damage += mod.DamageModifier;
         }
     }
 }
