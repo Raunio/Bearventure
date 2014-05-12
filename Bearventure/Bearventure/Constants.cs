@@ -254,6 +254,13 @@ namespace Bearventure
             DoT,
             Slow,
         }
+
+        public enum FloatingTextType
+        {
+            Normal,
+            Emphasised,
+        }
+
         #endregion
         #region GameObject Enumerations
 

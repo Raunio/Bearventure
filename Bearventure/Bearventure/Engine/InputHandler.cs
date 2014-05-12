@@ -62,7 +62,7 @@ namespace Bearventure.Engine
             new Keys[] { Keys.LeftShift },
             false);
                 useSkill0 = new InputAction(
-             new Buttons[] { Buttons.LeftShoulder },
+             new Buttons[] { Buttons.B },
              new Keys[] { Keys.W },
              true);
                 #endregion
@@ -100,7 +100,12 @@ namespace Bearventure.Engine
             }
             if (jump.Evaluate(input, ControllingPlayer, out playerIndex))
             {
-                player.Jump();
+                if (player.state == Constants.CharacterState.Jumping)
+                {
+                    player.DoubleJump();
+                }
+                else
+                    player.Jump();
             }
             if (useSkillCombo.Evaluate(input, ControllingPlayer, out playerIndex))
             {

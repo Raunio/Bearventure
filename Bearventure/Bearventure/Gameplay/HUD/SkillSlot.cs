@@ -16,13 +16,14 @@ namespace Bearventure.Gameplay.HUD
         float slotScale = 1f;
 
         float recoveryIndicatorScale = 1f;
-        float recoveryIndicatorTargetScale = 2f;
+        float recoveryIndicatorTargetScale = 1.75f;
         float recoveryIndicatorSpeed = 0.1f;
+        float recoveryIndicatorInitialScale = 1f;
 
-        float recoveryIndicatorOpacity = 0.3f;
+        float recoveryIndicatorOpacity = 0.4f;
         float recoveryIndicatorTargetOpacity = 0f;
-        float recoveryIndicatorFadingSpeed = 0.005f;
-        float recoveryIndicatorInitialOpacity = 0.3f;
+        float recoveryIndicatorFadingSpeed = 0.2f;
+        float recoveryIndicatorInitialOpacity = 0.4f;
 
         float targetScale = 1f;
         float scalingSpeed = 0.15f;
@@ -30,8 +31,9 @@ namespace Bearventure.Gameplay.HUD
         float ultimateScale = 0.75f;
 
         float slotOpacity = 1f;
-
+        float slotInitialOpacity = 0.2f;
         float targetOpacity = 1f;
+        float fadingSpeed = 0.1f;
 
         bool hasActivated;
         bool hasRecovered;
@@ -39,6 +41,11 @@ namespace Bearventure.Gameplay.HUD
         Color tintColor = Color.White;
         Color readyTint = Color.White;
         Color cooldownTint = new Color(100, 100, 100);
+
+        String cooldownCounter;
+
+        Color cdCounterColor = new Color(175, 175, 175, 255);
+
 
         public CharacterSkill Skill
         {
@@ -60,6 +67,8 @@ namespace Bearventure.Gameplay.HUD
         {
             this.skill = skill;
             hasRecovered = true;
+
+            fadingSpeed = 1 / skill.Cooldown;
         }
 
         public SkillSlot(CharacterSkillCombo combo)
@@ -88,7 +97,10 @@ namespace Bearventure.Gameplay.HUD
                 {
                     SetScaling(ultimateScale);
                     hasActivated = true;
-                    hasRecovered = false;     
+                    hasRecovered = false;
+                    slotOpacity = slotInitialOpacity;
+                    recoveryIndicatorOpacity = recoveryIndicatorInitialOpacity;
+                    recoveryIndicatorScale = recoveryIndicatorInitialScale;
                 }
 
                 else if (!skill.IsActive)
@@ -110,6 +122,8 @@ namespace Bearventure.Gameplay.HUD
                 else if (!skill.IsReady)
                 {
                     tintColor = cooldownTint;
+
+                    slotOpacity = Interpolate(slotInitialOpacity, targetOpacity, fadingSpeed);
                 }
             }  
 
@@ -128,11 +142,21 @@ namespace Bearventure.Gameplay.HUD
                 spriteBatch.Draw(skill.Icon, new Vector2(position.X + skill.Icon.Width / 2, position.Y + skill.Icon.Height / 2), null, tintColor, 0f, new Vector2(skill.Icon.Width / 2, skill.Icon.Height / 2), slotScale, SpriteEffects.None, 0f);
                 
                 if (skill != null && skill.CooldownTimer >= skill.Cooldown && !hasRecovered)
-                    spriteBatch.Draw(skill.Icon, new Vector2(position.X + skill.Icon.Width / 2, position.Y + skill.Icon.Height / 2), null, new Color(255, 255, 255, recoveryIndicatorOpacity), 0f, new Vector2(skill.Icon.Width / 2, skill.Icon.Height / 2), recoveryIndicatorScale, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(skill.Icon, new Vector2(position.X + skill.Icon.Width / 2, position.Y + skill.Icon.Height / 2), null, Color.White * recoveryIndicatorOpacity, 0f, new Vector2(skill.Icon.Width / 2, skill.Icon.Height / 2), recoveryIndicatorScale, SpriteEffects.None, 0f);
             }
             else
             {
-                spriteBatch.Draw(combo.Icon, new Vector2(position.X + combo.Icon.Width / 2, position.Y + combo.Icon.Height / 2), null, new Color(255, 255, 255, slotOpacity), 0f, new Vector2(combo.Icon.Width / 2, combo.Icon.Height / 2), slotScale, SpriteEffects.None, 0f);
+                spriteBatch.Draw(combo.Icon, new Vector2(position.X + combo.Icon.Width / 2, position.Y + combo.Icon.Height / 2), null, Color.White * slotOpacity, 0f, new Vector2(combo.Icon.Width / 2, combo.Icon.Height / 2), slotScale, SpriteEffects.None, 0f);
+            }
+        }
+
+        public void DrawCooldownCounter(SpriteFont font, SpriteBatch spriteBatch, Vector2 position)
+        {
+            if (skill != null && skill.CooldownTimer < skill.Cooldown)
+            {
+                cooldownCounter = (skill.Cooldown / 1000 - skill.CooldownTimer / 1000).ToString("0.0");
+
+                spriteBatch.DrawString(font, cooldownCounter, position, cdCounterColor);
             }
         }
 
@@ -158,7 +182,7 @@ namespace Bearventure.Gameplay.HUD
             }
             else
             {
-                from = targetScale;
+                from = to;
             }
 
             return from;

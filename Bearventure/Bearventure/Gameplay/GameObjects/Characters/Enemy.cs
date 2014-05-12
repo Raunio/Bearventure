@@ -318,6 +318,7 @@ namespace Bearventure.Gameplay.Characters
                     ArmorType = Constants.ArmorType.Fur;
                     KnockBackTreshold = 30;
                     BoundingBoxSize = new Point(Stopped.FrameWidth, Stopped.FrameHeight);
+                    
                     break;
 
                 case Constants.EnemyType.DelayOwl:
@@ -405,6 +406,28 @@ namespace Bearventure.Gameplay.Characters
                     attack_right.SetAnatomicInfo(Constants.BadgerAttackAnatomy, SpriteEffects.None);
                     attack_left.SetAnatomicInfo(Constants.BadgerAttackAnatomy, SpriteEffects.FlipHorizontally);
 
+                    attack_left.FreezeFrames = new Animation.FrameFreezer
+                    {
+                        Frames = new List<int>
+                        {
+                            0,
+                            1,
+                        },
+
+                        Amount = 45,
+                    };
+
+                    attack_right.FreezeFrames = new Animation.FrameFreezer
+                    {
+                        Frames = new List<int>
+                        {
+                            0,
+                            1,
+                        },
+
+                        Amount = 45,
+                    };
+
                     Attack = new EnemySkill(this, attack_right, attack_left, 1400, 4, Constants.DamageType.Crushing);
                     Attack.StartVelocity = new Vector2(5, 0);
                     Attack.Conditions.Add(new Condition(Constants.ConditionType.DistanceToPlayerLowerThan, AttackRange));
@@ -425,7 +448,7 @@ namespace Bearventure.Gameplay.Characters
                     Attack.HitBoxWidth = 25;
 
                     Attack.InflictForce = new Vector2(10, 0);
-                    Attack.ForceInterruptTreshold = 5;
+                    Attack.ForceInterruptTreshold = 0;
 
                     Attack.HitSoundEffect = SoundEffectManager.Instance.Crush;
 
@@ -702,7 +725,8 @@ namespace Bearventure.Gameplay.Characters
                 else
                     Damaged.Effects = SpriteEffects.None;
 
-                ChangeAnimation(Damaged);
+                if(state != Constants.CharacterState.UsingSkill)
+                    ChangeAnimation(Damaged);
             }
         }
 

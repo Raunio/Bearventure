@@ -86,13 +86,17 @@ namespace Bearventure
                     for (int i = 0; i < positionArray.Length; i++)
                     {
                         string[] pos = positionArray[i].Split('.');
-                        if(effects == SpriteEffects.None)
-                            positionsAsVectors.Add(new Vector2(Convert.ToInt32(pos[0]) - i * FrameWidth, Convert.ToInt32(pos[1])));
+                        if (effects == SpriteEffects.None)
+                        {
+                            int y = CustomFrameRowPosition == 0 ? Convert.ToInt32(pos[1]) - FrameHeight * spriteSheetRow : Convert.ToInt32(pos[1]) - CustomFrameRowPosition;
+                            positionsAsVectors.Add(new Vector2(Convert.ToInt32(pos[0]) - i * FrameWidth, y));
+                        }
                         else if (effects == SpriteEffects.FlipHorizontally)
                         {
                             Vector2 first = new Vector2(Convert.ToInt32(pos[0]) - i * FrameWidth, Convert.ToInt32(pos[1]));
                             int x = FrameWidth - (int)first.X;
-                            positionsAsVectors.Add(new Vector2(x, first.Y));
+                            int y_offset = CustomFrameRowPosition == 0 ? FrameHeight * spriteSheetRow : CustomFrameRowPosition;
+                            positionsAsVectors.Add(new Vector2(x, first.Y - y_offset));
                         }
                     }
 
@@ -107,7 +111,10 @@ namespace Bearventure
                                     AnatInfo[i].RightHand = positionsAsVectors[i];
                                 break;
                             case "LeftEye":
-                                    AnatInfo[i].LeftEye = positionsAsVectors[i];
+                                AnatInfo[i].LeftEye = positionsAsVectors[i];
+                                break;
+                            case "RightEye":
+                                AnatInfo[i].RightEye = positionsAsVectors[i];
                                 break;
                         }
                     }

@@ -83,8 +83,8 @@ namespace Bearventure.Gameplay.Characters
 
         private void InitStats()
         {
-            acceleration = 1.75f;
-            decceleration = 1.75f;
+            acceleration = 2f;
+            decceleration = 2f;
             walkSpeed = 12f;
             runSpeed = 20f;
             jumpStrenght = 30;
@@ -101,6 +101,10 @@ namespace Bearventure.Gameplay.Characters
             MaxSkillResource = 100;
 
             ArmorType = Constants.ArmorType.Fur;
+
+            KnockBackTreshold = 20;
+
+            healthRegen = 1;
         }
 
         private void InitAnimations()
@@ -159,6 +163,14 @@ namespace Bearventure.Gameplay.Characters
             }
             else
                 SetState(Constants.CharacterState.Falling);
+        }
+
+        public void DoubleJump()
+        {
+            if (!CharacterPhysics.OnGround(this))
+            {
+                SetState(Constants.CharacterState.DoubleJump);
+            }
         }
 
         public void RunLeft()
@@ -297,6 +309,20 @@ namespace Bearventure.Gameplay.Characters
                     if (CurrentAnimation.IsNewFrame)
                         SoundEffectManager.Instance.PlayStep();
                 }
+            }
+        }
+
+        public override void TakeDamage(float damage)
+        {
+            if (damageTimer > 300)
+            {
+                health -= (int)damage;
+                damageTimer = 0;
+
+                CombatManager.Instance.CombatLog.Add(this.Name + " took " + damage + " damage.");
+
+                if(CurrentSkillResource < MaxSkillResource)
+                    CurrentSkillResource += 1;
             }
         }
     }

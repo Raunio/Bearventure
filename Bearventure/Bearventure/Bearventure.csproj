@@ -155,6 +155,8 @@
     <Compile Include="Gameplay\GameObjects\Ladder.cs" />
     <Compile Include="Gameplay\GameObjects\Platform.cs" />
     <Compile Include="Gameplay\GameObjects\GameplayObject.cs" />
+    <Compile Include="Gameplay\HUD\CombatTextManager.cs" />
+    <Compile Include="Gameplay\HUD\FloatingText.cs" />
     <Compile Include="Gameplay\HUD\HeadsUpDisplay.cs" />
     <Compile Include="Gameplay\HUD\SkillBar.cs" />
     <Compile Include="Gameplay\HUD\SkillSlot.cs" />

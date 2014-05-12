@@ -7,6 +7,9 @@ using Bearventure.Engine.Effects;
 using Bearventure.Gameplay.Characters;
 using Bearventure.Gameplay.Characters.Skills;
 using Bearventure.Engine.CollisionDetection;
+using Bearventure.Gameplay.HUD;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Bearventure.Gameplay
 {
@@ -14,6 +17,8 @@ namespace Bearventure.Gameplay
     {
         private Vector2 mass;
         private Vector2 force;
+
+        private static CombatTextManager textManager = new CombatTextManager();
 
         public static CombatManager Instance
         {
@@ -39,7 +44,7 @@ namespace Bearventure.Gameplay
         private List<Enemy> enemies;
         private Player player;
 
-        public void Initialize(Player player, List<Enemy> enemies)
+        public void Initialize(Player player, List<Enemy> enemies, ContentManager content)
         {
             this.player = player;
             this.enemies = enemies;
@@ -48,6 +53,18 @@ namespace Bearventure.Gameplay
             force = new Vector2();
 
             CombatLog = new List<string>();
+
+            textManager.Initialize(content);
+        }
+
+        public void UpdateFloatingTexts(GameTime gameTime)
+        {
+            textManager.Update(gameTime);
+        }
+
+        public void DrawFloatingTexts(SpriteBatch spriteBatch)
+        {
+            textManager.Draw(spriteBatch);
         }
 
         public void Update()
@@ -58,15 +75,18 @@ namespace Bearventure.Gameplay
                 {
                     if (player.ActiveSkill.HitsCharacter(enemies[i]))
                     {
-                        InflictDamage(enemies[i], player.ActiveSkill);
+                        
                         InflictDebuffs(enemies[i], player.ActiveSkill, player.directionX);
+                        InflictDamage(enemies[i], player.ActiveSkill);
 
                         PlayHitEffects(new Vector2(player.ActiveSkill.HitBox.X + player.ActiveSkill.HitBox.Width / 2,
-                                player.ActiveSkill.HitBox.Y + player.ActiveSkill.HitBox.Height / 2), player.ActiveSkill);               
+                                player.ActiveSkill.HitBox.Y + player.ActiveSkill.HitBox.Height / 2), player.ActiveSkill);
 
 
-                        if(enemies[i].health <= 0)
+                        if (enemies[i].health <= 0)
+                        {
                             CombatLog.Add(enemies[i].Name + " has died.");
+                        }
                     }
 
                 }
@@ -75,8 +95,9 @@ namespace Bearventure.Gameplay
                 {
                     if(enemies[i].ActiveSkill.HitsCharacter(player))
                     {
-                        InflictDamage(player, enemies[i].ActiveSkill);
+                        
                         InflictDebuffs(player, enemies[i].ActiveSkill, enemies[i].directionX);
+                        InflictDamage(player, enemies[i].ActiveSkill);
 
                         PlayHitEffects(new Vector2(enemies[i].ActiveSkill.HitBox.X + enemies[i].ActiveSkill.HitBox.Width / 2,
                                 enemies[i].ActiveSkill.HitBox.Y + enemies[i].ActiveSkill.HitBox.Height / 2), enemies[i].ActiveSkill); 
@@ -91,20 +112,21 @@ namespace Bearventure.Gameplay
                     AdjustResources(player, player.ActiveSkill);
                     InflictDamage(player, player.ActiveSkill);
                     InflictDebuffs(player, player.ActiveSkill, player.directionX);
+                    ApplyHealing(player, player.ActiveSkill);
 
                     PlayHitEffects(new Vector2(player.ActiveSkill.HitBox.X + player.ActiveSkill.HitBox.Width / 2,
-                            player.ActiveSkill.HitBox.Y + player.ActiveSkill.HitBox.Height / 2), player.ActiveSkill);
+                           player.ActiveSkill.HitBox.Y + player.ActiveSkill.HitBox.Height / 2), player.ActiveSkill);
                 }
         }
 
         private void PlayHitEffects(Vector2 position, CharacterSkill skill)
         {
-            VisualEffectManager.Instance.CreateEffect("VisualEffects/hitTest", position, 100);
+            /*VisualEffectManager.Instance.CreateEffect("VisualEffects/hitTest", position, 100);
 
             if (Globals.GoreEnabled)
             {
                 VisualEffectManager.Instance.CreateEffect("VisualEffects/blood2", position, 200);
-            }
+            }*/
 
             if (skill.HitSoundEffect != null)
             {
@@ -117,68 +139,34 @@ namespace Bearventure.Gameplay
             subject.CurrentSkillResource -= player.ActiveSkill.Cost;
         }
 
+        private void ApplyHealing(Character subject, CharacterSkill skill)
+        {
+            subject.ApplyHealing(skill.Healing);
+            
+        }
+
         private void InflictDamage(Character subject, CharacterSkill skill)
         {
             float damage = skill.Damage;
 
-            float weakness = 1.5f * (float)Globals.DifficultyFactor;
-            float minorWeakness = 1.25f * (float)Globals.DifficultyFactor;
-            float resistance = 0.5f / (float)Globals.DifficultyFactor;
-            float minorResistance = 0.75f / (float)Globals.DifficultyFactor;
-
-            switch (subject.ArmorType)
+            if (damage < skill.Damage)
             {
-                case Constants.ArmorType.Energy:
-                    if (skill.DamageType != Constants.DamageType.NegativeEnergy)
-                        damage = 0;
-                    break;
-
-                case Constants.ArmorType.Feathers:
-                    if (skill.DamageType == Constants.DamageType.Fire)
-                        damage *= minorWeakness;
-                    break;
-
-                case Constants.ArmorType.Force:
-                    if (skill.DamageType == Constants.DamageType.Energy || skill.DamageType == Constants.DamageType.NegativeEnergy)
-                        damage *= minorWeakness;
-                    else if (skill.DamageType != Constants.DamageType.Force)
-                        damage *= minorResistance;
-                    break;
-
-                case Constants.ArmorType.Fur:
-                    if (skill.DamageType == Constants.DamageType.Fire)
-                        damage *= weakness;
-                    else if (skill.DamageType == Constants.DamageType.Cold)
-                        damage *= minorResistance;
-                    break;
-                case Constants.ArmorType.Leather:
-                    if (skill.DamageType == Constants.DamageType.Crushing || skill.DamageType == Constants.DamageType.Piercing || skill.DamageType == Constants.DamageType.Slashing)
-                        damage *= minorResistance;
-                    break;
-                case Constants.ArmorType.Metal:
-                    if (skill.DamageType == Constants.DamageType.Crushing || skill.DamageType == Constants.DamageType.Piercing || skill.DamageType == Constants.DamageType.Slashing)
-                        damage *= resistance;
-                    break;
-                case Constants.ArmorType.NegativeEnergy:
-                    if (skill.DamageType != Constants.DamageType.Energy)
-                        damage = 0;
-                    break;
-                case Constants.ArmorType.Rock:
-                    if (skill.DamageType == Constants.DamageType.Piercing || skill.DamageType == Constants.DamageType.Slashing || skill.DamageType == Constants.DamageType.Fire || skill.DamageType == Constants.DamageType.Cold)
-                        damage *= resistance;
-                    break;
-            }
-            if(damage < skill.Damage)
                 CombatLog.Add(subject.Name + " resisted " + (int)(skill.Damage - damage) + " damage.");
-            else if(damage > skill.Damage)
+            }
+            else if (damage > skill.Damage)
+            {
                 CombatLog.Add("Critical hit!");
+            }
+
             subject.TakeDamage(damage);
+
+            textManager.AddText(new FloatingText("-" + damage, Constants.FloatingTextType.Normal, subject.Position - new Vector2(0, subject.BoundingBox.Height / 2)));
         }
 
         private void InflictDebuffs(Character subject, CharacterSkill skill, Constants.DirectionX direction)
         {
-            if (skill.InflictForce != Vector2.Zero)
-            {
+            //if (skill.InflictForce != Vector2.Zero)
+            //{
                 mass.X = skill.InflictForce.X > 0 ? subject.Mass * 0.033f : 0;
                 mass.Y = skill.InflictForce.Y != 0 ? subject.Mass * 0.033f : 0;
 
@@ -193,16 +181,20 @@ namespace Bearventure.Gameplay
                 if (skill.InflictForce.Length() >= subject.KnockBackTreshold)
                 {
                     subject.state = Constants.CharacterState.Knocked;
+
+                    //textManager.AddText(new FloatingText("Knocked!", Constants.FloatingTextType.Emphasised, subject.Position - new Vector2(0, subject.BoundingBox.Height / 2)));
                 }
 
-                if (subject.ActiveSkill != null && force.Length() > subject.ActiveSkill.ForceInterruptTreshold && subject.ActiveSkill.ForceInterruptTreshold != 0)
+                if (subject.ActiveSkill != null && force.Length() >= subject.ActiveSkill.ForceInterruptTreshold && subject.ActiveSkill.ForceInterruptTreshold != -1)
                 {
                     subject.ActiveSkill.Cancel();
                     CombatLog.Add(subject.Name + " was interrupted!");
+
+                    textManager.AddText(new FloatingText("Interrupted!", Constants.FloatingTextType.Emphasised, subject.Position - new Vector2(0, subject.BoundingBox.Height / 2)));
                     subject.state = Constants.CharacterState.Knocked;
                 }
 
-            }
+            //}
         }
     }
 }

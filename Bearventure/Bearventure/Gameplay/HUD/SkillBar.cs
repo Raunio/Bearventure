@@ -17,6 +17,8 @@ namespace Bearventure.Gameplay.HUD
         int slotWidth = 64;
         int slotHeight = 64;
 
+        int cdCounterOffset = 16;
+
         public int BarWidth
         {
             get
@@ -66,6 +68,15 @@ namespace Bearventure.Gameplay.HUD
             {
                 if (skillSlots[i] != null)
                     skillSlots[i].Draw(spriteBatch, new Vector2(position.X + slotWidth * i, position.Y));
+            }
+        }
+
+        public void DrawCooldownCounters(SpriteFont font, SpriteBatch spriteBatch)
+        {
+            for (int i = 0; i < skillSlots.Length; i++)
+            {
+                if (skillSlots[i] != null)
+                    skillSlots[i].DrawCooldownCounter(font, spriteBatch, new Vector2(position.X + cdCounterOffset + slotWidth * 1, position.Y + cdCounterOffset));
             }
         }
     }

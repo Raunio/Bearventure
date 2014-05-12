@@ -33,6 +33,8 @@ namespace Bearventure.Gameplay.HUD
 
         private SkillBar skillBar;
 
+        private SpriteFont cooldownFont;
+
         public void Initialize(ContentManager content, GraphicsDeviceManager graphics, List<Enemy> enemies, Player player)
         {
             this.content = content;
@@ -62,6 +64,8 @@ namespace Bearventure.Gameplay.HUD
             playerRageBar.TextColor = Color.Black;
 
             skillBar = new SkillBar(player);
+
+            cooldownFont = content.Load<SpriteFont>(Constants.GameFont);
         }
 
         public void Update(GameTime gameTime)
@@ -91,6 +95,7 @@ namespace Bearventure.Gameplay.HUD
             playerHealthBar.Draw(spriteBatch);
             playerRageBar.Draw(spriteBatch);
             skillBar.Draw(spriteBatch);
+            skillBar.DrawCooldownCounters(cooldownFont, spriteBatch);
         }
 
 

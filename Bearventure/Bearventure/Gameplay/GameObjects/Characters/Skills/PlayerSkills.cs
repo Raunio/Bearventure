@@ -72,7 +72,7 @@ namespace Bearventure.Gameplay.GameObjects.Characters.Skills
 
             StraightPunch_L.CalculateBoundingBoxOffsets(player.BoundingBoxSize, Constants.DirectionX.Left);
 
-            CharacterSkill skill1 = new CharacterSkill(player, StraightPunch_R, StraightPunch_L, 300, 3, Constants.DamageType.Crushing);
+            CharacterSkill skill1 = new CharacterSkill(player, StraightPunch_R, StraightPunch_L, 300, 5, Constants.DamageType.Crushing);
             skill1.HitSoundEffect = SoundEffectManager.Instance.Punch;
 
             skill1.ActivationSoundEffect = SoundEffectManager.Instance.Woosh;
@@ -122,7 +122,7 @@ namespace Bearventure.Gameplay.GameObjects.Characters.Skills
 
             SweepingPunch_L.CalculateBoundingBoxOffsets(player.BoundingBoxSize, Constants.DirectionX.Left);
 
-            CharacterSkill skill2 = new CharacterSkill(player, SweepingPunch_R, SweepingPunch_L, 300, 4, Constants.DamageType.Crushing);
+            CharacterSkill skill2 = new CharacterSkill(player, SweepingPunch_R, SweepingPunch_L, 300, 7, Constants.DamageType.Crushing);
 
             skill2.ActivationSoundEffect = SoundEffectManager.Instance.Woosh;
             skill2.HitSoundEffect = SoundEffectManager.Instance.Punch;
@@ -173,7 +173,7 @@ namespace Bearventure.Gameplay.GameObjects.Characters.Skills
                 Amount = 125,
             };
 
-            CharacterSkill skill3 = new CharacterSkill(player, UpperCut_R, UpperCut_L, 300, 10, Constants.DamageType.Crushing);
+            CharacterSkill skill3 = new CharacterSkill(player, UpperCut_R, UpperCut_L, 300, 13, Constants.DamageType.Crushing);
 
             skill3.ActivationSoundEffect = SoundEffectManager.Instance.Woosh2;
             skill3.HitSoundEffect = SoundEffectManager.Instance.Jab;
@@ -211,10 +211,57 @@ namespace Bearventure.Gameplay.GameObjects.Characters.Skills
             #endregion
 
             #region Test Skill
-            CharacterAnimation testRight = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 1, 134, 190, 0, 5, 100, SpriteEffects.None, 0f, 0f, false, false);
-            CharacterAnimation testLeft = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 1, 134, 190, 0, 5, 100, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
-            TestSkill = new CharacterSkill(player, testRight, testLeft, 2000, 1);
+            CharacterAnimation testRight = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 8, 159, 190, 0, 8, 27, SpriteEffects.None, 0f, 0f, false, false);
+            testRight.CustomFrameRowPosition = 1552;
+            testRight.CalculateBoundingBoxOffsets(player.BoundingBoxSize, Constants.DirectionX.Right);
+            testRight.FreezeFrames = new Animation.FrameFreezer
+            {
+                Frames = new List<int>
+                {
+                    1,
+                    5,
+                },
+
+                Amount = 175,
+            };
+            CharacterAnimation testLeft = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 8, 159, 190, 0, 8, 27, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+            testLeft.FreezeFrames = new Animation.FrameFreezer
+            {
+                Frames = new List<int>
+                {
+                    1,
+                    5,
+                },
+
+                Amount = 175,
+            };
+            testLeft.CalculateBoundingBoxOffsets(player.BoundingBoxSize, Constants.DirectionX.Left);
+            testLeft.CustomFrameRowPosition = 1552;
+
+
+            testRight.SetAnatomicInfo(Constants.KarhuPuukkoAnatomy, SpriteEffects.None);
+            testLeft.SetAnatomicInfo(Constants.KarhuPuukkoAnatomy, SpriteEffects.FlipHorizontally);
+
+            TestSkill = new CharacterSkill(player, testRight, testLeft, 2000, 12, Constants.DamageType.Piercing);
             TestSkill.Icon = content.Load<Texture2D>("Sprites/testSkill");
+            TestSkill.DamagingFrames = new List<int>
+            {
+                5,
+            };
+
+            TestSkill.AddEffect("VisualEffects/blood2", Constants.CharacterBodyPart.RightEye, 5);
+            TestSkill.HitSoundEffect = SoundEffectManager.Instance.Crush;
+            TestSkill.ActivationSoundEffect = SoundEffectManager.Instance.Puukotus;
+
+
+            TestSkill.EffectActivationFrames = new List<int>
+            {
+                5,
+            };
+
+            TestSkill.TargetingType = Constants.SkillTarget.Self;
+            TestSkill.UltimateVelocityX = 0f;
+            TestSkill.Cost = -15;
             #endregion
 
             #region Mods

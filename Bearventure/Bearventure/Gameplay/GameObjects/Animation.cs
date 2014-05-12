@@ -10,7 +10,7 @@ namespace Bearventure.Gameplay.Characters
     {
         #region Members
 
-        private int spriteSheetRow;
+        protected int spriteSheetRow;
         private float animTimer;
         private float interval;
         protected bool backwards;

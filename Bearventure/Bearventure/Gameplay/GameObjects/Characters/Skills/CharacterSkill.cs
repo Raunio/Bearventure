@@ -343,6 +343,7 @@ namespace Bearventure.Gameplay.Characters.Skills
             this.IsReady = true;
             this.DamageType = DamageType;
             hitBox = new Rectangle(-1, -1, 1, 1);
+            ForceInterruptTreshold = -1;
         }
         /// <summary>
         /// Setups the skill with different animations for different directions.
@@ -363,6 +364,7 @@ namespace Bearventure.Gameplay.Characters.Skills
             this.IsReady = true;
             this.DamageType = DamageType;
             hitBox = new Rectangle(-1, -1, 1, 1);
+            ForceInterruptTreshold = -1;
         }
         public CharacterSkill(Character subject, CharacterAnimation right, CharacterAnimation left, int cooldown, int healing)
         {
@@ -375,6 +377,7 @@ namespace Bearventure.Gameplay.Characters.Skills
             this.IsReady = true;
             this.DamageType = DamageType;
             hitBox = new Rectangle(-1, -1, 1, 1);
+            ForceInterruptTreshold = -1;
         }
         /// <summary>
         /// Returns true if the skills hitbox hits the characters BoundingBox.

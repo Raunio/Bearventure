@@ -228,7 +228,7 @@ namespace Bearventure
                 //ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(3050, 3600)));
                 //ladders.Add(new Ladder(content, Constants.LadderType.Wooden, new Vector2(3050, 3838)));
 
-                CombatManager.Instance.Initialize(_player, enemies);
+                CombatManager.Instance.Initialize(_player, enemies, content);
                 //hud = new HeadsUpDisplay();
                 //hud.Initialize(content, ResolutionManager.graphicsDevice, enemies, _player);
                 cameraController = new CameraController();
@@ -371,7 +371,7 @@ namespace Bearventure
                 layeredBackground.Update(camera.Pos);
                 SoundEffectManager.Instance.UpdatePlayerPosition(_player.Position);
                 hudScreen.Update(gameTime);
-                
+                CombatManager.Instance.UpdateFloatingTexts(gameTime);
                 
             }
 
@@ -474,7 +474,7 @@ namespace Bearventure
             _player.Draw(spriteBatch);
             if (_player.ActiveSkill != null)
             {
-                //_player.ActiveSkill.DrawHitBox(spriteBatch, red);
+               //_player.ActiveSkill.DrawHitBox(spriteBatch, red);
             }
 
             foreach (Platform p in platforms)
@@ -498,6 +498,8 @@ namespace Bearventure
 
             //if(player.ActiveSkill != null)
                 //player.ActiveSkill.DrawHitBox(spriteBatch, content.Load<Texture2D>("Sprites/player"));
+
+            CombatManager.Instance.DrawFloatingTexts(spriteBatch);
 
             //hud.Draw(spriteBatch);
             spriteBatch.End();

@@ -163,6 +163,13 @@ namespace Bearventure.Gameplay.Characters
                     
             }
         }
+        public void ApplyHealing(int healing)
+        {
+            if (health < maxHealth - healing)
+                health += healing;
+            else
+                health = maxHealth;
+        }
         /// <summary>
         /// Change the characters state.
         /// </summary>
