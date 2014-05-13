@@ -27,6 +27,10 @@ namespace Bearventure.Gameplay
         private Vector2 velocity;
         private Character target;
 
+        private float maxDistance;
+
+        private float acceleration = 0.33f;
+
         public CameraController()
         {
 
@@ -43,7 +47,7 @@ namespace Bearventure.Gameplay
         }
 
         public void Update(GameTime gameTime)
-        {
+        {   
             Move();
             position += velocity;
         }

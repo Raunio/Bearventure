@@ -41,7 +41,7 @@ namespace Bearventure.Gameplay.GameObjects.Characters.Skills
 
             #region Comboskill 1 init
             CharacterAnimation StraightPunch_R = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 
-                2, 200, 190, 0, 3, 37, SpriteEffects.None, 0f, 0f, false, false);
+                2, 200, 190, 0, 3, 32, SpriteEffects.None, 0f, 0f, false, false);
 
             StraightPunch_R.FreezeFrames = new Animation.FrameFreezer
             {
@@ -57,7 +57,7 @@ namespace Bearventure.Gameplay.GameObjects.Characters.Skills
             StraightPunch_R.CalculateBoundingBoxOffsets(player.BoundingBoxSize, Constants.DirectionX.Right);
 
             CharacterAnimation StraightPunch_L = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 
-                2, 200, 190, 0, 3, 37, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+                2, 200, 190, 0, 3, 32, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
 
             StraightPunch_L.FreezeFrames = new Animation.FrameFreezer
             {
@@ -91,7 +91,7 @@ namespace Bearventure.Gameplay.GameObjects.Characters.Skills
             #endregion
             #region ComboSkill 2 Initialization
             CharacterAnimation SweepingPunch_R = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 
-                3, 200, 190, 0, 3, 22, SpriteEffects.None, 0f, 0f, false, false);
+                3, 200, 190, 0, 3, 18, SpriteEffects.None, 0f, 0f, false, false);
 
             SweepingPunch_R.FreezeFrames = new Animation.FrameFreezer
             {
@@ -107,7 +107,7 @@ namespace Bearventure.Gameplay.GameObjects.Characters.Skills
             SweepingPunch_R.CalculateBoundingBoxOffsets(player.BoundingBoxSize, Constants.DirectionX.Right);
 
             CharacterAnimation SweepingPunch_L = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 
-                3, 200, 190, 0, 3, 22, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+                3, 200, 190, 0, 3, 18, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
 
             SweepingPunch_L.FreezeFrames = new Animation.FrameFreezer
             {
@@ -142,7 +142,7 @@ namespace Bearventure.Gameplay.GameObjects.Characters.Skills
             #region ComboSkill 3 Initialization
 
             CharacterAnimation UpperCut_R = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 
-                4, 200, 190, 0, 6, 30, SpriteEffects.None, 0f, 0f, false, false);
+                4, 200, 190, 0, 6, 26, SpriteEffects.None, 0f, 0f, false, false);
 
             UpperCut_R.FreezeFrames = new Animation.FrameFreezer
             {
@@ -158,7 +158,7 @@ namespace Bearventure.Gameplay.GameObjects.Characters.Skills
             UpperCut_R.CalculateBoundingBoxOffsets(player.BoundingBoxSize, Constants.DirectionX.Right);
 
             CharacterAnimation UpperCut_L = new CharacterAnimation(content.Load<Texture2D>(Constants.PlayerSpriteSheet), 
-                4, 200, 190, 0, 6, 30, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
+                4, 200, 190, 0, 6, 26, SpriteEffects.FlipHorizontally, 0f, 0f, false, false);
 
             UpperCut_L.CalculateBoundingBoxOffsets(player.BoundingBoxSize, Constants.DirectionX.Left);
 

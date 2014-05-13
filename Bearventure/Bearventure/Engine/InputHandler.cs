@@ -72,50 +72,65 @@ namespace Bearventure.Engine
         {
             PlayerIndex playerIndex;
 
-            if (moveLeft.Evaluate(input, ControllingPlayer, out playerIndex))
+            if (!CharacterPhysics.OnLadder(player))
             {
-                if (run.Evaluate(input, ControllingPlayer, out playerIndex) && moveLeft.Evaluate(input, ControllingPlayer, out playerIndex))
+                if (moveLeft.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
-                    player.RunLeft();
+                    if (run.Evaluate(input, ControllingPlayer, out playerIndex) && moveLeft.Evaluate(input, ControllingPlayer, out playerIndex))
+                    {
+                        player.RunLeft();
+                    }
+                    else
+                    {
+                        player.WalkLeft();
+                    }
+                }
+                else if (moveRight.Evaluate(input, ControllingPlayer, out playerIndex))
+                {
+                    if (run.Evaluate(input, ControllingPlayer, out playerIndex) && moveRight.Evaluate(input, ControllingPlayer, out playerIndex))
+                    {
+                        player.RunRight();
+                    }
+                    else
+                    {
+                        player.WalkRight();
+                    }
                 }
                 else
                 {
-                    player.WalkLeft();
+                    player.Stop();
+                }
+                if (jump.Evaluate(input, ControllingPlayer, out playerIndex))
+                {
+                    if (player.state == Constants.CharacterState.Jumping)
+                    {
+                        player.DoubleJump();
+                    }
+                    else
+                        player.Jump();
+                }
+                if (useSkillCombo.Evaluate(input, ControllingPlayer, out playerIndex))
+                {
+                    player.UseSkillCombo();
+                }
+                else if (useSkill0.Evaluate(input, ControllingPlayer, out playerIndex))
+                {
+                    player.UseSkill(0);
                 }
             }
-            else if (moveRight.Evaluate(input, ControllingPlayer, out playerIndex))
+            else if(player.state == Constants.CharacterState.Climbing)
             {
-                if (run.Evaluate(input, ControllingPlayer, out playerIndex) && moveRight.Evaluate(input, ControllingPlayer, out playerIndex))
+                if (moveUp.Evaluate(input, ControllingPlayer, out playerIndex))
                 {
-                    player.RunRight();
+                    player.Climb(Constants.DirectionY.Up);
+                }
+                else if (moveDown.Evaluate(input, ControllingPlayer, out playerIndex))
+                {
+                    player.Climb(Constants.DirectionY.Down);
                 }
                 else
-                {
-                    player.WalkRight();
-                }
+                    player.Climb(Constants.DirectionY.Hold);
             }
-            else
-            {
-                player.Stop();
-            }
-            if (jump.Evaluate(input, ControllingPlayer, out playerIndex))
-            {
-                if (player.state == Constants.CharacterState.Jumping)
-                {
-                    player.DoubleJump();
-                }
-                else
-                    player.Jump();
-            }
-            if (useSkillCombo.Evaluate(input, ControllingPlayer, out playerIndex))
-            {
-                player.UseSkillCombo();
-            }
-            else if (useSkill0.Evaluate(input, ControllingPlayer, out playerIndex))
-            {
-                player.UseSkill(0);
-            }
-            
         }
     }
 }

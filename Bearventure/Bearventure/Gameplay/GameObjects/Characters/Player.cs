@@ -129,8 +129,13 @@ namespace Bearventure.Gameplay.Characters
 
             landing = new CharacterAnimation(spriteSheet, 6, 167, 190, 0, 1, 90, SpriteEffects.None, 0f, 0f, false, false);
 
-            climbing = new CharacterAnimation(spriteSheet, 0, 90, 134, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, true);
-            climbingStopped = new CharacterAnimation(spriteSheet, 0, 90, 134, 0, 4, 70, SpriteEffects.None, 0f, 0f, false, false);
+            climbing = new CharacterAnimation(spriteSheet, 7, 135, 230, 0, 5, 70, SpriteEffects.None, 0f, 0f, false, true);
+            climbingStopped = new CharacterAnimation(spriteSheet, 7, 135, 230, 0, 5, 70, SpriteEffects.None, 0f, 0f, false, false);
+
+            climbing.CustomFrameRowPosition = 7 * 190;
+            climbingStopped.CustomFrameRowPosition = 7 * 190;
+
+            climbing.ReverseAtEnd = true;
 
             ChangeAnimation(stoppedRight);
         }
@@ -188,6 +193,18 @@ namespace Bearventure.Gameplay.Characters
         public void Stop()
         {
             SetState(Constants.CharacterState.Stopped);
+        }
+
+        public void Climb(Constants.DirectionY direction)
+        {
+            if (direction == Constants.DirectionY.Down)
+                ChangeVelocity(velocity.X, walkSpeed);
+            else if (direction == Constants.DirectionY.Up)
+            {
+                ChangeVelocity(velocity.X, -walkSpeed);;
+            }
+            else
+                ChangeVelocity(velocity.X, 0f);
         }
 
         public void UseSkillCombo()

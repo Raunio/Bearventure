@@ -561,6 +561,8 @@ namespace Bearventure
                 else
                     subject.velocity.X = 0;
 
+                subject.SetState(Constants.CharacterState.Climbing);
+
                 return true;
             }
             return false;
